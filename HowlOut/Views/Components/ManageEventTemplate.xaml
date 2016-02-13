@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ManageEventTemplate"
+ 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+
+		<Grid Padding="2,0,2,0" Style="{DynamicResource ListStyle}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="100"/>
+				<RowDefinition Height="2"/>
+			</Grid.RowDefinitions>
+
+		
+	
+			<Grid Grid.Row="0" >
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="65"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="65"/>
+				</Grid.ColumnDefinitions>
+
+
+				<Grid Grid.Column="0" >
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="65"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Image Grid.Row="1" Source="{Binding EventHolderPhoto}"/>
+					<Button Grid.Row="1" Style="{DynamicResource AttendingButtonStyle}" BorderRadius="32" BorderWidth="0" BackgroundColor="#ff00a0e0" ></Button> 
+				</Grid>
+
+
+				<StackLayout Grid.Column="1" Spacing="0" Padding="0,5">
+					<Label Style="{DynamicResource TitleStyle}"/>
+					<Label Style="{DynamicResource DistanceStyle}"/>
+					<Label Style="{DynamicResource TimeStyle}"/>
+				</StackLayout>
+
+
+				<Grid Grid.Column="2" >
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="65"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Row="1" Style="{DynamicResource AttendingButtonStyle}" BorderRadius="32" BorderWidth="5"></Button>
+				</Grid>
+			</Grid>
+		<!--- </StackLayout> -->
+
+		<!-- <StackLayout Grid.Row="1" Spacing="0" Padding="0" MinimumHeightRequest="80"> -->
+			<Grid Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="28"/>
+					<ColumnDefinition Width="36"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="36"/>
+					<ColumnDefinition Width="28"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid Grid.Column="1" >
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="36"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Row="2" Style="{DynamicResource LikesButtonStyle}" BorderRadius="18" BorderWidth="3"></Button>
+				</Grid>
+
+
+				<Grid Grid.Column="3" >
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="36"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Row="2" Style="{DynamicResource LoyaltyButtonStyle}" BorderRadius="18" BorderWidth="3"></Button>
+				</Grid>
+			</Grid>
+
+			<local:Line Grid.Row="1"/> 
+		</Grid>
+	</ContentView.Content>
+</ContentView>

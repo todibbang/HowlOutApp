@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.BottomBar">
+	<ContentView.Content>
+		<Grid HeightRequest="50">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Text="Explore" Style="{DynamicResource ButtonStyle}" x:Name="knapOne"></Button>
+			<Button Grid.Column="1" Text="Manage" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo"></Button>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

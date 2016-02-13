@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateEvent"
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.Padding>
+				<OnPlatform x:TypeArguments="Thickness"
+                	iOS="0, 0, 0, 0" />
+			</Grid.Padding>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
+				<StackLayout>
+					<StackLayout BackgroundColor="White" >
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="50"/>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="100"/>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<local:Line Grid.Row="0"/> 
+							<Entry Grid.Row="1" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Title..."></Entry>
+							<local:Line Grid.Row="2"/>
+							<Entry Grid.Row="3" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Description..." ></Entry>
+							<local:Line Grid.Row="4"/>
+							<Grid Grid.Row="5">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+
+								<Button Grid.Column="1" Grid.Row="1" Text="1" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="3" Grid.Row="1" Text="2" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="5" Grid.Row="1" Text="3" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="7" Grid.Row="1" Text="4" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="1" Grid.Row="3" Text="1" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="3" Grid.Row="3" Text="2" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="5" Grid.Row="3" Text="3" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="7" Grid.Row="3" Text="4" Style="{DynamicResource TypeButtonStyle}" ></Button>
+							</Grid>
+							<local:Line Grid.Row="6"/>
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="70"/>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="70"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="20"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+
+							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
+							<Label Grid.Row="1" Grid.Column="1" Text="Time" Style="{DynamicResource TextStyle}"></Label>
+							<Button Grid.Row="1" Grid.Column="3" Text="Time" Style="{DynamicResource ButtonStyle}"></Button>
+							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"/>
+							<Label Grid.Row="3" Grid.Column="1" Text="Time" Style="{DynamicResource TextStyle}"></Label>
+							<Button Grid.Row="3" Grid.Column="3" Text="Time" Style="{DynamicResource ButtonStyle}"></Button>
+							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"/>						
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="50"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<local:Line Grid.Row="0"/>
+							<Entry Grid.Row="1" Placeholder="Location..." Style="{DynamicResource PlaceHolderStyle}"></Entry>
+							<local:Line Grid.Row="2"/>
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="70"/>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="70"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="70"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+
+							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
+							<Label Grid.Row="1" Grid.Column="1" Text="Age" Style="{DynamicResource TextStyle}"></Label>
+							<Slider Grid.Row="1" Grid.Column="3" VerticalOptions="CenterAndExpand"></Slider>
+							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
+							<Label Grid.Row="3" Grid.Column="1" Text="Size" Style="{DynamicResource TextStyle}"></Label>
+							<Slider Grid.Row="3" Grid.Column="3" VerticalOptions="CenterAndExpand"></Slider>
+							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="70"/>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="70"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+
+							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
+							<Label Grid.Row="1" Grid.Column="1" Text="Privacy" Style="{DynamicResource TextStyle}"></Label>
+							<StackLayout Grid.Row="1" Grid.Column="3" Spacing="0" Padding="0,15,0,15">
+								<Picker Style="{DynamicResource ButtonStyle}" HeightRequest="40" Title="Public">
+							        <Picker.Items>
+							            <x:String>Public</x:String> 
+							            <x:String>Private</x:String>
+							        </Picker.Items>
+							    </Picker> 
+							</StackLayout>
+							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
+							<Label Grid.Row="3" Grid.Column="1" Text="Invite" Style="{DynamicResource TextStyle}"></Label>
+							<Button Grid.Row="3" Grid.Column="3" Text="0 Invited" Style="{DynamicResource ButtonStyle}"></Button>
+							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="80"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<local:Line Grid.Row="0"/>
+							<StackLayout Padding="20">
+								<Button Grid.Row="1" Text="Launch Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand"></Button>
+							</StackLayout>
+							<local:Line Grid.Row="2"/>
+						</Grid>
+					</StackLayout>
+
+				</StackLayout>	
+			</ScrollView>
+
+		</Grid>
+	</ContentView.Content>
+</ContentView>

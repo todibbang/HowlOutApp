@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectManageComment"
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+
+		<StackLayout Spacing="0" Padding="0" >
+			<Grid>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="24"/>
+					<RowDefinition Height="95"/>
+					<RowDefinition Height="2"/>
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0" Style="{DynamicResource CommentTitleStyle}" VerticalOptions="Start" HorizontalOptions ="Center"/>
+
+				<Grid Grid.Row="1" Style="{DynamicResource ListStyle}" >
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="65"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="2"/>
+						<ColumnDefinition Width="5"/>
+					</Grid.ColumnDefinitions>
+
+					<Grid Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="65"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+
+						<Button Grid.Row="0" Style="{DynamicResource AttendingButtonStyle}" BorderRadius="32" BorderWidth="0" BackgroundColor="#ff00a0e0" ></Button> 
+						<Image Grid.Row="0" Source="{Binding EventHolderPhoto}"/>
+					</Grid>
+
+					<Label Grid.Column="2" Style="{DynamicResource CommentStyle}" VerticalOptions="Start" HorizontalOptions ="Start"/>
+					<StackLayout Grid.Column="3"> <local:Line/> </StackLayout> 
+				</Grid>
+
+				<StackLayout Grid.Row="2" > <local:Line/> </StackLayout> 
+
+
+
+			</Grid>
+		</StackLayout>
+
+	</ContentView.Content>
+</ContentView>
