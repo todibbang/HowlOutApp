@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -70,11 +70,15 @@
     <Compile Include="Views\InspectProfile.xaml.cs">
       <DependentUpon>InspectProfile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginPage.cs" />
     <Compile Include="Views\ManageEvent.xaml.cs">
       <DependentUpon>ManageEvent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchEvent.xaml.cs">
       <DependentUpon>SearchEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SignIn.xaml.cs">
+      <DependentUpon>SignIn.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TopBar.xaml.cs">
       <DependentUpon>TopBar.xaml</DependentUpon>
@@ -103,11 +107,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Views\" />
-    <Folder Include="Views\Components\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -153,6 +153,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\TopBar.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SignIn.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

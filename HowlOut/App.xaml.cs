@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace HowlOut
@@ -8,20 +8,85 @@ namespace HowlOut
 	{
 		public static CoreView coreView;
 
-		public App ()
-		{
-			coreView = new CoreView(new SearchEvent());
-			InitializeComponent();
-			// The root page of your application
-			//MainPage = new MyPeople();
-			MainPage = coreView;
+        public interface ISaveAndLoad
+        {
+            //Needed to pull and save tokens
+            void SaveText(string filename, string text);
+            string LoadText(string filename);
 
+        }
+
+        public static string StoredToken;
+        static string _Token;
+
+        public App ()
+		{
+            coreView = new CoreView(new SearchEvent());
+
+            InitializeComponent();
+
+
+            //Eventsfired from the LoginPage to trigger actions here
+            LoginPage.LoginSucceeded += LoginPage_LoginSucceeded;
+            LoginPage.LoginCancelled += LoginPage_LoginCancelled;
+
+            //This loads a user token if existent, or else it will load "null" 
+            StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
+
+            //Sets the UI to Welcome(), since it is a BaseContentPage it will first check if authorized
+            if (!App.IsLoggedIn)
+            {
+                MainPage = new SignIn();
+            }
+            else
+            {
+                MainPage = coreView;
+            }
 
 		}
 
+        public async Task storeToken()
+        {
+            //Writes a New Token upon authentication in the directory
+            DependencyService.Get<ISaveAndLoad>().SaveText("token", Token);
+            StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
+        }
 
+        public static string Token
+        {
+            get { return _Token; }
+        }
 
-		protected override void OnStart ()
+        public static bool IsLoggedIn
+        {
+            get
+            {
+                //returns Boolean for Login
+                return !string.IsNullOrWhiteSpace(StoredToken);
+
+            }
+        }
+
+        public static void SetToken(string token)
+        {
+            //gets Actual Token, fired from the LoginPageRenderer
+            _Token = token;
+
+        }
+
+        private void LoginPage_LoginCancelled(object sender, EventArgs e)
+        {
+            //if login cancelled, user will be redirected back to the sign-in page
+            MainPage = new SignIn();
+        }
+
+        private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
+        {
+            await storeToken();
+            MainPage = coreView;
+        }
+
+        protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}
