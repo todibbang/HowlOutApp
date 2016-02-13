@@ -6,8 +6,8 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button Grid.Column="0" Text="Explore" Style="{DynamicResource ButtonStyle}" x:Name="knapOne"></Button>
-			<Button Grid.Column="1" Text="Manage" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo"></Button>
+			<Button Grid.Column="0" Text="Explore" Style="{DynamicResource ButtonStyle}" x:Name="knapOne" BackgroundColor="#ffe1fff7"></Button>
+			<Button Grid.Column="1" Text="Manage" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BackgroundColor="#ffe1fff7"></Button>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

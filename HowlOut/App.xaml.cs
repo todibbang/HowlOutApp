@@ -21,7 +21,7 @@ namespace HowlOut
 
         public App ()
 		{
-            coreView = new CoreView(new SearchEvent());
+            coreView = new CoreView(new SearchEvent(), false);
 
             InitializeComponent();
 
@@ -36,7 +36,8 @@ namespace HowlOut
             //Sets the UI to Welcome(), since it is a BaseContentPage it will first check if authorized
             if (!App.IsLoggedIn)
             {
-                MainPage = new SignIn();
+				//MainPage = coreView;
+				MainPage = new SignIn();
             }
             else
             {
@@ -51,6 +52,7 @@ namespace HowlOut
             DependencyService.Get<ISaveAndLoad>().SaveText("token", Token);
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
         }
+			
 
         public static string Token
         {

@@ -62,12 +62,12 @@ namespace HowlOut
 
 			eventHolderButton.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView(new InspectProfile());
+				App.coreView.setContentView(new InspectProfile(), false);
 			};
 
 			eventGroupButton.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView(new InspectGroup());
+				App.coreView.setContentView(new InspectGroup(), false);
 			};
 		}
 	}

@@ -19,10 +19,7 @@ namespace HowlOut
 
 			ManageEventList.ItemSelected += OnItemSelected;
 
-			CreateButton.Clicked += (sender, e) =>
-			{
-				App.coreView.setContentView(new CreateEvent());
-			};
+
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -32,7 +29,7 @@ namespace HowlOut
 
 			var eve = ManageEventList.SelectedItem as Event;
 
-			App.coreView.setContentView(new InspectEvent(eve, 2));
+			App.coreView.setContentView(new InspectEvent(eve, 2), false);
 
 		}
 	}

@@ -13,7 +13,7 @@
         <StackLayout
             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.25}"
             RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}">
-          <Button x:Name="fblogin" Clicked="fb_click" Text="Login With Facebook" TextColor = "White" BackgroundColor="#3b5998" HorizontalOptions="FillAndExpand"/>
+          <Button x:Name="fblogin" Clicked="fb_click" Text="Login With Facebook" TextColor = "White" BackgroundColor="#3b5998" HorizontalOptions="FillAndExpand" WidthRequest="200" VerticalOptions="CenterAndExpand"/>
         </StackLayout>
 
       </RelativeLayout>

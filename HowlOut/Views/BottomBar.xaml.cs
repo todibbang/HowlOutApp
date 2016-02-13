@@ -12,11 +12,11 @@ namespace HowlOut
 
 			knapOne.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentView(new SearchEvent());
+				App.coreView.setContentView(new SearchEvent(), false);
 			};
 			knapTwo.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentView(new ManageEvent());
+				App.coreView.setContentView(new ManageEvent(), true);
 			};
 		}
 	}

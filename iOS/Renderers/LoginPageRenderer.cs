@@ -36,6 +36,8 @@ namespace HowlOut.iOS.Renderers
 
                         //Saves Token, and Calls LoginSuccess() to change Screen
                         var access = eventArgs.Account.Properties["access_token"];
+						Console.WriteLine(access);
+						App.SetToken(access);
                         HowlOut.LoginPage.LoginSuccess();
                     }
                     else
@@ -61,7 +63,8 @@ namespace HowlOut.iOS.Renderers
                 {
                     var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                     var filePath = Path.Combine(documentsPath, filename);
-                    return System.IO.File.ReadAllText(filePath);
+					var idAsString = System.IO.File.ReadAllText(filePath);
+					return idAsString; 
                 }
                 catch (Exception e)
                 {
