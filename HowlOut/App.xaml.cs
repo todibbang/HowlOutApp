@@ -7,6 +7,7 @@ namespace HowlOut
 	public partial class App : Application
 	{
 		public static CoreView coreView;
+        public static Profile loggedInProfile;
 
         public interface ISaveAndLoad
         {

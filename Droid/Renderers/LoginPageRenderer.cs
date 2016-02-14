@@ -13,7 +13,7 @@ using System.IO;
 
 namespace HowlOut.Droid.Renderers
 {
-    public class LoginPageRenderer : PageRenderer
+	public class LoginPageRenderer : PageRenderer
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Page> e)
         {
@@ -31,7 +31,9 @@ namespace HowlOut.Droid.Renderers
                 {
                     //Saves Token, and Calls LoginSuccess() to change Screen
                     var access = eventArgs.Account.Properties["access_token"];
+					//var properties = eventArgs.Account.Properties;
                     App.SetToken(access);
+
                     HowlOut.LoginPage.LoginSuccess();
                 }
                 else {
