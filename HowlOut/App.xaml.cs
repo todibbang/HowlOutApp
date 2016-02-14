@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Net.Http;
+using ModernHttpClient;
 
 namespace HowlOut
 {
 	public partial class App : Application
 	{
 		public static CoreView coreView;
+        private HttpClient httpClient;
 
         public interface ISaveAndLoad
         {
@@ -86,6 +89,19 @@ namespace HowlOut
         {
             await storeToken();
             MainPage = coreView;
+            httpClient = new HttpClient(new NativeMessageHandler());
+
+            var facebookUri = new Uri("https://graph.facebook.com/v2.3/me?fields=name;access_token="+StoredToken);
+
+            var response = await httpClient.GetAsync(facebookUri);
+
+            if(response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine(content);
+                
+            }
+            
         }
 
         protected override void OnStart ()
