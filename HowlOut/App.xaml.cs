@@ -91,7 +91,9 @@ namespace HowlOut
             MainPage = coreView;
             httpClient = new HttpClient(new NativeMessageHandler());
 
-            var facebookUri = new Uri("https://graph.facebook.com/v2.3/me?fields=name;access_token="+StoredToken);
+            var facebookUri = new Uri("https://graph.facebook.com/v2.3/me?access_token="+StoredToken);
+            //Test token
+            //CAAJQNaDSB60BAG72FzPUHzMmPwMtFcodg14U6rBsySwVKpLykYQuAdqSgXbCCUTX4ZAiFOVfaild5C9G7hHv0vnBHDOHw95HdY5yIMoLelXYKLXqomvn7oEwnNhJJkvuPGW87n9bW5ZCkJCsJd0pbps4lhZBC6lqgZC0VZAsU30SDdGmiZBLdqG0V1KiAf7K4jsZBMm5z3clCB8i9QWoCiI
 
             var response = await httpClient.GetAsync(facebookUri);
 
