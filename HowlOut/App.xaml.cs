@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Net.Http;
-using ModernHttpClient;
-using Newtonsoft.Json;
 
 namespace HowlOut
 {
 	public partial class App : Application
 	{
 		public static CoreView coreView;
-        private HttpClient httpClient;
 
         public interface ISaveAndLoad
         {
@@ -27,7 +23,7 @@ namespace HowlOut
 
         public App ()
 		{
-            coreView = new CoreView(new SearchEvent(), false);
+           // coreView = new CoreView(new SearchEvent(), false);
 
             InitializeComponent();
 
@@ -42,8 +38,7 @@ namespace HowlOut
 
 			System.Diagnostics.Debug.WriteLine ("STORED USER FACEBOOK ID");
 			System.Diagnostics.Debug.WriteLine (StoredUserFacebookId);
-
-            //Sets the UI to Welcome(), since it is a BaseContentPage it will first check if authorized
+            
             if (!App.IsLoggedIn)
             {
 				//MainPage = coreView;
@@ -51,10 +46,8 @@ namespace HowlOut
             }
             else
             {
+				coreView = new CoreView(new SearchEvent(), false);
                 MainPage = coreView;
-				System.Diagnostics.Debug.WriteLine ("STORED FACEBOOK ID!!");
-				System.Diagnostics.Debug.WriteLine (StoredUserFacebookId);
-				System.Diagnostics.Debug.WriteLine ("STORED FACEBOOK ID!!");
             }
 
 		}
@@ -116,30 +109,9 @@ namespace HowlOut
 
         private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
         {
-			System.Diagnostics.Debug.WriteLine ("LogIN SUCCEEDED STORE");
             await storeToken();
-			System.Diagnostics.Debug.WriteLine ("LogIN SUCCEEDED CORE");
+			coreView = new CoreView(new SearchEvent(), false);
             MainPage = coreView;
-			System.Diagnostics.Debug.WriteLine ("LogIN SUCCEEDED DONE");
-            //httpClient = new HttpClient(new NativeMessageHandler());
-
-            //var facebookUri = new Uri("https://graph.facebook.com/v2.3/me?access_token="+StoredToken);
-            //Test token
-            //CAAJQNaDSB60BAG72FzPUHzMmPwMtFcodg14U6rBsySwVKpLykYQuAdqSgXbCCUTX4ZAiFOVfaild5C9G7hHv0vnBHDOHw95HdY5yIMoLelXYKLXqomvn7oEwnNhJJkvuPGW87n9bW5ZCkJCsJd0pbps4lhZBC6lqgZC0VZAsU30SDdGmiZBLdqG0V1KiAf7K4jsZBMm5z3clCB8i9QWoCiI
-
-            //var response = await httpClient.GetAsync(facebookUri);
-
-            //if(response.IsSuccessStatusCode)
-            //{
-                //var content = await response.Content.ReadAsStringAsync();
-                //System.Diagnostics.Debug.WriteLine(content);
-				//userFacebookId = content.
-				//userFacebookId = JsonConvert.DeserializeObject<FacebookUserObject>(content).id;
-				//System.Diagnostics.Debug.WriteLine ("FACEBOOK ID AS OBJECT!!");
-				//System.Diagnostics.Debug.WriteLine (userFacebookId);
-				//System.Diagnostics.Debug.WriteLine ("FACEBOOK ID AS OBJECT!!");
-            //}
-            
         }
 
         protected override void OnStart ()

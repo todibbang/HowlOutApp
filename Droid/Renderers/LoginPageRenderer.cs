@@ -8,8 +8,6 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using System.IO;
 using Newtonsoft.Json;
-using System.Net.Http;
-using ModernHttpClient;
 
 [assembly: ExportRenderer(typeof(LoginPage), typeof(LoginPageRenderer))]
 [assembly: Dependency(typeof(HowlOut.Droid.Renderers.LoginPageRenderer.SaveAndLoad))]
