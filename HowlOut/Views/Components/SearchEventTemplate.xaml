@@ -16,9 +16,9 @@
 			<StackLayout Grid.Row="0" Padding="0, 5, 0, 5" Spacing="0">
 				<Label Style="{DynamicResource TitleStyle}" FontSize="20" HorizontalOptions="Center"/>
 				<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="0">
-					<Label Style="{DynamicResource DistanceStyle}" FontSize="12" HorizontalOptions="Center" ></Label>
-					<Label Style="{DynamicResource DistanceStyle}" Text="-" FontSize="12" HorizontalOptions="Center" ></Label>
-					<Label Style="{DynamicResource TimeStyle}" FontSize="12" HorizontalOptions="Center" ></Label>
+					<Label Style="{DynamicResource DistanceStyle}" FontSize="14" HorizontalOptions="Center" ></Label>
+					<Label Style="{DynamicResource DistanceStyle}" Text=" - " FontSize="14" HorizontalOptions="Center" ></Label>
+					<Label Style="{DynamicResource TimeStyle}" FontSize="14" HorizontalOptions="Center" ></Label>
 				</StackLayout>
 			</StackLayout>
 
@@ -51,7 +51,7 @@
 							<local:Line/>
 						</StackLayout>
 						<StackLayout Padding="2,0,0,0">
-							 <Label Style="{DynamicResource DescriptionStyle}" HeightRequest="100" FontSize="12"/> 
+							 <Label Style="{DynamicResource DescriptionStyle}" HeightRequest="100" FontSize="13"/> 
 						</StackLayout>
 					</StackLayout>
 

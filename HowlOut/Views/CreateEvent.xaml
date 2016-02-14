@@ -26,9 +26,9 @@
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 							<local:Line Grid.Row="0"/> 
-							<Entry Grid.Row="1" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Title..."></Entry>
+							<Entry Grid.Row="1" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Title..." x:Name="title"></Entry>
 							<local:Line Grid.Row="2"/>
-							<Entry Grid.Row="3" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Description..." ></Entry>
+							<Entry Grid.Row="3" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Description..." VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100"></Entry>
 							<local:Line Grid.Row="4"/>
 							<Grid Grid.Row="5">
 								<Grid.ColumnDefinitions>
@@ -66,12 +66,12 @@
 					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
 
 					<StackLayout BackgroundColor="White">
-						<Grid RowSpacing="0">
+						<Grid RowSpacing="10">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
+								<RowDefinition Height="50"/>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
+								<RowDefinition Height="50"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
@@ -79,16 +79,18 @@
 								<ColumnDefinition Width="80"/>
 								<ColumnDefinition Width="5"/>
 								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="20"/>
+								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="5"/>
 							</Grid.ColumnDefinitions>
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Time" Style="{DynamicResource TextStyle}"></Label>
-							<Button Grid.Row="1" Grid.Column="3" Text="Time" Style="{DynamicResource ButtonStyle}"></Button>
+							<TimePicker Grid.Row="1" Grid.Column="3" x:Name="startTime"></TimePicker>
+							<TimePicker Grid.Row="1" Grid.Column="4" x:Name="endTime">></TimePicker>
 							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"/>
-							<Label Grid.Row="3" Grid.Column="1" Text="Time" Style="{DynamicResource TextStyle}"></Label>
-							<Button Grid.Row="3" Grid.Column="3" Text="Time" Style="{DynamicResource ButtonStyle}"></Button>
+							<Label Grid.Row="3" Grid.Column="1" Text="Date" Style="{DynamicResource TextStyle}"></Label>
+							<DatePicker Grid.Row="3" Grid.Column="3" x:Name="startDate">></DatePicker>
+							<DatePicker Grid.Row="3" Grid.Column="4" x:Name="endDate">></DatePicker>
 							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"/>						
 						</Grid>
 					</StackLayout>
@@ -111,28 +113,31 @@
 					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
 
 					<StackLayout BackgroundColor="White">
-						<Grid RowSpacing="0">
+						<Grid RowSpacing="10">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
+								<RowDefinition Height="50"/>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
+								<RowDefinition Height="50"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="70"/>
+								<ColumnDefinition Width="80"/>
 								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="5"/>
 							</Grid.ColumnDefinitions>
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Age" Style="{DynamicResource TextStyle}"></Label>
-							<Slider Grid.Row="1" Grid.Column="3" VerticalOptions="CenterAndExpand"></Slider>
+							<Entry Grid.Row="1" Grid.Column="3" x:Name="minAge" Keyboard="Numeric"></Entry>
+							<Entry Grid.Row="1" Grid.Column="4" x:Name="maxAge" Keyboard="Numeric"></Entry>
 							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
 							<Label Grid.Row="3" Grid.Column="1" Text="Size" Style="{DynamicResource TextStyle}"></Label>
-							<Slider Grid.Row="3" Grid.Column="3" VerticalOptions="CenterAndExpand"></Slider>
+							<Entry Grid.Row="3" Grid.Column="3" x:Name="minSize" Keyboard="Numeric"></Entry>
+							<Entry Grid.Row="3" Grid.Column="4" x:Name="maxSize" Keyboard="Numeric">></Entry>
 							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
 						</Grid>
 					</StackLayout>
