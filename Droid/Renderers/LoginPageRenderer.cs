@@ -7,6 +7,9 @@ using Xamarin.Auth;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using System.IO;
+using Newtonsoft.Json;
+using System.Net.Http;
+using ModernHttpClient;
 
 [assembly: ExportRenderer(typeof(LoginPage), typeof(LoginPageRenderer))]
 [assembly: Dependency(typeof(HowlOut.Droid.Renderers.LoginPageRenderer.SaveAndLoad))]
@@ -34,7 +37,14 @@ namespace HowlOut.Droid.Renderers
 					//var properties = eventArgs.Account.Properties;
                     App.SetToken(access);
 
-                    HowlOut.LoginPage.LoginSuccess();
+					var request = new OAuth2Request ("GET", new Uri ("https://graph.facebook.com/me"), null, eventArgs.Account);
+
+					var obj = request.GetResponseAsync().Result.GetResponseText();
+					var facebookUserObj = JsonConvert.DeserializeObject<FacebookUserObject>(obj).id;
+					App.SetUserFacebookId(facebookUserObj);
+
+					HowlOut.LoginPage.LoginSuccess();
+
                 }
                 else {
                     HowlOut.LoginPage.LoginCancel();
