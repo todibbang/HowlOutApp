@@ -3,10 +3,10 @@
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-			<StackLayout >
+		<StackLayout >
 				<ListView x:Name="SearchEventList"
 				  			HasUnevenRows="false"
-							RowHeight="200"
+							RowHeight="194"
 							SeparatorVisibility="None"
 							BackgroundColor="Transparent">
 					<ListView.ItemTemplate>
@@ -17,7 +17,7 @@
 				      </DataTemplate>
 				    </ListView.ItemTemplate>
 				  </ListView>
-				</StackLayout>
+		</StackLayout>
 
 	</ContentView.Content>
 </ContentView>

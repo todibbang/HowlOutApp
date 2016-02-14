@@ -4,7 +4,7 @@
 		<ResourceDictionary>
 
 			<!---Glossy Styles-->
-			<Color x:Key="TextColor">Green</Color>
+			<Color x:Key="TextColor">#ff646464</Color>
 
 			<Color x:Key="HowlOut">#ff00e0a0</Color>
 			<Color x:Key="HowlOutBackground">#ffe1fff7</Color>

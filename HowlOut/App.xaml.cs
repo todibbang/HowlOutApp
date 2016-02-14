@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Net.Http;
+using ModernHttpClient;
 
 namespace HowlOut
 {
 	public partial class App : Application
 	{
 		public static CoreView coreView;
-        public static Profile loggedInProfile;
+        private HttpClient httpClient;
 
         public interface ISaveAndLoad
         {
@@ -22,7 +24,7 @@ namespace HowlOut
 
         public App ()
 		{
-            coreView = new CoreView(new SearchEvent());
+            coreView = new CoreView(new SearchEvent(), false);
 
             InitializeComponent();
 
@@ -37,7 +39,8 @@ namespace HowlOut
             //Sets the UI to Welcome(), since it is a BaseContentPage it will first check if authorized
             if (!App.IsLoggedIn)
             {
-                MainPage = new SignIn();
+				//MainPage = coreView;
+				MainPage = new SignIn();
             }
             else
             {
@@ -52,6 +55,7 @@ namespace HowlOut
             DependencyService.Get<ISaveAndLoad>().SaveText("token", Token);
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
         }
+			
 
         public static string Token
         {
@@ -85,6 +89,21 @@ namespace HowlOut
         {
             await storeToken();
             MainPage = coreView;
+            httpClient = new HttpClient(new NativeMessageHandler());
+
+            var facebookUri = new Uri("https://graph.facebook.com/v2.3/me?access_token="+StoredToken);
+            //Test token
+            //CAAJQNaDSB60BAG72FzPUHzMmPwMtFcodg14U6rBsySwVKpLykYQuAdqSgXbCCUTX4ZAiFOVfaild5C9G7hHv0vnBHDOHw95HdY5yIMoLelXYKLXqomvn7oEwnNhJJkvuPGW87n9bW5ZCkJCsJd0pbps4lhZBC6lqgZC0VZAsU30SDdGmiZBLdqG0V1KiAf7K4jsZBMm5z3clCB8i9QWoCiI
+
+            var response = await httpClient.GetAsync(facebookUri);
+
+            if(response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine(content);
+                
+            }
+            
         }
 
         protected override void OnStart ()
