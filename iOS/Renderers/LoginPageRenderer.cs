@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using System.IO;
 using HowlOut;
+using Newtonsoft.Json;
 
 [assembly: ExportRenderer(typeof(LoginPage), typeof(LoginPageRenderer))]
 [assembly: Dependency(typeof(HowlOut.iOS.Renderers.LoginPageRenderer.SaveAndLoad))]
@@ -38,6 +39,13 @@ namespace HowlOut.iOS.Renderers
                         var access = eventArgs.Account.Properties["access_token"];
 						Console.WriteLine(access);
 						App.SetToken(access);
+
+                        var request = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me"), null, eventArgs.Account);
+
+                        var obj = request.GetResponseAsync().Result.GetResponseText();
+                        var facebookUserObj = JsonConvert.DeserializeObject<FacebookUserObject>(obj).id;
+                        App.SetUserFacebookId(facebookUserObj);
+
                         HowlOut.LoginPage.LoginSuccess();
                     }
                     else
