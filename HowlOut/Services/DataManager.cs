@@ -116,10 +116,11 @@ namespace HowlOut
 
         public async Task<bool> CreateEvent(Event eventToCreate)
         {
-            var uri = new Uri("https://howlout.gear.host/api/EventsAPI");
+			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/");
 
             try
             {
+				System.Diagnostics.Debug.WriteLine("Trying");
                 var json = JsonConvert.SerializeObject(eventToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -127,11 +128,13 @@ namespace HowlOut
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+					System.Diagnostics.Debug.WriteLine("Success");
+					return true;
                 }
             }
             catch (Exception ex)
             {
+				System.Diagnostics.Debug.WriteLine("Failing");
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
 

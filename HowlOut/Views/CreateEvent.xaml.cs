@@ -6,7 +6,10 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
+		Event newEvent = new Event();
+
 		string Title;
+		string OwnerId;
 		string Description;
 		string StartTime;
 		string EndTime;
@@ -22,12 +25,14 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 
+			newEvent.OwnerId = App.StoredUserFacebookId;
 
 			title.TextChanged += (sender, e) => {
-				Title = title.Text;
+				newEvent.Title = title.Text;
+				System.Diagnostics.Debug.WriteLine(newEvent.Title);
 			};
 			description.TextChanged += (sender, e) => {
-				Description = description.Text;
+				newEvent.Description = description.Text;
 			};
 
 			startTime.PropertyChanged += (sender, e) => {
@@ -55,6 +60,26 @@ namespace HowlOut
 				MaxSize = maxSize.Text;
 			};
 
+
+			launchButton.Clicked += (sender, e) =>
+			{
+				System.Diagnostics.Debug.WriteLine("Clicked");
+				App.coreView.setContentView(new InspectEvent(newEvent, 2), false);
+				LaunchEvent(newEvent);
+			};
+
+			inviteButton.Clicked += (sender, e) =>
+			{
+				System.Diagnostics.Debug.WriteLine("ClickedInvite");
+				LaunchEvent(newEvent);
+			};
+
+		}
+
+		private async void LaunchEvent(Event eventToCreate)
+		{
+			DataManager dataManager = new DataManager();
+			await dataManager.CreateEvent (eventToCreate);
 		}
 
 	}
