@@ -8,7 +8,8 @@
 				  			HasUnevenRows="false"
 							RowHeight="226"
 							SeparatorVisibility="None"
-							BackgroundColor="Transparent">
+							BackgroundColor="Transparent"
+							CachingStrategy="RecycleElement">
 					<ListView.ItemTemplate>
 				      <DataTemplate>
 				        <ViewCell>

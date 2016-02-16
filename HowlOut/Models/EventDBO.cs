@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace HowlOut
 {
-	public class Event
+	public class EventDBO
 	{
-		public string EventId {get; set;}
-
 		public string Title {get; set;}
 
 		public string Description {get; set;}
@@ -19,7 +17,7 @@ namespace HowlOut
 
 		public List <string> AttendingIDs {get; set;}
 		public int AttendingAmount { get; set; }
-        
+
 		public List <string> FollowerIDs { get; set; }
 		public int FollowersAmount { get; set; }
 
@@ -43,9 +41,8 @@ namespace HowlOut
 		public int TotalUsers {get; set;}
 		public int Followers {get; set;}
 
-		public Event ()
+		public EventDBO ()
 		{
-
 		}
 	}
 }

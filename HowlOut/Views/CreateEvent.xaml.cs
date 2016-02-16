@@ -79,7 +79,13 @@ namespace HowlOut
 		private async void LaunchEvent(Event eventToCreate)
 		{
 			DataManager dataManager = new DataManager();
-			await dataManager.CreateEvent (eventToCreate);
+
+			EventDBO testEvent = new EventDBO{OwnerId = App.StoredUserFacebookId, Title = "Nice Event", 
+				Description = "Description for dette totalt seje event", Time = "Om ca. 2 timer", 
+				Position = "Om ca. 2 dage", CurrentUsers = 2, TotalUsers = 5, Followers= 3};
+
+			//await dataManager.CreateEvent (eventToCreate);
+			await dataManager.CreateEvent (testEvent);
 		}
 
 	}

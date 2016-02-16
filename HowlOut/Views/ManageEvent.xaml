@@ -10,6 +10,7 @@
 		  			HasUnevenRows="false"
 					RowHeight="108"
 					SeparatorVisibility="None"
+					CachingStrategy="RecycleElement"
 					BackgroundColor="Transparent" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3">
 					    <ListView.ItemTemplate>
 					      	<DataTemplate>

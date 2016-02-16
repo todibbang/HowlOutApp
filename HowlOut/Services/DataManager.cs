@@ -86,7 +86,7 @@ namespace HowlOut
             }
             return eventToRetrieve;
         }
-
+			
         public async Task<bool> UpdateEvent(Event EventToUpdate)
         {
             if(EventToUpdate.EventId != null && EventToUpdate.EventId != "")
@@ -114,7 +114,7 @@ namespace HowlOut
             return false;
         }
 
-        public async Task<bool> CreateEvent(Event eventToCreate)
+		public async Task<bool> CreateEvent(EventDBO eventToCreate)
         {
 			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/");
 
@@ -123,7 +123,8 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine("Trying");
                 var json = JsonConvert.SerializeObject(eventToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-
+				System.Diagnostics.Debug.WriteLine("Converted to JSOn");
+				System.Diagnostics.Debug.WriteLine(json);
                 var response = await httpClient.PostAsync(uri, content);
 
                 if (response.IsSuccessStatusCode)
