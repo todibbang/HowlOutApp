@@ -6,6 +6,7 @@ namespace HowlOut
 	public class Profile
 	{
 		public string FaceBookID {get; set;}
+
 		public int LoyaltyRating {get; set;}
 		public int Likes {get; set;}
 		public string Name {get; set;}
@@ -16,8 +17,8 @@ namespace HowlOut
 
 		public List <string> Friends {get; set;}
 
-		public List <string> EventsAttending {get; set;}
-		public List <string> EventsFollowing {get; set;}
+		public List <string> EventIDsAttending {get; set;}
+		public List <string> EventIDsFollowing {get; set;}
 
 		public Profile ()
 		{

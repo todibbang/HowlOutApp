@@ -46,7 +46,7 @@ namespace HowlOut
             }
             else
             {
-				coreView = new CoreView(new SearchEvent(), false);
+				coreView = new CoreView(new SearchEvent());
                 MainPage = coreView;
             }
 
@@ -110,7 +110,7 @@ namespace HowlOut
         private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
         {
             await storeToken();
-			coreView = new CoreView(new SearchEvent(), false);
+			coreView = new CoreView(new SearchEvent());
             MainPage = coreView;
         }
 

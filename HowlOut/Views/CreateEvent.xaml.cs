@@ -64,7 +64,7 @@ namespace HowlOut
 			launchButton.Clicked += (sender, e) =>
 			{
 				System.Diagnostics.Debug.WriteLine("Clicked");
-				App.coreView.setContentView(new InspectEvent(newEvent, 2), false);
+				App.coreView.setContentView(new InspectEvent(newEvent, 2), 0);
 				LaunchEvent(newEvent);
 			};
 

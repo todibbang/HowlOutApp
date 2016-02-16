@@ -6,28 +6,36 @@ namespace HowlOut
 {
 	public partial class CoreView : ContentPage
 	{
-		public CoreView (ContentView view, bool createEventBool)
+		private int viewStyle = 0;
+		public CoreView (ContentView view)
 		{
 			InitializeComponent ();
 
-			CreateButton.IsVisible = false;
-			if(createEventBool) CreateButton.IsVisible = true;
+			CreateButton.IsVisible = true;
+			CreateButton.Text = "0";
 
 			mainView.Content = view;
 
 			CreateButton.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentView(new CreateEvent(), false);
+				if(viewStyle == 1) App.coreView.setContentView(new FilterSearch(), 0);
+				if(viewStyle == 2) App.coreView.setContentView(new CreateEvent(), 0);
 			};
 		}
 
-		public void setContentView (ContentView view, bool createEventBool)
+		public void setContentView (ContentView view, int floatingButton)
 		{
 			mainView.Content = view;
-
-			if (createEventBool)
+			viewStyle = floatingButton;
+			if (floatingButton == 0)
+				CreateButton.IsVisible = false;
+			else if (floatingButton == 1) {
 				CreateButton.IsVisible = true;
-			else CreateButton.IsVisible = false;
+				CreateButton.Text = "0";
+			} else {
+				CreateButton.IsVisible = true;
+				CreateButton.Text = "+";
+			}
 		}
 
 

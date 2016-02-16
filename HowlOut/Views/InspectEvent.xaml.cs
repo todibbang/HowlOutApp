@@ -17,8 +17,8 @@ namespace HowlOut
 			detailedInfo.IsVisible = false;
 
 			eventTitle.Text = eve.Title;
-			eventTime.Text = eve.Time;
-			eventDistance.Text = eve.Position;
+			// eventTime.Text = eve.Time;
+			// eventDistance.Text = eve.Position;
 			eventDescription.Text = eve.Description;
 			eventAttending.Text = "22";
 			eventHolderLikes.Text = "22";
@@ -62,12 +62,12 @@ namespace HowlOut
 
 			eventHolderButton.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView(new InspectProfile(), false);
+				App.coreView.setContentView(new InspectProfile(), 0);
 			};
 
 			eventGroupButton.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView(new InspectGroup(), false);
+				App.coreView.setContentView(new InspectGroup(), 0);
 			};
 		}
 	}

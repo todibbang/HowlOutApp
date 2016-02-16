@@ -6,7 +6,7 @@
 		<StackLayout >
 				<ListView x:Name="SearchEventList"
 				  			HasUnevenRows="false"
-							RowHeight="194"
+							RowHeight="226"
 							SeparatorVisibility="None"
 							BackgroundColor="Transparent">
 					<ListView.ItemTemplate>

@@ -13,15 +13,12 @@ namespace HowlOut
 
 			knapOne.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentView(new FilterSearch(), false);
 			};
 			knapTwo.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentView(new FilterSearch(), false);
 			};
 			knapThree.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentView(new FilterSearch(), false);
 			};
 		}
 	}

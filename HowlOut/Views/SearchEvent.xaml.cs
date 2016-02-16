@@ -34,7 +34,7 @@ namespace HowlOut
 
 			var ev = SearchEventList.SelectedItem as Event;
 
-			App.coreView.setContentView(new InspectEvent(ev, 1), false);
+			App.coreView.setContentView(new InspectEvent(ev, 1), 0);
 
 		}
 	}
