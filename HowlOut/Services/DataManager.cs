@@ -18,9 +18,9 @@ namespace HowlOut
             httpClient = new HttpClient(new NativeMessageHandler());
         }
 
-        public Uri GetFacebookProfileImageUri(string profileFacebookId)
+		public Uri GetFacebookProfileImageUri(string facebookUserId)
         {
-            return new Uri("https://graph.facebook.com/" + profileFacebookId + "/picture");
+			return new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture");
         }
 
 		public async Task<ObservableCollection<Event>> GetAllEvents()

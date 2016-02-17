@@ -18,7 +18,8 @@ namespace HowlOut
 			NameAndAge.Text = "Tobias Bjerge Bang, 23";
 
 			//var profilePicUri = new Uri("http://xamarin.com/content/images/pages/forms/example-app.png");
-			var profilePicUri = new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture");
+			DataManager dataManager = new DataManager();
+			var profilePicUri = dataManager.GetFacebookProfileImageUri(facebookUserId);
 
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
 		}
