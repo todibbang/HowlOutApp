@@ -33,13 +33,19 @@
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Age" Style="{DynamicResource TextStyle}"></Label>
-							<Slider Grid.Row="1" Grid.Column="3" VerticalOptions="CenterAndExpand" Value="0"></Slider>
+							<StackLayout Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
+								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="minAge" WidthRequest="50"></Picker>
+								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="maxAge" WidthRequest="50"></Picker>
+							</StackLayout>
 							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
 							<Label Grid.Row="3" Grid.Column="1" Text="Distance" Style="{DynamicResource TextStyle}"></Label>
 							<Slider Grid.Row="3" Grid.Column="3" VerticalOptions="CenterAndExpand"></Slider>
 							<local:Line Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"/>
 							<Label Grid.Row="5" Grid.Column="1" Text="Size" Style="{DynamicResource TextStyle}"></Label>
-							<Slider Grid.Row="5" Grid.Column="3" VerticalOptions="CenterAndExpand" ></Slider>
+							<StackLayout Grid.Row="5" Grid.Column="3" Orientation="Horizontal">
+								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="minSize" WidthRequest="50"></Picker>
+								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="maxSize" WidthRequest="50"></Picker>
+							</StackLayout>
 							<local:Line Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>
 						</Grid>
 					</StackLayout>

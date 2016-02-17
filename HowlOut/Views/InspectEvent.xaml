@@ -41,7 +41,7 @@
 									<RowDefinition Height="20"/>
 								</Grid.RowDefinitions>
 								<maps:Map Grid.Row="0" WidthRequest="320" HeightRequest="200"
-						            x:Name="MyMap"
+						            x:Name="Map"
 						            IsShowingUser="true"
 						        />
 								<Label Grid.Row="1" Style="{DynamicResource DistanceStyle}"/>
