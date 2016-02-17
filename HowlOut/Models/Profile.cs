@@ -12,13 +12,10 @@ namespace HowlOut
 		public string Name {get; set;}
 		public string Age {get; set;}
 
-		public List <string> WhoUserFollows {get; set;}
-		public List <string> WhoFollowsUser {get; set;}
+		public List <string> UserIDsFollowed {get; set;}
+		public List <string> EventIDsFollowed {get; set;}
 
-		public List <string> Friends {get; set;}
-
-		public List <string> EventIDsAttending {get; set;}
-		public List <string> EventIDsFollowing {get; set;}
+		public List <string> FriendIDs {get; set;}
 
 		public Profile ()
 		{

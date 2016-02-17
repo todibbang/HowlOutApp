@@ -24,27 +24,20 @@ namespace HowlOut
 			eventHolderLikes.Text = "22";
 			eventLoyaltyRaiting.Text = "22";
 
-			if (inspectType == 1) 
-			{
+			if (inspectType == 1) {
 				searchSpecific.IsVisible = true;
 				manageSpecific.IsVisible = false;
-			}
-
-			else if (inspectType == 2) 
-			{
+			} else if (inspectType == 2) {
 				searchSpecific.IsVisible = false;
 				manageSpecific.IsVisible = true;
 
 				CommentList.ItemsSource = comments;
 
-				comments.Add(new Comment{ CommentTitle="Rob Finnerty", CommentContent="Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb"});
-				comments.Add(new Comment{ CommentTitle="Bill Wrestler", CommentContent="Test2"});
-				comments.Add(new Comment{ CommentTitle="Dr. Geri-Beth Hooper", CommentContent="Test3"});
-				comments.Add(new Comment{ CommentTitle="Dr. Keith Joyce-Purdy", CommentContent="Test4"});
-				comments.Add(new Comment{ CommentTitle="Sheri Spruce", CommentContent="Test5"});
-				comments.Add(new Comment{ CommentTitle="Burt Indybrick", CommentContent="Test6"});
+				comments.Add (new Comment {
+					Title = "Rob Finnerty",
+					Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb"
+				});
 			}
-
 			detailsButton.Clicked += (sender, e) =>
 			{
 				if(detailedInfo.IsVisible == false)

@@ -5,8 +5,10 @@ namespace HowlOut
 	public class Comment
 	{
 
-		public string CommentTitle {get; set;}
-		public string CommentContent {get; set;}
+		public string Title {get; set;}
+		public string Content {get; set;}
+		public string Sender {get; set;}
+		public string Time {get; set;}
 
 		public Comment ()
 		{

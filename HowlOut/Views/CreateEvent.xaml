@@ -188,8 +188,8 @@
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 							<local:Line Grid.Row="0"/>
-							<StackLayout Padding="20">
-								<Button Grid.Row="1" Text="Launch Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="launchButton"></Button>
+							<StackLayout Grid.Row="1" Padding="20">
+								<Button Text="Launch Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="launchButton"></Button>
 							</StackLayout>
 							<local:Line Grid.Row="2"/>
 						</Grid>

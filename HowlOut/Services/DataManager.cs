@@ -123,8 +123,6 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine("Trying");
                 var json = JsonConvert.SerializeObject(eventToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-				System.Diagnostics.Debug.WriteLine("Converted to JSOn");
-				System.Diagnostics.Debug.WriteLine(json);
                 var response = await httpClient.PostAsync(uri, content);
 
                 if (response.IsSuccessStatusCode)

@@ -8,19 +8,6 @@ namespace HowlOut
 	{
 		Event newEvent = new Event();
 
-		string Title;
-		string OwnerId;
-		string Description;
-		string StartTime;
-		string EndTime;
-		string StartDate;
-		string EndDate;
-		string MinAge;
-		string MaxAge;
-		string MinSize;
-		string MaxSize;
-
-
 		public CreateEvent ()
 		{
 			InitializeComponent ();
@@ -36,41 +23,35 @@ namespace HowlOut
 			};
 
 			startTime.PropertyChanged += (sender, e) => {
-				StartTime = startTime.Time.ToString();
+				newEvent.StartTime = startTime.Time.ToString();
 			};
 			endTime.PropertyChanged += (sender, e) => {
-				EndTime = endTime.Time.ToString();
+				newEvent.EndTime = endTime.Time.ToString();
 			};
 			startDate.PropertyChanged += (sender, e) => {
-				StartDate = startDate.Date.ToString();
+				newEvent.StartDate = startDate.Date.ToString();
 			};
 			endDate.PropertyChanged += (sender, e) => {
-				EndDate = endDate.Date.ToString();
+				newEvent.EndDate = endDate.Date.ToString();
 			};
 			minAge.TextChanged += (sender, e) => {
-				MinAge = minAge.Text;
+				newEvent.MinAge = minAge.Text;
 			};
 			maxAge.TextChanged += (sender, e) => {
-				MaxAge = maxAge.Text;
+				newEvent.MaxAge = maxAge.Text;
 			};
 			minSize.Completed += (sender, e) => {
-				MinSize = minSize.Text;
+				newEvent.MinSize = minSize.Text;
 			};
 			maxSize.Completed += (sender, e) => {
-				MaxSize = maxSize.Text;
+				newEvent.MaxSize = maxSize.Text;
 			};
 
 
 			launchButton.Clicked += (sender, e) =>
 			{
-				System.Diagnostics.Debug.WriteLine("Clicked");
+				System.Diagnostics.Debug.WriteLine("ClickedLaunche");
 				App.coreView.setContentView(new InspectEvent(newEvent, 2), 0);
-				LaunchEvent(newEvent);
-			};
-
-			inviteButton.Clicked += (sender, e) =>
-			{
-				System.Diagnostics.Debug.WriteLine("ClickedInvite");
 				LaunchEvent(newEvent);
 			};
 
@@ -80,12 +61,13 @@ namespace HowlOut
 		{
 			DataManager dataManager = new DataManager();
 
-			EventDBO testEvent = new EventDBO{OwnerId = App.StoredUserFacebookId, Title = "Nice Event", 
-				Description = "Description for dette totalt seje event", Time = "Om ca. 2 timer", 
-				Position = "Om ca. 2 dage", CurrentUsers = 2, TotalUsers = 5, Followers= 3};
+			EventDBO newEventAsDBO = new EventDBO{OwnerId = newEvent.OwnerId, Title = newEvent.Title, 
+				Description = newEvent.Description, StartTime = newEvent.StartTime, EndTime = newEvent.EndTime,
+				StartDate = newEvent.StartDate, EndDate = newEvent.EndDate, MinAge = newEvent.MinAge,
+				MaxAge = newEvent.MaxAge, MinSize = newEvent.MinSize, MaxSize = newEvent.MaxSize};
 
 			//await dataManager.CreateEvent (eventToCreate);
-			await dataManager.CreateEvent (testEvent);
+			await dataManager.CreateEvent (newEventAsDBO);
 		}
 
 	}
