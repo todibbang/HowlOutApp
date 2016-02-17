@@ -9,10 +9,7 @@ namespace HowlOut
 {
 	public partial class InspectProfile : ContentView
 	{
-
-		HttpClient httpClient;
-
-		public InspectProfile ()
+		public InspectProfile (string facebookUserId)
 		{
 			InitializeComponent ();
 
@@ -21,18 +18,9 @@ namespace HowlOut
 			NameAndAge.Text = "Tobias Bjerge Bang, 23";
 
 			//var profilePicUri = new Uri("http://xamarin.com/content/images/pages/forms/example-app.png");
-			var profilePicUri = new Uri("https://graph.facebook.com/"+App.UserFacebookId+"/picture");
+			var profilePicUri = new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture");
 
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
-		}
-
-		private void profileImageGetter(Image profile)
-		{
-			//var profilePicUri = new Uri("http://xamarin.com/content/images/pages/forms/example-app.png");
-
-			//var webImage = new Image { Aspect = Aspect.AspectFit };
-			//webImage.Source = ImageSource.FromUri(profilePicUri);
-			//profile = webImage;
 		}
 	}
 }

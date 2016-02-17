@@ -55,7 +55,7 @@ namespace HowlOut
 
 			eventHolderButton.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView(new InspectProfile(), 0);
+				App.coreView.setContentView(new InspectProfile(eve.OwnerId), 0);
 			};
 
 			eventGroupButton.Clicked += (sender, e) => 

@@ -19,7 +19,7 @@ namespace HowlOut.Droid
 			base.OnCreate (bundle);
 			global::Xamarin.Forms.Forms.Init (this, bundle);
 			ImageCircleRenderer.Init ();
-			Xamarin.FormsMaps.Init();
+			Xamarin.FormsMaps.Init(this, bundle);
 			LoadApplication (new App ());
 		}
 	}
