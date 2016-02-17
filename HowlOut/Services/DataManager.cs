@@ -27,7 +27,7 @@ namespace HowlOut
         {
 			ObservableCollection<Event> events = new ObservableCollection<Event>(); 
 
-            var uri = new Uri("https://howlout.gear.host/api/EventsAPI");
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/WithoutOwner/" + App.StoredUserFacebookId);
 
             try { 
                 var response = await httpClient.GetAsync(uri);
