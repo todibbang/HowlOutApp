@@ -31,7 +31,7 @@
 				<local:TopBar/>
 			</StackLayout>
 
-			<ContentView Grid.Row="1" Grid.RowSpan="3"  Grid.Column="0" Grid.ColumnSpan="3" x:Name="mainView">
+			<ContentView Grid.Row="1" Grid.RowSpan="3"  Grid.Column="0" Grid.ColumnSpan="3" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}">
 			</ContentView>
 
 			 <Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOutBackground}" BorderRadius="30" BorderWidth="3" BorderColor="{DynamicResource HowlOut}" ></Button> 

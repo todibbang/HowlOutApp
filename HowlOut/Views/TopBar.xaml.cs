@@ -11,8 +11,9 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 
-			knapOne.Clicked += (sender, e) =>
+			back.Clicked += (sender, e) =>
 			{
+				App.coreView.returnToPreviousView();
 			};
 			knapTwo.Clicked += (sender, e) =>
 			{
