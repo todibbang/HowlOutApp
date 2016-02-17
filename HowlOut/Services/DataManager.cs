@@ -33,11 +33,13 @@ namespace HowlOut
                 var response = await httpClient.GetAsync(uri);
                 if(response.IsSuccessStatusCode)
                 {
+					System.Diagnostics.Debug.WriteLine("RECIEVED DATA!!!!!");
                     var content = await response.Content.ReadAsStringAsync();
 					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
                 }
             } catch (Exception ex)
             {
+				System.Diagnostics.Debug.WriteLine("COULD NOT RECIEVE DATA!!!!!");
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
             return events;
