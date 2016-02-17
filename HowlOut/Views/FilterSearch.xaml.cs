@@ -27,7 +27,7 @@ namespace HowlOut
 			Dictionary<string, int> agePicker = new Dictionary<string, int> {
 			};
 			for (int i = 18; i < 100; i++)
-				sizePicker.Add ("" + i, i);
+				agePicker.Add ("" + i, i);
 
 			foreach (string number in agePicker.Keys)
 			{
