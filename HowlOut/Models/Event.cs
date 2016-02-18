@@ -32,13 +32,22 @@ namespace HowlOut
 		public string MinSize {get; set;}
 		public string MaxSize {get; set;}
 
+		public Uri ProfileImageUri {
+			get {
+				return new Uri ("https://graph.facebook.com/v2.5/"+OwnerId+"/picture");
+			}
+			set{
+				this.ProfileImageUri = value;
+			}
+		}
+
 		public List <Comment> Comments {get; set;}
 
 		public bool Public {get; set;}
 
 		public Event ()
 		{
-
+			
 		}
 	}
 }

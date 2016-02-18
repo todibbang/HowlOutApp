@@ -9,6 +9,7 @@ namespace HowlOut
 		public ManageEventTemplate ()
 		{
 			InitializeComponent ();
+			//profileImage.Source = new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture");
 		}
 	}
 }

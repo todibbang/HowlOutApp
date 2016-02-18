@@ -26,7 +26,7 @@
 						<RowDefinition Height="65"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
-					<Image Grid.Row="1" Source="{Binding EventHolderPhoto}"/>
+					<Image Grid.Row="1" Source="{Binding ProfileImageUri}" x:Name="profileImage"/>
 					<Button Grid.Row="1" Style="{DynamicResource AttendingButtonStyle}" BorderRadius="32" BorderWidth="0" BackgroundColor="#ff00a0e0" ></Button> 
 				</Grid>
 
