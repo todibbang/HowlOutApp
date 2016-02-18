@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
+using Xamarin.Forms.Maps;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
 	public partial class InspectEvent : ContentView
 	{
 		ObservableCollection<Comment> comments = new ObservableCollection<Comment>();
+		bool mapInitialized = false;
 
 		public InspectEvent (Event eve, int inspectType)
 		{
 			InitializeComponent ();
 
+			DataManager dataManager = new DataManager();
+			var profilePicUri = dataManager.GetFacebookProfileImageUri(eve.OwnerId);
+			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
+
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
+
+
 
 			eventTitle.Text = eve.Title;
 			// eventTime.Text = eve.Time;
@@ -50,6 +59,12 @@ namespace HowlOut
 					detailedInfo.IsVisible = false;
 					quickInfo.IsVisible = true;
 				}
+
+				if(mapInitialized != true)
+				{
+					mapInitialized = true;
+					addMap ();
+				}
 			};
 
 
@@ -62,6 +77,20 @@ namespace HowlOut
 			{
 				App.coreView.setContentView(new InspectGroup(), 0);
 			};
+		}
+
+		public void addMap()
+		{
+			var map = new Map(
+				MapSpan.FromCenterAndRadius(
+					new Position(37,-122), Distance.FromMiles(0.3))) {
+				IsShowingUser = true,
+				HeightRequest = 200,
+				WidthRequest = 320,
+				VerticalOptions = LayoutOptions.FillAndExpand
+			};
+			mapLayout.Children.Add(map);
+
 		}
 	}
 }

@@ -20,7 +20,6 @@ namespace HowlOut
 			//var profilePicUri = new Uri("http://xamarin.com/content/images/pages/forms/example-app.png");
 			DataManager dataManager = new DataManager();
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(facebookUserId);
-
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
 		}
 	}

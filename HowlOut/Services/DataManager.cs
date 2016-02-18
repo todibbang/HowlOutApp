@@ -20,7 +20,7 @@ namespace HowlOut
 
 		public Uri GetFacebookProfileImageUri(string facebookUserId)
         {
-			return new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture");
+			return new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture?height=300&width=300");
         }
 
 		public async Task<ObservableCollection<Event>> GetAllEvents()
