@@ -30,8 +30,8 @@
 									<RowDefinition Height="20"/>
 									<RowDefinition Height="20"/>
 								</Grid.RowDefinitions>
-								<Label Grid.Row="0" Style="{DynamicResource TimeStyle}" x:Name="eventTime" Text="om ca. 4 timer"/>
-								<Label Grid.Row="1" Style="{DynamicResource DistanceStyle}" x:Name="eventDistance" Text="ca. 3 km væk"/>
+								<Label Grid.Row="0" Style="{DynamicResource TimeStyle}" x:Name="quickTime" Text="om ca. 4 timer"/>
+								<Label Grid.Row="1" Style="{DynamicResource DistanceStyle}" x:Name="quickDistance" Text="ca. 3 km væk"/>
 							</Grid>
 						</StackLayout>
 

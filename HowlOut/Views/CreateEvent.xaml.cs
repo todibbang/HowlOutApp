@@ -44,6 +44,8 @@ namespace HowlOut
 			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 
+
+
 			minAge.SelectedIndexChanged += (sender, args) => {
 				if (minAge.SelectedIndex != -1) { string age = minAge.Items[minAge.SelectedIndex]; newEvent.MinAge = agePicker[age]; } };
 			maxAge.SelectedIndexChanged += (sender, args) => {

@@ -24,10 +24,13 @@ namespace HowlOut
 			detailedInfo.IsVisible = false;
 
 
-
 			eventTitle.Text = eve.Title;
-			// eventTime.Text = eve.Time;
-			// eventDistance.Text = eve.Position;
+
+			DateTime today = DateTime.Now.ToLocalTime();
+			System.Diagnostics.Debug.WriteLine ("- " + (eve.StartDate - today) + " : " + (today - eve.StartDate));
+
+			quickTime.Text = "på " + eve.StartDate.DayOfWeek + " kl. " + eve.StartDate.TimeOfDay.Hours;
+			//quickDistance.Text = eve.PositionCoordinates;
 			eventDescription.Text = eve.Description;
 			eventAttending.Text = "22";
 			eventHolderLikes.Text = "22";
@@ -89,6 +92,8 @@ namespace HowlOut
 				WidthRequest = 320,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
+
+
 			mapLayout.Children.Add(map);
 
 		}
