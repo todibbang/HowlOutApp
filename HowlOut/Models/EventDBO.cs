@@ -18,17 +18,14 @@ namespace HowlOut
 		public List <string> AttendingIDs {get; set;}
 		public List <string> FollowerIDs {get; set;}
 
-		public string StartTime {get; set;}
-		public string EndTime {get; set;}
+		public DateTime StartDate {get; set;}
+		public DateTime EndDate {get; set;}
 
-		public string StartDate {get; set;}
-		public string EndDate {get; set;}
+		public int MinAge {get; set;}
+		public int MaxAge {get; set;}
 
-		public string MinAge {get; set;}
-		public string MaxAge {get; set;}
-
-		public string MinSize {get; set;}
-		public string MaxSize {get; set;}
+		public int MinSize {get; set;}
+		public int MaxSize {get; set;}
 
 		public List <Comment> Comments {get; set;}
 

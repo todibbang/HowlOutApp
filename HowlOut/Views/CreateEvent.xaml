@@ -50,14 +50,14 @@
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
 
-								<Button Grid.Column="1" Grid.Row="1" Text="1" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="3" Grid.Row="1" Text="2" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="5" Grid.Row="1" Text="3" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="7" Grid.Row="1" Text="4" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="1" Grid.Row="3" Text="1" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="3" Grid.Row="3" Text="2" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="5" Grid.Row="3" Text="3" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="7" Grid.Row="3" Text="4" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="1" Grid.Row="1" Text="Fest" Style="{DynamicResource TypeButtonStyle}" x:Name="fest"></Button>
+								<Button Grid.Column="3" Grid.Row="1" Text="Sport" Style="{DynamicResource TypeButtonStyle}" x:Name="sport"></Button>
+								<Button Grid.Column="5" Grid.Row="1" Text="Kultur" Style="{DynamicResource TypeButtonStyle}" x:Name="kultur"></Button>
+								<Button Grid.Column="7" Grid.Row="1" Text="Film" Style="{DynamicResource TypeButtonStyle}" x:Name="film"></Button>
+								<Button Grid.Column="1" Grid.Row="3" Text="Musik" Style="{DynamicResource TypeButtonStyle}" x:Name="musik"></Button>
+								<Button Grid.Column="3" Grid.Row="3" Text="Cafe" Style="{DynamicResource TypeButtonStyle}" x:Name="cafe"></Button>
+								<Button Grid.Column="5" Grid.Row="3" Text="Mad" Style="{DynamicResource TypeButtonStyle}" x:Name="mad"></Button>
+								<Button Grid.Column="7" Grid.Row="3" Text="Hobby" Style="{DynamicResource TypeButtonStyle}" x:Name="hobby"></Button>
 							</Grid>
 							<local:Line Grid.Row="6"/>
 						</Grid>
@@ -84,13 +84,13 @@
 							</Grid.ColumnDefinitions>
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
-							<Label Grid.Row="1" Grid.Column="1" Text="Time" Style="{DynamicResource TextStyle}"></Label>
-							<TimePicker Grid.Row="1" Grid.Column="3" x:Name="startTime"></TimePicker>
-							<TimePicker Grid.Row="1" Grid.Column="4" x:Name="endTime">></TimePicker>
+							<Label Grid.Row="1" Grid.Column="1" Text="Start" Style="{DynamicResource TextStyle}"></Label>
+							<DatePicker Grid.Row="1" Grid.Column="3" x:Name="startDate">></DatePicker>
+							<TimePicker Grid.Row="1" Grid.Column="4" x:Name="startTime"></TimePicker>
 							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"/>
-							<Label Grid.Row="3" Grid.Column="1" Text="Date" Style="{DynamicResource TextStyle}"></Label>
-							<DatePicker Grid.Row="3" Grid.Column="3" x:Name="startDate">></DatePicker>
-							<DatePicker Grid.Row="3" Grid.Column="4" x:Name="endDate">></DatePicker>
+							<Label Grid.Row="3" Grid.Column="1" Text="End" Style="{DynamicResource TextStyle}"></Label>
+							<DatePicker Grid.Row="3" Grid.Column="3" x:Name="endDate">></DatePicker>
+							<TimePicker Grid.Row="3" Grid.Column="4" x:Name="endTime">></TimePicker>
 							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"/>						
 						</Grid>
 					</StackLayout>
@@ -132,12 +132,12 @@
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Age" Style="{DynamicResource TextStyle}"></Label>
-							<Entry Grid.Row="1" Grid.Column="3" x:Name="minAge" Keyboard="Numeric"></Entry>
-							<Entry Grid.Row="1" Grid.Column="4" x:Name="maxAge" Keyboard="Numeric"></Entry>
-							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
+							<Picker Grid.Row="1" Grid.Column="3" x:Name="minAge"></Picker>
+							<Picker Grid.Row="1" Grid.Column="4" x:Name="maxAge"></Picker>
+							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"/>
 							<Label Grid.Row="3" Grid.Column="1" Text="Size" Style="{DynamicResource TextStyle}"></Label>
-							<Entry Grid.Row="3" Grid.Column="3" x:Name="minSize" Keyboard="Numeric"></Entry>
-							<Entry Grid.Row="3" Grid.Column="4" x:Name="maxSize" Keyboard="Numeric">></Entry>
+							<Picker Grid.Row="3" Grid.Column="3" x:Name="minSize"></Picker>
+							<Picker Grid.Row="3" Grid.Column="4" x:Name="maxSize">></Picker>
 							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
 						</Grid>
 					</StackLayout>

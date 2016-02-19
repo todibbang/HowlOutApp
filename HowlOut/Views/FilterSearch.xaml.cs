@@ -13,17 +13,6 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 
-
-			/*
-			for(int i = 18; i < 100; i++)
-			{
-				minAge.Items.Add (""+i);
-				maxAge.Items.Add (""+i);
-				minSize.Items.Add (""+i);
-				maxSize.Items.Add (""+i);
-			}
-			*/
-
 			Dictionary<string, int> agePicker = new Dictionary<string, int> {
 			};
 			for (int i = 18; i < 100; i++)
@@ -35,18 +24,8 @@ namespace HowlOut
 				maxAge.Items.Add(number);
 			}
 
-			minAge.SelectedIndexChanged += (sender, args) =>
-			{
-				if (minAge.SelectedIndex == -1)
-				{
-					
-				}
-				else
-				{
-					string number = minAge.Items[minAge.SelectedIndex];
-					MinAgeSearched = agePicker[number];
-				}
-			};
+			minAge.SelectedIndexChanged += (sender, args) => {
+				if (minAge.SelectedIndex != -1) { string number = minAge.Items[minAge.SelectedIndex]; MinAgeSearched = agePicker[number]; } };
 
 		}
 	}

@@ -47,13 +47,23 @@
 			</Style>
 
 			<Style x:Key="TypeButtonStyle" TargetType="Button">
-				<Setter Property="TextColor" Value="Black"/>
+				<Setter Property="TextColor" Value="{DynamicResource HowlOut}"/>
 				<Setter Property="BorderRadius" Value="25"/>
-				<Setter Property="BorderWidth" Value="4"/>
+				<Setter Property="BorderWidth" Value="1"/>
 				<Setter Property="HeightRequest" Value="50"/>
 				<Setter Property="WidthRequest" Value="50"/>
-				<Setter Property="BorderColor" Value="{DynamicResource HowlOut}"/>
+				<Setter Property="BorderColor" Value="{DynamicResource HowlOutBackground}"/>
 				<Setter Property="BackgroundColor" Value="White"/>
+			</Style>
+
+			<Style x:Key="TypeButtonSelectedStyle" TargetType="Button">
+				<Setter Property="TextColor" Value="White"/>
+				<Setter Property="BorderRadius" Value="25"/>
+				<Setter Property="BorderWidth" Value="1"/>
+				<Setter Property="HeightRequest" Value="50"/>
+				<Setter Property="WidthRequest" Value="50"/>
+				<Setter Property="BorderColor" Value="{DynamicResource HowlOutBackground}"/>
+				<Setter Property="BackgroundColor" Value="{DynamicResource HowlOut}"/>
 			</Style>
 
 			<Style x:Key="AttendingButtonStyle" TargetType="Button">
