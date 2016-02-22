@@ -39,6 +39,14 @@ namespace HowlOut
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
 			description.TextChanged += (sender, e) => { newEvent.Description = description.Text; };
 
+
+			//startTime.Time = TimeSpan.FromTicks(DateTime.Now.ToLocalTime().Ticks);
+			//endTime.Time = TimeSpan.FromTicks(DateTime.Now.ToLocalTime().Ticks);
+			//startTime.Time = DateTime.Now.ToLocalTime();
+			//endTime.Time = DateTime.Now.ToLocalTime();
+			newEvent.StartDate = startDate.Date.Add(startTime.Time);
+			newEvent.EndDate = endDate.Date.Add(endTime.Time);
+
 			startDate.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
 			startTime.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
 			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };

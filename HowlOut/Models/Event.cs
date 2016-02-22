@@ -45,6 +45,8 @@ namespace HowlOut
 		public Event ()
 		{
 			EventTypes = new List<string> ();
+			AttendingIDs = new List<string> ();
+			FollowerIDs = new List<string> ();
 		}
 	}
 }

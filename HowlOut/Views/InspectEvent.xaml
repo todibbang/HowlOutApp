@@ -48,12 +48,10 @@
 									<Label Style="{DynamicResource DistanceStyle}" x:Name="RoughDistance" Text="ca. 3 km væk"/>
 									<StackLayout Padding="0,20,0,20"> <local:Line/> </StackLayout>
 									<StackLayout Orientation="Horizontal">
-										<Label Style="{DynamicResource DistanceStyle}" Text="Start: "/>
-										<Label Style="{DynamicResource DistanceStyle}" x:Name="StartTime" Text="2200 København N"/>	
+										<Label Style="{DynamicResource DistanceStyle}" x:Name="StartTime"/>	
 									</StackLayout>
 									<StackLayout Orientation="Horizontal">
-										<Label Style="{DynamicResource DistanceStyle}" Text="End: "/>
-										<Label Style="{DynamicResource DistanceStyle}" x:Name="EndTime" Text="2200 København N"/>	
+										<Label Style="{DynamicResource DistanceStyle}" x:Name="EndTime"/>	
 									</StackLayout>
 									<Label Style="{DynamicResource DistanceStyle}" x:Name="RoughTime" Text="om ca. 4 timer"/>
 								</StackLayout>
