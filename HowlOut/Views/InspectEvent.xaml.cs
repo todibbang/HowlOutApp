@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Xamarin.Forms.Maps;
 using System.Threading.Tasks;
+using Plugin.Geolocator;
 
 namespace HowlOut
 {
@@ -50,7 +51,7 @@ namespace HowlOut
 
 				if(mapInitialized != true) {
 					mapInitialized = true;
-					addMap ();
+					setMap (eve);
 				}
 			};
 
@@ -64,18 +65,42 @@ namespace HowlOut
 			{
 				App.coreView.setContentView(new InspectGroup(), 0);
 			};
+
+			mapButton.Clicked += (sender, e) => 
+			{
+				App.coreView.setContentView(new MapView(eve), 0);
+			};
+
+
 		}
 
-		public void addMap()
+		public async void setMap(Event eve)
 		{
+			var locator = CrossGeolocator.Current;
+			locator.DesiredAccuracy = 50;
+
+			var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
+
+			quickDistance.Text = "" + MapView.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude) + " km away";
+
 			var map = new Map(
 				MapSpan.FromCenterAndRadius(
-					new Position(37,-122), Distance.FromMiles(0.3))) {
+					new Position(eve.Latitude,eve.Longitude), Distance.FromMiles(0.1))) {
 				IsShowingUser = true,
 				HeightRequest = 200,
 				WidthRequest = 320,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
+
+			var pin = new Pin
+			{
+				Type = PinType.Place,
+				Position = new Position(eve.Latitude,eve.Longitude),
+				Label = eve.Title,
+				Address = eve.PositionName,
+			};
+
+			map.Pins.Add (pin);
 			mapLayout.Children.Add(map);
 		}
 
@@ -91,7 +116,8 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine ("- " + (eve.StartDate - today) + " : " + (today - eve.StartDate));
 
 			quickTime.Text = "på " + eve.StartDate.DayOfWeek + " kl. " + eve.StartDate.TimeOfDay.Hours;
-			//quickDistance.Text = eve.PositionCoordinates;
+
+
 
 			eventDescription.Text = eve.Description;
 

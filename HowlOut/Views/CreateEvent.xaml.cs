@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Plugin.Geolocator;
 
 namespace HowlOut
 {
@@ -81,6 +82,7 @@ namespace HowlOut
 			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
 
+			getCurrentPosition ();
 		}
 
 		private async void LaunchEvent(Event eventToCreate)
@@ -108,6 +110,17 @@ namespace HowlOut
 				newEvent.EventTypes.Remove (typeButton.Text.ToString ());
 			}
 			return typeButton;
+		}
+
+		public async void getCurrentPosition()
+		{
+			var locator = CrossGeolocator.Current;
+			locator.DesiredAccuracy = 50;
+
+			var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
+
+			newEvent.Latitude = position.Latitude;
+			newEvent.Longitude = position.Longitude;
 		}
 	}
 }
