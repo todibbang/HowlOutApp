@@ -4,7 +4,6 @@ using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Xamarin.Forms.Maps;
 using System.Threading.Tasks;
-using Plugin.Geolocator;
 
 namespace HowlOut
 {
@@ -17,9 +16,10 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 			setInfo (eve);
+			UtilityManager utilityManager = new UtilityManager();
 
-			quickInfo.IsVisible = true;
-			detailedInfo.IsVisible = false;
+			ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
+
 
 			CommentList.ItemsSource = comments;
 
@@ -51,7 +51,7 @@ namespace HowlOut
 
 				if(mapInitialized != true) {
 					mapInitialized = true;
-					setMap (eve);
+					utilityManager.setMapForEvent (eve, map, mapLayout);
 				}
 			};
 
@@ -68,45 +68,21 @@ namespace HowlOut
 
 			mapButton.Clicked += (sender, e) => 
 			{
+				
+				System.Diagnostics.Debug.WriteLine ("when sent: " + eve.Latitude + ", " + eve.Longitude);
 				App.coreView.setContentView(new MapView(eve), 0);
 			};
 
 
 		}
 
-		public async void setMap(Event eve)
+		public async void setInfo (Event eve)
 		{
-			var locator = CrossGeolocator.Current;
-			locator.DesiredAccuracy = 50;
+			quickInfo.IsVisible = true;
+			detailedInfo.IsVisible = false;
 
-			var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
-
-			quickDistance.Text = "" + MapView.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude) + " km away";
-
-			var map = new Map(
-				MapSpan.FromCenterAndRadius(
-					new Position(eve.Latitude,eve.Longitude), Distance.FromMiles(0.1))) {
-				IsShowingUser = true,
-				HeightRequest = 200,
-				WidthRequest = 320,
-				VerticalOptions = LayoutOptions.FillAndExpand
-			};
-
-			var pin = new Pin
-			{
-				Type = PinType.Place,
-				Position = new Position(eve.Latitude,eve.Longitude),
-				Label = eve.Title,
-				Address = eve.PositionName,
-			};
-
-			map.Pins.Add (pin);
-			mapLayout.Children.Add(map);
-		}
-
-		public void setInfo (Event eve)
-		{
 			DataManager dataManager = new DataManager();
+			UtilityManager utilityManager = new UtilityManager();
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(eve.OwnerId);
 			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
 
@@ -119,14 +95,22 @@ namespace HowlOut
 
 
 
+
 			eventDescription.Text = eve.Description;
 
 			eventAttending.Text = (eve.AttendingIDs.Count + 1) + "/" + eve.MaxSize;
 			eventHolderLikes.Text = "22";
 			eventLoyaltyRaiting.Text = "22";
 
-			StartTime.Text = "Starts " + eve.StartDate.DayOfWeek + ", " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM") + " at " + eve.StartDate.TimeOfDay;
-			EndTime.Text = "Ends " + eve.EndDate.DayOfWeek + ", " + eve.EndDate.Day + " " + eve.EndDate.ToString("MMMM") + " at " + eve.EndDate.TimeOfDay;
+			StartTime.Text = "Starts " + eve.StartDate.DayOfWeek + ", " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMM") + " at " + eve.StartDate.TimeOfDay;
+			EndTime.Text = "Ends " + eve.EndDate.DayOfWeek + ", " + eve.EndDate.Day + " " + eve.EndDate.ToString("MMM") + " at " + eve.EndDate.TimeOfDay;
+
+			Position position = new Position ();
+			await utilityManager.getCurrentUserPosition(position);
+
+			System.Diagnostics.Debug.WriteLine ("Position received: " + position.Latitude + ", " + position.Longitude + ", " + eve.Latitude + ", " + eve.Longitude);
+
+			quickDistance.Text = "" + utilityManager.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude) + " km away";
 		}
 	}
 }

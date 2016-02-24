@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Xamarin.Forms.Maps;
+using Plugin.Geolocator;
+using Xamarin.Forms;
 
 namespace HowlOut
 {

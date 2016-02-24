@@ -76,14 +76,6 @@
     <MtouchProfiling>true</MtouchProfiling>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Plugin.Geolocator, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\Xamarin.iOS10\Plugin.Geolocator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Plugin.Geolocator.Abstractions, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\Xamarin.iOS10\Plugin.Geolocator.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
@@ -128,6 +120,12 @@
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.0.1.6505\lib\Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
     </Reference>
+    <Reference Include="Plugin.Geolocator, Version=3.0.4.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\Xamarin.iOS10\Plugin.Geolocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Geolocator.Abstractions, Version=3.0.4.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\Xamarin.iOS10\Plugin.Geolocator.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HowlOut\HowlOut.csproj">
@@ -153,6 +151,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Renderers\LoginPageRenderer.cs" />
+    <Compile Include="Renderers\ExtMapRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">
