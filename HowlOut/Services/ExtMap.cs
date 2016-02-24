@@ -37,13 +37,8 @@ namespace HowlOut
 
 		public void OnTap(Position coordinate)
 		{
-			System.Diagnostics.Debug.WriteLine ("Tap: 3");
 			tapPosition = coordinate;
-			System.Diagnostics.Debug.WriteLine ("Tap: " + tapPosition.Latitude + " , " + tapPosition.Longitude);
 			OnTap(new MapTapEventArgs { Position = coordinate });
-			System.Diagnostics.Debug.WriteLine ("Tap: 1");
-
-
 		}
 
 		protected virtual void OnTap(MapTapEventArgs e)
@@ -52,7 +47,6 @@ namespace HowlOut
 
 			if (handler != null)
 				handler(this, e);
-			System.Diagnostics.Debug.WriteLine ("Tap: 2");
 		}
 	}
 
@@ -65,9 +59,6 @@ namespace HowlOut
 
 		public MapTapEventArgs()
 		{
-			
-
-			System.Diagnostics.Debug.WriteLine ("Tap: 4");
 		}
 	}
 }

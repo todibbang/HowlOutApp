@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Plugin.Geolocator;
+using Xamarin.Forms.Maps;
 
 namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
-		Event newEvent = new Event();
+		public Event newEvent = new Event();
+		public Button locationButton = new Button();
 
 		public CreateEvent ()
 		{
 			InitializeComponent ();
 
 			newEvent.OwnerId = App.StoredUserFacebookId;
+
+			locationButtonPlace.Children.Add(locationButton);
 
 			Dictionary<string, int> agePicker = new Dictionary<string, int> { };
 			for (int i = 18; i < 100; i++) agePicker.Add ("" + i, i);
@@ -73,6 +77,11 @@ namespace HowlOut
 				}
 			};
 
+			locationButton.Clicked += (sender, e) =>
+			{
+				goToMapView();
+			};
+
 			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
 			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport); };
 			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur); };
@@ -84,7 +93,7 @@ namespace HowlOut
 
 			getCurrentPosition ();
 		}
-
+			
 		private async void LaunchEvent(Event eventToCreate)
 		{
 			DataManager dataManager = new DataManager();
@@ -110,6 +119,16 @@ namespace HowlOut
 				newEvent.EventTypes.Remove (typeButton.Text.ToString ());
 			}
 			return typeButton;
+		}
+
+		public async void goToMapView()
+		{
+			Position position = new Position (newEvent.Latitude, newEvent.Longitude);
+			if (position.Latitude != 0) {
+				MapView mapView = new MapView (position);
+				mapView.createEventView = this;
+				App.coreView.setContentView (mapView, 0);
+			}
 		}
 
 		public async void getCurrentPosition()
