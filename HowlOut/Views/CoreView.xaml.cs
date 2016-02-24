@@ -31,7 +31,6 @@ namespace HowlOut
 
 		public async void setContentView (ContentView view, int floatingButton)
 		{
-
 			await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 
 			contentViews.Add (view);

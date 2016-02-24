@@ -42,6 +42,9 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine ("STORED USER FACEBOOK ID");
 			System.Diagnostics.Debug.WriteLine (StoredUserFacebookId);
             
+			UtilityManager util = new UtilityManager ();
+			util.updateLastKnownPosition ();
+
             if (!App.IsLoggedIn)
             {
 				//MainPage = coreView;

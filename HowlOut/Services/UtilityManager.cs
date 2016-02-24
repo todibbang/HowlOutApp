@@ -8,43 +8,44 @@ namespace HowlOut
 {
 	public class UtilityManager
 	{
+		public static Position lastKnownPosition = new Position();
+
 		public UtilityManager ()
 		{
 		}
 
-
-
-		public async Task getCurrentUserPosition(Position pos)
+		public async void updateLastKnownPosition()
 		{
 			var locator = CrossGeolocator.Current;
 			locator.DesiredAccuracy = 50;
-
 			var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
-
-			pos = new Position (position.Latitude, position.Longitude);
-
-
+			lastKnownPosition = new Position (position.Latitude, position.Longitude);
+			System.Diagnostics.Debug.WriteLine ("Last Known Position: " + lastKnownPosition.Latitude + "" + lastKnownPosition.Longitude);
 		}
 
-		public async void setMapForEvent(Event eve, ExtMap map, StackLayout mapLayout)
+		public Position getCurrentUserPosition()
 		{
-			System.Diagnostics.Debug.WriteLine ("testPhase: " + eve.Latitude + ", " + eve.Longitude);
+			return lastKnownPosition;
+		}
 
+		public async void setMapForEvent(Position pos, ExtMap map, StackLayout mapLayout)
+		{
 			map.MoveToRegion (
 				MapSpan.FromCenterAndRadius (
-					new Position (eve.Latitude, eve.Longitude), Distance.FromKilometers (0.5)));
+					new Position (pos.Latitude, pos.Longitude), Distance.FromKilometers (0.5)));
+			mapLayout.Children.Add(map);
+		}
 
-
+		public async void setPin(Position pos, ExtMap map, String label, String address)
+		{
 			var pin = new Pin
 			{
 				Type = PinType.Place,
-				Position = new Position(eve.Latitude,eve.Longitude),
-				Label = eve.Title,
-				Address = eve.PositionName,
+				Position = new Position(pos.Latitude,pos.Longitude),
+				Label = label,
+				Address = address,
 			};
-
 			map.Pins.Add (pin);
-			mapLayout.Children.Add(map);
 		}
 
 		public double distance(double lat1, double lon1, double lat2, double lon2) {

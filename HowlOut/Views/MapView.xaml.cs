@@ -11,20 +11,28 @@ namespace HowlOut
 		public Geocoder getAddressFromPosition = new Geocoder ();
 		public String tappedAddress = "";
 		public CreateEvent createEventView;
+		UtilityManager utilityManager = new UtilityManager ();
+
+		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
+		Button selectButton = new Button ();
+		Entry searchEntry = new Entry ();
 
 		public MapView (Position position)
 		{
 			InitializeComponent ();
-			ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
-			map.MoveToRegion (MapSpan.FromCenterAndRadius (new Position (position.Latitude, position.Longitude), Distance.FromKilometers (20)));
-			mapLayout.Children.Add(map);
-			map.Tapped += (sender, e) => 
-			{
+			mapLayout.VerticalOptions = LayoutOptions.FillAndExpand;
+			utilityManager.setMapForEvent(position, map, mapLayout);
+			selectButton.Text = "selectButton";
+			selectButton.BackgroundColor = Color.White;
+			selectLayout.Children.Add (selectButton);
+			searchEntry.Text = "searchEntry";
+			searchLayout.Children.Add (searchEntry);
+
+			map.Tapped += (sender, e) => {
 				getResults(map.tapPosition, map);
 			};
 
-			selectButton.Clicked += (sender, e) => 
-			{
+			selectButton.Clicked += (sender, e) => {
 				App.coreView.setContentView (createEventView, 0);
 			};
 		}
@@ -32,44 +40,19 @@ namespace HowlOut
 		public MapView (Event eve)
 		{
 			InitializeComponent ();
-			ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
-
-			UtilityManager utilityManager = new UtilityManager ();
-			utilityManager.setMapForEvent (eve, map, mapLayout);
-
-
-
-			map.Tapped += (sender, e) => 
-			{
-				
-				getResults(map.tapPosition, map);
-
-
-			};
-
+			utilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
+			utilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.PositionName);
 		}
 
 		public async void getResults(Position position, ExtMap map)
 		{
 			tappedAddress="";
-
 			var possibleAddresses = await getAddressFromPosition.GetAddressesForPositionAsync (position);
-			foreach (var address in possibleAddresses) {
-				
-				tappedAddress += address;
-			}
+			foreach (var address in possibleAddresses) { tappedAddress += address; }
 			tappedAddress = Regex.Replace(tappedAddress, @"\r\n?|\n", " ");
 
-
 			map.Pins.Clear();
-			var pin = new Pin
-			{
-				Type = PinType.Place,
-				Position = new Position(map.tapPosition.Latitude, map.tapPosition.Longitude),
-				Label = tappedAddress + "",
-				Address = tappedAddress + "",
-			};
-			map.Pins.Add (pin);
+			utilityManager.setPin (new Position (map.tapPosition.Latitude, map.tapPosition.Longitude), map, tappedAddress, tappedAddress);
 
 			if (createEventView != null) {
 				createEventView.newEvent.Latitude = map.tapPosition.Latitude;
@@ -77,6 +60,7 @@ namespace HowlOut
 				createEventView.newEvent.PositionName = tappedAddress;
 				createEventView.locationButton.Text = tappedAddress;
 			}
+			searchEntry.Text = tappedAddress;
 		}
 	}
 }

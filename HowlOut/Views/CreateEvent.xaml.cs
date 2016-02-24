@@ -11,13 +11,16 @@ namespace HowlOut
 	{
 		public Event newEvent = new Event();
 		public Button locationButton = new Button();
+		UtilityManager utilityManager = new UtilityManager ();
 
 		public CreateEvent ()
 		{
 			InitializeComponent ();
 
 			newEvent.OwnerId = App.StoredUserFacebookId;
-
+			locationButton.WidthRequest = 200;
+			locationButton.HeightRequest = 40;
+			locationButton.Text = "asdfhapiusdhfpoiæashdfpoiuæasdf";
 			locationButtonPlace.Children.Add(locationButton);
 
 			Dictionary<string, int> agePicker = new Dictionary<string, int> { };
@@ -39,6 +42,10 @@ namespace HowlOut
 			maxSize.SelectedIndex = sizePicker.Count;
 			newEvent.MinSize = sizePicker [minSize.Items[minSize.SelectedIndex]];
 			newEvent.MaxSize = sizePicker [maxSize.Items[maxSize.SelectedIndex]];
+
+			Position pos = utilityManager.getCurrentUserPosition();
+			newEvent.Latitude = pos.Latitude;
+			newEvent.Longitude = pos.Longitude;
 
 
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
@@ -77,9 +84,12 @@ namespace HowlOut
 				}
 			};
 
+
 			locationButton.Clicked += (sender, e) =>
 			{
-				goToMapView();
+				MapView mapView = new MapView (utilityManager.getCurrentUserPosition());
+				mapView.createEventView = this;
+				App.coreView.setContentView (mapView, 0);
 			};
 
 			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
@@ -90,8 +100,6 @@ namespace HowlOut
 			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe); };
 			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
-
-			getCurrentPosition ();
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)
@@ -123,23 +131,7 @@ namespace HowlOut
 
 		public async void goToMapView()
 		{
-			Position position = new Position (newEvent.Latitude, newEvent.Longitude);
-			if (position.Latitude != 0) {
-				MapView mapView = new MapView (position);
-				mapView.createEventView = this;
-				App.coreView.setContentView (mapView, 0);
-			}
-		}
 
-		public async void getCurrentPosition()
-		{
-			var locator = CrossGeolocator.Current;
-			locator.DesiredAccuracy = 50;
-
-			var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
-
-			newEvent.Latitude = position.Latitude;
-			newEvent.Longitude = position.Longitude;
 		}
 	}
 }
