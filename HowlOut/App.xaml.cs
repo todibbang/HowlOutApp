@@ -67,9 +67,6 @@ namespace HowlOut
 			DependencyService.Get<ISaveAndLoad> ().SaveText ("userFacebookId", UserFacebookId);
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad> ().LoadText ("userFacebookId");
-
-            Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
-            await dataManager.CreateProfile(profile);
         }
 			
 
@@ -130,7 +127,8 @@ namespace HowlOut
 
             await storeToken();
             
-            
+			Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
+			await dataManager.CreateProfile(profile);
 
 			coreView = new CoreView(new SearchEvent());
             MainPage = coreView;

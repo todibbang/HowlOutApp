@@ -96,7 +96,7 @@ namespace HowlOut
 			//Other
 			eventTitle.Text = eve.Title;
 			eventDescription.Text = eve.Description;
-			eventAttending.Text = (eve.AttendingIDs.Count + 1) + "/" + eve.MaxSize;
+			eventAttending.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
 
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;

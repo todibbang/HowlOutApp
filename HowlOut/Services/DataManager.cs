@@ -202,7 +202,7 @@ namespace HowlOut
                 eventsIdString += "eventTypesId=" + eventsIdString[i] + "&";
             }
 
-            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/SearchEvent" + eventsIdString + "profileId=" + profile.FaceBookID + 
+			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/SearchEvent" + eventsIdString + "profileId=" + profile.ProfileId + 
                 "&age=" + profile.Age + "&userLat="+userLat + "&userLong=" + userLong + "&maxDistance=" + maxDistance);
 
             try

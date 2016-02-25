@@ -34,8 +34,10 @@ namespace HowlOut.Android.CustomRenderers
 
 			base.OnElementChanged(e);
 
-			if (Control != null)
-				((MapView)Control).GetMapAsync(this);
+			if (Control != null) {
+				//((MapView)Control).GetMapAsync(this);
+			}
+
 		}
 
 		private void googleMap_MapClick(object sender, GoogleMap.MapClickEventArgs e)

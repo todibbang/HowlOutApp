@@ -12,11 +12,11 @@ namespace HowlOut
 		public SearchEventTemplate ()
 		{
 			InitializeComponent ();
-			Event eve = this.BindingContext;
-			Position position = util.getCurrentUserPosition();
+			//Event eve = this.BindingContext;
+			//Position position = util.getCurrentUserPosition();
 
-			time.Text = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
-			distance.Text = "" + util.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude);
+			//time.Text = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
+			//distance.Text = "" + util.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude);
 
 		}
 	}

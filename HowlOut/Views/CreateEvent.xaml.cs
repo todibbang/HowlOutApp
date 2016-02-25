@@ -119,12 +119,12 @@ namespace HowlOut
 				if (newEvent.EventTypes.Count < 3) {
 					typeButton.BackgroundColor = Color.FromHex ("00E0A0");
 					typeButton.TextColor = Color.White;
-					newEvent.EventTypes.Add (typeButton.Text.ToString ());
+					//newEvent.EventTypes.Add (typeButton.Text.ToString ());
 				}
 			} else {
 				typeButton.BackgroundColor = Color.White;
 				typeButton.TextColor = Color.FromHex ("00E0A0");
-				newEvent.EventTypes.Remove (typeButton.Text.ToString ());
+				//newEvent.EventTypes.Remove (typeButton.Text.ToString ());
 			}
 			return typeButton;
 		}
