@@ -12,6 +12,8 @@ namespace HowlOut
 		public SearchEventTemplate ()
 		{
 			InitializeComponent ();
+
+
 			//Event eve = this.BindingContext;
 			//Position position = util.getCurrentUserPosition();
 

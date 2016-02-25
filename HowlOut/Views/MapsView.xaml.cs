@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace HowlOut
 {
-	public partial class MapView : ContentView
+	public partial class MapsView : ContentView
 	{
 		public Geocoder getAddressFromPosition = new Geocoder ();
 		public String tappedAddress = "";
@@ -17,7 +17,7 @@ namespace HowlOut
 		Button selectButton = new Button ();
 		Entry searchEntry = new Entry ();
 
-		public MapView (Position position)
+		public MapsView (Position position)
 		{
 			InitializeComponent ();
 			mapLayout.VerticalOptions = LayoutOptions.FillAndExpand;
@@ -37,7 +37,7 @@ namespace HowlOut
 			};
 		}
 
-		public MapView (Event eve)
+		public MapsView (Event eve)
 		{
 			InitializeComponent ();
 			utilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);

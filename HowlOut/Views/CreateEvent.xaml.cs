@@ -87,7 +87,7 @@ namespace HowlOut
 
 			locationButton.Clicked += (sender, e) =>
 			{
-				MapView mapView = new MapView (utilityManager.getCurrentUserPosition());
+				MapsView mapView = new MapsView (utilityManager.getCurrentUserPosition());
 				mapView.createEventView = this;
 				App.coreView.setContentView (mapView, 0);
 			};

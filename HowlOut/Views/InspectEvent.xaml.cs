@@ -63,7 +63,7 @@ namespace HowlOut
 			};
 
 			mapButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new MapView(eve), 0);
+				App.coreView.setContentView(new MapsView(eve), 0);
 			};
 		}
 

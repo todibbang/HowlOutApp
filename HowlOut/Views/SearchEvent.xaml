@@ -13,7 +13,7 @@
 					<ListView.ItemTemplate>
 				      <DataTemplate>
 				        <ViewCell>
-						  <local:SearchEventTemplate  /> 
+						  <local:SearchEventTemplate/> 
 						</ViewCell>
 				      </DataTemplate>
 				    </ListView.ItemTemplate>
