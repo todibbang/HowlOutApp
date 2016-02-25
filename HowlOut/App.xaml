@@ -102,7 +102,7 @@
 
 			<Style x:Key="DistanceStyle" TargetType="Label">
 				<Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
-				<Setter Property="Text" Value="{Binding Position}"/>
+				<Setter Property="Text" Value="{Binding Distance}"/>
 			</Style>
 
 			<Style x:Key="DescriptionStyle" TargetType="Label">
