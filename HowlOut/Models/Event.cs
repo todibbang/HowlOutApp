@@ -12,14 +12,16 @@ namespace HowlOut
 		public string Description {get; set;}
 		public string OwnerId {get; set;}
 
-		public List <string> EventTypes {get; set;}
+        //public List <string> EventTypes {get; set;}
 
-		public double Latitude {get; set;}
+        public List<EventType> EventTypes { get; set; }
+
+        public double Latitude {get; set;}
 		public double Longitude {get; set;}
 		public string PositionName {get; set;}
 
-		public List <string> AttendingIDs {get; set;}
-		public List <string> FollowerIDs {get; set;}
+		public List <Profile> Attendees {get; set;}
+		public List <Profile> Followers {get; set;}
         
 		public DateTime StartDate {get; set;}
 		public DateTime EndDate {get; set;}
@@ -45,9 +47,9 @@ namespace HowlOut
 
 		public Event ()
 		{
-			EventTypes = new List<string> ();
-			AttendingIDs = new List<string> ();
-			FollowerIDs = new List<string> ();
+			EventTypes = new List<EventType> ();
+			Attendees = new List<Profile> ();
+			Followers = new List<Profile> ();
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace HowlOut
 {
     public class DataManager
     {
-        HttpClient httpClient;
+        private HttpClient httpClient;
 
         public DataManager ()
         {
@@ -48,9 +48,9 @@ namespace HowlOut
             return events;
         }
 
-        public async Task<List<Event>> GetEventsWithOwnerId()
+        public async Task<ObservableCollection<Event>> GetEventsWithOwnerId()
         {
-            List<Event> events = new List<Event>();
+            ObservableCollection<Event> events = new ObservableCollection<Event>();
 
             var uri = new Uri("https://howlout.gear.host/api/EventsAPI/Owner/" + App.StoredUserFacebookId);
 
@@ -60,7 +60,7 @@ namespace HowlOut
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    events = JsonConvert.DeserializeObject<List<Event>>(content);
+                    events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
                 }
             }
             catch (Exception ex)
@@ -145,6 +145,32 @@ namespace HowlOut
             return false;
         }
 
+        public async Task<bool> CreateProfile(Profile profile)
+        {
+            var uri = new Uri("https://howlout.gear.host/api/ProfilesAPI");
+
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("Trying");
+                var json = JsonConvert.SerializeObject(profile);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    System.Diagnostics.Debug.WriteLine("Success");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Failing");
+                System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+            }
+
+            return false;
+        }
+
         public async Task<bool> DeleteEvent(string eventId)
         {
             var uri = new Uri("https://howlout.gear.host/api/EventsAPI"+eventId);
@@ -152,6 +178,125 @@ namespace HowlOut
             try
             {
                 var response = await httpClient.DeleteAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+            }
+
+            return false;
+        }
+
+        public async Task<ObservableCollection<Event>> SearchEvents(List<int> eventTypesId, Profile profile, double userLat, double userLong, double maxDistance)
+        {
+            ObservableCollection<Event> events = new ObservableCollection<Event>();
+
+            var eventsIdString = "";
+            for(int i = 0; i < eventTypesId.Count; i++)
+            {
+                eventsIdString += "eventTypesId=" + eventsIdString[i] + "&";
+            }
+
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/SearchEvent" + eventsIdString + "profileId=" + profile.FaceBookID + 
+                "&age=" + profile.Age + "&userLat="+userLat + "&userLong=" + userLong + "&maxDistance=" + maxDistance);
+
+            try
+            {
+                var response = await httpClient.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+            }
+
+            return events;
+        }
+
+        public async Task<bool> FollowEvent(string eventId, string profileId)
+        {
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/FollowEvent/" + eventId + "/" + profileId);
+
+            try
+            {
+                var content = new StringContent("");
+                var response = await httpClient.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> UnfollowEvent(string eventId, string profileId)
+        {
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/UnfollowEvent/" + eventId + "/" + profileId);
+
+            try
+            {
+                var content = new StringContent("");
+                var response = await httpClient.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> AttendEvent(string eventId, string profileId)
+        {
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/AttendEvent/" + eventId + "/" + profileId);
+
+            try
+            {
+                var content = new StringContent("");
+                var response = await httpClient.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> UnattendEvent(string eventId, string profileId)
+        {
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/UnattendEvent/" + eventId + "/" + profileId);
+
+            try
+            {
+                var content = new StringContent("");
+                var response = await httpClient.PutAsync(uri, content);
 
                 if (response.IsSuccessStatusCode)
                 {

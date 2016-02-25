@@ -10,6 +10,7 @@ namespace HowlOut
 	public partial class App : Application
 	{
 		public static CoreView coreView;
+        private DataManager dataManager;
 
         public interface ISaveAndLoad
         {
@@ -23,6 +24,7 @@ namespace HowlOut
         static string _Token;
 		public static string StoredUserFacebookId;
 		static string _UserFacebookId;
+        static string _userFacebookName;
 
         public App ()
 		{
@@ -30,7 +32,7 @@ namespace HowlOut
 
             InitializeComponent();
 
-
+            dataManager = new DataManager();
             //Eventsfired from the LoginPage to trigger actions here
             LoginPage.LoginSucceeded += LoginPage_LoginSucceeded;
             LoginPage.LoginCancelled += LoginPage_LoginCancelled;
@@ -65,6 +67,9 @@ namespace HowlOut
 			DependencyService.Get<ISaveAndLoad> ().SaveText ("userFacebookId", UserFacebookId);
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad> ().LoadText ("userFacebookId");
+
+            Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
+            await dataManager.CreateProfile(profile);
         }
 			
 
@@ -107,6 +112,13 @@ namespace HowlOut
 
 		}
 
+        public static void SetUserFacebookName(string userFacebookName)
+        {
+            //gets Actual Token, fired from the LoginPageRenderer
+            _userFacebookName = userFacebookName;
+
+        }
+
         private void LoginPage_LoginCancelled(object sender, EventArgs e)
         {
             //if login cancelled, user will be redirected back to the sign-in page
@@ -115,7 +127,11 @@ namespace HowlOut
 
         private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
         {
+
             await storeToken();
+            
+            
+
 			coreView = new CoreView(new SearchEvent());
             MainPage = coreView;
         }

@@ -38,8 +38,9 @@ namespace HowlOut.Droid.Renderers
 					var request = new OAuth2Request ("GET", new Uri ("https://graph.facebook.com/me"), null, eventArgs.Account);
 
 					var obj = request.GetResponseAsync().Result.GetResponseText();
-					var facebookUserObj = JsonConvert.DeserializeObject<FacebookUserObject>(obj).id;
-					App.SetUserFacebookId(facebookUserObj);
+					var facebookUserObj = JsonConvert.DeserializeObject<FacebookUserObject>(obj);
+					App.SetUserFacebookId(facebookUserObj.id);
+                    App.SetUserFacebookName(facebookUserObj.name);
 
 					HowlOut.LoginPage.LoginSuccess();
 
