@@ -78,8 +78,9 @@ namespace HowlOut
 
 			launchButton.Clicked += (sender, e) =>
 			{
-				if(newEvent.Title != null && newEvent.Description != null && newEvent.EventTypes.Count > 0) {
-					App.coreView.setContentView(new InspectEvent(newEvent, 2), 0);
+				if(newEvent.Title != null && newEvent.Description != null) {
+					//App.coreView.setContentView(new InspectEvent(newEvent, 2), 0);
+					App.coreView.setContentView(new ManageEvent(), 2);
 					LaunchEvent(newEvent); 
 				}
 			};
@@ -104,11 +105,17 @@ namespace HowlOut
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
+			EventType eventType1 = new EventType{ EventTypeId=2, Type="Outdoor"};
+			List<EventType> EventTypes = new List<EventType>();
+			EventTypes.Add (eventType1);
+
 			DataManager dataManager = new DataManager();
-			EventDBO newEventAsDBO = new EventDBO{OwnerId = newEvent.OwnerId, Title = newEvent.Title, 
-				Description = newEvent.Description,
-				StartDate = newEvent.StartDate, EndDate = newEvent.EndDate, MinAge = newEvent.MinAge,
-				MaxAge = newEvent.MaxAge, MinSize = newEvent.MinSize, MaxSize = newEvent.MaxSize};
+			EventDBO newEventAsDBO = new EventDBO{OwnerId = eventToCreate.OwnerId, Title = eventToCreate.Title, 
+				Description = eventToCreate.Description,
+				StartDate = eventToCreate.StartDate, EndDate = eventToCreate.EndDate, MinAge = eventToCreate.MinAge,
+				MaxAge = eventToCreate.MaxAge, MinSize = eventToCreate.MinSize, MaxSize = eventToCreate.MaxSize, 
+				Public = true, Latitude = eventToCreate.Latitude, Longitude = eventToCreate.Longitude, 
+				EventTypes = EventTypes};
 			//await dataManager.CreateEvent (eventToCreate);
 			await dataManager.CreateEvent (newEventAsDBO);
 		}
