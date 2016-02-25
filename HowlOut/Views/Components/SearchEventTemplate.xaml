@@ -35,9 +35,9 @@
 			<StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" VerticalOptions="CenterAndExpand" Spacing="0" Padding="0">
 				<Label Style="{DynamicResource TitleStyle}" FontSize="20" HorizontalOptions="Center"/>
 				<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="0">
-					<Label Style="{DynamicResource DistanceStyle}" FontSize="14" HorizontalOptions="Center" ></Label>
-					<Label Style="{DynamicResource DistanceStyle}" Text="Time - Place" FontSize="14" HorizontalOptions="Center" ></Label>
-					<Label Style="{DynamicResource TimeStyle}" FontSize="14" HorizontalOptions="Center" ></Label>
+					<Label Style="{DynamicResource DistanceStyle}" FontSize="14" HorizontalOptions="Center" x:Name="distance"></Label>
+					<Label Style="{DynamicResource DistanceStyle}" Text=" - " FontSize="14" HorizontalOptions="Center" ></Label>
+					<Label Style="{DynamicResource TimeStyle}" FontSize="14" HorizontalOptions="Center" x:Name="time" ></Label>
 				</StackLayout>
 			</StackLayout>
 

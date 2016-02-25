@@ -20,7 +20,7 @@ namespace HowlOut
 			newEvent.OwnerId = App.StoredUserFacebookId;
 			locationButton.WidthRequest = 200;
 			locationButton.HeightRequest = 40;
-			locationButton.Text = "asdfhapiusdhfpoiæashdfpoiuæasdf";
+			locationButton.Text = "Location";
 			locationButtonPlace.Children.Add(locationButton);
 
 			Dictionary<string, int> agePicker = new Dictionary<string, int> { };

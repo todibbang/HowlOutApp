@@ -49,7 +49,8 @@ namespace HowlOut
 			tappedAddress="";
 			var possibleAddresses = await getAddressFromPosition.GetAddressesForPositionAsync (position);
 			foreach (var address in possibleAddresses) { tappedAddress += address; }
-			tappedAddress = Regex.Replace(tappedAddress, @"\r\n?|\n", " ");
+			tappedAddress = Regex.Replace(tappedAddress, @"\r\n?|\n", ",");
+
 
 			map.Pins.Clear();
 			utilityManager.setPin (new Position (map.tapPosition.Latitude, map.tapPosition.Longitude), map, tappedAddress, tappedAddress);

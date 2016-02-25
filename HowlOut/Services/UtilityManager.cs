@@ -48,7 +48,7 @@ namespace HowlOut
 			map.Pins.Add (pin);
 		}
 
-		public double distance(double lat1, double lon1, double lat2, double lon2) {
+		public string distance(double lat1, double lon1, double lat2, double lon2) {
 			double theta = lon1 - lon2;
 			double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
 			dist = Math.Acos(dist);
@@ -59,7 +59,17 @@ namespace HowlOut
 			//} else if (unit == 'N') {
 			//	dist = dist * 0.8684;
 			//}
-			return (dist);
+			string distance = "";
+			if (dist < 1)
+				distance = "less than 1 km away";
+			else {
+				int Dist = (int)dist;
+				distance = Dist + " km away";
+			}
+					
+
+
+			return (distance);
 		}
 
 		private double deg2rad(double deg) {
@@ -68,6 +78,23 @@ namespace HowlOut
 
 		private double rad2deg(double rad) {
 			return (rad / Math.PI * 180.0);
+		}
+
+		public string getTime(DateTime time)
+		{
+			string hour = time.Hour.ToString();
+			System.Diagnostics.Debug.WriteLine ("hour.Length: " + hour.Length);
+			if (hour.Length == 1) {
+				hour = "0" + time.Hour.ToString ();
+				System.Diagnostics.Debug.WriteLine ("hour: " + hour);
+			}
+
+			string minute = time.Minute.ToString();
+			if(minute.Length == 1) minute = "0" + time.Minute.ToString();
+
+			string newTime = hour + ":" + minute;
+
+			return newTime;
 		}
 	}
 }

@@ -46,9 +46,8 @@
 									<Button x:Name="mapButton" BackgroundColor="#00000000" VerticalOptions="FillAndExpand"/>
 								</StackLayout>
 								<StackLayout Grid.Row="1" Padding="0,20,0,0">
-									<Label Style="{DynamicResource DistanceStyle}" x:Name="addressLine"/>
-									<Label Style="{DynamicResource DistanceStyle}" x:Name="RoughDistance" Text="ca. 3 km væk"/>
-									<StackLayout Padding="0,20,0,20"> <local:Line/> </StackLayout>
+									<StackLayout x:Name="addressLayout" ></StackLayout>
+									<StackLayout Padding="0,10,0,10"> <local:Line/> </StackLayout>
 									<StackLayout Orientation="Horizontal">
 										<Label Style="{DynamicResource DistanceStyle}" x:Name="StartTime"/>	
 									</StackLayout>

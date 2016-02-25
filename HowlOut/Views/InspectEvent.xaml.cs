@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Xamarin.Forms.Maps;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace HowlOut
 {
@@ -11,14 +12,15 @@ namespace HowlOut
 	{
 		ObservableCollection<Comment> comments = new ObservableCollection<Comment>();
 		bool mapInitialized = false;
-		UtilityManager utilityManager = new UtilityManager();
+		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
+
+		UtilityManager util = new UtilityManager();
+		DataManager dataManager = new DataManager();
 
 		public InspectEvent (Event eve, int inspectType)
 		{
 			InitializeComponent ();
 			setInfo (eve);
-
-			ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
 
 			CommentList.ItemsSource = comments;
 			comments.Add (new Comment {
@@ -33,6 +35,7 @@ namespace HowlOut
 				searchSpecific.IsVisible = false;
 				manageSpecific.IsVisible = true;
 			}
+
 			detailsButton.Clicked += (sender, e) =>
 			{
 				if(detailedInfo.IsVisible == false) {
@@ -45,8 +48,8 @@ namespace HowlOut
 
 				if(mapInitialized != true) {
 					mapInitialized = true;
-					utilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
-					utilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.PositionName);
+					util.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
+					util.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.PositionName);
 				}
 			};
 
@@ -66,38 +69,37 @@ namespace HowlOut
 
 		public async void setInfo (Event eve)
 		{
-			quickInfo.IsVisible = true;
-			detailedInfo.IsVisible = false;
-
-			DataManager dataManager = new DataManager();
-			UtilityManager utilityManager = new UtilityManager();
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(eve.OwnerId);
 			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
+			Position position = util.getCurrentUserPosition();
 
-			eventTitle.Text = eve.Title;
-
+			// Time
 			DateTime today = DateTime.Now.ToLocalTime();
 			System.Diagnostics.Debug.WriteLine ("- " + (eve.StartDate - today) + " : " + (today - eve.StartDate));
+			quickTime.Text = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
+			StartTime.Text = "" + eve.StartDate.DayOfWeek + " the " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM").ToLower();
+			EndTime.Text = "From " + util.getTime(eve.StartDate) + " till " + util.getTime(eve.EndDate);
 
-			quickTime.Text = "på " + eve.StartDate.DayOfWeek + " kl. " + eve.StartDate.TimeOfDay.Hours;
+			//Place
+			string [] addressList = new string [3];
+			addressList = Regex.Split(eve.PositionName, ",");
+			for (int i = 0; i < addressList.Length; i++) { 
+				Label label = new Label (); 
+				label.Text = addressList [i];
+				addressLayout.Children.Add(label);
+			}
+			quickDistance.Text = util.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude);
+			Label labelD = new Label ();
+			labelD.Text = quickDistance.Text;
+			addressLayout.Children.Add(labelD);
 
-			addressLine.Text = eve.PositionName;
-
-
+			//Other
+			eventTitle.Text = eve.Title;
 			eventDescription.Text = eve.Description;
-
 			eventAttending.Text = (eve.AttendingIDs.Count + 1) + "/" + eve.MaxSize;
-			eventHolderLikes.Text = "22";
-			eventLoyaltyRaiting.Text = "22";
 
-			StartTime.Text = "Starts " + eve.StartDate.DayOfWeek + ", " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMM") + " at " + eve.StartDate.TimeOfDay;
-			EndTime.Text = "Ends " + eve.EndDate.DayOfWeek + ", " + eve.EndDate.Day + " " + eve.EndDate.ToString("MMM") + " at " + eve.EndDate.TimeOfDay;
-
-			Position position = utilityManager.getCurrentUserPosition();
-
-			System.Diagnostics.Debug.WriteLine ("Position received: " + position.Latitude + ", " + position.Longitude + ", " + eve.Latitude + ", " + eve.Longitude);
-
-			quickDistance.Text = "" + utilityManager.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude) + " km away";
+			quickInfo.IsVisible = true;
+			detailedInfo.IsVisible = false;
 		}
 	}
 }
