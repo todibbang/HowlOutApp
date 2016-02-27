@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -25,7 +26,7 @@ namespace HowlOut
 			CreateButton.Clicked += (sender, e) =>
 			{
 				if(viewStyle == 1) App.coreView.setContentView(new FilterSearch(), 0);
-				if(viewStyle == 2) App.coreView.setContentView(new CreateEvent(), 0);
+				if(viewStyle == 2) App.coreView.setContentView(new CreateEvent(new Event(), true), 0);
 			};
 		}
 
@@ -60,7 +61,16 @@ namespace HowlOut
 			}
 		}
 
+		public async Task displayAlertMessage (string title, string message, string buttonText)
+		{
+			await DisplayAlert (title, message, buttonText);
+		}
 
+		public async Task<bool> displayConfirmMessage (string title, string message, string confirm, string decline)
+		{
+			var answer = await DisplayAlert (title, message, confirm, decline);
+			return answer;
+		}
 
 	}
 }

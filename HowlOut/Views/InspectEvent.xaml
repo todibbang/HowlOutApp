@@ -175,6 +175,16 @@
 
 					<!-- inspectManage Specific -->
 					<StackLayout x:Name="manageSpecific">
+
+						<Grid RowSpacing="0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Button Grid.Column="0" Text="Invite" Style="{DynamicResource ButtonStyle}" x:Name="inviteButton"></Button>
+							<Button Grid.Column="1" Text="Leave" Style="{DynamicResource ButtonStyle}" x:Name="editLeaveButton"></Button>
+						</Grid>
+
 						<StackLayout Padding="10,20,10,20"> <local:Line/> </StackLayout> 
 						<ListView x:Name="CommentList"
 						  			HasUnevenRows="false"
@@ -197,11 +207,9 @@
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
-							<Button Grid.Column="0" Text="1" Style="{DynamicResource ButtonStyle}" x:Name="sygKnap" BackgroundColor="White"></Button>
-							<Button Grid.Column="1" Text="2" Style="{DynamicResource ButtonStyle}"></Button>
-							<Button Grid.Column="2" Text="3" Style="{DynamicResource ButtonStyle}"></Button>
+							<Button Grid.Column="0" Text="Join" Style="{DynamicResource ButtonStyle}" x:Name="joinButton"></Button>
+							<Button Grid.Column="1" Text="Follow" Style="{DynamicResource ButtonStyle}" x:Name="followButton"></Button>
 						</Grid>
 					</StackLayout>
 

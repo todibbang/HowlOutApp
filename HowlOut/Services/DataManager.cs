@@ -119,21 +119,26 @@ namespace HowlOut
             return false;
         }
 
-		public async Task<bool> CreateEvent(EventDBO eventToCreate)
+		public async Task<Event> CreateEvent(EventDBO eventToCreate)
         {
+			Event eventToRetrieve = new Event ();
 			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/");
 
-            try
+			try
             {
 				System.Diagnostics.Debug.WriteLine("Trying");
                 var json = JsonConvert.SerializeObject(eventToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(uri, content);
 
+				System.Diagnostics.Debug.WriteLine("Success ??? " + response.IsSuccessStatusCode);
+
                 if (response.IsSuccessStatusCode)
                 {
-					System.Diagnostics.Debug.WriteLine("Success");
-					return true;
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
+					System.Diagnostics.Debug.WriteLine("New Event ID: " + eventToRetrieve.EventId);
+					return eventToRetrieve;
                 }
             }
             catch (Exception ex)
@@ -142,7 +147,7 @@ namespace HowlOut
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
 
-            return false;
+            return null;
         }
 
         public async Task<bool> CreateProfile(Profile profile)
@@ -173,7 +178,7 @@ namespace HowlOut
 
         public async Task<bool> DeleteEvent(string eventId)
         {
-            var uri = new Uri("https://howlout.gear.host/api/EventsAPI"+eventId);
+            var uri = new Uri("https://howlout.gear.host/api/EventsAPI/"+eventId);
 
             try
             {
@@ -267,7 +272,7 @@ namespace HowlOut
             return false;
         }
 
-        public async Task<bool> AttendEvent(string eventId, string profileId)
+		public async Task<bool> AttendEvent(string eventId, string profileId)
         {
             var uri = new Uri("https://howlout.gear.host/api/EventsAPI/AttendEvent/" + eventId + "/" + profileId);
 

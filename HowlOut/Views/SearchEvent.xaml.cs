@@ -31,9 +31,7 @@ namespace HowlOut
 		{
 			if(SearchEventList.SelectedItem == null)
 				return;
-
 			var eveForLis = SearchEventList.SelectedItem as EventForLists;
-
 			App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), 0);
 
 		}

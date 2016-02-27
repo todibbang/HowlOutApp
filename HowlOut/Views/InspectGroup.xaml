@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectGroup">
 	<ContentView.Content>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<ScrollView Grid.Row="0" BackgroundColor="White" Orientation="Vertical" VerticalOptions="FillAndExpand">
+				<Grid x:Name="profileGrid">
+				</Grid>
+			</ScrollView>
+		</Grid>
 	</ContentView.Content>
 </ContentView>

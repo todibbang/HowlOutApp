@@ -9,13 +9,17 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
-		public Event newEvent = new Event();
 		public Button locationButton = new Button();
 		UtilityManager utilityManager = new UtilityManager ();
+		DataManager dataManager = new DataManager();
+		public Event newEvent;
 
-		public CreateEvent ()
+		public CreateEvent (Event givenEvent, bool isCreate)
 		{
+			newEvent = givenEvent;
 			InitializeComponent ();
+
+			cancelButton.IsVisible = false;
 
 			newEvent.OwnerId = App.StoredUserFacebookId;
 			locationButton.WidthRequest = 200;
@@ -79,8 +83,6 @@ namespace HowlOut
 			launchButton.Clicked += (sender, e) =>
 			{
 				if(newEvent.Title != null && newEvent.Description != null) {
-					//App.coreView.setContentView(new InspectEvent(newEvent, 2), 0);
-					App.coreView.setContentView(new ManageEvent(), 2);
 					LaunchEvent(newEvent); 
 				}
 			};
@@ -101,6 +103,12 @@ namespace HowlOut
 			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe); };
 			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
+
+			if (isCreate != true) {
+				editEvent ();
+			}
+
+			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)
@@ -108,16 +116,24 @@ namespace HowlOut
 			EventType eventType1 = new EventType{ EventTypeId=2, Type="Outdoor"};
 			List<EventType> EventTypes = new List<EventType>();
 			EventTypes.Add (eventType1);
-
-			DataManager dataManager = new DataManager();
+			if (eventToCreate.PositionName == null) {
+				eventToCreate.PositionName = "Unknown";
+			}
 			EventDBO newEventAsDBO = new EventDBO{OwnerId = eventToCreate.OwnerId, Title = eventToCreate.Title, 
 				Description = eventToCreate.Description,
 				StartDate = eventToCreate.StartDate, EndDate = eventToCreate.EndDate, MinAge = eventToCreate.MinAge,
 				MaxAge = eventToCreate.MaxAge, MinSize = eventToCreate.MinSize, MaxSize = eventToCreate.MaxSize, 
 				Public = true, Latitude = eventToCreate.Latitude, Longitude = eventToCreate.Longitude, 
-				EventTypes = EventTypes};
-			//await dataManager.CreateEvent (eventToCreate);
-			await dataManager.CreateEvent (newEventAsDBO);
+				PositionName = eventToCreate.PositionName, EventTypes = EventTypes};
+
+			Event eventCreated = await dataManager.CreateEvent (newEventAsDBO);
+			eventCreated.Attendees = new List<Profile> ();
+			eventCreated.Followers = new List<Profile> ();
+			if (eventCreated != null) {
+				App.coreView.setContentView (new InspectEvent (eventCreated, 2), 0);
+			} else {
+				App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
+			}
 		}
 
 		private Button typeButtonPressed(Button typeButton)
@@ -136,9 +152,24 @@ namespace HowlOut
 			return typeButton;
 		}
 
-		public async void goToMapView()
+		public void editEvent()
 		{
+			cancelButton.IsVisible = true;
+		}
 
+		public async void CancelTheEvent()
+		{
+			bool confirmDelete = await App.coreView.displayConfirmMessage ("Warning", "You are about to delete this event permanently, would you like to continue", "Yes", "No");
+
+			if (confirmDelete) {
+				bool wasEventDeleted = await dataManager.DeleteEvent (newEvent.EventId);
+				if (wasEventDeleted) {
+					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
+					App.coreView.setContentView (new ManageEvent (), 2);
+				} else {
+					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");
+				}
+			}
 		}
 	}
 }

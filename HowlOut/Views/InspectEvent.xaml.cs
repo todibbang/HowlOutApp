@@ -65,6 +65,21 @@ namespace HowlOut
 			mapButton.Clicked += (sender, e) => {
 				App.coreView.setContentView(new MapsView(eve), 0);
 			};
+
+			if (eve.OwnerId == App.StoredUserFacebookId) {
+				editLeaveButton.Text = "Edit";
+			}
+			editLeaveButton.Clicked += (sender, e) => {
+				if (eve.OwnerId == App.StoredUserFacebookId) {
+					App.coreView.setContentView (new CreateEvent (eve, false), 0);
+				} else {
+					leaveEvent (eve);
+				}
+			};
+
+			joinButton.Clicked += (sender, e) => {
+				joinEvent(eve);
+			};
 		}
 
 		public async void setInfo (Event eve)
@@ -100,6 +115,35 @@ namespace HowlOut
 
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
+		}
+
+		private async void leaveEvent(Event eve)
+		{
+			bool leaveConfirmed = await App.coreView.displayConfirmMessage("Warning", "You are about to leave this event, would you like to continue?", "Yes", "No");
+			if (leaveConfirmed) {
+				bool hasLeft = await dataManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
+				if (hasLeft) {
+					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
+					App.coreView.setContentView (new ManageEvent (), 2);
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Left", "An error happened and you have not yet left the event, try again.", "Ok");
+				}
+			}
+		}
+
+		private async void joinEvent(Event eve)
+		{
+			bool joinConfirmed = await App.coreView.displayConfirmMessage("Joining", "You are about to join this event, would you like to continue?", "Yes", "No");
+			if (joinConfirmed) {
+				bool hasJoined = await dataManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
+				if (hasJoined) {
+					Event eventWhenJoined = await dataManager.GetEventById (eve.EventId);
+					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
+					App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), 0);
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
+				}
+			}
 		}
 	}
 }
