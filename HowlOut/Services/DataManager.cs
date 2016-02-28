@@ -344,7 +344,7 @@ namespace HowlOut
 			return null;
 		}
 
-		public async Task<Event> GetProfileId(string profileId)
+		public async Task<Profile> GetProfileId(string profileId)
 		{
 			Profile profile = new Profile();
 

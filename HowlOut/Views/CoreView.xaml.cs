@@ -96,6 +96,13 @@ namespace HowlOut
 			}
 		}
 
+		protected override bool OnBackButtonPressed()
+		{
+			returnToPreviousView ();
+
+			return true;
+		}
+
 		public async Task displayAlertMessage (string title, string message, string buttonText)
 		{
 			await DisplayAlert (title, message, buttonText);
