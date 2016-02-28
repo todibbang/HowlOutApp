@@ -78,6 +78,7 @@ namespace HowlOut
 				cellGrid.Children.Add(new Label {
 						Text = profiles[i].Name + ", " + profiles[i].Age,
 						TextColor = Color.Black,
+						FontSize = 12,
 						HorizontalTextAlignment = TextAlignment.Center,
 						VerticalOptions = LayoutOptions.CenterAndExpand,
 						HorizontalOptions = LayoutOptions.CenterAndExpand,

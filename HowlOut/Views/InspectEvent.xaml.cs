@@ -24,8 +24,29 @@ namespace HowlOut
 
 			CommentList.ItemsSource = comments;
 			comments.Add (new Comment {
+<<<<<<< Updated upstream
 				//Title = "Rob Finnerty",
 				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb"
+=======
+				Title = "Rob Finnerty",
+				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
+				OwnerId = App.StoredUserFacebookId
+			});
+			comments.Add (new Comment {
+				Title = "Rob Finnerty",
+				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
+				OwnerId = App.StoredUserFacebookId
+			});
+			comments.Add (new Comment {
+				Title = "Rob Finnerty",
+				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
+				OwnerId = App.StoredUserFacebookId
+			});
+			comments.Add (new Comment {
+				Title = "Rob Finnerty",
+				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
+				OwnerId = App.StoredUserFacebookId
+>>>>>>> Stashed changes
 			});
 
 			if (inspectType == 1) {

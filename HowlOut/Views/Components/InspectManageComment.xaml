@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectManageComment"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
 
 		<StackLayout Spacing="0" Padding="0" >
@@ -30,8 +31,8 @@
 							<RowDefinition Height="*"/>
 						</Grid.RowDefinitions>
 
-						<Button Grid.Row="0" Style="{DynamicResource AttendingButtonStyle}" BorderRadius="32" BorderWidth="0" BackgroundColor="#ff00a0e0" ></Button> 
-						<Image Grid.Row="0" Source="{Binding EventHolderPhoto}"/>
+
+						<controls:CircleImage Grid.Row="0" Source="{Binding ProfileImageUri}"/> 
 					</Grid>
 
 					<Label Grid.Column="2" Style="{DynamicResource CommentStyle}" VerticalOptions="Start" HorizontalOptions ="Start"/>

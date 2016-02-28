@@ -112,12 +112,12 @@
 
 			<Style x:Key="CommentStyle" TargetType="Label">
 				<Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
-				<Setter Property="Text" Value="{Binding CommentContent}"/>
+				<Setter Property="Text" Value="{Binding Content}"/>
 			</Style>
 
 			<Style x:Key="CommentTitleStyle" TargetType="Label">
 				<Setter Property="TextColor" Value="{DynamicResource HowlOut}"/>
-				<Setter Property="Text" Value="{Binding CommentTitle}"/>
+				<Setter Property="Text" Value="{Binding Title}"/>
 			</Style>
 
 			<Style x:Key="ListStyle" TargetType="Grid">
