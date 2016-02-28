@@ -344,6 +344,28 @@ namespace HowlOut
 			return null;
 		}
 
+		public async Task<Event> GetProfileId(string profileId)
+		{
+			Profile profile = new Profile();
+
+			var uri = new Uri("https://howlout.gear.host/api/ProfilesAPI/" + profileId);
+
+			try
+			{
+				var response = await httpClient.GetAsync(uri);
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					profile = JsonConvert.DeserializeObject<Profile>(content);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return profile;
+		}
+
 		public async Task updateLists()
 		{
 			await GetAllEvents ();
