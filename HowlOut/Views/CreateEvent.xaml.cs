@@ -92,7 +92,7 @@ namespace HowlOut
 			{
 				MapsView mapView = new MapsView (utilityManager.getCurrentUserPosition());
 				mapView.createEventView = this;
-				App.coreView.setContentView (mapView, 0);
+				App.coreView.setContentView (mapView, "MapsView");
 			};
 
 			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
@@ -130,7 +130,7 @@ namespace HowlOut
 			eventCreated.Attendees = new List<Profile> ();
 			eventCreated.Followers = new List<Profile> ();
 			if (eventCreated != null) {
-				App.coreView.setContentView (new InspectEvent (eventCreated, 2), 0);
+				App.coreView.setContentView (new InspectEvent (eventCreated, 2), "InspectEvent");
 			} else {
 				App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 			}
@@ -165,7 +165,7 @@ namespace HowlOut
 				bool wasEventDeleted = await dataManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
-					App.coreView.setContentView (new ManageEvent (), 2);
+					App.coreView.setContentView (new ManageEvent (), "ManageEvent");
 				} else {
 					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");
 				}

@@ -2,62 +2,97 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
 	public partial class CoreView : ContentPage
 	{
-		private int viewStyle = 0;
-
+		public ObservableCollection<Event> searchEventList;
+		public ObservableCollection<Event> manageEventList;
 
 		public List <ContentView> contentViews = new List<ContentView> ();
+		public List <string> contentViewTypes = new List<string> ();
 
-		public CoreView (ContentView view)
+		public SearchEvent searchEvent;
+		public ManageEvent manageEvent;
+
+		public CoreView ()
 		{
 			InitializeComponent ();
 
-			contentViews.Add (view);
+			System.Diagnostics.Debug.WriteLine ("Test Run: 1");
+
+			searchEventList= new ObservableCollection<Event>();
+			manageEventList= new ObservableCollection<Event>();
+
+			System.Diagnostics.Debug.WriteLine ("Test Run: 2");
+
+			DataManager dataManager = new DataManager ();
+			dataManager.updateLists ();
+			System.Diagnostics.Debug.WriteLine ("Test Run: 3");
+
+			searchEvent = new SearchEvent();
+			manageEvent = new ManageEvent();
+			System.Diagnostics.Debug.WriteLine ("Test Run: 4");
+			contentViews.Add (searchEvent);
+			contentViewTypes.Add ("SearchEvent");
 
 			CreateButton.IsVisible = true;
 			CreateButton.Text = "0";
 
-			mainView.Content = view;
+			mainView.Content = searchEvent;
 
 			CreateButton.Clicked += (sender, e) =>
 			{
-				if(viewStyle == 1) App.coreView.setContentView(new FilterSearch(), 0);
-				if(viewStyle == 2) App.coreView.setContentView(new CreateEvent(new Event(), true), 0);
+				if(contentViewTypes[contentViewTypes.Count-1] == "SearchEvent") {
+					App.coreView.setContentView(new FilterSearch(), "FilterSearch");
+				}
+				if(contentViewTypes[contentViewTypes.Count-1] == "ManageEvent") {
+					App.coreView.setContentView(new CreateEvent(new Event(), true), "CreateEvent"); 
+				}
 			};
 		}
 
-		public async void setContentView (ContentView view, int floatingButton)
+		public async void setContentView (ContentView view, string type)
 		{
 			await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 
-			contentViews.Add (view);
-			await ViewExtensions.ScaleTo(view, 0, 0);
-			mainView.Content = view;
-			await ViewExtensions.ScaleTo(view, 1, 400);
+			CreateButton.IsVisible = false;
 
-			viewStyle = floatingButton;
-
-			if (floatingButton == 0)
-				CreateButton.IsVisible = false;
-			else if (floatingButton == 1) {
+			if (type == "SearchEvent") {
+				view = searchEvent;
 				CreateButton.IsVisible = true;
 				CreateButton.Text = "0";
-			} else {
+			} else if (type == "ManageEvent") {
+				view = manageEvent;
 				CreateButton.IsVisible = true;
 				CreateButton.Text = "+";
 			}
+
+			contentViews.Add (view);
+			contentViewTypes.Add (type);
+
+			await ViewExtensions.ScaleTo(view, 0, 0);
+			mainView.Content = view;
+			await ViewExtensions.ScaleTo(view, 1, 400);
 		}
 
 		public void returnToPreviousView()
 		{
 			if (contentViews.Count != 1) {
+				
 				contentViews.RemoveAt (contentViews.Count - 1);
-				App.coreView.setContentView ((contentViews [contentViews.Count - 1]), 0);
+				contentViewTypes.RemoveAt (contentViewTypes.Count - 1);
+
+				ContentView oldView = contentViews [contentViews.Count - 1];
+				string oldType = contentViewTypes [contentViewTypes.Count - 1];
+
+				App.coreView.setContentView (oldView, oldType);
+
 				contentViews.RemoveAt (contentViews.Count - 1);
+				contentViewTypes.RemoveAt (contentViewTypes.Count - 1);
+
 			}
 		}
 

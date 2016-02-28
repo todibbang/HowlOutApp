@@ -33,7 +33,7 @@ namespace HowlOut
 			};
 
 			selectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (createEventView, 0);
+				App.coreView.setContentView (createEventView, "CreateEvent");
 			};
 		}
 

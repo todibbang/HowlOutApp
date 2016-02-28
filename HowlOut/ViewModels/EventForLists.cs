@@ -32,7 +32,7 @@ namespace HowlOut
 
 			Attendees = eve.Attendees.Count + "/" + eve.MaxSize;
 
-			EventAverageLoyalty = "100%";
+			EventAverageLoyalty = eve.Attendees [0].LoyaltyRating + "";
 			EventHolderLikes = eve.Attendees [0].Likes + "";
 
 		}

@@ -30,25 +30,15 @@ namespace HowlOut
 
 
 
-			if (inspectType == 1) {
-				searchSpecific.IsVisible = true;
-				manageSpecific.IsVisible = false;
-			} else if (inspectType == 2) {
-				searchSpecific.IsVisible = false;
-				manageSpecific.IsVisible = true;
-			}
+			if (inspectType == 1) 					{ searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
+			else if (inspectType == 2) 				{ searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
 
-			detailsButton.Clicked += (sender, e) =>
+			detailsButton.Clicked += (sender, e) => 
 			{
-				if(detailedInfo.IsVisible == false) {
-					detailedInfo.IsVisible = true;
-					quickInfo.IsVisible = false;
-				} else {
-					detailedInfo.IsVisible = false;
-					quickInfo.IsVisible = true;
-				}
+				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false; } 
+				else 								{ detailedInfo.IsVisible = false; quickInfo.IsVisible = true; }
 
-				if(mapInitialized != true) {
+				if(mapInitialized != true) { 
 					mapInitialized = true;
 					util.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
 					util.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.PositionName);
@@ -56,15 +46,15 @@ namespace HowlOut
 			};
 
 			eventHolderButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), 0);
+				App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), "InspectProfile");
 			};
 
 			eventGroupButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectGroup(eve.Attendees), 0);
+				App.coreView.setContentView(new InspectGroup(eve.Attendees), "InspectGroup");
 			};
 
 			mapButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new MapsView(eve), 0);
+				App.coreView.setContentView(new MapsView(eve), "MapsView");
 			};
 
 			if (eve.OwnerId == App.StoredUserFacebookId) {
@@ -72,7 +62,7 @@ namespace HowlOut
 			}
 			editLeaveButton.Clicked += (sender, e) => {
 				if (eve.OwnerId == App.StoredUserFacebookId) {
-					App.coreView.setContentView (new CreateEvent (eve, false), 0);
+					App.coreView.setContentView (new CreateEvent (eve, false), "CreateEvent");
 				} else {
 					leaveEvent (eve);
 				}
@@ -104,6 +94,7 @@ namespace HowlOut
 			EndTime.Text = "From " + util.getTime(eve.StartDate) + " till " + util.getTime(eve.EndDate);
 
 			//Place
+			//ObservableCollection<string> addressList = new ObservableCollection<string>();
 			string [] addressList = new string [3];
 			addressList = Regex.Split(eve.PositionName, ",");
 			for (int i = 0; i < addressList.Length; i++) { 
@@ -132,7 +123,7 @@ namespace HowlOut
 				bool hasLeft = await dataManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasLeft) {
 					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
-					App.coreView.setContentView (new ManageEvent (), 2);
+					App.coreView.setContentView (new ManageEvent (), "ManageEvent");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Left", "An error happened and you have not yet left the event, try again.", "Ok");
 				}
@@ -147,7 +138,7 @@ namespace HowlOut
 				if (hasJoined) {
 					Event eventWhenJoined = await dataManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
-					App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), 0);
+					App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}
@@ -163,7 +154,7 @@ namespace HowlOut
 			});
 			if (newEvent != null) {
 					commentEntry.Text = "";
-					App.coreView.setContentView (new InspectEvent (newEvent, 2), 0);
+					App.coreView.setContentView (new InspectEvent (newEvent, 2), "InspectEvent");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}

@@ -54,8 +54,9 @@ namespace HowlOut
             }
             else
             {
-				coreView = new CoreView(new SearchEvent());
+				coreView = new CoreView();
                 MainPage = coreView;
+				coreView.setContentView (null, "SearchEvent");
             }
 
 		}
@@ -130,8 +131,9 @@ namespace HowlOut
 			Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
 			await dataManager.CreateProfile(profile);
 
-			coreView = new CoreView(new SearchEvent());
-            MainPage = coreView;
+			coreView = new CoreView();
+			MainPage = coreView;
+			coreView.setContentView (null, "SearchEvent");
         }
 
         protected override void OnStart ()

@@ -7,6 +7,8 @@ namespace HowlOut
 {
 	public partial class TopBar : ContentView
 	{
+		DataManager dataManager = new DataManager();
+
 		public TopBar ()
 		{
 			InitializeComponent ();
@@ -26,14 +28,11 @@ namespace HowlOut
 				App.coreView.returnToPreviousView();
 			};
 
-			/*
-			knapTwo.Clicked += (sender, e) =>
+			updateButton.Clicked += (sender, e) =>
 			{
+				dataManager.updateLists();
 			};
-			knapThree.Clicked += (sender, e) =>
-			{
-			};
-			*/
+
 		}
 	}
 }

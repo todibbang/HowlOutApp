@@ -17,7 +17,7 @@ namespace HowlOut
 				await exploreBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await exploreBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(new SearchEvent(), 1);
+				App.coreView.setContentView(new SearchEvent(), "SearchEvent");
 			};
 			exploreBtn.GestureRecognizers.Add(exploreImage);  
 
@@ -27,20 +27,9 @@ namespace HowlOut
 				await manageBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await manageBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(new ManageEvent(), 2);
+				App.coreView.setContentView(new ManageEvent(), "ManageEvent");
 			};
 			manageBtn.GestureRecognizers.Add(manageImage); 
-
-			/*
-			knapOne.Clicked += (sender, e) =>
-			{
-				App.coreView.setContentView(new SearchEvent(), 1);
-			};
-			knapTwo.Clicked += (sender, e) =>
-			{
-				App.coreView.setContentView(new ManageEvent(), 2);
-			};
-			*/
 		}
 	}
 }

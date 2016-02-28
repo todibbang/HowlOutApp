@@ -70,14 +70,16 @@
 
 			<Style x:Key="AttendingButtonStyle" TargetType="Button">
 				<Setter Property="BackgroundColor" Value="White"/>
-				<Setter Property="TextColor" Value="#96000000"/>
+				<Setter Property="TextColor" Value="{DynamicResource NormalTextColor}"/>
+				<Setter Property="FontSize" Value="18"/>
 				<Setter Property="BorderColor" Value="{DynamicResource HowlOut}"/>
 				<Setter Property="Text" Value="{Binding Attendees}"/>
 			</Style>
 
 			<Style x:Key="LoyaltyButtonStyle" TargetType="Button">
 				<Setter Property="BackgroundColor" Value="White"/>
-				<Setter Property="TextColor" Value="#96000000"/>
+				<Setter Property="TextColor" Value="{DynamicResource NormalTextColor}"/>
+				<Setter Property="FontSize" Value="12"/>
 				<Setter Property="BorderColor" Value="#ffdfd49d"/>
 				<Setter Property="Text" Value="{Binding EventAverageLoyalty}"/>
 				<Setter Property="FontSize" Value="12"/>
@@ -85,7 +87,8 @@
 
 			<Style x:Key="LikesButtonStyle" TargetType="Button">
 				<Setter Property="BackgroundColor" Value="White"/>
-				<Setter Property="TextColor" Value="#96000000"/>
+				<Setter Property="TextColor" Value="{DynamicResource NormalTextColor}"/>
+				<Setter Property="FontSize" Value="12"/>
 				<Setter Property="BorderColor" Value="{DynamicResource HowlOut}"/>
 				<Setter Property="Text" Value="{Binding EventHolderLikes}"/>
 				<Setter Property="FontSize" Value="12"/>

@@ -16,6 +16,8 @@ namespace HowlOut
     {
         private HttpClient httpClient;
 
+
+
         public DataManager ()
         {
             httpClient = new HttpClient(new NativeMessageHandler());
@@ -26,7 +28,7 @@ namespace HowlOut
 			return new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture?height=300&width=300");
         }
 
-		public async Task<ObservableCollection<Event>> GetAllEvents()
+		public async Task GetAllEvents()
         {
 			ObservableCollection<Event> events = new ObservableCollection<Event>(); 
 
@@ -45,10 +47,10 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine("COULD NOT RECIEVE DATA!!!!!");
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
-            return events;
+			App.coreView.searchEventList = events;
         }
 
-        public async Task<ObservableCollection<Event>> GetEventsWithOwnerId()
+        public async Task GetEventsWithOwnerId()
         {
             ObservableCollection<Event> events = new ObservableCollection<Event>();
 
@@ -67,7 +69,7 @@ namespace HowlOut
             {
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
-            return events;
+			App.coreView.manageEventList = events;
         }
 
         public async Task<Event> GetEventById(string eventId)
@@ -89,7 +91,7 @@ namespace HowlOut
             {
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
-            return eventToRetrieve;
+			return eventToRetrieve;
         }
 			
         public async Task<bool> UpdateEvent(Event EventToUpdate)
@@ -197,7 +199,7 @@ namespace HowlOut
             return false;
         }
 
-        public async Task<ObservableCollection<Event>> SearchEvents(List<int> eventTypesId, Profile profile, double userLat, double userLong, double maxDistance)
+        public async Task SearchEvents(List<int> eventTypesId, Profile profile, double userLat, double userLong, double maxDistance)
         {
             ObservableCollection<Event> events = new ObservableCollection<Event>();
 
@@ -225,7 +227,7 @@ namespace HowlOut
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
 
-            return events;
+			App.coreView.searchEventList = events;
         }
 
         public async Task<bool> FollowEvent(string eventId, string profileId)
@@ -340,6 +342,14 @@ namespace HowlOut
 			}
 
 			return null;
+		}
+
+		public async Task updateLists()
+		{
+			await GetAllEvents ();
+			await GetEventsWithOwnerId ();
+			App.coreView.searchEvent.updateList ();
+			App.coreView.manageEvent.updateList ();
 		}
     }
 }

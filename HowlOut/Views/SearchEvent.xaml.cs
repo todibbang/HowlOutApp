@@ -12,19 +12,8 @@ namespace HowlOut
 		public SearchEvent ()
 		{
 			InitializeComponent ();
-			GetAllEvents (SearchEventList);
+			//GetAllEvents (SearchEventList);
 			SearchEventList.ItemSelected += OnItemSelected;
-		}
-
-		private async void GetAllEvents(ListView listView)
-		{
-			DataManager dataManager = new DataManager();
-			var eve = await dataManager.GetAllEvents();
-			for (int i = 0; i < eve.Count; i++) {
-				EventForLists EveForLis = new EventForLists (eve[i]);
-				listEvents.Add (EveForLis);
-			}
-			listView.ItemsSource = listEvents;
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -32,8 +21,18 @@ namespace HowlOut
 			if(SearchEventList.SelectedItem == null)
 				return;
 			var eveForLis = SearchEventList.SelectedItem as EventForLists;
-			App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), 0);
+			App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), "InspectEvent");
+			SearchEventList.SelectedItem = null;
+		}
 
+		public void updateList(){
+			var eve = App.coreView.searchEventList;
+			listEvents.Clear ();
+			for (int i = 0; i < eve.Count; i++) {
+				EventForLists EveForLis = new EventForLists (eve [i]);
+				listEvents.Add (EveForLis);
+			}
+			SearchEventList.ItemsSource = listEvents;
 		}
 	}
 }

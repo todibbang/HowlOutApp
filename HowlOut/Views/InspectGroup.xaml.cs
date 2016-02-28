@@ -106,7 +106,7 @@ namespace HowlOut
 			foreach (Button button in profileButtons) {
 				button.Clicked += (sender, e) => {
 					System.Diagnostics.Debug.WriteLine("Button pressed: " + button.Text);
-					App.coreView.setContentView( new InspectProfile (profiles[int.Parse(button.Text)]), 0);
+					App.coreView.setContentView( new InspectProfile (profiles[int.Parse(button.Text)]), "InspectProfile");
 				};
 			}
 			/*
