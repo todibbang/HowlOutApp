@@ -22,32 +22,13 @@ namespace HowlOut
 			InitializeComponent ();
 			setInfo (eve);
 
-			CommentList.ItemsSource = comments;
-			comments.Add (new Comment {
-<<<<<<< Updated upstream
-				//Title = "Rob Finnerty",
-				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb"
-=======
-				Title = "Rob Finnerty",
-				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
-				OwnerId = App.StoredUserFacebookId
-			});
-			comments.Add (new Comment {
-				Title = "Rob Finnerty",
-				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
-				OwnerId = App.StoredUserFacebookId
-			});
-			comments.Add (new Comment {
-				Title = "Rob Finnerty",
-				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
-				OwnerId = App.StoredUserFacebookId
-			});
-			comments.Add (new Comment {
-				Title = "Rob Finnerty",
-				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb",
-				OwnerId = App.StoredUserFacebookId
->>>>>>> Stashed changes
-			});
+			List<Comment> displayedList = new List<Comment> ();
+			for (int i = eve.Comments.Count - 1; i > -1; i--) {
+				displayedList.Add (eve.Comments [i]);
+			}
+			CommentList.ItemsSource = displayedList;
+
+
 
 			if (inspectType == 1) {
 				searchSpecific.IsVisible = true;
@@ -74,9 +55,8 @@ namespace HowlOut
 				}
 			};
 
-
 			eventHolderButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectProfile(eve.OwnerId), 0);
+				App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), 0);
 			};
 
 			eventGroupButton.Clicked += (sender, e) => {
@@ -101,12 +81,19 @@ namespace HowlOut
 			joinButton.Clicked += (sender, e) => {
 				joinEvent(eve);
 			};
+
+			postCommentButton.Clicked += (sender, e) => {
+				PostNewComment(eve);
+			};
 		}
 
 		public async void setInfo (Event eve)
 		{
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(eve.OwnerId);
 			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
+			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
+			usersPhoto.Source = ImageSource.FromUri (userPicUri);
+
 			Position position = util.getCurrentUserPosition();
 
 			// Time
@@ -132,7 +119,7 @@ namespace HowlOut
 			//Other
 			eventTitle.Text = eve.Title;
 			eventDescription.Text = eve.Description;
-			eventAttending.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
+			eventAttending.Text = (eve.Attendees.Count) + "/" + eve.MaxSize;
 
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
@@ -161,6 +148,22 @@ namespace HowlOut
 					Event eventWhenJoined = await dataManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
 					App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), 0);
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
+				}
+			}
+		}
+
+		private async void PostNewComment(Event eve)
+		{
+			if(commentEntry.Text != null || commentEntry.Text != "")
+			{
+			Event newEvent = await dataManager.AddCommentToEvent(eve.EventId, new Comment {
+				Content = commentEntry.Text, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
+			});
+			if (newEvent != null) {
+					commentEntry.Text = "";
+					App.coreView.setContentView (new InspectEvent (newEvent, 2), 0);
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}

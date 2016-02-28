@@ -7,6 +7,8 @@ namespace HowlOut
 {
 	public partial class ManageEvent : ContentView
 	{
+		ObservableCollection<EventForLists> listEvents = new ObservableCollection<EventForLists>();
+
 		public ManageEvent ()
 		{
 			InitializeComponent ();
@@ -17,15 +19,20 @@ namespace HowlOut
 		private async void GetEventsMatchingOwner(ListView listView)
 		{
 			DataManager dataManager = new DataManager();
-			listView.ItemsSource = await dataManager.GetEventsWithOwnerId();
+			var eve = await dataManager.GetEventsWithOwnerId();
+			for (int i = 0; i < eve.Count; i++) {
+				EventForLists EveForLis = new EventForLists (eve[i]);
+				listEvents.Add (EveForLis);
+			}
+			listView.ItemsSource = listEvents;
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			if(ManageEventList.SelectedItem == null)
 				return;
-			var eve = ManageEventList.SelectedItem as Event;
-			App.coreView.setContentView(new InspectEvent(eve, 2), 0);
+			var eveForLis = ManageEventList.SelectedItem as EventForLists;
+			App.coreView.setContentView(new InspectEvent(eveForLis.eve, 2), 0);
 		}
 	}
 }

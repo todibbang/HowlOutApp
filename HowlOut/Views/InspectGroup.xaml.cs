@@ -11,10 +11,13 @@ namespace HowlOut
 		DataManager dataManager = new DataManager();
 
 
-		public InspectGroup (List<Profile> profiles)
+		public InspectGroup (List<Profile> givenProfiles)
 		{
+			List<Profile> profiles = new List<Profile> ();
+			//profiles.Add (eventHolderProfile);
+			profiles.AddRange (givenProfiles);
 
-			for(int i = 0; i < 30; i++)profiles.Add (profiles[0]);
+			//for(int i = 0; i < 30; i++)profiles.Add (profiles[0]);
 
 
 
@@ -78,7 +81,7 @@ namespace HowlOut
 				cellGrid.Children.Add(new Label {
 						Text = profiles[i].Name + ", " + profiles[i].Age,
 						TextColor = Color.Black,
-						FontSize = 12,
+						FontSize = 10,
 						HorizontalTextAlignment = TextAlignment.Center,
 						VerticalOptions = LayoutOptions.CenterAndExpand,
 						HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -89,7 +92,7 @@ namespace HowlOut
 
 				//Adds a cell button 
 				profileButtons.Add (new Button {
-					Text = "" + profiles[i].ProfileId,
+					Text = "" + i,
 					TextColor = Color.Transparent,
 					BackgroundColor = Color.Transparent,
 				});
@@ -103,7 +106,7 @@ namespace HowlOut
 			foreach (Button button in profileButtons) {
 				button.Clicked += (sender, e) => {
 					System.Diagnostics.Debug.WriteLine("Button pressed: " + button.Text);
-					App.coreView.setContentView( new InspectProfile (button.Text), 0);
+					App.coreView.setContentView( new InspectProfile (profiles[int.Parse(button.Text)]), 0);
 				};
 			}
 			/*

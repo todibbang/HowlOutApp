@@ -7,10 +7,10 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="75"/>
 			</Grid.ColumnDefinitions>
-			<!--<Button Grid.Column="0" Text="Back" Style="{DynamicResource ButtonStyle}" x:Name="back" BorderWidth="1" BorderColor="White" BackgroundColor="{DynamicResource HowlOut}" TextColor="White"></Button>-->
+			<Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" x:Name="back" BackgroundColor="{DynamicResource HowlOut}" ></Button>
 			<Image Grid.Column="0" x:Name="backBtn" Source="ic_chevron_left.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
-			<Button Grid.Column="1" Text="HowlOut" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontSize="20"></Button>
-			<!--<Button Grid.Column="2" Text="Edit" Style="{DynamicResource ButtonStyle}" x:Name="knapThree" BorderWidth="1" BorderColor="White" BackgroundColor="{DynamicResource HowlOut}" TextColor="White"></Button>-->
+			<!--<Button Grid.Column="1" Text="HowlOut" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontSize="20"></Button>
+			<Button Grid.Column="2" Text="Edit" Style="{DynamicResource ButtonStyle}" x:Name="knapThree" BorderWidth="1" BorderColor="White" BackgroundColor="{DynamicResource HowlOut}" TextColor="White"></Button>-->
 		</Grid>
 	</ContentView.Content>
 </ContentView>

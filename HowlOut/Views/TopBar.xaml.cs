@@ -21,16 +21,19 @@ namespace HowlOut
 			};
 			backBtn.GestureRecognizers.Add(backImage); 
 
-			//back.Clicked += (sender, e) =>
-			//{
-				//App.coreView.returnToPreviousView();
-			//};
+			back.Clicked += (sender, e) =>
+			{
+				App.coreView.returnToPreviousView();
+			};
+
+			/*
 			knapTwo.Clicked += (sender, e) =>
 			{
 			};
-			//knapThree.Clicked += (sender, e) =>
-			//{
-			//};
+			knapThree.Clicked += (sender, e) =>
+			{
+			};
+			*/
 		}
 	}
 }

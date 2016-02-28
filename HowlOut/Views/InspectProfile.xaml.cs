@@ -9,17 +9,17 @@ namespace HowlOut
 {
 	public partial class InspectProfile : ContentView
 	{
-		public InspectProfile (string facebookUserId)
+		public InspectProfile (Profile profile)
 		{
 			InitializeComponent ();
 
-			Likes.Text = "24";
-			Loyalty.Text = "82%";
-			NameAndAge.Text = "Tobias Bjerge Bang, 23";
+			Likes.Text = "0";
+			Loyalty.Text = "0";
+			NameAndAge.Text = profile.Name + ", " + profile.Age;
 
 			//var profilePicUri = new Uri("http://xamarin.com/content/images/pages/forms/example-app.png");
 			DataManager dataManager = new DataManager();
-			var profilePicUri = dataManager.GetFacebookProfileImageUri(facebookUserId);
+			var profilePicUri = dataManager.GetFacebookProfileImageUri(profile.ProfileId);
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
 		}
 	}

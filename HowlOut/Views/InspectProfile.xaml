@@ -95,8 +95,8 @@
 								<RowDefinition Height="20"/>
 							</Grid.RowDefinitions>
 							<Label Grid.Row="0" Style="{DynamicResource TitleStyle}" x:Name="NameAndAge"/>
-							<Label Grid.Row="1" Style="{DynamicResource DistanceStyle}" Text="Has succesfully hosted 3 events"/>
-							<Label Grid.Row="2" Style="{DynamicResource TimeStyle}" Text="Has attended 21 events"/>
+							<Label Grid.Row="1" Style="{DynamicResource DistanceStyle}" Text=""/>
+							<Label Grid.Row="2" Style="{DynamicResource TimeStyle}" Text=""/>
 						</Grid>
 					</StackLayout>
 

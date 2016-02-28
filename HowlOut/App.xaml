@@ -6,6 +6,8 @@
 			<!---Glossy Styles-->
 			<Color x:Key="TextColor">#ff646464</Color>
 
+			<Color x:Key="NormalTextColor">#ff646464</Color>
+
 			<Color x:Key="HowlOut">#ff00e0a0</Color>
 			<Color x:Key="HowlOutBackground">#ffb9f5e4</Color>
 
@@ -70,7 +72,7 @@
 				<Setter Property="BackgroundColor" Value="White"/>
 				<Setter Property="TextColor" Value="#96000000"/>
 				<Setter Property="BorderColor" Value="{DynamicResource HowlOut}"/>
-				<Setter Property="Text" Value="{Binding EventAmountAttending}"/>
+				<Setter Property="Text" Value="{Binding Attendees}"/>
 			</Style>
 
 			<Style x:Key="LoyaltyButtonStyle" TargetType="Button">
