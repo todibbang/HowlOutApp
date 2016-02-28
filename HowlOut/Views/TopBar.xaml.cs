@@ -32,7 +32,6 @@ namespace HowlOut
 			{
 				dataManager.updateLists();
 			};
-
 		}
 	}
 }

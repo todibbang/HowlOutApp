@@ -28,7 +28,7 @@
 							<local:Line Grid.Row="0"/> 
 							<Entry Grid.Row="1" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Title..." x:Name="title"></Entry>
 							<local:Line Grid.Row="2"/>
-							<Entry Grid.Row="3" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Description..." VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100"></Entry>
+							<Editor Grid.Row="3" Style="{DynamicResource PlaceHolderStyle}" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100"></Editor>
 							<local:Line Grid.Row="4"/>
 							<Grid Grid.Row="5">
 								<Grid.ColumnDefinitions>
