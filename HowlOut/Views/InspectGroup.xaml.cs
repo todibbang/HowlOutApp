@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using ImageCircle.Forms.Plugin.Abstractions;
 using Xamarin.Forms;
 
 namespace HowlOut
@@ -8,11 +8,17 @@ namespace HowlOut
 	public partial class InspectGroup : ContentView
 	{
 		List <Button> profileButtons = new List <Button>();
+		DataManager dataManager = new DataManager();
 
-		public InspectGroup ()
+
+		public InspectGroup (List<Profile> profiles)
 		{
-			InitializeComponent ();
 
+			for(int i = 0; i < 30; i++)profiles.Add (profiles[0]);
+
+
+
+			InitializeComponent ();
 
 			Grid newGrid = new Grid {
 				ColumnDefinitions = {
@@ -21,46 +27,89 @@ namespace HowlOut
 					new ColumnDefinition { Width = GridLength.Auto }
 				},
 				RowDefinitions = {
-					new RowDefinition{ Height = 100 },
-					new RowDefinition{ Height = 100 }
-				}
+					new RowDefinition{ Height = 150 },
+					new RowDefinition{ Height = 150 },
+					new RowDefinition{ Height = 150 }
+				},
+				RowSpacing=0,
+				ColumnSpacing=0,
+					
 			};
 
 			int column = 0;
 			int row = 0;
 
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < profiles.Count; i++) {
+			//for (int i = 0; i < 24; i++) {
 
 				if (column == 3) {
 					column = 0;
 					row++;
-					profileGrid.RowDefinitions.Add (new RowDefinition{ Height = 100 });
+					profileGrid.RowDefinitions.Add (new RowDefinition{ Height = 150 });
 				}
 
-				profileGrid.Children.Add (new Label {
-					BackgroundColor = Color.Aqua,
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-				}, column, row);
+				//creates the grid for each cell
 
+				////////////////////
+				/// Cell Grid
+				////////////////////
+				Grid cellGrid = new Grid {
+					VerticalOptions = LayoutOptions.CenterAndExpand,
+					HorizontalOptions = LayoutOptions.CenterAndExpand,
+					RowDefinitions = {
+						new RowDefinition{ Height = 10 },
+						new RowDefinition{ Height = 85 },
+						new RowDefinition{ Height = 40 },
+					}
+				};
+
+				//adds the users profile picture
+				var profilePicUri = dataManager.GetFacebookProfileImageUri(profiles[i].ProfileId);
+				//var profilePicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
+				CircleImage profilePicture = new CircleImage {
+					HeightRequest = 85,
+					WidthRequest = 85,
+					Aspect = Aspect.AspectFill,
+					HorizontalOptions = LayoutOptions.Center,
+					Source = ImageSource.FromUri (profilePicUri)
+				};
+				cellGrid.Children.Add (profilePicture, 0,1);
+
+				cellGrid.Children.Add(new Label {
+						Text = profiles[i].Name + ", " + profiles[i].Age,
+						TextColor = Color.Black,
+						HorizontalTextAlignment = TextAlignment.Center,
+						VerticalOptions = LayoutOptions.CenterAndExpand,
+						HorizontalOptions = LayoutOptions.CenterAndExpand,
+				}, 0, 2);
+
+				//adds the whole cell to the grid
+				profileGrid.Children.Add (cellGrid, column, row);
+
+				//Adds a cell button 
 				profileButtons.Add (new Button {
-					Text = column+","+row,
-					TextColor = Color.Purple,
+					Text = "" + profiles[i].ProfileId,
+					TextColor = Color.Transparent,
 					BackgroundColor = Color.Transparent,
 				});
-
 				profileGrid.Children.Add (profileButtons [i], column, row);
-
-				System.Diagnostics.Debug.WriteLine("new cell: " + column + "," + row );
 
 				column ++;
 			}
 
 			profileGrid = newGrid;
 
+			foreach (Button button in profileButtons) {
+				button.Clicked += (sender, e) => {
+					System.Diagnostics.Debug.WriteLine("Button pressed: " + button.Text);
+					App.coreView.setContentView( new InspectProfile (button.Text), 0);
+				};
+			}
+			/*
 			for(int i = 0; i < profileButtons.Count; i++) profileButtons[i].Clicked += (sender, e) => {
-				System.Diagnostics.Debug.WriteLine("Button pressed: " + i );
+				System.Diagnostics.Debug.WriteLine("Button pressed: " + i + " : " + profileButtons[i-1].Text);
 			};
+			*/
 		}
 	}
 }

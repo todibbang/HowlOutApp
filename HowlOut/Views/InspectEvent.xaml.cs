@@ -59,7 +59,7 @@ namespace HowlOut
 			};
 
 			eventGroupButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectGroup(), 0);
+				App.coreView.setContentView(new InspectGroup(eve.Attendees), 0);
 			};
 
 			mapButton.Clicked += (sender, e) => {
