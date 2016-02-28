@@ -6,8 +6,10 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button Grid.Column="0" Text="Explore" Style="{DynamicResource ButtonStyle}" x:Name="knapOne" BackgroundColor="White"></Button>
-			<Button Grid.Column="1" Text="Manage" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BackgroundColor="White"></Button>
+			<Image Grid.Column="0" x:Name="exploreBtn" Source="ic_action_search.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
+			<Image Grid.Column="1" x:Name="manageBtn" Source="ic_action_search.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
+			<!--<Button Grid.Column="0" Text="Explore" Style="{DynamicResource ButtonStyle}" x:Name="knapOne" BackgroundColor="White"></Button>
+			<Button Grid.Column="1" Text="Manage" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BackgroundColor="White"></Button>-->
 		</Grid>
 	</ContentView.Content>
 </ContentView>

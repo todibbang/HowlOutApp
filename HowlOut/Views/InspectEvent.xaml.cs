@@ -24,7 +24,7 @@ namespace HowlOut
 
 			CommentList.ItemsSource = comments;
 			comments.Add (new Comment {
-				Title = "Rob Finnerty",
+				//Title = "Rob Finnerty",
 				Content = "Test1 asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb xcvb"
 			});
 
