@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace HowlOut
@@ -12,8 +12,11 @@ namespace HowlOut
 			InitializeComponent ();
 
 			var backImage = new TapGestureRecognizer();
-			backImage.Tapped += (sender, e) => 
+			backImage.Tapped += async (sender, e) => 
 			{
+				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await backBtn.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.returnToPreviousView();
 			};
 			backBtn.GestureRecognizers.Add(backImage); 
