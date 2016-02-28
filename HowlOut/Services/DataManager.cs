@@ -315,5 +315,31 @@ namespace HowlOut
 
             return false;
         }
+
+		public async Task<Event> AddCommentToEvent(string eventId, Comment comment)
+		{
+			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/Comment/"+eventId);
+
+			try
+			{
+				var json = JsonConvert.SerializeObject(comment);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+				var response = await httpClient.PostAsync(uri, content);
+
+				if (response.IsSuccessStatusCode)
+				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					var retrievedEvent = JsonConvert.DeserializeObject<Event>(recievedContent);
+					return retrievedEvent;
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+
+			return null;
+		}
     }
 }

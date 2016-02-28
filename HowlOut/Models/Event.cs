@@ -50,6 +50,7 @@ namespace HowlOut
 			EventTypes = new List<EventType> ();
 			Attendees = new List<Profile> ();
 			Followers = new List<Profile> ();
+			Comments = new List<Comment> ();
 		}
 	}
 }
