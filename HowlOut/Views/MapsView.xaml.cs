@@ -102,6 +102,14 @@ namespace HowlOut
 			searchList.SelectedItem = null;
 			searchList.IsVisible = false;
 			searchList.HeightRequest=0;
+			getCoordinates (selectedAddress);
+		}
+
+		public async void getCoordinates(Address newAddress)
+		{
+			newAddress.data.koordinater = await dataManager.GetCoordinates(newAddress.data.href);
+
+			System.Diagnostics.Debug.WriteLine (newAddress.data.koordinater[0] + " " + newAddress.data.koordinater[1]);
 		}
 	}
 }

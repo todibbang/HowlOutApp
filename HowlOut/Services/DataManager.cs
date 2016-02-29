@@ -391,13 +391,36 @@ namespace HowlOut
 					addresses = JsonConvert.DeserializeObject<ObservableCollection<Address>>(content);
 
 					for (int i = 0; i < addresses.Count; i++) {
-						System.Diagnostics.Debug.WriteLine ("forslagstekst: " + addresses [i].forslagstekst);
+						
+						System.Diagnostics.Debug.WriteLine ("forslagstekst: " + addresses [i].forslagstekst + " " + addresses[i].data.href);
 					}
 
 				}
-
 				return addresses;
+			}
+		}
 
+		public async Task<string[]> GetCoordinates(string input)
+		{
+			string path = input;
+
+			Address coords = new Address();
+
+			using (var client = new HttpClient())
+			{
+				//string test = JsonConvert.SerializeObject(_apiToCall);
+				HttpResponseMessage response = await client.GetAsync(new Uri(path));
+
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					coords = JsonConvert.DeserializeObject<Address>(content);
+
+				}
+				string[] newCoords = new string[2];
+				newCoords [0] = coords.data.koordinater [0];
+				newCoords [1] = coords.data.koordinater [1];
+				return newCoords;
 
 			}
 		}
