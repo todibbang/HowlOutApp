@@ -10,6 +10,8 @@ namespace HowlOut
 	public partial class App : Application
 	{
 		public static CoreView coreView;
+		public static Profile userProfile;
+
         private DataManager dataManager;
 
         public interface ISaveAndLoad
@@ -54,9 +56,7 @@ namespace HowlOut
             }
             else
             {
-				coreView = new CoreView();
-                MainPage = coreView;
-				coreView.setContentView (null, "SearchEvent");
+				startProgram ();
             }
 
 		}
@@ -131,10 +131,17 @@ namespace HowlOut
 			Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
 			await dataManager.CreateProfile(profile);
 
+			startProgram ();
+
+        }
+
+		private async void startProgram()
+		{
+			userProfile = await dataManager.GetProfileId (StoredUserFacebookId);
 			coreView = new CoreView();
 			MainPage = coreView;
 			coreView.setContentView (null, "SearchEvent");
-        }
+		}
 
         protected override void OnStart ()
 		{

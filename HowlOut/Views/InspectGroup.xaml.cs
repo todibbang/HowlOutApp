@@ -11,15 +11,9 @@ namespace HowlOut
 		DataManager dataManager = new DataManager();
 
 
-		public InspectGroup (List<Profile> givenProfiles)
+		public InspectGroup (List<Profile> profiles)
 		{
-			List<Profile> profiles = new List<Profile> ();
-			//profiles.Add (eventHolderProfile);
-			profiles.AddRange (givenProfiles);
-
-			//for(int i = 0; i < 30; i++)profiles.Add (profiles[0]);
-
-
+			
 
 			InitializeComponent ();
 
@@ -105,15 +99,9 @@ namespace HowlOut
 
 			foreach (Button button in profileButtons) {
 				button.Clicked += (sender, e) => {
-					System.Diagnostics.Debug.WriteLine("Button pressed: " + button.Text);
 					App.coreView.setContentView( new InspectProfile (profiles[int.Parse(button.Text)]), "InspectProfile");
 				};
 			}
-			/*
-			for(int i = 0; i < profileButtons.Count; i++) profileButtons[i].Clicked += (sender, e) => {
-				System.Diagnostics.Debug.WriteLine("Button pressed: " + i + " : " + profileButtons[i-1].Text);
-			};
-			*/
 		}
 	}
 }

@@ -15,6 +15,11 @@ namespace HowlOut
         //public List <string> UserIDsFollowed {get; set;}
         //public List <string> EventIDsFollowed {get; set;}
 
+		public List<Profile> Friends { get; set; }
+		public List<Group> Groups { get; set; }
+		public List<Profile> FriendRequests { get; set; }
+		public List<Group> GroupRequests { get; set; }
+
         public List<Event> JoinedEvents { get; set; }
         public List<Event> FollowedEvents { get; set; }
 

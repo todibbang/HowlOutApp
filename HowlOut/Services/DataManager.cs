@@ -373,5 +373,33 @@ namespace HowlOut
 			App.coreView.searchEvent.updateList ();
 			App.coreView.manageEvent.updateList ();
 		}
+
+		public async Task<ObservableCollection<Address>> AutoCompletionPlace(string input)
+		{
+			string path = "http://dawa.aws.dk/autocomplete?q=" + input;
+
+			ObservableCollection<Address> addresses = new ObservableCollection<Address>();
+
+			using (var client = new HttpClient())
+			{
+				//string test = JsonConvert.SerializeObject(_apiToCall);
+				HttpResponseMessage response = await client.GetAsync(new Uri(path));
+
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					addresses = JsonConvert.DeserializeObject<ObservableCollection<Address>>(content);
+
+					for (int i = 0; i < addresses.Count; i++) {
+						System.Diagnostics.Debug.WriteLine ("forslagstekst: " + addresses [i].forslagstekst);
+					}
+
+				}
+
+				return addresses;
+
+
+			}
+		}
     }
 }

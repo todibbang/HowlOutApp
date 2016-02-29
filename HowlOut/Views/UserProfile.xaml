@@ -95,7 +95,6 @@
 
 				<Grid x:Name="friendsGrid"></Grid>
 				<Grid x:Name="groupsGrid"></Grid>
-				<Grid x:Name="followsGrid"></Grid>
 
 			</ScrollView>
 			
