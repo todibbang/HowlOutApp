@@ -14,6 +14,7 @@ namespace HowlOut
 			InitializeComponent ();
 
 			var backImage = new TapGestureRecognizer();
+
 			backImage.Tapped += async (sender, e) => 
 			{
 				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
@@ -21,6 +22,7 @@ namespace HowlOut
 				await backBtn.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.returnToPreviousView();
 			};
+				
 			backBtn.GestureRecognizers.Add(backImage); 
 
 			back.Clicked += (sender, e) =>
@@ -31,6 +33,10 @@ namespace HowlOut
 			updateButton.Clicked += (sender, e) =>
 			{
 				dataManager.updateLists();
+			};
+
+			howlOut.Clicked += (sender, e) => 
+			{
 			};
 		}
 	}

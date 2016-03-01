@@ -23,6 +23,7 @@ namespace HowlOut
 		public MapsView (Position position)
 		{
 			InitializeComponent ();
+
 			mapLayout.VerticalOptions = LayoutOptions.FillAndExpand;
 			utilityManager.setMapForEvent(position, map, mapLayout);
 			selectButton.Text = "selectButton";
@@ -64,8 +65,12 @@ namespace HowlOut
 		public MapsView (Event eve)
 		{
 			InitializeComponent ();
-			utilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
-			utilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.PositionName);
+			utilityManager.setMapForEvent (eve.AddressPosition, map, mapLayout);
+			utilityManager.setPin(eve.AddressPosition, map, eve.Title, eve.AddressName);
+			searchList.IsVisible = false;
+			searchList.HeightRequest=0;
+			selectButton.IsVisible = false;
+			searchBar.IsVisible = false;
 		}
 
 		public async void getResults(Position position, ExtMap map)
@@ -74,16 +79,8 @@ namespace HowlOut
 			var possibleAddresses = await getAddressFromPosition.GetAddressesForPositionAsync (position);
 			foreach (var address in possibleAddresses) { tappedAddress += address; }
 			tappedAddress = Regex.Replace(tappedAddress, @"\r\n?|\n", ",");
-
-			map.Pins.Clear();
-			utilityManager.setPin (new Position (map.tapPosition.Latitude, map.tapPosition.Longitude), map, tappedAddress, tappedAddress);
-
-			if (createEventView != null) {
-				createEventView.newEvent.Latitude = map.tapPosition.Latitude;
-				createEventView.newEvent.Longitude = map.tapPosition.Longitude;
-				createEventView.newEvent.PositionName = tappedAddress;
-				createEventView.locationButton.Text = tappedAddress;
-			}
+			utilityManager.setPin (map.tapPosition, map, tappedAddress, tappedAddress);
+			setTheNewAddressToTheEvent (map.tapPosition, tappedAddress);
 			searchBar.Text = tappedAddress;
 		}
 
@@ -102,14 +99,24 @@ namespace HowlOut
 			searchList.SelectedItem = null;
 			searchList.IsVisible = false;
 			searchList.HeightRequest=0;
-			getCoordinates (selectedAddress);
+			setSelectedAddress (selectedAddress);
 		}
 
-		public async void getCoordinates(Address newAddress)
+		public async void setSelectedAddress(Address newAddress)
 		{
-			newAddress.data.koordinater = await dataManager.GetCoordinates(newAddress.data.href);
+			newAddress.data.position = await dataManager.GetCoordinates(newAddress.data.href);
+			utilityManager.setMapForEvent(newAddress.data.position, map, mapLayout);
+			utilityManager.setPin (newAddress.data.position, map, newAddress.forslagstekst, newAddress.forslagstekst);
+			setTheNewAddressToTheEvent (newAddress.data.position, newAddress.forslagstekst);
+		}
 
-			System.Diagnostics.Debug.WriteLine (newAddress.data.koordinater[0] + " " + newAddress.data.koordinater[1]);
+		public void setTheNewAddressToTheEvent(Position position, string address)
+		{
+			if (createEventView != null) {
+				createEventView.newEvent.AddressPosition = position;
+				createEventView.newEvent.AddressName = address;
+				createEventView.setLocationButton(address);
+			}
 		}
 	}
 }

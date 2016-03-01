@@ -26,7 +26,7 @@ namespace HowlOut
 			Title = eve.Title;
 
 			Position position = util.getCurrentUserPosition();
-			Distance = util.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude);
+			Distance = util.distance(eve.AddressPosition, position);
 
 			Time = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
 

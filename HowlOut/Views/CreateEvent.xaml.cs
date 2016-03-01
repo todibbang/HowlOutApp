@@ -9,92 +9,32 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
-		public Button locationButton = new Button();
 		UtilityManager utilityManager = new UtilityManager ();
 		DataManager dataManager = new DataManager();
+		MapsView mapView;
+
 		public Event newEvent;
+		Dictionary<string, int> agePicker = new Dictionary<string, int> { };
+		Dictionary<string, int> sizePicker = new Dictionary<string, int> { };
 
 		public CreateEvent (Event givenEvent, bool isCreate)
 		{
 			newEvent = givenEvent;
 			InitializeComponent ();
+			mapView = new MapsView (utilityManager.getCurrentUserPosition());
 
-			cancelButton.IsVisible = false;
-
-			newEvent.OwnerId = App.StoredUserFacebookId;
-			locationButton.WidthRequest = 200;
-			locationButton.HeightRequest = 40;
-			locationButton.Text = "Location";
-			locationButtonPlace.Children.Add(locationButton);
-
-			Dictionary<string, int> agePicker = new Dictionary<string, int> { };
 			for (int i = 18; i < 100; i++) agePicker.Add ("" + i, i);
 			foreach (string age in agePicker.Keys) { minAge.Items.Add(age); maxAge.Items.Add(age);}
-			minAge.SelectedIndex = 0;
-			maxAge.SelectedIndex = agePicker.Count;
-			newEvent.MinAge = agePicker [minAge.Items[minAge.SelectedIndex]];
-			newEvent.MaxAge = agePicker [maxAge.Items[maxAge.SelectedIndex]];
 
-			Dictionary<string, int> sizePicker = new Dictionary<string, int> { };
 			int sizeNumber = 5;
-			for (int i = 0; i < 20; i++) {
-				sizePicker.Add ("" + sizeNumber, sizeNumber);
-				sizeNumber += 5;
-			}
+			for (int i = 0; i < 20; i++) { sizePicker.Add ("" + sizeNumber, sizeNumber); sizeNumber += 5;}
 			foreach (string size in sizePicker.Keys) { minSize.Items.Add(size); maxSize.Items.Add(size);}
-			minSize.SelectedIndex = 0;
-			maxSize.SelectedIndex = sizePicker.Count;
-			newEvent.MinSize = sizePicker [minSize.Items[minSize.SelectedIndex]];
-			newEvent.MaxSize = sizePicker [maxSize.Items[maxSize.SelectedIndex]];
 
-			Position pos = utilityManager.getCurrentUserPosition();
-			newEvent.Latitude = pos.Latitude;
-			newEvent.Longitude = pos.Longitude;
-
-
+			/// set title and description
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
 			description.TextChanged += (sender, e) => { newEvent.Description = description.Text; };
 
-
-			//startTime.Time = TimeSpan.FromTicks(DateTime.Now.ToLocalTime().Ticks);
-			//endTime.Time = TimeSpan.FromTicks(DateTime.Now.ToLocalTime().Ticks);
-			//startTime.Time = DateTime.Now.ToLocalTime();
-			//endTime.Time = DateTime.Now.ToLocalTime();
-			newEvent.StartDate = startDate.Date.Add(startTime.Time);
-			newEvent.EndDate = endDate.Date.Add(endTime.Time);
-
-			startDate.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
-			startTime.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
-			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
-			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
-
-
-
-			minAge.SelectedIndexChanged += (sender, args) => {
-				if (minAge.SelectedIndex != -1) { string age = minAge.Items[minAge.SelectedIndex]; newEvent.MinAge = agePicker[age]; } };
-			maxAge.SelectedIndexChanged += (sender, args) => {
-				if (maxAge.SelectedIndex != -1) { string age = maxAge.Items[maxAge.SelectedIndex]; newEvent.MaxAge = agePicker[age]; } };
-			minSize.SelectedIndexChanged += (sender, args) => {
-				if (minSize.SelectedIndex != -1) { string size = minSize.Items[minSize.SelectedIndex]; newEvent.MinSize = sizePicker[size]; } };
-			maxSize.SelectedIndexChanged += (sender, args) => {
-				if (maxSize.SelectedIndex != -1) { string size = maxSize.Items[maxSize.SelectedIndex]; newEvent.MaxSize = sizePicker[size]; } };
-
-
-			launchButton.Clicked += (sender, e) =>
-			{
-				if(newEvent.Title != null && newEvent.Description != null) {
-					LaunchEvent(newEvent); 
-				}
-			};
-
-
-			locationButton.Clicked += (sender, e) =>
-			{
-				MapsView mapView = new MapsView (utilityManager.getCurrentUserPosition());
-				mapView.createEventView = this;
-				App.coreView.setContentView (mapView, "MapsView");
-			};
-
+			/// set event type
 			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
 			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport); };
 			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur); };
@@ -104,11 +44,85 @@ namespace HowlOut
 			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
 
-			if (isCreate != true) {
-				editEvent ();
+			/// set time and date
+			startDate.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
+			startTime.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
+			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
+			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
+
+			/// set location
+			locationButton.Clicked += (sender, e) => {
+				if (newEvent.AddressPosition.Latitude == 0 && newEvent.AddressPosition.Longitude == 0){
+					mapView = new MapsView (utilityManager.getCurrentUserPosition());
+				}
+				else {
+					mapView = new MapsView (newEvent.AddressPosition);
+				}
+				mapView.createEventView = this;
+				App.coreView.setContentView (mapView, "MapsView");
+			};
+
+			/// set age and size limits
+			minAge.SelectedIndexChanged += (sender, args) => {
+				if (minAge.SelectedIndex != -1) { string age = minAge.Items[minAge.SelectedIndex]; newEvent.MinAge = agePicker[age]; } };
+			maxAge.SelectedIndexChanged += (sender, args) => {
+				if (maxAge.SelectedIndex != -1) { string age = maxAge.Items[maxAge.SelectedIndex]; newEvent.MaxAge = agePicker[age]; } };
+			minSize.SelectedIndexChanged += (sender, args) => {
+				if (minSize.SelectedIndex != -1) { string size = minSize.Items[minSize.SelectedIndex]; newEvent.MinSize = sizePicker[size]; } };
+			maxSize.SelectedIndexChanged += (sender, args) => {
+				if (maxSize.SelectedIndex != -1) { string size = maxSize.Items[maxSize.SelectedIndex]; newEvent.MaxSize = sizePicker[size]; } };
+
+			if (isCreate) {
+				setNewEvent ();
+			} else {
+				setEditEvent ();
 			}
 
+			launchButton.Clicked += (sender, e) => {
+				if(newEvent.Title != null && newEvent.Description != null) { LaunchEvent(newEvent); }
+			};
+
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
+		}
+
+		private void setNewEvent()
+		{
+			cancelButton.IsVisible = false;
+			newEvent.OwnerId = App.StoredUserFacebookId;
+			newEvent.StartDate = startDate.Date.Add(startTime.Time);
+			newEvent.EndDate = endDate.Date.Add(endTime.Time);
+
+			//newEvent.address.data.position = utilityManager.getCurrentUserPosition();
+
+
+			minAge.SelectedIndex = 0;
+			maxAge.SelectedIndex = agePicker.Count;
+			newEvent.MinAge = agePicker [minAge.Items[minAge.SelectedIndex]];
+			newEvent.MaxAge = agePicker [maxAge.Items[maxAge.SelectedIndex]];
+
+			minSize.SelectedIndex = 0;
+			maxSize.SelectedIndex = sizePicker.Count;
+			newEvent.MinSize = sizePicker [minSize.Items[minSize.SelectedIndex]];
+			newEvent.MaxSize = sizePicker [maxSize.Items[maxSize.SelectedIndex]];
+		}
+
+		private void setEditEvent()
+		{
+			cancelButton.IsVisible = true;
+
+			title.Text = newEvent.Title;
+			description.Text = newEvent.Description;
+
+			startDate.Date = newEvent.StartDate;
+			endDate.Date = newEvent.EndDate;
+
+			locationButton.Text = newEvent.AddressName;
+
+			minAge.SelectedIndex = agePicker ["16"];
+			maxAge.SelectedIndex = agePicker [newEvent.MaxAge.ToString ()];
+
+			minSize.SelectedIndex = sizePicker [newEvent.MinSize.ToString ()];
+			maxSize.SelectedIndex = sizePicker [newEvent.MaxSize.ToString ()];
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)
@@ -116,15 +130,15 @@ namespace HowlOut
 			EventType eventType1 = new EventType{ EventTypeId=2, Type="Outdoor"};
 			List<EventType> EventTypes = new List<EventType>();
 			EventTypes.Add (eventType1);
-			if (eventToCreate.PositionName == null) {
-				eventToCreate.PositionName = "Unknown";
+			if (eventToCreate.AddressName == null) {
+				eventToCreate.AddressName = "Unknown";
 			}
 			EventDBO newEventAsDBO = new EventDBO{OwnerId = eventToCreate.OwnerId, Title = eventToCreate.Title, 
 				Description = eventToCreate.Description,
 				StartDate = eventToCreate.StartDate, EndDate = eventToCreate.EndDate, MinAge = eventToCreate.MinAge,
 				MaxAge = eventToCreate.MaxAge, MinSize = eventToCreate.MinSize, MaxSize = eventToCreate.MaxSize, 
-				Public = true, Latitude = eventToCreate.Latitude, Longitude = eventToCreate.Longitude, 
-				PositionName = eventToCreate.PositionName, EventTypes = EventTypes};
+				Public = true, AddressPosition = eventToCreate.AddressPosition, 
+				AddressName = eventToCreate.AddressName, EventTypes = EventTypes};
 
 			Event eventCreated = await dataManager.CreateEvent (newEventAsDBO);
 			eventCreated.Attendees = new List<Profile> ();
@@ -152,11 +166,6 @@ namespace HowlOut
 			return typeButton;
 		}
 
-		public void editEvent()
-		{
-			cancelButton.IsVisible = true;
-		}
-
 		public async void CancelTheEvent()
 		{
 			bool confirmDelete = await App.coreView.displayConfirmMessage ("Warning", "You are about to delete this event permanently, would you like to continue", "Yes", "No");
@@ -170,6 +179,10 @@ namespace HowlOut
 					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");
 				}
 			}
+		}
+
+		public void setLocationButton(string name) {
+			locationButton.Text = name;
 		}
 	}
 }

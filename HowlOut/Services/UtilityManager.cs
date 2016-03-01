@@ -38,6 +38,7 @@ namespace HowlOut
 
 		public async void setPin(Position pos, ExtMap map, String label, String address)
 		{
+			map.Pins.Clear ();
 			var pin = new Pin
 			{
 				Type = PinType.Place,
@@ -48,7 +49,12 @@ namespace HowlOut
 			map.Pins.Add (pin);
 		}
 
-		public string distance(double lat1, double lon1, double lat2, double lon2) {
+		public string distance(Position position1, Position position2) {
+
+			double lat1 = position1.Latitude;
+			double lon1 = position1.Longitude;
+			double lat2 = position2.Latitude;
+			double lon2 = position2.Longitude;
 			double theta = lon1 - lon2;
 			double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
 			dist = Math.Acos(dist);

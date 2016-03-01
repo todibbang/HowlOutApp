@@ -40,8 +40,8 @@ namespace HowlOut
 
 				if(mapInitialized != true) { 
 					mapInitialized = true;
-					util.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
-					util.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.PositionName);
+					util.setMapForEvent (eve.AddressPosition, map, mapLayout);
+					util.setPin(eve.AddressPosition, map, eve.Title, eve.AddressName);
 				}
 			};
 
@@ -96,13 +96,13 @@ namespace HowlOut
 			//Place
 			//ObservableCollection<string> addressList = new ObservableCollection<string>();
 			string [] addressList = new string [3];
-			addressList = Regex.Split(eve.PositionName, ",");
+			addressList = Regex.Split(eve.AddressName, ",");
 			for (int i = 0; i < addressList.Length; i++) { 
 				Label label = new Label (); 
 				label.Text = addressList [i];
 				addressLayout.Children.Add(label);
 			}
-			quickDistance.Text = util.distance(eve.Latitude, eve.Longitude, position.Latitude, position.Longitude);
+			quickDistance.Text = util.distance(eve.AddressPosition, position);
 			Label labelD = new Label ();
 			labelD.Text = quickDistance.Text;
 			addressLayout.Children.Add(labelD);

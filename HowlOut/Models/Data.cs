@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms.Maps;
 
 namespace HowlOut
 {
@@ -12,14 +13,10 @@ namespace HowlOut
 
 		public string href {get; set;}
 
-		public double latitude {get; set;} 
-		public double longitude {get; set;} 
-
-		public string [] koordinater {get; set;} 
+		public Position position {get; set;} 
 
 		public Data ()
 		{
-			koordinater = new string[2];
 		}
 	}
 }

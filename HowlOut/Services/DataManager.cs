@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using Xamarin.Forms.Maps;
 using Plugin.Geolocator;
 using Xamarin.Forms;
+using System.Text.RegularExpressions;
 
 namespace HowlOut
 {
@@ -366,23 +367,31 @@ namespace HowlOut
 			return profile;
 		}
 
-		public async Task updateLists()
+		public async Task update()
 		{
+			updateSearch();
+			updateManage();
+			updateProfile();
+		}
+		public async Task updateSearch() {
 			await GetAllEvents ();
-			await GetEventsWithOwnerId ();
 			App.coreView.searchEvent.updateList ();
+		}
+		public async Task updateManage() {
+			await GetEventsWithOwnerId ();
 			App.coreView.manageEvent.updateList ();
+		}
+		public async Task updateProfile() {
+			App.userProfile = await GetProfileId(App.userProfile.ProfileId);
 		}
 
 		public async Task<ObservableCollection<Address>> AutoCompletionPlace(string input)
 		{
 			string path = "http://dawa.aws.dk/autocomplete?q=" + input;
-
 			ObservableCollection<Address> addresses = new ObservableCollection<Address>();
 
 			using (var client = new HttpClient())
 			{
-				//string test = JsonConvert.SerializeObject(_apiToCall);
 				HttpResponseMessage response = await client.GetAsync(new Uri(path));
 
 				if (response.IsSuccessStatusCode)
@@ -391,38 +400,91 @@ namespace HowlOut
 					addresses = JsonConvert.DeserializeObject<ObservableCollection<Address>>(content);
 
 					for (int i = 0; i < addresses.Count; i++) {
-						
 						System.Diagnostics.Debug.WriteLine ("forslagstekst: " + addresses [i].forslagstekst + " " + addresses[i].data.href);
 					}
-
 				}
 				return addresses;
 			}
 		}
 
-		public async Task<string[]> GetCoordinates(string input)
+		public async Task<Position> GetCoordinates(string input)
 		{
 			string path = input;
 
-			Address coords = new Address();
+			string adgangspunkt = "";
 
 			using (var client = new HttpClient())
 			{
-				//string test = JsonConvert.SerializeObject(_apiToCall);
+				System.Diagnostics.Debug.WriteLine ("Trying to get new coords");
+
+				Position position = new Position();
 				HttpResponseMessage response = await client.GetAsync(new Uri(path));
 
 				if (response.IsSuccessStatusCode)
 				{
-					var content = await response.Content.ReadAsStringAsync();
-					coords = JsonConvert.DeserializeObject<Address>(content);
+					System.Diagnostics.Debug.WriteLine ("Success getting new coords");
+
+					adgangspunkt = await response.Content.ReadAsStringAsync();
+					//adgangspunkt = JsonConvert.DeserializeObject<string>(content);
+
+					System.Diagnostics.Debug.WriteLine (adgangspunkt);
+					var substrings = Regex.Split(adgangspunkt, "koordinater");
+
+					position = new Position (Convert.ToDouble(substrings [1].Substring (35, 16)), Convert.ToDouble(substrings [1].Substring (11, 16)) );
+					//position.Latitude = Convert.ToDouble(substrings [1].Substring (11, 16));
+					//position.Longitude = Convert.ToDouble(substrings [1].Substring (35, 16));
 
 				}
-				string[] newCoords = new string[2];
-				newCoords [0] = coords.data.koordinater [0];
-				newCoords [1] = coords.data.koordinater [1];
-				return newCoords;
-
+				return position;
 			}
+		}
+
+		public async Task<bool> sendFriendRequest(Profile senderOfFriendRequest, Profile receiverOfFriendRequest)
+		{
+			// senderOfFriendRequest adds receiverOfFriendRequest to SentFriendRequests
+			// receiverOfFriendRequest adds senderOfFriendRequest to RecievedFriendRequests
+			// receiverOfFriendRequest receives a notification
+			return false;
+		}
+
+		public async Task<bool> acceptFriendRequest(Profile accepterOfFriendRequest, Profile senderOfFriendRequest)
+		{
+			// accepterOfFriendRequest adds senderOfFriendRequest to Friends
+			// senderOfFriendRequest adds accepterOfFriendRequest to Friends
+			// senderOfFriendRequest receives a notification
+			return false;
+		}
+
+		public async Task<bool> sendInviteToGroup(Group groupInvitedTo, Profile receiverOfGroupInvite)
+		{
+			//groupInvitedTo adds receiverOfGroupInvite to Invited
+			//receiverOfGroupInvite adds groupInvitedTo to RecievedGroupInvites
+			//receiverOfGroupInvite receives a notification
+			return false;
+		}
+
+		public async Task<bool> acceptInviteToGroup(Profile accepterOfGroupInvite, Group groupInvitedTo)
+		{
+			// accepterOfGroupInvite adds groupInvitedTo to Groups
+			// groupInvitedTo adds accepterOfGroupInvite to Members
+			// groupInvitedTo receives a notification
+			return false;
+		}
+
+		public async Task<bool> sendProfileInviteToEvent(Event eventInviteTo, Profile receiverOfEventInvite)
+		{
+			//eventInviteTo adds receiverOfEventInvite to InvitedProfiles
+			//receiverOfEventInvite adds eventInviteTo to EventsInvitedTo
+			//receiverOfEventInvite receives a notification
+			return false;
+		}
+
+		public async Task<bool> sendGroupInviteToEvent(Event eventInviteTo, Group receiverOfEventInvite)
+		{
+			//eventInviteTo adds (Group)-receiverOfEventInvite to InvitedGroups
+			//(Group)-receiverOfEventInvite adds eventInviteTo to EventsInviteTo
+			//(Group)-receiverOfEventInvite receives a notification
+			return false;
 		}
     }
 }

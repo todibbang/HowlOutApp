@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xamarin.Forms.Maps;
 
 namespace HowlOut
 {
 	public class EventDBO
 	{
-        public string Title { get; set; }
+		//public string EventId {get; set;}
 
+        public string Title { get; set; }
         public string Description { get; set; }
         public string OwnerId { get; set; }
 
-        //public List <string> EventTypes {get; set;}
+		public List<EventType> EventTypes { get; set; }
 
-        public List<EventType> EventTypes { get; set; }
+		public Position AddressPosition {get; set;}			//Position of the event
+		public string AddressName {get; set;}				//Name of the position / address
 
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string PositionName { get; set; }
+		public List <Profile> Attendees {get; set;}			//People attending the event
+		public List <Profile> Followers {get; set;}			//People following the event
+		public List <Profile> InvitedProfiles {get; set;}	//People invited to the event
+		public List <Group> InvitedGroups {get; set;}		//Groups invited to the event
 
-        public List<Profile> Attendees { get; set; }
-        public List<Profile> Followers { get; set; }
+		public DateTime StartDate {get; set;}
+		public DateTime EndDate {get; set;}
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+		public int MinAge {get; set;}
+		public int MaxAge {get; set;}
 
-        public int MinAge { get; set; }
-        public int MaxAge { get; set; }
+		public int MinSize {get; set;}
+		public int MaxSize {get; set;}
 
-        public int MinSize { get; set; }
-        public int MaxSize { get; set; }
-
-        public List<Comment> Comments { get; set; }
+		public List <Comment> Comments {get; set;}
 
         public bool Public { get; set; }
 
