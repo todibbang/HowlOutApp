@@ -7,7 +7,7 @@
 		<ScrollView>
 
 
-				<StackLayout VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0">
+				<StackLayout VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="userProfileInfo">
 					<Grid>
 						<Grid.RowDefinitions>
 							<RowDefinition Height="150"/>
@@ -68,6 +68,10 @@
 					</Grid>
 				</StackLayout>
 
+				<StackLayout VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="inviteLayout">
+					<Button Text="Send Invites" x:Name="inviteButton"/>
+				</StackLayout>
+
 				<StackLayout Padding="30,0,10,0" VerticalOptions="CenterAndExpand">
 					<Grid>
 						<Grid.RowDefinitions>
@@ -93,8 +97,8 @@
 					</Grid>
 				</StackLayout>
 
-				<Grid x:Name="friendsGrid"></Grid>
-				<Grid x:Name="groupsGrid"></Grid>
+				<Grid x:Name="viewFriendsGrid"></Grid>
+				<Grid x:Name="viewGroupsGrid"></Grid>
 
 			</ScrollView>
 			

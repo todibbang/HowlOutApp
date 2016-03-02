@@ -72,6 +72,12 @@ namespace HowlOut
 			maxSize.SelectedIndexChanged += (sender, args) => {
 				if (maxSize.SelectedIndex != -1) { string size = maxSize.Items[maxSize.SelectedIndex]; newEvent.MaxSize = sizePicker[size]; } };
 
+			inviteButton.Clicked += (sender, e) => {
+				UserProfile inviteView = new UserProfile(true, newEvent);
+				inviteView.createEventView = this;
+				App.coreView.setContentView(inviteView, "UserProfile");
+			};
+
 			if (isCreate) {
 				setNewEvent ();
 			} else {
@@ -79,7 +85,11 @@ namespace HowlOut
 			}
 
 			launchButton.Clicked += (sender, e) => {
-				if(newEvent.Title != null && newEvent.Description != null) { LaunchEvent(newEvent); }
+				if(isCreate) {
+					LaunchEvent(newEvent);
+				} else {
+					dataManager.UpdateEvent(newEvent);
+				}
 			};
 
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };

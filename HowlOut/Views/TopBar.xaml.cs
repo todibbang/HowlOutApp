@@ -32,7 +32,7 @@ namespace HowlOut
 
 			updateButton.Clicked += (sender, e) =>
 			{
-				dataManager.updateLists();
+				dataManager.update();
 			};
 
 			howlOut.Clicked += (sender, e) => 

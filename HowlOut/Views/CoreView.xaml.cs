@@ -29,7 +29,7 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine ("Test Run: 2");
 
 			DataManager dataManager = new DataManager ();
-			dataManager.updateLists ();
+			dataManager.update ();
 			System.Diagnostics.Debug.WriteLine ("Test Run: 3");
 
 			searchEvent = new SearchEvent();

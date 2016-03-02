@@ -94,7 +94,7 @@ namespace HowlOut
             }
 			return eventToRetrieve;
         }
-			
+
         public async Task<bool> UpdateEvent(Event EventToUpdate)
         {
             if(EventToUpdate.EventId != null && EventToUpdate.EventId != "")
@@ -439,7 +439,7 @@ namespace HowlOut
 			}
 		}
 
-		public async Task<bool> sendFriendRequest(Profile senderOfFriendRequest, Profile receiverOfFriendRequest)
+		public async Task<bool> sendFriendRequest(Profile senderOfFriendRequest, Profile receiverOfFriendRequest) // Implemented
 		{
 			// senderOfFriendRequest adds receiverOfFriendRequest to SentFriendRequests
 			// receiverOfFriendRequest adds senderOfFriendRequest to RecievedFriendRequests
@@ -447,31 +447,49 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> acceptFriendRequest(Profile accepterOfFriendRequest, Profile senderOfFriendRequest)
+		public async Task<bool> acceptFriendRequest(Profile accepterOfFriendRequest, Profile senderOfFriendRequest) // not yet implemented
 		{
+			// accepterOfFriendRequest removes senderOfFriendRequest from RecievedFriendRequests
 			// accepterOfFriendRequest adds senderOfFriendRequest to Friends
+			// senderOfFriendRequest removes accepterOfFriendRequest from SentFriendRequests
 			// senderOfFriendRequest adds accepterOfFriendRequest to Friends
 			// senderOfFriendRequest receives a notification
 			return false;
 		}
 
-		public async Task<bool> sendInviteToGroup(Group groupInvitedTo, Profile receiverOfGroupInvite)
+		public async Task<bool> declineFriendRequest(Profile declinerOfFriendRequest, Profile senderOfFriendRequest) // not yet implemented
 		{
-			//groupInvitedTo adds receiverOfGroupInvite to Invited
+			// declinerOfFriendRequest removes senderOfFriendRequest from RecievedFriendRequests
+			// senderOfFriendRequest removes declinerOfFriendRequest from SentFriendRequests
+			return false;
+		}
+
+		public async Task<bool> sendInviteToGroup(Group groupInvitedTo, Profile receiverOfGroupInvite) // not yet implemented
+		{
+			//groupInvitedTo adds receiverOfGroupInvite to InvitedProfiles
 			//receiverOfGroupInvite adds groupInvitedTo to RecievedGroupInvites
 			//receiverOfGroupInvite receives a notification
 			return false;
 		}
 
-		public async Task<bool> acceptInviteToGroup(Profile accepterOfGroupInvite, Group groupInvitedTo)
+		public async Task<bool> acceptInviteToGroup(Profile accepterOfGroupInvite, Group groupInvitedTo) // not yet implemented
 		{
+			// accepterOfGroupInvite removes groupInvitedTo from RecievedGroupInvites
 			// accepterOfGroupInvite adds groupInvitedTo to Groups
+			// groupInvitedTo removes accepterOfGroupInvite from InvitedProfiles
 			// groupInvitedTo adds accepterOfGroupInvite to Members
 			// groupInvitedTo receives a notification
 			return false;
 		}
 
-		public async Task<bool> sendProfileInviteToEvent(Event eventInviteTo, Profile receiverOfEventInvite)
+		public async Task<bool> declineInviteToGroup(Profile declinerOfGroupInvite, Group groupInvitedTo) // not yet implemented
+		{
+			// declinerOfGroupInvite removes groupInvitedTo from RecievedGroupInvites
+			// groupInvitedTo removes accepterOfGroupInvite from InvitedProfiles
+			return false;
+		}
+
+		public async Task<bool> sendProfileInviteToEvent(Event eventInvitedTo, List<Profile> receiverOfEventInvite) // Implemented
 		{
 			//eventInviteTo adds receiverOfEventInvite to InvitedProfiles
 			//receiverOfEventInvite adds eventInviteTo to EventsInvitedTo
@@ -479,11 +497,10 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> sendGroupInviteToEvent(Event eventInviteTo, Group receiverOfEventInvite)
+		public async Task<bool> declineInviteToEvent(Profile declinerOfEventInvite, Event eventInvitedTo) // not yet implemented
 		{
-			//eventInviteTo adds (Group)-receiverOfEventInvite to InvitedGroups
-			//(Group)-receiverOfEventInvite adds eventInviteTo to EventsInviteTo
-			//(Group)-receiverOfEventInvite receives a notification
+			// declinerOfEventInvite removes eventInvitedTo from EventsInviteTo
+			// eventInvitedTo removes declinerOfEventInvite from InvitedProfiles
 			return false;
 		}
     }
