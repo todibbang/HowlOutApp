@@ -212,7 +212,7 @@
 						</StackLayout>
 
 
-						<StackLayout Padding="10,10,10,0"> <local:Line/> </StackLayout> 
+					<StackLayout Padding="10,10,10,0"> <local:Line/> </StackLayout> 
 						<ListView x:Name="CommentList"
 						  			HasUnevenRows="false"
 									RowHeight="120"

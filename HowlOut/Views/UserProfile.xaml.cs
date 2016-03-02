@@ -7,7 +7,10 @@ namespace HowlOut
 {
 	public partial class UserProfile : ContentView
 	{
-		Profile userProfile = App.userProfile;
+		Profile userProfile;
+		Group userGroup;
+		Event eventObject;
+
 		DataManager dataManager = new DataManager();
 
 		List <Button> friendButtons = new List <Button>();
@@ -16,47 +19,69 @@ namespace HowlOut
 		List <Profile> friendsToInvite = new List <Profile>();
 		List <Group> groupsToInvite = new List <Group>();
 
-		Event eventBeingInvitedTo = new Event();
+
 		public CreateEvent createEventView;
 
-		public UserProfile (bool InviteMode, Event eve)
+		public UserProfile (Profile prof, Group group, Event eve, bool inviteMode, bool observer)
 		{
 			InitializeComponent ();
 
-			Likes.Text = userProfile.Likes + "";
-			Loyalty.Text = userProfile.LoyaltyRating + "";
-			NameAndAge.Text = userProfile.Name + ", " + userProfile.Age;
+			userProfile = prof;
+			userGroup = group;
+			eventObject = eve;
 
-
-			var profilePicUri = dataManager.GetFacebookProfileImageUri(userProfile.ProfileId);
-			Image.Source = ImageSource.FromUri(profilePicUri);
-
-			if (InviteMode) {
-				userProfileInfo.IsVisible = false;
-				eventBeingInvitedTo = eve;
-			} else {
-				inviteLayout.IsVisible = false;
+			if (userProfile != null) {
+				createList (userProfile.Friends , null, profileGrid);
+				createList (null, userProfile.Groups, groupGrid);
+			} else if(userGroup != null) {
+				createList (userGroup.Members , null, profileGrid);
+				friendsButton.Text = "Members";
+			} else if(eventObject != null) {
+				createList (eventObject.Attendees , null, profileGrid);
+				friendsButton.Text = "Attendees";
 			}
 
-			viewFriendsGrid.IsVisible = true;
-			viewGroupsGrid.IsVisible = false;
+			if (inviteMode) {
+				infoView.IsVisible = false;
+			} else {
+				inviteLayout.IsVisible = false;
+
+				if (userProfile != null) {
+					infoView.Content = new InspectProfile (userProfile);
+					WallList.ItemsSource = userProfile.Comments;
+				} else if(userGroup != null) {
+					infoView.Content = new InspectGroup (userGroup);
+					WallList.ItemsSource = userGroup.Comments;
+				} else if(eventObject != null) {
+					infoView.Content = new InspectEvent (eventObject, observer);
+					WallList.ItemsSource = eventObject.Comments;
+				}
+			}
+
+			profileGrid.IsVisible = true;
+			groupGrid.IsVisible = false;
+			wall.IsVisible = false;
 
 			friendsButton.Clicked  += (sender, e) => {
-				viewFriendsGrid.IsVisible = true;
-				viewGroupsGrid.IsVisible = false;
+				profileGrid.IsVisible = true;
+				groupGrid.IsVisible = false;
+				wall.IsVisible = false;
 			};
-
 			groupsButton.Clicked  += (sender, e) => {
-				viewFriendsGrid.IsVisible = false;
-				viewGroupsGrid.IsVisible = true;
+				profileGrid.IsVisible = false;
+				groupGrid.IsVisible = true;
+				wall.IsVisible = false;
 			};
-
-			createList (userProfile.Friends , null, viewFriendsGrid);
-			createList (null, userProfile.Groups, viewGroupsGrid);
+			wallButton.Clicked += (sender, e) =>  {
+				profileGrid.IsVisible = false;
+				groupGrid.IsVisible = false;
+				wall.IsVisible = true;
+			};
 
 			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {
-					if(InviteMode){
+					if(inviteMode){
+						friendsToInvite.RemoveAll(userProfile.Friends[int.Parse(button.Text)]);
 						friendsToInvite.Add(userProfile.Friends[int.Parse(button.Text)]);
 					}
 					else {
@@ -67,7 +92,8 @@ namespace HowlOut
 
 			foreach (Button button in groupButtons) {
 				button.Clicked += (sender, e) => {
-					if(InviteMode){
+					if(inviteMode){
+						groupsToInvite.RemoveAll(userProfile.Groups[int.Parse(button.Text)]);
 						groupsToInvite.Add(userProfile.Groups[int.Parse(button.Text)]);
 					}
 					else {
@@ -77,7 +103,11 @@ namespace HowlOut
 			}
 
 			inviteButton.Clicked += (sender, e) => {
-				sendEventInvites();
+				if(userGroup != null) {
+					sendInviteToGroup();
+				} else if(eventObject != null) {
+					sendInviteToEvent();
+				}
 			};
 		}
 
@@ -213,12 +243,33 @@ namespace HowlOut
 			return cellGrid;
 		}
 
-		private async void sendEventInvites()
+		private async void sendInviteToEvent()
 		{
-			if(friendsToInvite.Count != 0)dataManager.sendProfileInviteToEvent (eventBeingInvitedTo, friendsToInvite);
+			if(friendsToInvite.Count != 0)dataManager.sendProfileInviteToEvent (eventObject, friendsToInvite);
 
 			for (int i = 0; i < groupsToInvite.Count; i++) {
-				dataManager.sendProfileInviteToEvent (eventBeingInvitedTo, groupsToInvite[i].Members );
+				dataManager.sendProfileInviteToEvent (eventObject, groupsToInvite[i].Members );
+			}
+		}
+
+		private async void sendInviteToGroup()
+		{
+			if(friendsToInvite.Count != 0)dataManager.sendInviteToGroup (sendInviteToGroup, friendsToInvite);
+		}
+
+		private async void PostNewComment(Event eve)
+		{
+			if(commentEntry.Text != null || commentEntry.Text != "")
+			{
+				Event newEvent = await dataManager.AddCommentToEvent(eve.EventId, new Comment {
+					Content = commentEntry.Text, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
+				});
+				if (newEvent != null) {
+					commentEntry.Text = "";
+					App.coreView.setContentView (new InspectEvent (newEvent, 2), "InspectEvent");
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
+				}
 			}
 		}
 	}

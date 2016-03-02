@@ -27,6 +27,7 @@ namespace HowlOut
         public List<Event> FollowedEvents { get; set; }				//Events you are following
 		public List<Event> AttendedEvents { get; set; }				//Events you have already attended
 
+		public List <Comment> Comments {get; set;}					//Comments for the users wall
         //public List <string> FriendIDs {get; set;}
 
 		public Profile ()

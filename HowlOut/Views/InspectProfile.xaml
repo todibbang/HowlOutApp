@@ -5,23 +5,9 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	<ContentView.Content>
 
 		<Grid RowSpacing="0" ColumnSpacing="0">
-
-			<!--
-			<Grid.Padding>
-				<OnPlatform x:TypeArguments="Thickness"
-                	iOS="0, 20, 0, 0" />
-			</Grid.Padding>
-			-->
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
-			<!--
-			<StackLayout Grid.Row="0" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5">
-				<local:TopBar/> 
-			</StackLayout>
-			-->
-
-			<!-- Code Starts Here -->
 			<StackLayout Grid.Row="0" BackgroundColor="White" x:Name="testID">
 
 
@@ -114,15 +100,6 @@
 					</StackLayout>
 
 				</StackLayout>
-			<!-- Code Ends Here -->
-
-
-			<!--
-			<StackLayout Grid.Row="2" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5">
-				<local:BottomBar/>
-			</StackLayout>
-			-->
-
 		</Grid>
 	</ContentView.Content>
 </ContentView>

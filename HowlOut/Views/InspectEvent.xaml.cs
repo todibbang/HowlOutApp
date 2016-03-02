@@ -17,7 +17,7 @@ namespace HowlOut
 		UtilityManager util = new UtilityManager();
 		DataManager dataManager = new DataManager();
 
-		public InspectEvent (Event eve, int inspectType)
+		public InspectEvent (Event eve, bool inspectType)
 		{
 			InitializeComponent ();
 			setInfo (eve);
@@ -30,8 +30,8 @@ namespace HowlOut
 
 
 
-			if (inspectType == 1) 					{ searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
-			else if (inspectType == 2) 				{ searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
+			if (inspectType) 					{ searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
+			else  								{ searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
 
 			detailsButton.Clicked += (sender, e) => 
 			{
@@ -70,10 +70,6 @@ namespace HowlOut
 
 			joinButton.Clicked += (sender, e) => {
 				joinEvent(eve);
-			};
-
-			postCommentButton.Clicked += (sender, e) => {
-				PostNewComment(eve);
 			};
 		}
 
@@ -139,22 +135,6 @@ namespace HowlOut
 					Event eventWhenJoined = await dataManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
 					App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
-				} else {
-					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
-				}
-			}
-		}
-
-		private async void PostNewComment(Event eve)
-		{
-			if(commentEntry.Text != null || commentEntry.Text != "")
-			{
-			Event newEvent = await dataManager.AddCommentToEvent(eve.EventId, new Comment {
-				Content = commentEntry.Text, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
-			});
-			if (newEvent != null) {
-					commentEntry.Text = "";
-					App.coreView.setContentView (new InspectEvent (newEvent, 2), "InspectEvent");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}
