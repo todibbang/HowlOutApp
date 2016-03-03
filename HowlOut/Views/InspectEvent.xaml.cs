@@ -22,11 +22,7 @@ namespace HowlOut
 			InitializeComponent ();
 			setInfo (eve);
 
-			List<Comment> displayedList = new List<Comment> ();
-			for (int i = eve.Comments.Count - 1; i > -1; i--) {
-				displayedList.Add (eve.Comments [i]);
-			}
-			CommentList.ItemsSource = displayedList;
+
 
 
 
@@ -46,11 +42,14 @@ namespace HowlOut
 			};
 
 			eventHolderButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), "InspectProfile");
+				App.coreView.setContentView (new UserProfile (eve.Attendees[0], null, null, false, false), "UserProfile");
+				//App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), "InspectProfile");
 			};
 
 			eventGroupButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectGroup(eve.Attendees), "InspectGroup");
+				//App.coreView.setContentView (new UserProfile (null, null, null, false, false), "UserProfile");
+
+				//App.coreView.setContentView(new InspectGroup(eve.Attendees), "InspectGroup");
 			};
 
 			mapButton.Clicked += (sender, e) => {
@@ -71,14 +70,17 @@ namespace HowlOut
 			joinButton.Clicked += (sender, e) => {
 				joinEvent(eve);
 			};
+
+			inviteButton.Clicked += (sender, e) => {
+				App.coreView.setContentView (new UserProfile (null, null, eve, true, false), "UserProfile");
+			};
 		}
 
 		public async void setInfo (Event eve)
 		{
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(eve.OwnerId);
 			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
-			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
-			usersPhoto.Source = ImageSource.FromUri (userPicUri);
+
 
 			Position position = util.getCurrentUserPosition();
 
@@ -134,7 +136,10 @@ namespace HowlOut
 				if (hasJoined) {
 					Event eventWhenJoined = await dataManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
-					App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
+
+					App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined, false, false), "UserProfile");
+					//App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
+
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}

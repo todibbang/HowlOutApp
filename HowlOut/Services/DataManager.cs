@@ -29,7 +29,7 @@ namespace HowlOut
 			return new Uri("https://graph.facebook.com/v2.5/"+facebookUserId+"/picture?height=300&width=300");
         }
 
-		public async Task GetAllEvents()
+		public async Task<ObservableCollection<Event>> GetAllEvents()
         {
 			ObservableCollection<Event> events = new ObservableCollection<Event>(); 
 
@@ -48,10 +48,10 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine("COULD NOT RECIEVE DATA!!!!!");
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
-			App.coreView.searchEventList = events;
+			return events;
         }
 
-        public async Task GetEventsWithOwnerId()
+		public async Task<ObservableCollection<Event>> GetEventsWithOwnerId()
         {
             ObservableCollection<Event> events = new ObservableCollection<Event>();
 
@@ -70,7 +70,7 @@ namespace HowlOut
             {
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
-			App.coreView.manageEventList = events;
+			return events;
         }
 
         public async Task<Event> GetEventById(string eventId)
@@ -200,7 +200,7 @@ namespace HowlOut
             return false;
         }
 
-        public async Task SearchEvents(List<int> eventTypesId, Profile profile, double userLat, double userLong, double maxDistance)
+		public async Task<ObservableCollection<Event>> SearchEvents(List<int> eventTypesId, Profile profile, double userLat, double userLong, double maxDistance)
         {
             ObservableCollection<Event> events = new ObservableCollection<Event>();
 
@@ -228,7 +228,7 @@ namespace HowlOut
                 System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
 
-			App.coreView.searchEventList = events;
+			return events;
         }
 
         public async Task<bool> FollowEvent(string eventId, string profileId)
@@ -374,11 +374,11 @@ namespace HowlOut
 			updateProfile();
 		}
 		public async Task updateSearch() {
-			await GetAllEvents ();
-			App.coreView.searchEvent.updateList ();
+			//App.coreView.searchEventList = await GetAllEvents ();
+			App.coreView.searchEvent.updateList (await GetAllEvents ());
 		}
 		public async Task updateManage() {
-			await GetEventsWithOwnerId ();
+			App.coreView.manageEventList = await GetEventsWithOwnerId ();
 			App.coreView.manageEvent.updateList ();
 		}
 		public async Task updateProfile() {
@@ -464,7 +464,7 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> sendInviteToGroup(Group groupInvitedTo, Profile receiverOfGroupInvite) // not yet implemented
+		public async Task<bool> sendInviteToGroup(Group groupInvitedTo, ObservableCollection<Profile> receiverOfGroupInvite) // not yet implemented
 		{
 			//groupInvitedTo adds receiverOfGroupInvite to InvitedProfiles
 			//receiverOfGroupInvite adds groupInvitedTo to RecievedGroupInvites
@@ -489,7 +489,7 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> sendProfileInviteToEvent(Event eventInvitedTo, List<Profile> receiverOfEventInvite) // Implemented
+		public async Task<bool> sendProfileInviteToEvent(Event eventInvitedTo, ObservableCollection<Profile> receiverOfEventInvite) // Implemented
 		{
 			//eventInviteTo adds receiverOfEventInvite to InvitedProfiles
 			//receiverOfEventInvite adds eventInviteTo to EventsInvitedTo

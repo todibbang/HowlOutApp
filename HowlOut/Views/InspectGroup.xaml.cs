@@ -13,12 +13,11 @@ namespace HowlOut
 		public InspectGroup (Group group)
 		{
 			InitializeComponent ();
-			inspectedProfile = profile;
 
 			//Likes.Text = group.Likes + "";
 			//Loyalty.Text = group.LoyaltyRating + "";
 			NameAndAge.Text = group.Name;
-			groupImage.Text = group.Members.Count;
+			groupImage.Text = group.Members.Count + "";
 
 			friendRequestButton.Clicked += (sender, e) => 
 			{

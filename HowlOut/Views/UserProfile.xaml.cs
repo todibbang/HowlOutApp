@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using ImageCircle.Forms.Plugin.Abstractions;
+using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
@@ -13,11 +14,11 @@ namespace HowlOut
 
 		DataManager dataManager = new DataManager();
 
-		List <Button> friendButtons = new List <Button>();
-		List <Button> groupButtons = new List <Button>();
+		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
+		ObservableCollection <Button> groupButtons = new ObservableCollection <Button>();
 
-		List <Profile> friendsToInvite = new List <Profile>();
-		List <Group> groupsToInvite = new List <Group>();
+		ObservableCollection <Profile> friendsToInvite = new ObservableCollection <Profile>();
+		ObservableCollection <Group> groupsToInvite = new ObservableCollection <Group>();
 
 
 		public CreateEvent createEventView;
@@ -26,19 +27,35 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 
+			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
+			usersPhoto.Source = ImageSource.FromUri (userPicUri);
+
+
+
 			userProfile = prof;
 			userGroup = group;
 			eventObject = eve;
 
+			List<Comment> givenList = new List<Comment> ();
 			if (userProfile != null) {
 				createList (userProfile.Friends , null, profileGrid);
 				createList (null, userProfile.Groups, groupGrid);
+				givenList = userProfile.Comments;
 			} else if(userGroup != null) {
 				createList (userGroup.Members , null, profileGrid);
 				friendsButton.Text = "Members";
+				givenList = userGroup.Comments;
 			} else if(eventObject != null) {
 				createList (eventObject.Attendees , null, profileGrid);
 				friendsButton.Text = "Attendees";
+				givenList = eventObject.Comments;
+			}
+			if (givenList != null) {
+				List<Comment> displayedList = new List<Comment> ();
+				for (int i = givenList.Count - 1; i > -1; i--) {
+					displayedList.Add (givenList [i]);
+				}
+				WallList.ItemsSource = displayedList;
 			}
 
 			if (inviteMode) {
@@ -53,8 +70,12 @@ namespace HowlOut
 					infoView.Content = new InspectGroup (userGroup);
 					WallList.ItemsSource = userGroup.Comments;
 				} else if(eventObject != null) {
+					
+					System.Diagnostics.Debug.WriteLine ("BUUUUUUUUUUUU");
+					infoView.IsVisible = true;
 					infoView.Content = new InspectEvent (eventObject, observer);
 					WallList.ItemsSource = eventObject.Comments;
+
 				}
 			}
 
@@ -80,12 +101,18 @@ namespace HowlOut
 
 			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {
+					Profile profile = null;
+					if (userProfile != null) { profile = userProfile.Friends[int.Parse(button.Text)];} 
+					else if(userGroup != null) { profile = userGroup.Members[int.Parse(button.Text)];} 
+					else if(eventObject != null) { profile = eventObject.Attendees[int.Parse(button.Text)];}
+
 					if(inviteMode){
-						friendsToInvite.RemoveAll(userProfile.Friends[int.Parse(button.Text)]);
-						friendsToInvite.Add(userProfile.Friends[int.Parse(button.Text)]);
+						if(!friendsToInvite.Contains(profile)) {
+							friendsToInvite.Add(profile);
+						}
 					}
 					else {
-						App.coreView.setContentView( new InspectProfile (userProfile.Friends[int.Parse(button.Text)]), "InspectProfile");
+						App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
 					}
 				};
 			}
@@ -93,11 +120,12 @@ namespace HowlOut
 			foreach (Button button in groupButtons) {
 				button.Clicked += (sender, e) => {
 					if(inviteMode){
-						groupsToInvite.RemoveAll(userProfile.Groups[int.Parse(button.Text)]);
-						groupsToInvite.Add(userProfile.Groups[int.Parse(button.Text)]);
+						if(!groupsToInvite.Contains(userProfile.Groups[int.Parse(button.Text)])){
+							groupsToInvite.Add(userProfile.Groups[int.Parse(button.Text)]);
+						}
 					}
 					else {
-						App.coreView.setContentView( new InspectGroup (userProfile.Groups[int.Parse(button.Text)].Members ), "InspectGroup");
+						App.coreView.setContentView (new UserProfile (null, userProfile.Groups[int.Parse(button.Text)], null, false, false), "UserProfile");
 					}
 				};
 			}
@@ -114,6 +142,13 @@ namespace HowlOut
 
 		private void createList(List<Profile> profiles, List<Group> groups, Grid grid)
 		{
+			int count = 0;
+			if (profiles != null) {
+				count = profiles.Count;
+			} else {
+				count = groups.Count;
+			}
+
 			Grid newGrid = new Grid {
 				ColumnDefinitions = {
 					new ColumnDefinition { Width = GridLength.Auto },
@@ -132,7 +167,7 @@ namespace HowlOut
 			int column = 0;
 			int row = 0;
 
-			for (int i = 0; i < profiles.Count; i++) {
+			for (int i = 0; i < count; i++) {
 				if (column == 3) {
 					column = 0;
 					row++;
@@ -200,12 +235,13 @@ namespace HowlOut
 
 		private Button buttonCreator(int i)
 		{
-			new Button {
+			
+			Button button = new Button {
 				Text = "" + i,
 				TextColor = Color.Transparent,
 				BackgroundColor = Color.Transparent,
 			};
-			return friendButtons[i];
+			return button;
 		}
 
 		private Grid groupListCreator(Group group)
@@ -245,16 +281,26 @@ namespace HowlOut
 
 		private async void sendInviteToEvent()
 		{
-			if(friendsToInvite.Count != 0)dataManager.sendProfileInviteToEvent (eventObject, friendsToInvite);
+			if (friendsToInvite.Count != 0) {
+				await dataManager.sendProfileInviteToEvent (eventObject, friendsToInvite);
+			}
+
+
 
 			for (int i = 0; i < groupsToInvite.Count; i++) {
-				dataManager.sendProfileInviteToEvent (eventObject, groupsToInvite[i].Members );
+				ObservableCollection<Profile> members = new ObservableCollection<Profile> ();
+				for (int e = 0; e < groupsToInvite [i].Members.Count; e++) {
+					members.Add (groupsToInvite [i].Members[e]);
+				}
+				await dataManager.sendProfileInviteToEvent (eventObject, members );
 			}
 		}
 
 		private async void sendInviteToGroup()
 		{
-			if(friendsToInvite.Count != 0)dataManager.sendInviteToGroup (sendInviteToGroup, friendsToInvite);
+			if (friendsToInvite.Count != 0) {
+				await dataManager.sendInviteToGroup (userGroup, friendsToInvite);
+			}
 		}
 
 		private async void PostNewComment(Event eve)
@@ -266,7 +312,7 @@ namespace HowlOut
 				});
 				if (newEvent != null) {
 					commentEntry.Text = "";
-					App.coreView.setContentView (new InspectEvent (newEvent, 2), "InspectEvent");
+					App.coreView.setContentView (new UserProfile (null, null, newEvent, false, false), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}

@@ -73,9 +73,7 @@ namespace HowlOut
 				if (maxSize.SelectedIndex != -1) { string size = maxSize.Items[maxSize.SelectedIndex]; newEvent.MaxSize = sizePicker[size]; } };
 
 			inviteButton.Clicked += (sender, e) => {
-				UserProfile inviteView = new UserProfile(true, newEvent);
-				inviteView.createEventView = this;
-				App.coreView.setContentView(inviteView, "UserProfile");
+				App.coreView.setContentView (new UserProfile (null, null, newEvent, true, false), "UserProfile");
 			};
 
 			if (isCreate) {
@@ -154,7 +152,8 @@ namespace HowlOut
 			eventCreated.Attendees = new List<Profile> ();
 			eventCreated.Followers = new List<Profile> ();
 			if (eventCreated != null) {
-				App.coreView.setContentView (new InspectEvent (eventCreated, 2), "InspectEvent");
+				App.coreView.setContentView (new UserProfile (null, null, eventCreated, false, false), "UserProfile");
+				//App.coreView.setContentView (new InspectEvent (eventCreated, 2), "InspectEvent");
 			} else {
 				App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 			}

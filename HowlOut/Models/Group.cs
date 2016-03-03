@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
@@ -18,7 +19,7 @@ namespace HowlOut
 
 		public List <Comment> Comments {get; set;}			//List of comments within the group
 
-		public bool public {get; set;}
+		public bool Public {get; set;}
 
 		public Group ()
 		{

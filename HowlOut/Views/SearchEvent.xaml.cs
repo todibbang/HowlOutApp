@@ -21,16 +21,22 @@ namespace HowlOut
 			if(SearchEventList.SelectedItem == null)
 				return;
 			var eveForLis = SearchEventList.SelectedItem as EventForLists;
-			App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), "InspectEvent");
+
+
+			App.coreView.setContentView (new UserProfile (null, null, eveForLis.eve, false, true), "UserProfile");
+			//App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), "InspectEvent");
 			SearchEventList.SelectedItem = null;
 		}
 
-		public void updateList(){
-			var eve = App.coreView.searchEventList;
+		public void updateList(ObservableCollection<Event> evelist){
+			//var eve = App.coreView.searchEventList;
 			listEvents.Clear ();
-			for (int i = 0; i < eve.Count; i++) {
-				EventForLists EveForLis = new EventForLists (eve [i]);
+			for (int i = 0; i < 2; i++) 
+			{
+				System.Diagnostics.Debug.WriteLine ("List: " + i + "");
+				EventForLists EveForLis = new EventForLists (evelist [i]);
 				listEvents.Add (EveForLis);
+
 			}
 			SearchEventList.ItemsSource = listEvents;
 		}
