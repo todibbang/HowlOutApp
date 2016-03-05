@@ -31,7 +31,7 @@ namespace HowlOut
 		public void updateList(ObservableCollection<Event> evelist){
 			//var eve = App.coreView.searchEventList;
 			listEvents.Clear ();
-			for (int i = 0; i < 2; i++) 
+			for (int i = 0; i < evelist.Count; i++) 
 			{
 				System.Diagnostics.Debug.WriteLine ("List: " + i + "");
 				EventForLists EveForLis = new EventForLists (evelist [i]);

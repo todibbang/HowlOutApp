@@ -44,6 +44,7 @@ namespace HowlOut
 				}
 			};
 
+			/*
 			eventHolderButton.Clicked += (sender, e) => {
 				App.coreView.setContentView (new UserProfile (eve.Attendees[0], null, null, false, false), "UserProfile");
 				//App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), "InspectProfile");
@@ -54,7 +55,7 @@ namespace HowlOut
 
 				//App.coreView.setContentView(new InspectGroup(eve.Attendees), "InspectGroup");
 			};
-
+			*/
 			mapButton.Clicked += (sender, e) => {
 				App.coreView.setContentView(new MapsView(eve), "MapsView");
 			};
