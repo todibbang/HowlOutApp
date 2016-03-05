@@ -37,6 +37,7 @@ namespace HowlOut
 
 			howlOut.Clicked += (sender, e) => 
 			{
+				App.coreView.setContentView (new UserProfile (App.userProfile, null, null, false, false), "UserProfile");
 			};
 		}
 	}

@@ -5,74 +5,77 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	
 	<ContentView.Content>
 
+	<!--
 		<Grid RowSpacing="0" ColumnSpacing="0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
+			-->
+			<ScrollView  Orientation="Vertical" VerticalOptions="FillAndExpand">
 
-			<ScrollView Grid.Row="0"  Orientation="Vertical" VerticalOptions="FillAndExpand">
-			<StackLayout>	
-				<ContentView VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="infoView"></ContentView>
+				<Grid> 
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="20"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
 
-				<StackLayout VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="inviteLayout">
-					<Button Text="Send Invites" x:Name="inviteButton"/>
-				</StackLayout>
-
-				<StackLayout Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HeightRequest="40">
-					<Grid RowSpacing="0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Button Grid.Column="0" Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton"></Button>
-						<Button Grid.Column="1" Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton"></Button>
-						<Button Grid.Column="2" Text="Wall" Style="{DynamicResource ButtonStyle}" x:Name="wallButton"></Button>
-					</Grid>
-				</StackLayout>
-
-				<Grid x:Name="profileGrid"></Grid>
-				<Grid x:Name="groupGrid"></Grid>
-				<StackLayout Spacing="0" Padding="0" x:Name="wall">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="5"/>
-							<ColumnDefinition Width="65"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="5"/>
-						</Grid.ColumnDefinitions>
-
-						<Grid.RowDefinitions>
-							<RowDefinition Height="5"/>
-							<RowDefinition Height="65"/>
-							<RowDefinition Height="20"/>
-							<RowDefinition Height="*"/>
-						</Grid.RowDefinitions>
-
-						<controls:CircleImage Grid.Row="1" Grid.Column="1" x:Name="usersPhoto"/> 
-						<Button Grid.Column="1" Grid.Row="2" Text="Post" x:Name="postCommentButton"/>
-						<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-							<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntry" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
-						</StackLayout>
-
-					</Grid>
-					<StackLayout Padding="10,10,10,0"> <local:Line/> </StackLayout> 
-						<ListView x:Name="WallList"
-						  			HasUnevenRows="false"
-									RowHeight="120"
-									SeparatorVisibility="None"
-									BackgroundColor="Transparent">
-							<ListView.ItemTemplate>
-								<DataTemplate>
-									<ViewCell>
-										<local:InspectManageComment  />
-									</ViewCell>
-								</DataTemplate>
-							</ListView.ItemTemplate>	
-						</ListView>
+					<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="infoView"></ContentView>
+					<StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="inviteLayout">
+						<Button Text="Send Invites" x:Name="inviteButton"/>
 					</StackLayout>
-				</StackLayout>	
+
+					<StackLayout Grid.Row="1" Padding="0" VerticalOptions="CenterAndExpand"> <local:Line/> </StackLayout> 
+
+					<StackLayout Grid.Row="2" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+						<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+						<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+						<Button Text="Wall" Style="{DynamicResource ButtonStyle}" x:Name="wallButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+					</StackLayout>
+
+					<Grid Grid.Row="3" x:Name="profileGrid"></Grid>
+					<Grid Grid.Row="3" x:Name="groupGrid"></Grid>
+					<StackLayout Grid.Row="3" Spacing="0" Padding="0" x:Name="wall">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="65"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+
+							<Grid.RowDefinitions>
+								<RowDefinition Height="5"/>
+								<RowDefinition Height="65"/>
+								<RowDefinition Height="20"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+
+							<controls:CircleImage Grid.Row="1" Grid.Column="1" x:Name="usersPhoto"/> 
+							<Button Grid.Column="1" Grid.Row="2" Text="Post" x:Name="postCommentButton"/>
+							<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+								<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntry" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+							</StackLayout>
+
+						</Grid>
+						<StackLayout Padding="10,10,10,0"> <local:Line/> </StackLayout> 
+							<ListView x:Name="WallList"
+							  			HasUnevenRows="false"
+										RowHeight="120"
+										SeparatorVisibility="None"
+										BackgroundColor="Transparent">
+								<ListView.ItemTemplate>
+									<DataTemplate>
+										<ViewCell>
+											<local:InspectManageComment  />
+										</ViewCell>
+									</DataTemplate>
+								</ListView.ItemTemplate>	
+							</ListView>
+						</StackLayout>
+					</Grid>
 			</ScrollView>
-		</Grid>
+		<!-- </Grid> -->
 	</ContentView.Content>
 </ContentView>

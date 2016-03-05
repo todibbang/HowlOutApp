@@ -16,67 +16,76 @@ namespace HowlOut
 
 		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
 		ObservableCollection <Button> groupButtons = new ObservableCollection <Button>();
-
 		ObservableCollection <Profile> friendsToInvite = new ObservableCollection <Profile>();
 		ObservableCollection <Group> groupsToInvite = new ObservableCollection <Group>();
-
-
 		public CreateEvent createEventView;
 
 		public UserProfile (Profile prof, Group group, Event eve, bool inviteMode, bool observer)
 		{
 			InitializeComponent ();
 
-			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
+			var userPicUri = dataManager.GetFacebookProfileImageUri (App.StoredUserFacebookId);
 			usersPhoto.Source = ImageSource.FromUri (userPicUri);
-
-
 
 			userProfile = prof;
 			userGroup = group;
 			eventObject = eve;
 
 			List<Comment> givenList = new List<Comment> ();
-			if (userProfile != null) {
-				createList (userProfile.Friends , null, profileGrid);
-				createList (null, userProfile.Groups, groupGrid);
-				givenList = userProfile.Comments;
-			} else if(userGroup != null) {
-				createList (userGroup.Members , null, profileGrid);
-				friendsButton.Text = "Members";
-				givenList = userGroup.Comments;
-			} else if(eventObject != null) {
-				createList (eventObject.Attendees , null, profileGrid);
-				friendsButton.Text = "Attendees";
-				givenList = eventObject.Comments;
+			if(inviteMode){
+				infoView.IsVisible = false;
+				List<Profile> profilesToInvite = App.userProfile.Friends;
+
+				Dictionary<Profile, string> profilesNotToInvite = new Dictionary<Profile, string> { };
+
+				if (userGroup != null) { 
+					for (int e = 0; e < userGroup.Members.Count; e++) {
+						profilesNotToInvite.Add (userGroup.Members[e], userGroup.Members[e].ProfileId);
+					}
+				} else if (eventObject != null) { 
+					for (int e = 0; e < eventObject.Attendees.Count; e++) {
+						profilesNotToInvite.Add (eventObject.Attendees[e], eventObject.Attendees[e].ProfileId);
+					}
+				}
+
+				for(int i = profilesToInvite.Count - 1; i > -1; i--) {
+					if (profilesNotToInvite.ContainsValue (profilesToInvite [i].ProfileId)) {
+						System.Diagnostics.Debug.WriteLine ("Catch");
+						profilesToInvite.Remove (profilesToInvite [i]);
+					}
+				}
+
+				createList (profilesToInvite , null, profileGrid);
+				createList (null, App.userProfile.Groups, groupGrid);
+				wallButton.IsVisible = false;
+			} else {
+				inviteLayout.IsVisible = false;
+				if (userProfile != null) {
+					createList (userProfile.Friends , null, profileGrid);
+					createList (null, userProfile.Groups, groupGrid);
+					givenList = userProfile.Comments;
+					infoView.Content = new InspectProfile (userProfile);
+				} else if(userGroup != null) {
+					createList (userGroup.Members , null, profileGrid);
+					friendsButton.Text = "Members";
+					givenList = userGroup.Comments;
+					infoView.Content = new InspectGroup (userGroup);
+					groupsButton.IsVisible = false;
+				} else if(eventObject != null) {
+					createList (eventObject.Attendees , null, profileGrid);
+					friendsButton.Text = "Attendees";
+					givenList = eventObject.Comments;
+					infoView.Content = new InspectEvent (eventObject, observer);
+					groupsButton.IsVisible = false;
+				}
 			}
+
 			if (givenList != null) {
 				List<Comment> displayedList = new List<Comment> ();
 				for (int i = givenList.Count - 1; i > -1; i--) {
 					displayedList.Add (givenList [i]);
 				}
 				WallList.ItemsSource = displayedList;
-			}
-
-			if (inviteMode) {
-				infoView.IsVisible = false;
-			} else {
-				inviteLayout.IsVisible = false;
-
-				if (userProfile != null) {
-					infoView.Content = new InspectProfile (userProfile);
-					WallList.ItemsSource = userProfile.Comments;
-				} else if(userGroup != null) {
-					infoView.Content = new InspectGroup (userGroup);
-					WallList.ItemsSource = userGroup.Comments;
-				} else if(eventObject != null) {
-					
-					System.Diagnostics.Debug.WriteLine ("BUUUUUUUUUUUU");
-					infoView.IsVisible = true;
-					infoView.Content = new InspectEvent (eventObject, observer);
-					WallList.ItemsSource = eventObject.Comments;
-
-				}
 			}
 
 			profileGrid.IsVisible = true;

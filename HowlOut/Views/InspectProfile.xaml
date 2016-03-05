@@ -5,101 +5,41 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	<ContentView.Content>
 
 		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="15"/>
+				<ColumnDefinition Width="55"/>
+				<ColumnDefinition Width="40"/>
+				<ColumnDefinition Width="55"/>
+				<ColumnDefinition Width="15"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
 			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="105"/>
+				<RowDefinition Height="45"/>
+				<RowDefinition Height="25"/>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="50"/>
 			</Grid.RowDefinitions>
-			<StackLayout Grid.Row="0" BackgroundColor="White" x:Name="testID">
+			<controls:CircleImage Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2"
+				Source="{Binding EventHolderPhoto}" x:Name="ProfileImage"/>
+			<Button Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2"
+				Style="{DynamicResource LikesButtonStyle}" BorderRadius="35" BorderWidth="5" FontSize="18" x:Name="Likes"></Button>
+			<Button Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" 
+				Style="{DynamicResource LoyaltyButtonStyle}" BorderRadius="35" BorderWidth="5" FontSize="18" x:Name="Loyalty"></Button>
+			<Label Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" Grid.RowSpan="1" 
+				Style="{DynamicResource TitleStyle}" x:Name="NameAndAge"/>
+			<StackLayout Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="7" Grid.RowSpan="1" 
+				Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+				<Button Text="Befriend" Style="{DynamicResource ButtonStyle}" x:Name="friendRequestButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="2" Style="{DynamicResource ButtonStyle}" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="3" Style="{DynamicResource ButtonStyle}" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+			</StackLayout>
 
-
-					<StackLayout VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0">
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="150"/>
-							</Grid.RowDefinitions>
-
-							<StackLayout Grid.Row="0" Padding="0,0,0,0">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="150"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-
-									<Grid Grid.Column="1" >
-										<Grid.RowDefinitions>
-											<RowDefinition Height="*"/>
-											<RowDefinition Height="150"/>
-											<RowDefinition Height="*"/>
-										</Grid.RowDefinitions>
-										<controls:CircleImage Grid.Row="1" Source="{Binding EventHolderPhoto}" x:Name="ProfileImage"/>
-										<!---<Button Grid.Row="1" Style="{DynamicResource AttendingButtonStyle}" 
-										BorderRadius="75" BorderWidth="0" BackgroundColor="#ff00a0e0"></Button> -->
-									</Grid>
-								</Grid>
-							</StackLayout>
-
-							<StackLayout Grid.Row="0" Padding="5,0,5,0">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="70"/>
-										<ColumnDefinition Width="40"/>
-										<ColumnDefinition Width="70"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-
-									<Grid Grid.Column="1" >
-										<Grid.RowDefinitions>
-											<RowDefinition Height="*"/>
-											<RowDefinition Height="105"/>
-											<RowDefinition Height="70"/>
-											<RowDefinition Height="*"/>
-										</Grid.RowDefinitions>
-										<Button Grid.Row="2" Style="{DynamicResource LikesButtonStyle}" BorderRadius="35" BorderWidth="5" FontSize="18" x:Name="Likes"></Button>
-									</Grid>
-
-									<Grid Grid.Column="3" >
-										<Grid.RowDefinitions>
-											<RowDefinition Height="*"/>
-											<RowDefinition Height="105"/>
-											<RowDefinition Height="70"/>
-											<RowDefinition Height="*"/>
-										</Grid.RowDefinitions>
-										<Button Grid.Row="2" Style="{DynamicResource LoyaltyButtonStyle}" BorderRadius="35" BorderWidth="5" FontSize="18" x:Name="Loyalty"></Button>
-									</Grid>
-								</Grid>
-							</StackLayout>
-						</Grid>
-					</StackLayout>
-
-					<StackLayout Padding="30,0,10,0" VerticalOptions="CenterAndExpand">
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="40"/>
-								<RowDefinition Height="20"/>
-								<RowDefinition Height="20"/>
-								<RowDefinition Height="20"/>
-							</Grid.RowDefinitions>
-							<Label Grid.Row="0" Style="{DynamicResource TitleStyle}" x:Name="NameAndAge"/>
-							<Label Grid.Row="1" Style="{DynamicResource DistanceStyle}" Text=""/>
-							<Label Grid.Row="2" Style="{DynamicResource TimeStyle}" Text=""/>
-						</Grid>
-					</StackLayout>
-
-					<StackLayout Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HeightRequest="40">
-						<Grid RowSpacing="0">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
-							<Button Grid.Column="0" Text="Befriend" Style="{DynamicResource ButtonStyle}" x:Name="friendRequestButton"></Button>
-							<Button Grid.Column="1" Text="2" Style="{DynamicResource ButtonStyle}"></Button>
-							<Button Grid.Column="2" Text="3" Style="{DynamicResource ButtonStyle}"></Button>
-						</Grid>
-					</StackLayout>
-
-				</StackLayout>
 		</Grid>
 	</ContentView.Content>
 </ContentView>
