@@ -28,14 +28,11 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 
-<<<<<<< HEAD
 			httpClient = new HttpClient(new NativeMessageHandler());
 			eventApiManager = new EventApiManager (httpClient);
 
 			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
-=======
-			var userPicUri = dataManager.GetFacebookProfileImageUri (App.StoredUserFacebookId);
->>>>>>> origin/master
+
 			usersPhoto.Source = ImageSource.FromUri (userPicUri);
 
 			userProfile = prof;
