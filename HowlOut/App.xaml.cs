@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Net.Http;
+using ModernHttpClient;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -12,7 +14,8 @@ namespace HowlOut
 		public static CoreView coreView;
 		public static Profile userProfile;
 
-        private DataManager dataManager;
+		private ProfileApiManager profileApiManager;
+		private HttpClient httpClient;
 
         public interface ISaveAndLoad
         {
@@ -34,7 +37,9 @@ namespace HowlOut
 
             InitializeComponent();
 
-            dataManager = new DataManager();
+			httpClient = new HttpClient(new NativeMessageHandler());
+			profileApiManager = new ProfileApiManager (httpClient);
+
             //Eventsfired from the LoginPage to trigger actions here
             LoginPage.LoginSucceeded += LoginPage_LoginSucceeded;
             LoginPage.LoginCancelled += LoginPage_LoginCancelled;
@@ -132,7 +137,7 @@ namespace HowlOut
             await storeToken();
             
 			Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
-			await dataManager.CreateProfile(profile);
+			await profileApiManager.CreateProfile(profile);
 
 			startProgram ();
 			coreView = new CoreView();
@@ -142,7 +147,7 @@ namespace HowlOut
 
 		private async void startProgram()
 		{
-			userProfile = await dataManager.GetProfileId (StoredUserFacebookId);
+			userProfile = await profileApiManager.GetProfileId (StoredUserFacebookId);
 		}
 
         protected override void OnStart ()

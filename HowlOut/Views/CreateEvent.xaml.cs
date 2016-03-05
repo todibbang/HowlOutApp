@@ -4,14 +4,17 @@ using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Plugin.Geolocator;
 using Xamarin.Forms.Maps;
+using System.Net.Http;
+using ModernHttpClient;
 
 namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
 		UtilityManager utilityManager = new UtilityManager ();
-		DataManager dataManager = new DataManager();
+		EventApiManager eventApiManager;
 		MapsView mapView;
+		private HttpClient httpClient;
 
 		public Event newEvent;
 		Dictionary<string, int> agePicker = new Dictionary<string, int> { };
@@ -19,6 +22,8 @@ namespace HowlOut
 
 		public CreateEvent (Event givenEvent, bool isCreate)
 		{
+			httpClient = new HttpClient(new NativeMessageHandler());
+			eventApiManager = new EventApiManager (httpClient);
 			newEvent = givenEvent;
 			InitializeComponent ();
 			mapView = new MapsView (utilityManager.getCurrentUserPosition());
@@ -86,7 +91,7 @@ namespace HowlOut
 				if(isCreate) {
 					LaunchEvent(newEvent);
 				} else {
-					dataManager.UpdateEvent(newEvent);
+					eventApiManager.UpdateEvent(newEvent);
 				}
 			};
 
@@ -148,7 +153,7 @@ namespace HowlOut
 				Public = true, AddressPosition = eventToCreate.AddressPosition, 
 				AddressName = eventToCreate.AddressName, EventTypes = EventTypes};
 
-			Event eventCreated = await dataManager.CreateEvent (newEventAsDBO);
+			Event eventCreated = await eventApiManager.CreateEvent (newEventAsDBO);
 			eventCreated.Attendees = new List<Profile> ();
 			eventCreated.Followers = new List<Profile> ();
 			if (eventCreated != null) {
@@ -180,7 +185,7 @@ namespace HowlOut
 			bool confirmDelete = await App.coreView.displayConfirmMessage ("Warning", "You are about to delete this event permanently, would you like to continue", "Yes", "No");
 
 			if (confirmDelete) {
-				bool wasEventDeleted = await dataManager.DeleteEvent (newEvent.EventId);
+				bool wasEventDeleted = await eventApiManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
 					App.coreView.setContentView (new ManageEvent (), "ManageEvent");

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using ImageCircle.Forms.Plugin.Abstractions;
 using System.Collections.ObjectModel;
+using System.Net.Http;
+using ModernHttpClient;
 
 namespace HowlOut
 {
@@ -13,6 +15,8 @@ namespace HowlOut
 		Event eventObject;
 
 		DataManager dataManager = new DataManager();
+		private EventApiManager eventApiManager;
+		private HttpClient httpClient;
 
 		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
 		ObservableCollection <Button> groupButtons = new ObservableCollection <Button>();
@@ -26,6 +30,9 @@ namespace HowlOut
 		public UserProfile (Profile prof, Group group, Event eve, bool inviteMode, bool observer)
 		{
 			InitializeComponent ();
+
+			httpClient = new HttpClient(new NativeMessageHandler());
+			eventApiManager = new EventApiManager (httpClient);
 
 			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
 			usersPhoto.Source = ImageSource.FromUri (userPicUri);
@@ -307,7 +314,7 @@ namespace HowlOut
 		{
 			if(commentEntry.Text != null || commentEntry.Text != "")
 			{
-				Event newEvent = await dataManager.AddCommentToEvent(eve.EventId, new Comment {
+				Event newEvent = await eventApiManager.AddCommentToEvent(eve.EventId, new Comment {
 					Content = commentEntry.Text, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
 				});
 				if (newEvent != null) {

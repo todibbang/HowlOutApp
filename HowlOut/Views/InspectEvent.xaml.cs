@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using Xamarin.Forms.Maps;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Net.Http;
+using ModernHttpClient;
 
 namespace HowlOut
 {
@@ -16,15 +18,16 @@ namespace HowlOut
 
 		UtilityManager util = new UtilityManager();
 		DataManager dataManager = new DataManager();
+		HttpClient httpClient;
+		EventApiManager eventApiManager;
 
 		public InspectEvent (Event eve, bool inspectType)
 		{
 			InitializeComponent ();
 			setInfo (eve);
 
-
-
-
+			httpClient = new HttpClient(new NativeMessageHandler());
+			eventApiManager = new EventApiManager (httpClient);
 
 			if (inspectType) 					{ searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
 			else  								{ searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
@@ -118,7 +121,7 @@ namespace HowlOut
 		{
 			bool leaveConfirmed = await App.coreView.displayConfirmMessage("Warning", "You are about to leave this event, would you like to continue?", "Yes", "No");
 			if (leaveConfirmed) {
-				bool hasLeft = await dataManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
+				bool hasLeft = await eventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasLeft) {
 					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
 					App.coreView.setContentView (new ManageEvent (), "ManageEvent");
@@ -132,9 +135,9 @@ namespace HowlOut
 		{
 			bool joinConfirmed = await App.coreView.displayConfirmMessage("Joining", "You are about to join this event, would you like to continue?", "Yes", "No");
 			if (joinConfirmed) {
-				bool hasJoined = await dataManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
+				bool hasJoined = await eventApiManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasJoined) {
-					Event eventWhenJoined = await dataManager.GetEventById (eve.EventId);
+					Event eventWhenJoined = await eventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
 
 					App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined, false, false), "UserProfile");

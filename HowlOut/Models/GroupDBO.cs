@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
-	public class Group
+	public class GroupDBO
 	{
-		public string GroupId {get; set;}
-
 		public string Name {get; set;}						//The name of the group
 
 		public Profile Owner {get; set;}	
@@ -23,9 +20,8 @@ namespace HowlOut
 
 		public bool Public {get; set;}
 
-		public Group ()
+		public GroupDBO ()
 		{
-			
 		}
 	}
 }
