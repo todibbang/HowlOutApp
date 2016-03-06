@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Net.Http;
 using ModernHttpClient;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
 	public partial class InspectProfile : ContentView
 	{
 		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient(new NativeMessageHandler()));
+		DataManager dataManager = new DataManager ();
 		Profile inspectedProfile;
 
 		bool isProfileYou = false;
@@ -79,7 +81,7 @@ namespace HowlOut
 		{
 			bool success = await profileManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
 			if (success) {
-				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+				await loadUpdatedProfile(profile);
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
 			}
@@ -89,7 +91,7 @@ namespace HowlOut
 		{
 			bool success = await profileManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
 			if (success) {
-				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+				await loadUpdatedProfile(profile);
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
 			}
@@ -99,7 +101,7 @@ namespace HowlOut
 		{
 			bool success = await profileManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
 			if (success) {
-				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+				await loadUpdatedProfile(profile);
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
 			}
@@ -109,10 +111,17 @@ namespace HowlOut
 		{
 			bool success = await profileManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
 			if (success) {
-				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+				await loadUpdatedProfile(profile);
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
 			}
+		}
+
+		private async Task loadUpdatedProfile(Profile profile)
+		{
+			Profile newProfile = await profileManager.GetProfileId (profile.ProfileId);
+			App.userProfile = await profileManager.GetProfileId (App.userProfile.ProfileId);
+			App.coreView.setContentView (new UserProfile (newProfile, null, null, false, false), "UserProfile");
 		}
 
 		private bool IsProfileYou(Profile profile)
@@ -151,8 +160,7 @@ namespace HowlOut
 		private bool HaveYouSentProfileFriendRequest(Profile profile)
 		{
 			bool requested = false;
-			var yourSentFriendRequests = App.userProfile.RecievedFriendRequests;
-			System.Diagnostics.Debug.WriteLine ("yourSentFriendRequests.Count " + yourSentFriendRequests.Count);
+			var yourSentFriendRequests = App.userProfile.SentFriendRequests;
 			for (int i = 0; i < yourSentFriendRequests.Count; i++) {
 				if (profile.ProfileId == yourSentFriendRequests [i].ProfileId) {
 					requested = true;

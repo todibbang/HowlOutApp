@@ -37,6 +37,7 @@ namespace HowlOut
 			updateManage();
 			updateProfile();
 		}
+
 		public async Task updateSearch() {
 			//App.coreView.searchEventList = await GetAllEvents ();
 			App.coreView.searchEvent.updateList (await eventApiManager.GetAllEvents ());
