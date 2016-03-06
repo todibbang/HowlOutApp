@@ -65,7 +65,7 @@ namespace HowlOut
 
 		public async Task<bool> RequestFriend(string profileRequestToId, string profileRequestFromId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/RequestFriend?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
+			var uri = new Uri("https://howlout.gear.host/api/ProfilesAPI/RequestFriend?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
 
 			try
 			{
@@ -85,7 +85,7 @@ namespace HowlOut
 
 		public async Task<bool> AcceptFriend(string profileAcceptedId, string profileRequestedId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/AcceptFriend?profileAcceptedId="+profileAcceptedId+"&profileRequestedId="+profileRequestedId);
+			var uri = new Uri("https://howlout.gear.host/api/ProfilesAPI/AcceptFriend?profileAcceptedId="+profileAcceptedId+"&profileRequestedId="+profileRequestedId);
 
 			try
 			{
@@ -105,7 +105,7 @@ namespace HowlOut
 
 		public async Task<bool> DeclineFriendRequest(string profileRequestToId, string profileRequestFromId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/DeclineFriendRequest?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
+			var uri = new Uri("https://howlout.gear.host/api/ProfilesAPI/DeclineFriendRequest?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
 
 			try
 			{
@@ -125,7 +125,7 @@ namespace HowlOut
 
 		public async Task<bool> RemoveFriend(string profileRequestToId, string profileRequestFromId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/RemoveFriend?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
+			var uri = new Uri("https://howlout.gear.host/api/ProfilesAPI/RemoveFriend?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
 
 			try
 			{

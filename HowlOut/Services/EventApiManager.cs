@@ -337,7 +337,7 @@ namespace HowlOut
 		public async Task<bool> DeclineEventInvite(string eventId, string profileId)
 		{
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/DeclineEventInvite?eventId="+eventId+"&profileId="+profileId);
+			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/DeclineEventInvite?eventId="+eventId+"&profileId="+profileId);
 
 			try
 			{
