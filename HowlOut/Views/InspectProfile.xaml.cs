@@ -9,7 +9,7 @@ namespace HowlOut
 {
 	public partial class InspectProfile : ContentView
 	{
-		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient());
+		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient(new NativeMessageHandler()));
 		Profile inspectedProfile;
 
 		bool isProfileYou = false;
