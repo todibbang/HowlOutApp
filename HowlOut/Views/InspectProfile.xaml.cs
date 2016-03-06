@@ -26,6 +26,7 @@ namespace HowlOut
 				friendButton.IsVisible = false;
 				unFriendButton.IsVisible = false;
 				isProfileYou = true;
+				System.Diagnostics.Debug.WriteLine (profile.SentFriendRequests.Count + "" + profile.RecievedFriendRequests.Count);
 			} else {
 				if (IsProfileFriend (profile)) {
 					System.Diagnostics.Debug.WriteLine ("Profile is friend");
@@ -44,6 +45,7 @@ namespace HowlOut
 					haveYouSentProfileFriendRequest = true;
 				} else {
 					unFriendButton.IsVisible = false;
+					System.Diagnostics.Debug.WriteLine ("Profile is not your friend");
 				}
 			}
 
@@ -150,6 +152,7 @@ namespace HowlOut
 		{
 			bool requested = false;
 			var yourSentFriendRequests = App.userProfile.RecievedFriendRequests;
+			System.Diagnostics.Debug.WriteLine ("yourSentFriendRequests.Count " + yourSentFriendRequests.Count);
 			for (int i = 0; i < yourSentFriendRequests.Count; i++) {
 				if (profile.ProfileId == yourSentFriendRequests [i].ProfileId) {
 					requested = true;
