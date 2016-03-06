@@ -75,6 +75,10 @@ namespace HowlOut
 				joinEvent(eve);
 			};
 
+			followButton.Clicked += (sender, e) =>  {
+				followEvent(eve);
+			};
+
 			inviteButton.Clicked += (sender, e) => {
 				App.coreView.setContentView (new UserProfile (null, null, eve, true, false), "UserProfile");
 			};
@@ -148,6 +152,29 @@ namespace HowlOut
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}
 			}
+		}
+
+		private async void followEvent(Event eve)
+		{
+			bool followConfirmed = await App.coreView.displayConfirmMessage("Following", "You are about to follow this event, would you like to continue?", "Yes", "No");
+			if (followConfirmed) {
+				bool hasFollowed = await eventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
+				if (hasFollowed) {
+					//Event eventWhenJoined = await eventApiManager.GetEventById (eve.EventId);
+					await App.coreView.displayAlertMessage ("Event Followed", "You have successfully followed the event.", "Ok");
+
+					//App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined, false, false), "UserProfile");
+					//App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
+
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Followed", "An error happened and you have not yet followed the event, try again.", "Ok");
+				}
+			}
+
+
+
+
+			await eventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
 		}
 	}
 }

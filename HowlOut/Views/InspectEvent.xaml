@@ -96,8 +96,8 @@
 			</StackLayout>
 
 			<StackLayout Grid.Row="7" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-				<Button Text="Invite" Style="{DynamicResource ButtonStyle}" x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-				<Button Text="Leave" Style="{DynamicResource ButtonStyle}" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="Join" Style="{DynamicResource ButtonStyle}" x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="Follow" Style="{DynamicResource ButtonStyle}" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 			</StackLayout>
 
 		</Grid>

@@ -102,13 +102,5 @@ namespace HowlOut
 				return position;
 			}
 		}
-
-		public async Task<bool> sendFriendRequest(Profile senderOfFriendRequest, Profile receiverOfFriendRequest) // Implemented
-		{
-			// senderOfFriendRequest adds receiverOfFriendRequest to SentFriendRequests
-			// receiverOfFriendRequest adds senderOfFriendRequest to RecievedFriendRequests
-			// receiverOfFriendRequest receives a notification
-			return false;
-		}
     }
 }

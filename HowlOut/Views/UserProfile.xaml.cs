@@ -298,26 +298,31 @@ namespace HowlOut
 
 		private async void sendInviteToEvent()
 		{
-			if (friendsToInvite.Count != 0) {
-				await dataManager.sendProfileInviteToEvent (eventObject, friendsToInvite);
+			EventApiManager eveManager = new EventApiManager (new HttpClient());
+
+			List <string> IdsToInvite = new List<string> ();
+
+			for (int i = 0; i < friendsToInvite.Count; i++) {
+				IdsToInvite.Add (friendsToInvite[i].ProfileId);
 			}
-
-
 
 			for (int i = 0; i < groupsToInvite.Count; i++) {
-				ObservableCollection<Profile> members = new ObservableCollection<Profile> ();
 				for (int e = 0; e < groupsToInvite [i].Members.Count; e++) {
-					members.Add (groupsToInvite [i].Members[e]);
+					IdsToInvite.Add (groupsToInvite [i].Members [e].ProfileId);
 				}
-				await dataManager.sendProfileInviteToEvent (eventObject, members );
 			}
+			await eveManager.InviteToEvent(eventObject.EventId, IdsToInvite);
 		}
 
 		private async void sendInviteToGroup()
 		{
-			if (friendsToInvite.Count != 0) {
-				await dataManager.sendInviteToGroup (userGroup, friendsToInvite);
+			GroupApiManager groupManager = new GroupApiManager ();
+			List <string> IdsToInvite = new List<string> ();
+
+			for (int i = 0; i < friendsToInvite.Count; i++) {
+				IdsToInvite.Add (friendsToInvite[i].ProfileId);
 			}
+			//await groupManager.InviteToEvent(eventObject.EventId, IdsToInvite);
 		}
 
 		private async void PostNewComment(Event eve)

@@ -9,12 +9,44 @@ namespace HowlOut
 {
 	public partial class InspectProfile : ContentView
 	{
-		DataManager dataManager = new DataManager ();
+		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient());
 		Profile inspectedProfile;
+
+		bool isProfileYou = false;
+		bool isProfileFriend = false;
+		bool hasProfileSentYouFriendRequest = false;
+		bool haveYouSentProfileFriendRequest = false;
 
 		public InspectProfile (Profile profile)
 		{
 			InitializeComponent ();
+
+			if (IsProfileYou (profile)) {
+				System.Diagnostics.Debug.WriteLine ("Profile is you");
+				friendButton.IsVisible = false;
+				unFriendButton.IsVisible = false;
+				isProfileYou = true;
+			} else {
+				if (IsProfileFriend (profile)) {
+					System.Diagnostics.Debug.WriteLine ("Profile is friend");
+					friendButton.IsVisible = false;
+					isProfileFriend = true;
+				} else if (HasProfileSentYouFriendRequest (profile)) {
+					System.Diagnostics.Debug.WriteLine ("Profile want's to be your friend");
+					hasProfileSentYouFriendRequest = true;
+					friendButton.Text = "Accept Request";
+					unFriendButton.Text = "Decline Request";
+				} else if (HaveYouSentProfileFriendRequest (profile)) {
+					System.Diagnostics.Debug.WriteLine ("Profile is waiting to reply to your friend request");
+					friendButton.IsVisible = false;
+					unFriendButton.IsVisible = false;
+					waitButton.IsVisible = true;
+					haveYouSentProfileFriendRequest = true;
+				} else {
+					unFriendButton.IsVisible = false;
+				}
+			}
+
 			inspectedProfile = profile;
 
 			Likes.Text = profile.Likes + "";
@@ -25,20 +57,105 @@ namespace HowlOut
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(profile.ProfileId);
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
 
-			friendRequestButton.Clicked += (sender, e) => 
-			{
-
+			friendButton.Clicked += (sender, e) => {
+				if(hasProfileSentYouFriendRequest) {
+					acceptFriendRequest(profile);
+				} else {
+					sendFriendRequest(profile);
+				}
+			};
+			unFriendButton.Clicked += (sender, e) => {
+				if(isProfileFriend) {
+					removeFriend(profile);
+				} else if(hasProfileSentYouFriendRequest) {
+					declineFriendRequest(profile);
+				}
 			};
 		}
 
-		private async void sendFriendRequest()
+		private async void sendFriendRequest(Profile profile)
 		{
-			bool success = await dataManager.sendFriendRequest (App.userProfile, inspectedProfile);
+			bool success = await profileManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
 			if (success) {
-				friendRequestButton.Text = "Request sent";
+				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
 			}
+		}
+
+		private async void acceptFriendRequest(Profile profile)
+		{
+			bool success = await profileManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			}
+		}
+
+		private async void declineFriendRequest(Profile profile)
+		{
+			bool success = await profileManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			}
+		}
+
+		private async void removeFriend(Profile profile)
+		{
+			bool success = await profileManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.coreView.setContentView (new UserProfile (profile, null, null, false, false), "UserProfile");
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+			}
+		}
+
+		private bool IsProfileYou(Profile profile)
+		{
+			bool you = false;
+			if (profile.ProfileId == App.userProfile.ProfileId) {
+				you = true;
+			}
+			return you;
+		}
+
+		private bool IsProfileFriend(Profile profile)
+		{
+			bool friend = false;
+			var yourFriends = App.userProfile.Friends;
+			for (int i = 0; i < yourFriends.Count; i++) {
+				if (profile.ProfileId == yourFriends [i].ProfileId) {
+					friend = true;
+				}
+			}
+			return friend;
+		}
+
+		private bool HasProfileSentYouFriendRequest(Profile profile)
+		{
+			bool requested = false;
+			var yourRecievedFriendRequests = App.userProfile.RecievedFriendRequests;
+			for (int i = 0; i < yourRecievedFriendRequests.Count; i++) {
+				if (profile.ProfileId == yourRecievedFriendRequests [i].ProfileId) {
+					requested = true;
+				}
+			}
+			return requested;
+		}
+
+		private bool HaveYouSentProfileFriendRequest(Profile profile)
+		{
+			bool requested = false;
+			var yourSentFriendRequests = App.userProfile.RecievedFriendRequests;
+			for (int i = 0; i < yourSentFriendRequests.Count; i++) {
+				if (profile.ProfileId == yourSentFriendRequests [i].ProfileId) {
+					requested = true;
+				}
+			}
+			return requested;
 		}
 	}
 }

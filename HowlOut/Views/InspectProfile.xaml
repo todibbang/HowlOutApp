@@ -35,9 +35,9 @@
 				Style="{DynamicResource TitleStyle}" x:Name="NameAndAge"/>
 			<StackLayout Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="7" Grid.RowSpan="1" 
 				Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-				<Button Text="Befriend" Style="{DynamicResource ButtonStyle}" x:Name="friendRequestButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-				<Button Text="2" Style="{DynamicResource ButtonStyle}" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-				<Button Text="3" Style="{DynamicResource ButtonStyle}" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="Add Friend" Style="{DynamicResource ButtonStyle}" x:Name="friendButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="Remove Friend" Style="{DynamicResource ButtonStyle}" x:Name="unFriendButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				<Button Text="Friend Request Sent" Style="{DynamicResource ButtonStyle}" x:Name="waitButton" HorizontalOptions="CenterAndExpand" WidthRequest="80" IsVisible="false"></Button>
 			</StackLayout>
 
 		</Grid>
