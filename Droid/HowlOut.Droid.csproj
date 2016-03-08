@@ -156,10 +156,14 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <AndroidResource Include="Resources\values\Styles.xml" />
     <AndroidResource Include="Resources\drawable\howloutsplash.png" />
-    <AndroidResource Include="Resources\drawable\ic_action_search.png" />
-    <AndroidResource Include="Resources\drawable\ic_chevron_left.png" />
     <AndroidResource Include="Resources\drawable\howlouticongrown.png" />
     <AndroidResource Include="Resources\drawable\Party.png" />
+    <AndroidResource Include="Resources\drawable\ic_event.png" />
+    <AndroidResource Include="Resources\drawable\ic_refresh.png" />
+    <AndroidResource Include="Resources\drawable\ic_search.png" />
+    <AndroidResource Include="Resources\drawable\ic_chevron.png" />
+    <AndroidResource Include="Resources\drawable\ic_add.png" />
+    <AndroidResource Include="Resources\drawable\ic_public.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">

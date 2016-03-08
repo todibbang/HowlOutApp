@@ -35,7 +35,7 @@
 			</ContentView>
 
 			 <Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOutBackground}" BorderRadius="30" BorderWidth="3" BorderColor="{DynamicResource HowlOut}" ></Button> 
-
+			 <Image Grid.Row="2" Grid.Column="1" WidthRequest = "25" x:Name="CreateImage" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
 			<StackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" Padding="0,0,0,5">
 				<local:Line /> 
 				<local:BottomBar/>

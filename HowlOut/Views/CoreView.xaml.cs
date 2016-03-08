@@ -59,15 +59,20 @@ namespace HowlOut
 			await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 
 			CreateButton.IsVisible = false;
+			CreateImage.IsVisible = false;
 
 			if (type == "SearchEvent") {
 				view = searchEvent;
 				CreateButton.IsVisible = true;
-				CreateButton.Text = "0";
+				CreateButton.Text = "";
+				CreateImage.IsVisible = true;
+				CreateImage.Source = "ic_search.png";
 			} else if (type == "ManageEvent") {
 				view = manageEvent;
 				CreateButton.IsVisible = true;
-				CreateButton.Text = "+";
+				CreateButton.Text = "";
+				CreateImage.IsVisible = true;
+				CreateImage.Source = "ic_add.png";
 			}
 
 			contentViews.Add (view);
