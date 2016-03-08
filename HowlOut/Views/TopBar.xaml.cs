@@ -33,8 +33,13 @@ namespace HowlOut
 
 			howlOut.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView (new UserProfile (App.userProfile, null, null), "UserProfile");
+				
 			};
+		}
+
+		public void setNavigationLabel(string label)
+		{
+			navigationLabel.Text = label;
 		}
 	}
 }

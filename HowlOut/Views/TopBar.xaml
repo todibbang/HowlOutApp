@@ -9,7 +9,7 @@
 			</Grid.ColumnDefinitions>
 			<Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" x:Name="back" BackgroundColor="{DynamicResource HowlOut}" ></Button>
 			<Image Grid.Column="0" x:Name="backBtn" Source="ic_chevron_left.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
-			<Image Grid.Column="1" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
+			<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" ></Label>
 			<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut" />
 			<Button Grid.Column="2" Text="Update" Style="{DynamicResource ButtonStyle}" x:Name="updateButton" BorderWidth="1" BorderColor="White" BackgroundColor="{DynamicResource HowlOut}" TextColor="White"></Button>
 		</Grid>
