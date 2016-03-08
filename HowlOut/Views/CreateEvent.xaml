@@ -174,9 +174,6 @@
 							        </Picker.Items>
 							    </Picker> 
 							</StackLayout>
-							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
-							<Label Grid.Row="3" Grid.Column="1" Text="Invite" Style="{DynamicResource TextStyle}"></Label>
-							<Button Grid.Row="3" Grid.Column="3" Text="0 Invited" x:Name="inviteButton"></Button>
 							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
 						</Grid>
 					</StackLayout>

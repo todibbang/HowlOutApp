@@ -24,7 +24,7 @@ namespace HowlOut
 			backBtn.GestureRecognizers.Add(backImage); 
 
 			var updateImage = new TapGestureRecognizer();
-			updateImage.Tapped += async (sender, e) => 
+			updateImage.Tapped += async (sender, e) =>
 			{
 				await updateBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
@@ -35,7 +35,7 @@ namespace HowlOut
 
 			howlOut.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView (new UserProfile (App.userProfile, null, null, false, false), "UserProfile");
+				App.coreView.setContentView (new UserProfile (App.userProfile, null, null), "UserProfile");
 			};
 		}
 	}

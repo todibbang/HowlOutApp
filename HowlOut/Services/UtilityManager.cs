@@ -89,10 +89,8 @@ namespace HowlOut
 		public string getTime(DateTime time)
 		{
 			string hour = time.Hour.ToString();
-			System.Diagnostics.Debug.WriteLine ("hour.Length: " + hour.Length);
 			if (hour.Length == 1) {
 				hour = "0" + time.Hour.ToString ();
-				System.Diagnostics.Debug.WriteLine ("hour: " + hour);
 			}
 
 			string minute = time.Minute.ToString();
