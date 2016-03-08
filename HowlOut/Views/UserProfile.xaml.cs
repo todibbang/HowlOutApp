@@ -117,7 +117,7 @@ namespace HowlOut
 
 			friendRequestButton.Clicked += (sender, e) => {
 				System.Diagnostics.Debug.WriteLine("This ? Freind Request Button Pressed");
-				App.coreView.setContentView (new UserProfile (userProfile, null, null), "UserProfile");
+				App.coreView.setContentView (new InviteView (userProfile, null, null, userProfile.RecievedFriendRequests), "UserProfile");
 			};
 
 			groupRequestButton.Clicked += (sender, e) => {

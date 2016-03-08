@@ -30,6 +30,16 @@ namespace HowlOut
 				App.coreView.setContentView(new ManageEvent(), "ManageEvent");
 			};
 			manageBtn.GestureRecognizers.Add(manageImage); 
+
+			var homeImage = new TapGestureRecognizer();
+			homeImage.Tapped += async (sender, e) => 
+			{
+				await homeBtn.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await homeBtn.ScaleTo(1, 50, Easing.Linear);
+				App.coreView.setContentView (new UserProfile (App.userProfile, null, null), "UserProfile");
+			};
+			homeBtn.GestureRecognizers.Add(homeImage); 
 		}
 	}
 }

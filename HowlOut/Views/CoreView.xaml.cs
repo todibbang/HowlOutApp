@@ -17,9 +17,14 @@ namespace HowlOut
 		public SearchEvent searchEvent;
 		public ManageEvent manageEvent;
 
+		public TopBar topBar = new TopBar();
+
 		public CoreView ()
 		{
 			InitializeComponent ();
+
+
+			topBarLayout.Children.Add (topBar);
 
 			System.Diagnostics.Debug.WriteLine ("Test Run: 1");
 
@@ -37,6 +42,7 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine ("Test Run: 4");
 			contentViews.Add (searchEvent);
 			contentViewTypes.Add ("SearchEvent");
+			topBar.setNavigationLabel("SearchEvent");
 
 			CreateButton.IsVisible = true;
 			CreateButton.Text = "0";
@@ -77,6 +83,7 @@ namespace HowlOut
 
 			contentViews.Add (view);
 			contentViewTypes.Add (type);
+			topBar.setNavigationLabel(type);
 
 			await ViewExtensions.ScaleTo(view, 0, 0);
 			mainView.Content = view;

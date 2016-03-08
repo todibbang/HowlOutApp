@@ -12,7 +12,7 @@ namespace HowlOut
 		EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
 
 		ListsAndButtons listMaker = new ListsAndButtons();
-
+		ObservableCollection <Button> inviteButtons = new ObservableCollection <Button>();
 
 
 		public InviteView (Profile userProfile, Group userGroup, Event eventObject, List<Profile> profilesToSelectFrom)
@@ -21,12 +21,15 @@ namespace HowlOut
 
 			Dictionary<Profile, string> profilesNotToInvite = new Dictionary<Profile, string> { };
 			ObservableCollection <Profile> profilesToInvite = new ObservableCollection <Profile>();
-			ObservableCollection <Button> inviteButtons = new ObservableCollection <Button>();
+
 
 			if(userProfile != null){
-				for (int e = 0; e < userGroup.Members.Count; e++) {
+				for (int e = 0; e < userProfile.Friends.Count; e++) {
 					profilesNotToInvite.Add (userProfile.Friends [e], userProfile.Friends [e].ProfileId);
 				}
+				friendGroupButtons.IsVisible = false;
+				inviteButton.IsVisible = false;
+
 			} else if (userGroup != null) { 
 				for (int e = 0; e < userGroup.Members.Count; e++) {
 					profilesNotToInvite.Add (userGroup.Members [e], userGroup.Members [e].ProfileId);
@@ -46,21 +49,44 @@ namespace HowlOut
 			listMaker.createList (profileGrid, profilesToSelectFrom, null, inviteButtons, null, null);
 
 
-
 			foreach (Button button in inviteButtons) {
 				button.Clicked += (sender, e) => {
 					Profile profile = null;
-					if (userProfile != null) { 
+					if (userProfile != null) {
 						profile = profilesToSelectFrom[int.Parse(button.Text)];
 					} 
-					else if(userGroup != null) { profile = userGroup.Members[int.Parse(button.Text)];} 
-					else if(eventObject != null) { profile = eventObject.Attendees[int.Parse(button.Text)];}
+					else if(userGroup != null) { 
+						profile = userGroup.Members[int.Parse(button.Text)];
+					} 
+					else if(eventObject != null) { 
+						profile = eventObject.Attendees[int.Parse(button.Text)];
+					}
+					System.Diagnostics.Debug.WriteLine("BLA NBKA fksjngsljkdfng");
+
+					App.coreView.setContentView (new UserProfile (profile, null, null), "UserProfile");
+				};
+			}
+
+			/*
+
+			foreach (Button button in inviteButtons) {
+				button.Clicked += (sender, e) => 
+				{
+					
+
+					if (userProfile != null) { 
+						App.coreView.setContentView (new UserProfile (profilesToSelectFrom[int.Parse(button.Text)], null, null), "UserProfile");
+						//profile = profilesToSelectFrom[int.Parse(button.Text)];
+					} 
+					//else if(userGroup != null) { profile = userGroup.Members[int.Parse(button.Text)];} 
+					//else if(eventObject != null) { profile = eventObject.Attendees[int.Parse(button.Text)];}
 
 					if(!profilesToInvite.Contains(profile)) {
 						profilesToInvite.Add(profile);
 					}
 				};
 			}
+	*/
 
 			inviteButton.Clicked += (sender, e) => {
 				if(userGroup != null) {

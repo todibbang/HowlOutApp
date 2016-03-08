@@ -7,8 +7,9 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="75"/>
 			</Grid.ColumnDefinitions>
+
 			<Image Grid.Column="0" x:Name="backBtn" Source="ic_chevron.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
-			<Image Grid.Column="1" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
+			<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" ></Label>
 			<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut" />
 			<Image Grid.Column="2" x:Name="updateBtn" Source="ic_refresh.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
 		</Grid>

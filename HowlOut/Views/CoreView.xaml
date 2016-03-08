@@ -23,12 +23,12 @@
 				<ColumnDefinition Width="20"/>
 			</Grid.ColumnDefinitions>
 
-			<StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5">
+			<StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5"  x:Name="topBarLayout">
 				<StackLayout.Padding>
 					<OnPlatform x:TypeArguments="Thickness"
 	                	iOS="5, 25, 5, 5" />
 				</StackLayout.Padding>
-				<local:TopBar/>
+				<!-- <local:TopBar/> -->
 			</StackLayout>
 
 			<ContentView Grid.Row="1" Grid.RowSpan="3"  Grid.Column="0" Grid.ColumnSpan="3" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}">
@@ -38,7 +38,7 @@
 			 <Image Grid.Row="2" Grid.Column="1" WidthRequest = "25" x:Name="CreateImage" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
 
 			<StackLayout Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2">
-				<local:BottomBar/>
+				<local:BottomBar/> 
 			</StackLayout>
 
 		</Grid>
