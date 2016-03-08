@@ -27,7 +27,6 @@ namespace HowlOut
 			}
 
 			bool addRequestButton = false;
-			Button newRequestButton = new Button ();
 
 			if (userProfile != null) {
 				//if(userProfile.ProfileId == App.userProfile.ProfileId){
@@ -77,15 +76,12 @@ namespace HowlOut
 				if (addRequestButton) {
 					if (profiles != null) {
 						cell = requestGrid(userProfile.RecievedFriendRequests.Count);
-						button = buttonCreator(9999);
-						newRequestButton = button;
 						subjectNr--;
 					} else if (groups != null) {
 						cell = requestGrid (userProfile.GroupsInviteTo.Count);
-						button = buttonCreator(9999);
-						newRequestButton = button;
 						subjectNr--;
 					}
+
 				} else {
 					if (profiles != null) {
 						cell = friendCellCreator (profiles [subjectNr]);
@@ -100,13 +96,20 @@ namespace HowlOut
 				}
 				//adds the whole cell to the grid
 				grid.Children.Add (cell, column, row);
-				grid.Children.Add (button, column, row);
+
+				if (addRequestButton) {
+					grid.Children.Add (requestButton, column, row);
+					addRequestButton = false;
+					System.Diagnostics.Debug.WriteLine ("requestButton added at: " + column + ", " + row);
+				} else {
+					grid.Children.Add (button, column, row);
+					System.Diagnostics.Debug.WriteLine ("NormalButton added at: " + column + ", " + row);
+				}
 
 				column ++;
 				subjectNr++;
 			}
 			grid = newGrid;
-			requestButton = newRequestButton;
 		}
 
 		private Button buttonCreator(int i)
