@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using ModernHttpClient;
+using ImageCircle.Forms.Plugin.Abstractions;
 
 namespace HowlOut
 {
@@ -12,7 +13,10 @@ namespace HowlOut
 		EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
 
 		ListsAndButtons listMaker = new ListsAndButtons();
-		ObservableCollection <Button> inviteButtons = new ObservableCollection <Button>();
+		DataManager dataManager = new DataManager();
+
+		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
+		Button friendRequestButton = new Button ();
 
 
 		public InviteView (Profile userProfile, Group userGroup, Event eventObject, List<Profile> profilesToSelectFrom)
@@ -22,14 +26,12 @@ namespace HowlOut
 			Dictionary<Profile, string> profilesNotToInvite = new Dictionary<Profile, string> { };
 			ObservableCollection <Profile> profilesToInvite = new ObservableCollection <Profile>();
 
+			profileGrid.IsVisible = true;
 
 			if(userProfile != null){
 				for (int e = 0; e < userProfile.Friends.Count; e++) {
 					profilesNotToInvite.Add (userProfile.Friends [e], userProfile.Friends [e].ProfileId);
 				}
-				friendGroupButtons.IsVisible = false;
-				inviteButton.IsVisible = false;
-
 			} else if (userGroup != null) { 
 				for (int e = 0; e < userGroup.Members.Count; e++) {
 					profilesNotToInvite.Add (userGroup.Members [e], userGroup.Members [e].ProfileId);
@@ -46,10 +48,15 @@ namespace HowlOut
 				}
 			}
 
-			listMaker.createList (profileGrid, profilesToSelectFrom, null, inviteButtons, null, null);
+			listMaker.createList (profileGrid, profilesToSelectFrom, null, friendButtons, userProfile, friendRequestButton);
+			//listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, userProfile, friendRequestButton);
+
+			//friendButtons = createList (profileGrid, profilesToSelectFrom);
+
+			beforeButton.Clicked += (sender, e) => System.Diagnostics.Debug.WriteLine("Crazy 0");
 
 
-			foreach (Button button in inviteButtons) {
+			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {
 					Profile profile = null;
 					if (userProfile != null) {
@@ -61,11 +68,12 @@ namespace HowlOut
 					else if(eventObject != null) { 
 						profile = eventObject.Attendees[int.Parse(button.Text)];
 					}
-					System.Diagnostics.Debug.WriteLine("BLA NBKA fksjngsljkdfng");
-
 					App.coreView.setContentView (new UserProfile (profile, null, null), "UserProfile");
 				};
 			}
+
+			afterButton.Clicked += (sender, e) => System.Diagnostics.Debug.WriteLine("Crazy 1");
+
 
 			/*
 
@@ -86,15 +94,21 @@ namespace HowlOut
 					}
 				};
 			}
-	*/
 
-			inviteButton.Clicked += (sender, e) => {
+
+			inviteButton.Clicked += (sender, e) => 
+			{
+
+				System.Diagnostics.Debug.WriteLine("Blykaman");
+
 				if(userGroup != null) {
 					sendInviteToGroup(userGroup, profilesToInvite);
 				} else if(eventObject != null) {
 					sendInviteToEvent(eventObject, profilesToInvite);
 				}
+
 			};
+			*/
 		}
 
 
@@ -125,6 +139,108 @@ namespace HowlOut
 				IdsToInvite.Add (profiles[i].ProfileId);
 			}
 			//await groupManager.InviteToEvent(group.GroupId, IdsToInvite);
+		}
+
+		public ObservableCollection<Button> createList(Grid grid, List<Profile> profiles)
+		{
+			int count = 0;
+			count = profiles.Count;
+
+			ObservableCollection<Button> buttons = new ObservableCollection<Button> ();
+
+			Grid newGrid = new Grid {
+				ColumnDefinitions = {
+					new ColumnDefinition { Width = GridLength.Auto },
+					new ColumnDefinition { Width = GridLength.Auto },
+					new ColumnDefinition { Width = GridLength.Auto }
+				},
+				RowDefinitions = {
+					new RowDefinition{ Height = 150 },
+					new RowDefinition{ Height = 150 },
+					new RowDefinition{ Height = 150 }
+				},
+				RowSpacing=0,
+				ColumnSpacing=0,
+			};
+
+			int subjectNr = 0;
+			int column = 0;
+			int row = 0;
+
+			for (int i = 0; i < count; i++) {
+				if (column == 3) {
+					column = 0;
+					row++;
+					grid.RowDefinitions.Add (new RowDefinition{ Height = 150 });
+				}
+
+				Grid cell = new Grid ();
+				Button button = new Button ();
+
+				cell = friendCellCreator (profiles [subjectNr]);
+				button = buttonCreator (subjectNr);
+				friendButtons.Add (button);
+
+				//adds the whole cell to the grid
+				grid.Children.Add (cell, column, row);
+				grid.Children.Add (button, column, row);
+
+				column ++;
+				subjectNr++;
+			}
+			grid = newGrid;
+
+			return buttons;
+		}
+
+		private Button buttonCreator(int i)
+		{
+
+			Button button = new Button {
+				Text = "" + i,
+				TextColor = Color.Transparent,
+				BackgroundColor = Color.Transparent,
+				BorderWidth=4,
+				BorderColor = Color.Red,
+
+			};
+			return button;
+		}
+
+		private Grid friendCellCreator(Profile profile)
+		{
+			Grid cellGrid = new Grid {
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				HorizontalOptions = LayoutOptions.CenterAndExpand,
+				RowDefinitions = {
+					new RowDefinition{ Height = 10 },
+					new RowDefinition{ Height = 85 },
+					new RowDefinition{ Height = 40 },
+				}
+			};
+
+			//adds the users profile picture
+			var profilePicUri = dataManager.GetFacebookProfileImageUri(profile.ProfileId);
+			//var profilePicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
+			CircleImage profilePicture = new CircleImage {
+				HeightRequest = 85,
+				WidthRequest = 85,
+				Aspect = Aspect.AspectFill,
+				HorizontalOptions = LayoutOptions.Center,
+				Source = ImageSource.FromUri (profilePicUri)
+			};
+			cellGrid.Children.Add (profilePicture, 0,1);
+
+			cellGrid.Children.Add(new Label {
+				Text = profile.Name + ", " + profile.Age,
+				TextColor = Color.Black,
+				FontSize = 10,
+				HorizontalTextAlignment = TextAlignment.Center,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				HorizontalOptions = LayoutOptions.CenterAndExpand,
+			}, 0, 2);
+
+			return cellGrid;
 		}
 
 	}

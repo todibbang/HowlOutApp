@@ -29,7 +29,7 @@ namespace HowlOut
 			bool addRequestButton = false;
 
 			if (userProfile != null) {
-				//if(userProfile.ProfileId == App.userProfile.ProfileId){
+				if(userProfile.ProfileId == App.userProfile.ProfileId){
 					if (profiles != null) {
 						if (userProfile.RecievedFriendRequests.Count != 0) {
 							count++;
@@ -41,7 +41,7 @@ namespace HowlOut
 							addRequestButton = true;
 						}
 					}
-				//}
+				}
 			}
 
 			Grid newGrid = new Grid {
@@ -100,10 +100,8 @@ namespace HowlOut
 				if (addRequestButton) {
 					grid.Children.Add (requestButton, column, row);
 					addRequestButton = false;
-					System.Diagnostics.Debug.WriteLine ("requestButton added at: " + column + ", " + row);
 				} else {
 					grid.Children.Add (button, column, row);
-					System.Diagnostics.Debug.WriteLine ("NormalButton added at: " + column + ", " + row);
 				}
 
 				column ++;
