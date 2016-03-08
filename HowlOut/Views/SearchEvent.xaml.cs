@@ -23,7 +23,7 @@ namespace HowlOut
 			var eveForLis = SearchEventList.SelectedItem as EventForLists;
 
 
-			App.coreView.setContentView (new UserProfile (null, null, eveForLis.eve, false, true), "UserProfile");
+			App.coreView.setContentView (new UserProfile (null, null, eveForLis.eve), "UserProfile");
 			//App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), "InspectEvent");
 			SearchEventList.SelectedItem = null;
 		}

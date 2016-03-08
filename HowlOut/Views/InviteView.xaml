@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InviteView"
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
+	<ContentView.Content>
+
+		<ScrollView  Orientation="Vertical" VerticalOptions="FillAndExpand">
+
+			<Grid> 
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="40"/>
+					<RowDefinition Height="20"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+
+				<StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="inviteLayout">
+					<Button Text="Send Invites" x:Name="inviteButton" Style="{DynamicResource ButtonStyle}"/>
+				</StackLayout>
+
+				<StackLayout Grid.Row="1" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+					<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+					<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+				</StackLayout>
+
+				<StackLayout Grid.Row="2" Padding="0" VerticalOptions="CenterAndExpand"> <local:Line/> </StackLayout> 
+
+				
+
+				<Grid Grid.Row="3" x:Name="profileGrid"></Grid>
+				<Grid Grid.Row="3" x:Name="groupGrid"></Grid>
+			</Grid>
+		</ScrollView>
+	</ContentView.Content>
+</ContentView>

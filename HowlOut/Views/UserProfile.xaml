@@ -22,9 +22,6 @@
 					</Grid.RowDefinitions>
 
 					<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="infoView"></ContentView>
-					<StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="inviteLayout">
-						<Button Text="Send Invites" x:Name="inviteButton"/>
-					</StackLayout>
 
 					<StackLayout Grid.Row="1" Padding="0" VerticalOptions="CenterAndExpand"> <local:Line/> </StackLayout> 
 

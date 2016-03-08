@@ -36,8 +36,7 @@
 
 			 <Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOutBackground}" BorderRadius="30" BorderWidth="3" BorderColor="{DynamicResource HowlOut}" ></Button> 
 
-			<StackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" Padding="0,0,0,5">
-				<local:Line /> 
+			<StackLayout Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2">
 				<local:BottomBar/>
 			</StackLayout>
 

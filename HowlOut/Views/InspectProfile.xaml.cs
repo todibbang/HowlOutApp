@@ -121,7 +121,7 @@ namespace HowlOut
 		{
 			Profile newProfile = await profileManager.GetProfileId (profile.ProfileId);
 			App.userProfile = await profileManager.GetProfileId (App.userProfile.ProfileId);
-			App.coreView.setContentView (new UserProfile (newProfile, null, null, false, false), "UserProfile");
+			App.coreView.setContentView (new UserProfile (newProfile, null, null), "UserProfile");
 		}
 
 		private bool IsProfileYou(Profile profile)

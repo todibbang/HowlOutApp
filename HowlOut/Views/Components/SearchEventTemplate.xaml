@@ -44,7 +44,7 @@
 			<controls:CircleImage Grid.Row="2" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2" 
 				Source="{Binding ProfileImageUri}"/> 
 			<Button Grid.Row="2" Grid.RowSpan="3" Grid.Column="6" Grid.ColumnSpan="2"
-				Style="{DynamicResource AttendingButtonStyle}" BorderRadius="30" BorderWidth="5"></Button> 
+				Style="{DynamicResource AttendingButtonStyle}" BorderRadius="30" BorderWidth="5" FontSize="14"></Button> 
 			
 			<Button Grid.Row="4" Grid.RowSpan="3" Grid.Column="2" Grid.ColumnSpan="2" 
 				Style="{DynamicResource LikesButtonStyle}" BorderRadius="18" BorderWidth="3"></Button> 

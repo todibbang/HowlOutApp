@@ -25,10 +25,6 @@ namespace HowlOut
 				
 			backBtn.GestureRecognizers.Add(backImage); 
 
-			back.Clicked += (sender, e) =>
-			{
-				App.coreView.returnToPreviousView();
-			};
 
 			updateButton.Clicked += (sender, e) =>
 			{
@@ -37,7 +33,7 @@ namespace HowlOut
 
 			howlOut.Clicked += (sender, e) => 
 			{
-				App.coreView.setContentView (new UserProfile (App.userProfile, null, null, false, false), "UserProfile");
+				App.coreView.setContentView (new UserProfile (App.userProfile, null, null), "UserProfile");
 			};
 		}
 	}

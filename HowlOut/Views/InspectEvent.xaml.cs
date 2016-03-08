@@ -80,7 +80,7 @@ namespace HowlOut
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new UserProfile (null, null, eve, true, false), "UserProfile");
+				App.coreView.setContentView (new UserProfile (null, null, eve), "UserProfile");
 			};
 		}
 
@@ -145,7 +145,7 @@ namespace HowlOut
 					Event eventWhenJoined = await eventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
 
-					App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined, false, false), "UserProfile");
+					App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined), "UserProfile");
 					//App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
 
 				} else {
