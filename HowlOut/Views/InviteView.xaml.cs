@@ -16,6 +16,8 @@ namespace HowlOut
 		DataManager dataManager = new DataManager();
 
 		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
+		ObservableCollection <Button> acceptButtons = new ObservableCollection <Button>();
+		ObservableCollection <Button> declineButtons = new ObservableCollection <Button>();
 		Button friendRequestButton = new Button ();
 
 
@@ -48,53 +50,25 @@ namespace HowlOut
 				}
 			}
 
-			listMaker.createList (profileGrid, profilesToSelectFrom, null, friendButtons, userProfile, friendRequestButton);
-			//listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, userProfile, friendRequestButton);
-
-			//friendButtons = createList (profileGrid, profilesToSelectFrom);
-
-			beforeButton.Clicked += (sender, e) => System.Diagnostics.Debug.WriteLine("Crazy 0");
-
-
+			listMaker.createList (profileGrid, profilesToSelectFrom, null, friendButtons, acceptButtons, declineButtons, userProfile, friendRequestButton);
+			int counter = 0;
 			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {
 					Profile profile = null;
 					if (userProfile != null) {
-						profile = profilesToSelectFrom[int.Parse(button.Text)];
+						profile = profilesToSelectFrom[counter];
 					} 
 					else if(userGroup != null) { 
-						profile = userGroup.Members[int.Parse(button.Text)];
+						profile = profilesToSelectFrom[counter];
 					} 
 					else if(eventObject != null) { 
-						profile = eventObject.Attendees[int.Parse(button.Text)];
+						profile = profilesToSelectFrom[counter];
 					}
+					System.Diagnostics.Debug.WriteLine(profile.Name + "2");
 					App.coreView.setContentView (new UserProfile (profile, null, null), "UserProfile");
 				};
+				counter++;
 			}
-
-			afterButton.Clicked += (sender, e) => System.Diagnostics.Debug.WriteLine("Crazy 1");
-
-
-			/*
-
-			foreach (Button button in inviteButtons) {
-				button.Clicked += (sender, e) => 
-				{
-					
-
-					if (userProfile != null) { 
-						App.coreView.setContentView (new UserProfile (profilesToSelectFrom[int.Parse(button.Text)], null, null), "UserProfile");
-						//profile = profilesToSelectFrom[int.Parse(button.Text)];
-					} 
-					//else if(userGroup != null) { profile = userGroup.Members[int.Parse(button.Text)];} 
-					//else if(eventObject != null) { profile = eventObject.Attendees[int.Parse(button.Text)];}
-
-					if(!profilesToInvite.Contains(profile)) {
-						profilesToInvite.Add(profile);
-					}
-				};
-			}
-
 
 			inviteButton.Clicked += (sender, e) => 
 			{
@@ -108,7 +82,6 @@ namespace HowlOut
 				}
 
 			};
-			*/
 		}
 
 

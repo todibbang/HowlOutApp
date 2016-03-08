@@ -171,5 +171,11 @@
     <BundleResource Include="Resources\ic_chevron_left.png" />
     <BundleResource Include="Resources\Party.png" />
     <BundleResource Include="Resources\howlouticongrown.png" />
+    <BundleResource Include="Resources\ic_add.png" />
+    <BundleResource Include="Resources\ic_chevron.png" />
+    <BundleResource Include="Resources\ic_event.png" />
+    <BundleResource Include="Resources\ic_public.png" />
+    <BundleResource Include="Resources\ic_refresh.png" />
+    <BundleResource Include="Resources\ic_search.png" />
   </ItemGroup>
 </Project>

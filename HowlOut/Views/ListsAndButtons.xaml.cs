@@ -17,7 +17,7 @@ namespace HowlOut
 
 
 
-		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, ObservableCollection<Button> buttons, Profile userProfile, Button requestButton)
+		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, ObservableCollection<Button> buttons, ObservableCollection<Button> acceptButtons, ObservableCollection<Button> declineButtons, Profile userProfile, Button requestButton)
 		{
 			int count = 0;
 			if (profiles != null) {
@@ -72,6 +72,8 @@ namespace HowlOut
 
 				Grid cell = new Grid ();
 				Button button = new Button ();
+				Button acceptButton = new Button ();
+				Button declineButton = new Button ();
 
 				if (addRequestButton) {
 					if (profiles != null) {
@@ -84,14 +86,10 @@ namespace HowlOut
 
 				} else {
 					if (profiles != null) {
-						cell = friendCellCreator (profiles [subjectNr]);
-						button = buttonCreator (subjectNr);
-						buttons.Add (button);
+						cell = friendCellCreator (profiles [subjectNr], buttons, acceptButtons, declineButtons);
 
 					} else if (groups != null) {
 						cell = groupCellCreator (groups [subjectNr]);
-						button = buttonCreator (subjectNr);
-						buttons.Add (button);
 					}
 				}
 				//adds the whole cell to the grid
@@ -100,9 +98,7 @@ namespace HowlOut
 				if (addRequestButton) {
 					grid.Children.Add (requestButton, column, row);
 					addRequestButton = false;
-				} else {
-					grid.Children.Add (button, column, row);
-				}
+				} 
 
 				column ++;
 				subjectNr++;
@@ -117,16 +113,12 @@ namespace HowlOut
 				Text = "" + i,
 				TextColor = Color.Transparent,
 				BackgroundColor = Color.Transparent,
-			};
 
-			if (i == 9999) {
-				button.BorderWidth = 6;
-				button.BorderColor = Color.Green;
-			}
+			};
 			return button;
 		}
 
-		private Grid friendCellCreator(Profile profile)
+		private Grid friendCellCreator(Profile profile, ObservableCollection<Button> buttons, ObservableCollection<Button> acceptButtons, ObservableCollection<Button> declineButtons)
 		{
 			Grid cellGrid = new Grid {
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -135,6 +127,7 @@ namespace HowlOut
 					new RowDefinition{ Height = 10 },
 					new RowDefinition{ Height = 85 },
 					new RowDefinition{ Height = 40 },
+					new RowDefinition{ Height = 50 },
 				}
 			};
 
@@ -158,6 +151,22 @@ namespace HowlOut
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 			}, 0, 2);
+
+			Button newProfileButton = new Button ();
+			buttons.Add (newProfileButton);
+			cellGrid.Children.Add (newProfileButton, 0, 2);
+
+			StackLayout stackLayout = new StackLayout { Orientation = StackOrientation.Horizontal,};
+
+			Button newAcceptButton = new Button {Text = "Accept"};
+			buttons.Add (newAcceptButton);
+			stackLayout.Children.Add (newAcceptButton);
+
+			Button newDeclineButton = new Button {Text = "Decline"};
+			buttons.Add (newDeclineButton);
+			stackLayout.Children.Add (newDeclineButton);
+
+			cellGrid.Children.Add (stackLayout, 0, 3);
 
 			return cellGrid;
 		}

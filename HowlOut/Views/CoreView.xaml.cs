@@ -39,6 +39,7 @@ namespace HowlOut
 
 			searchEvent = new SearchEvent();
 			manageEvent = new ManageEvent();
+
 			System.Diagnostics.Debug.WriteLine ("Test Run: 4");
 			contentViews.Add (searchEvent);
 			contentViewTypes.Add ("SearchEvent");
@@ -53,9 +54,12 @@ namespace HowlOut
 			{
 				if(contentViewTypes[contentViewTypes.Count-1] == "SearchEvent") {
 					App.coreView.setContentView(new FilterSearch(), "FilterSearch");
+
 				}
 				if(contentViewTypes[contentViewTypes.Count-1] == "ManageEvent") {
 					App.coreView.setContentView(new CreateEvent(new Event(), true), "CreateEvent"); 
+
+					System.Diagnostics.Debug.WriteLine("Hmmm");
 				}
 			};
 		}

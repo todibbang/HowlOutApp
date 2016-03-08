@@ -20,7 +20,7 @@ namespace HowlOut
 		ObservableCollection <Group> groupsToInvite = new ObservableCollection <Group>();
 		public CreateEvent createEventView;
 
-		Button friendRequestButton = new Button ();
+		Button friendRequestButton = new Button {BackgroundColor= Color.Transparent,};
 		Button groupRequestButton = new Button ();
 
 		public UserProfile (Profile userProfile, Group userGroup, Event eventObject)
@@ -36,19 +36,19 @@ namespace HowlOut
 
 
 			if (userProfile != null) {
-				listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, userProfile, friendRequestButton);
+				listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, null,null, userProfile, friendRequestButton);
 				System.Diagnostics.Debug.WriteLine ("friendRequestButton " + friendRequestButton.Text);
-				listMaker.createList (groupGrid, null, userProfile.Groups, groupButtons, userProfile, groupRequestButton);
+				listMaker.createList (groupGrid, null, userProfile.Groups, groupButtons, null,null, userProfile, groupRequestButton);
 				givenList = userProfile.Comments;
 				infoView.Content = new InspectProfile (userProfile);
 			} else if(userGroup != null) {
-				listMaker.createList (profileGrid, userGroup.Members, null, friendButtons, userProfile, null);
+				listMaker.createList (profileGrid, userGroup.Members, null, friendButtons, null,null, userProfile, null);
 				friendsButton.Text = "Members";
 				givenList = userGroup.Comments;
 				infoView.Content = new InspectGroup (userGroup);
 				groupsButton.IsVisible = false;
 			} else if(eventObject != null) {
-				listMaker.createList (profileGrid, eventObject.Attendees, null, friendButtons, null, null);
+				listMaker.createList (profileGrid, eventObject.Attendees, null, null,null, friendButtons, null, null);
 				friendsButton.Text = "Attendees";
 				givenList = eventObject.Comments;
 

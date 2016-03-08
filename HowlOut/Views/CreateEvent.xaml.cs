@@ -22,10 +22,11 @@ namespace HowlOut
 
 		public CreateEvent (Event givenEvent, bool isCreate)
 		{
-			httpClient = new HttpClient(new NativeMessageHandler());
-			eventApiManager = new EventApiManager (httpClient);
+			eventApiManager = new EventApiManager(new HttpClient(new NativeMessageHandler()));
 			newEvent = givenEvent;
 			InitializeComponent ();
+
+
 			mapView = new MapsView (utilityManager.getCurrentUserPosition());
 
 			for (int i = 18; i < 100; i++) agePicker.Add ("" + i, i);
@@ -57,11 +58,11 @@ namespace HowlOut
 
 			/// set location
 			locationButton.Clicked += (sender, e) => {
-				if (newEvent.AddressPosition.Latitude == 0 && newEvent.AddressPosition.Longitude == 0){
+				if (newEvent.Latitude == 0 && newEvent.Longitude == 0){
 					mapView = new MapsView (utilityManager.getCurrentUserPosition());
 				}
 				else {
-					mapView = new MapsView (newEvent.AddressPosition);
+					mapView = new MapsView (new Position(newEvent.Latitude, newEvent.Longitude));
 				}
 				mapView.createEventView = this;
 				App.coreView.setContentView (mapView, "MapsView");
@@ -93,6 +94,8 @@ namespace HowlOut
 
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
 		}
+
+
 
 		private void setNewEvent()
 		{
@@ -136,42 +139,57 @@ namespace HowlOut
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
-			EventType eventType1 = new EventType{ EventTypeId=2, Type="Outdoor"};
-			List<EventType> EventTypes = new List<EventType>();
-			EventTypes.Add (eventType1);
+			List<EventType> types = new List<EventType> ();
+			types.Add(new EventType{ EventTypeId = 10, Type = "Outdoor" });
+			eventToCreate.EventTypes = types;
+
 			if (eventToCreate.AddressName == null) {
 				eventToCreate.AddressName = "Unknown";
 			}
-			EventDBO newEventAsDBO = new EventDBO{OwnerId = eventToCreate.OwnerId, Title = eventToCreate.Title, 
+			EventDBO newEventAsDBO = new EventDBO{
+				OwnerId = eventToCreate.OwnerId, 
+				Title = eventToCreate.Title, 
 				Description = eventToCreate.Description,
-				StartDate = eventToCreate.StartDate, EndDate = eventToCreate.EndDate, MinAge = eventToCreate.MinAge,
-				MaxAge = eventToCreate.MaxAge, MinSize = eventToCreate.MinSize, MaxSize = eventToCreate.MaxSize, 
-				Public = true, AddressPosition = eventToCreate.AddressPosition, 
-				AddressName = eventToCreate.AddressName, EventTypes = EventTypes};
+				StartDate = eventToCreate.StartDate, 
+				EndDate = eventToCreate.EndDate, 
+				MinAge = eventToCreate.MinAge,
+				MaxAge = eventToCreate.MaxAge, 
+				MinSize = eventToCreate.MinSize, 
+				MaxSize = eventToCreate.MaxSize, 
+				Public = true, 
+				Latitude = eventToCreate.Latitude,
+				Longitude = eventToCreate.Longitude, 
+				AddressName = eventToCreate.AddressName, 
+				EventTypes = eventToCreate.EventTypes};
 
 			Event eventCreated = await eventApiManager.CreateEvent (newEventAsDBO);
-			eventCreated.Attendees = new List<Profile> ();
-			eventCreated.Followers = new List<Profile> ();
+
 			if (eventCreated != null) {
+				eventCreated.Attendees = new List<Profile> ();
+				eventCreated.Followers = new List<Profile> ();
 				App.coreView.setContentView (new UserProfile (null, null, eventCreated), "UserProfile");
 				//App.coreView.setContentView (new InspectEvent (eventCreated, 2), "InspectEvent");
 			} else {
-				App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
+				await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 			}
 		}
 
 		private Button typeButtonPressed(Button typeButton)
 		{
+
+			System.Diagnostics.Debug.WriteLine ("Color shit");
 			if (typeButton.BackgroundColor == Color.White) {
 				if (newEvent.EventTypes.Count < 3) {
 					typeButton.BackgroundColor = Color.FromHex ("00E0A0");
 					typeButton.TextColor = Color.White;
-					//newEvent.EventTypes.Add (typeButton.Text.ToString ());
+					newEvent.EventTypes.Add (new EventType{Type = typeButton.Text.ToString ()});
 				}
 			} else {
 				typeButton.BackgroundColor = Color.White;
 				typeButton.TextColor = Color.FromHex ("00E0A0");
-				//newEvent.EventTypes.Remove (typeButton.Text.ToString ());
+				for (int i = 0; i < newEvent.EventTypes.Count; i++) {
+					if(newEvent.EventTypes[i].Type == typeButton.Text.ToString ())newEvent.EventTypes.Remove (newEvent.EventTypes[i]);
+				}
 			}
 			return typeButton;
 		}
@@ -194,6 +212,8 @@ namespace HowlOut
 		public void setLocationButton(string name) {
 			locationButton.Text = name;
 		}
+
+
 	}
 }
 

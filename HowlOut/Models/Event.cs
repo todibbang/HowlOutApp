@@ -14,7 +14,8 @@ namespace HowlOut
 
         public List<EventType> EventTypes { get; set; }
 
-		public Position AddressPosition {get; set;}			//Position of the event
+		public double Latitude {get; set;}				//Position of the event
+		public double Longitude {get; set;}				//Position of the event
 		public string AddressName {get; set;}				//Name of the position / address
 
 		public List <Profile> Attendees {get; set;}			//People attending the event

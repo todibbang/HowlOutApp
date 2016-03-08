@@ -2,31 +2,54 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
 	public partial class FilterSearch : ContentView
 	{	
-		int MinAgeSearched = 0;
+		ObservableCollection<EventType> EventTypes = new ObservableCollection<EventType>();
 
 		public FilterSearch ()
 		{
 			InitializeComponent ();
 
-			Dictionary<string, int> agePicker = new Dictionary<string, int> {
+			distance.Minimum = 0;
+			distance.Maximum = 30;
+			distance.Value = 5;
+			distanceLabel.Text = "Distance, " + distance.Value + " km";
+
+			distance.ValueChanged += (sender, e) => {
+				distanceLabel.Text = "Distance, " + ((int) distance.Value + " km");
 			};
-			for (int i = 18; i < 100; i++)
-				agePicker.Add ("" + i, i);
 
-			foreach (string number in agePicker.Keys)
-			{
-				minAge.Items.Add(number);
-				maxAge.Items.Add(number);
+			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
+			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport); };
+			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur); };
+			film.Clicked += (sender, e) => { film = typeButtonPressed(film); };
+			musik.Clicked += (sender, e) => { musik = typeButtonPressed(musik); };
+			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe); };
+			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
+			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
+
+		}
+
+		private Button typeButtonPressed(Button typeButton)
+		{
+
+			System.Diagnostics.Debug.WriteLine ("Color shit");
+			if (typeButton.BackgroundColor == Color.White) {
+				typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+				typeButton.TextColor = Color.White;
+				EventTypes.Add (new EventType{Type = typeButton.Text.ToString ()});
+			} else {
+				typeButton.BackgroundColor = Color.White;
+				typeButton.TextColor = Color.FromHex ("00E0A0");
+				for (int i = 0; i < EventTypes.Count; i++) {
+					if(EventTypes[i].Type == typeButton.Text.ToString ())EventTypes.Remove (EventTypes[i]);
+				}
 			}
-
-			minAge.SelectedIndexChanged += (sender, args) => {
-				if (minAge.SelectedIndex != -1) { string number = minAge.Items[minAge.SelectedIndex]; MinAgeSearched = agePicker[number]; } };
-
+			return typeButton;
 		}
 	}
 }

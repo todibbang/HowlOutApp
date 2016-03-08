@@ -65,8 +65,8 @@ namespace HowlOut
 		public MapsView (Event eve)
 		{
 			InitializeComponent ();
-			utilityManager.setMapForEvent (eve.AddressPosition, map, mapLayout);
-			utilityManager.setPin(eve.AddressPosition, map, eve.Title, eve.AddressName);
+			utilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
+			utilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
 			searchList.IsVisible = false;
 			searchList.HeightRequest=0;
 			selectButton.IsVisible = false;
@@ -113,7 +113,8 @@ namespace HowlOut
 		public void setTheNewAddressToTheEvent(Position position, string address)
 		{
 			if (createEventView != null) {
-				createEventView.newEvent.AddressPosition = position;
+				createEventView.newEvent.Latitude = position.Latitude;
+				createEventView.newEvent.Longitude = position.Longitude;
 				createEventView.newEvent.AddressName = address;
 				createEventView.setLocationButton(address);
 			}

@@ -151,9 +151,7 @@
 						<Grid RowSpacing="0">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
-								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
+								<RowDefinition Height="80"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
@@ -163,18 +161,18 @@
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="5"/>
 							</Grid.ColumnDefinitions>
-
-							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
+							<local:Line Grid.Row="0"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Privacy" Style="{DynamicResource TextStyle}"></Label>
+
 							<StackLayout Grid.Row="1" Grid.Column="3" Spacing="0" Padding="0,15,0,15">
-								<Picker Style="{DynamicResource ButtonStyle}" HeightRequest="40" Title="Public">
+								<Picker HeightRequest="40" Title="Public">
 							        <Picker.Items>
 							            <x:String>Public</x:String> 
 							            <x:String>Private</x:String>
 							        </Picker.Items>
 							    </Picker> 
 							</StackLayout>
-							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
+							<local:Line Grid.Row="2"/>
 						</Grid>
 					</StackLayout>
 

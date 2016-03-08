@@ -39,8 +39,8 @@ namespace HowlOut
 
 				if(mapInitialized != true) { 
 					mapInitialized = true;
-					util.setMapForEvent (eve.AddressPosition, map, mapLayout);
-					util.setPin(eve.AddressPosition, map, eve.Title, eve.AddressName);
+					util.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
+					util.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
 				}
 			};
 
@@ -80,7 +80,7 @@ namespace HowlOut
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new UserProfile (null, null, eve), "UserProfile");
+				App.coreView.setContentView (new InviteView (null, null, eve, App.userProfile.Friends), "UserProfile");
 			};
 		}
 
@@ -108,7 +108,7 @@ namespace HowlOut
 				label.Text = addressList [i];
 				addressLayout.Children.Add(label);
 			}
-			quickDistance.Text = util.distance(eve.AddressPosition, position);
+			quickDistance.Text = util.distance(new Position(eve.Latitude, eve.Longitude), position);
 			Label labelD = new Label ();
 			labelD.Text = quickDistance.Text;
 			addressLayout.Children.Add(labelD);

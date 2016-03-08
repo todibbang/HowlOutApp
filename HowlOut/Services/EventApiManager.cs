@@ -123,10 +123,11 @@ namespace HowlOut
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 				var response = await httpClient.PostAsync(uri, content);
 
-				System.Diagnostics.Debug.WriteLine("Success ??? " + response.IsSuccessStatusCode);
+				System.Diagnostics.Debug.WriteLine("Suchcess ??? " + response.IsSuccessStatusCode);
 
 				if (response.IsSuccessStatusCode)
 				{
+					System.Diagnostics.Debug.WriteLine("Ass ??? ");
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
 					System.Diagnostics.Debug.WriteLine("New Event ID: " + eventToRetrieve.EventId);

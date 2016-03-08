@@ -18,10 +18,6 @@
 								<RowDefinition Height="2"/>
 								<RowDefinition Height="70"/>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
-								<RowDefinition Height="2"/>
-								<RowDefinition Height="70"/>
-								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="5"/>
@@ -32,21 +28,9 @@
 							</Grid.ColumnDefinitions>
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
-							<Label Grid.Row="1" Grid.Column="1" Text="Age" Style="{DynamicResource TextStyle}"></Label>
-							<StackLayout Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
-								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="minAge" WidthRequest="50"></Picker>
-								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="maxAge" WidthRequest="50"></Picker>
-							</StackLayout>
+							<Label Grid.Row="1" Grid.Column="1" Style="{DynamicResource TextStyle}" x:Name="distanceLabel"></Label>
+							<Slider Grid.Row="1" Grid.Column="3" VerticalOptions="CenterAndExpand" x:Name="distance"></Slider>
 							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"/>
-							<Label Grid.Row="3" Grid.Column="1" Text="Distance" Style="{DynamicResource TextStyle}"></Label>
-							<Slider Grid.Row="3" Grid.Column="3" VerticalOptions="CenterAndExpand"></Slider>
-							<local:Line Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"/>
-							<Label Grid.Row="5" Grid.Column="1" Text="Size" Style="{DynamicResource TextStyle}"></Label>
-							<StackLayout Grid.Row="5" Grid.Column="3" Orientation="Horizontal">
-								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="minSize" WidthRequest="50"></Picker>
-								<Picker VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="maxSize" WidthRequest="50"></Picker>
-							</StackLayout>
-							<local:Line Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>
 						</Grid>
 					</StackLayout>
 					
@@ -80,14 +64,14 @@
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
 
-								<Button Grid.Column="1" Grid.Row="1" Text="1" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="3" Grid.Row="1" Text="2" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="5" Grid.Row="1" Text="3" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="7" Grid.Row="1" Text="4" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="1" Grid.Row="3" Text="1" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="3" Grid.Row="3" Text="2" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="5" Grid.Row="3" Text="3" Style="{DynamicResource TypeButtonStyle}" ></Button>
-								<Button Grid.Column="7" Grid.Row="3" Text="4" Style="{DynamicResource TypeButtonStyle}" ></Button>
+								<Button Grid.Column="1" Grid.Row="1" Text="Fest" Style="{DynamicResource TypeButtonStyle}" x:Name="fest"></Button>
+								<Button Grid.Column="3" Grid.Row="1" Text="Sport" Style="{DynamicResource TypeButtonStyle}" x:Name="sport"></Button>
+								<Button Grid.Column="5" Grid.Row="1" Text="Kultur" Style="{DynamicResource TypeButtonStyle}" x:Name="kultur"></Button>
+								<Button Grid.Column="7" Grid.Row="1" Text="Film" Style="{DynamicResource TypeButtonStyle}" x:Name="film"></Button>
+								<Button Grid.Column="1" Grid.Row="3" Text="Musik" Style="{DynamicResource TypeButtonStyle}" x:Name="musik"></Button>
+								<Button Grid.Column="3" Grid.Row="3" Text="Cafe" Style="{DynamicResource TypeButtonStyle}" x:Name="cafe"></Button>
+								<Button Grid.Column="5" Grid.Row="3" Text="Mad" Style="{DynamicResource TypeButtonStyle}" x:Name="mad"></Button>
+								<Button Grid.Column="7" Grid.Row="3" Text="Hobby" Style="{DynamicResource TypeButtonStyle}" x:Name="hobby"></Button>
 							</Grid>
 							<local:Line Grid.Row="2"/>
 						</Grid>
