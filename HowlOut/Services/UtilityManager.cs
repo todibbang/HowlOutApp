@@ -3,12 +3,17 @@ using Xamarin.Forms.Maps;
 using Plugin.Geolocator;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Net.Http;
+using ModernHttpClient;
+using System.Collections.Generic;
 
 namespace HowlOut
 {
 	public class UtilityManager
 	{
 		public static Position lastKnownPosition = new Position();
+		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient(new NativeMessageHandler()));
+		EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
 
 		public UtilityManager ()
 		{
@@ -99,6 +104,69 @@ namespace HowlOut
 			string newTime = hour + ":" + minute;
 
 			return newTime;
+		}
+
+		public async void sendFriendRequest(Profile profile)
+		{
+			Profile newProfile = null;
+			bool success = await profileManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+			}
+		}
+
+		public async void acceptFriendRequest(Profile profile)
+		{
+			bool success = await profileManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			}
+		}
+
+		public async void declineFriendRequest(Profile profile)
+		{
+			bool success = await profileManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			}
+		}
+
+		public async void removeFriend(Profile profile)
+		{
+			bool success = await profileManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+			}
+		}
+
+		private async Task loadUpdatedProfile(Profile profile)
+		{
+			Profile newProfile = await profileManager.GetProfileId (profile.ProfileId);
+			App.userProfile = await profileManager.GetProfileId (App.userProfile.ProfileId);
+			App.coreView.setContentView (new UserProfile (newProfile, null, null), "UserProfile");
+		}
+
+
+		public async void sendInviteToEvent(Event eve, Profile profile)
+		{
+			
+			List <string> IdsToInvite = new List<string> ();
+			IdsToInvite.Add (profile.ProfileId);
+			await eventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
+		}
+
+		public async void sendInviteToGroup(Group group, Profile profile)
+		{
+			GroupApiManager groupManager = new GroupApiManager ();
+			await groupManager.InviteToGroup(group.GroupId, profile.ProfileId);
 		}
 	}
 }

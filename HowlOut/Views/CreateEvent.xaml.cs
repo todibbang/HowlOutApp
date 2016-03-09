@@ -14,7 +14,7 @@ namespace HowlOut
 		UtilityManager utilityManager = new UtilityManager ();
 		EventApiManager eventApiManager;
 		MapsView mapView;
-		private HttpClient httpClient;
+		//private HttpClient httpClient;
 
 		public Event newEvent;
 		Dictionary<string, int> agePicker = new Dictionary<string, int> { };
@@ -109,6 +109,9 @@ namespace HowlOut
 
 			minAge.SelectedIndex = 0;
 			maxAge.SelectedIndex = agePicker.Count;
+
+
+
 			newEvent.MinAge = agePicker [minAge.Items[minAge.SelectedIndex]];
 			newEvent.MaxAge = agePicker [maxAge.Items[maxAge.SelectedIndex]];
 
@@ -130,11 +133,28 @@ namespace HowlOut
 
 			locationButton.Text = newEvent.AddressName;
 
-			minAge.SelectedIndex = agePicker ["16"];
-			maxAge.SelectedIndex = agePicker [newEvent.MaxAge.ToString ()];
+			int minvalue = 0;
+			int maxvalue = 0;
 
-			minSize.SelectedIndex = sizePicker [newEvent.MinSize.ToString ()];
-			maxSize.SelectedIndex = sizePicker [newEvent.MaxSize.ToString ()];
+			for (int i = 0; i < minAge.Items.Count; i++) {
+				if (minAge.Items [i] == newEvent.MinAge.ToString ())
+					minvalue = i;
+				if (maxAge.Items [i] == newEvent.MaxAge.ToString ())
+					maxvalue = i;
+			}
+
+			minAge.SelectedIndex = minvalue;
+			maxAge.SelectedIndex = maxvalue;
+
+			for (int i = 0; i < minSize.Items.Count; i++) {
+				if (minSize.Items [i] == newEvent.MinSize.ToString ())
+					minvalue = i;
+				if (maxSize.Items [i] == newEvent.MaxSize.ToString ())
+					maxvalue = i;
+			}
+
+			minSize.SelectedIndex = minvalue;
+			maxSize.SelectedIndex = maxvalue;
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)

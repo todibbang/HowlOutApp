@@ -48,7 +48,7 @@ namespace HowlOut
 				infoView.Content = new InspectGroup (userGroup);
 				groupsButton.IsVisible = false;
 			} else if(eventObject != null) {
-				listMaker.createList (profileGrid, eventObject.Attendees, null, null,null, friendButtons, null, null);
+				listMaker.createList (profileGrid, eventObject.Attendees, null, friendButtons,null, null, null, null);
 				friendsButton.Text = "Attendees";
 				givenList = eventObject.Comments;
 
@@ -93,17 +93,27 @@ namespace HowlOut
 				wall.IsVisible = true;
 			};
 
+
+			System.Diagnostics.Debug.WriteLine (friendButtons.Count + " friendButtons");
+
+
 			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {
+					int counter = 0;
+					for(int i = 0; i < friendButtons.Count; i++){
+						if(friendButtons[i] == button) counter = i;
+					}
+						
 					Profile profile = null;
+
 					if (userProfile != null) {
-						profile = userProfile.Friends[int.Parse(button.Text)];
+						profile = userProfile.Friends[counter];
 					} 
 					else if(userGroup != null) { 
-						profile = userGroup.Members[int.Parse(button.Text)];
+						profile = userGroup.Members[counter];
 					} 
 					else if(eventObject != null) { 
-						profile = eventObject.Attendees[int.Parse(button.Text)];
+						profile = eventObject.Attendees[counter];
 					}
 					App.coreView.setContentView (new UserProfile (profile, null, null), "UserProfile");
 				};

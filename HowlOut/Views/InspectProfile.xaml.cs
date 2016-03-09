@@ -10,8 +10,9 @@ namespace HowlOut
 {
 	public partial class InspectProfile : ContentView
 	{
-		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient(new NativeMessageHandler()));
+		
 		DataManager dataManager = new DataManager ();
+		UtilityManager utilityManager = new UtilityManager ();
 		Profile inspectedProfile;
 
 		bool isProfileYou = false;
@@ -63,67 +64,20 @@ namespace HowlOut
 
 			friendButton.Clicked += (sender, e) => {
 				if(hasProfileSentYouFriendRequest) {
-					acceptFriendRequest(profile);
+					utilityManager.acceptFriendRequest(profile);
 				} else {
-					sendFriendRequest(profile);
+					utilityManager.sendFriendRequest(profile);
 				}
 			};
 			unFriendButton.Clicked += (sender, e) => {
 				if(isProfileFriend) {
-					removeFriend(profile);
+					utilityManager.removeFriend(profile);
 				} else if(hasProfileSentYouFriendRequest) {
-					declineFriendRequest(profile);
+					utilityManager.declineFriendRequest(profile);
 				}
 			};
 		}
-
-		private async void sendFriendRequest(Profile profile)
-		{
-			bool success = await profileManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
-			}
-		}
-
-		private async void acceptFriendRequest(Profile profile)
-		{
-			bool success = await profileManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
-			}
-		}
-
-		private async void declineFriendRequest(Profile profile)
-		{
-			bool success = await profileManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
-			}
-		}
-
-		private async void removeFriend(Profile profile)
-		{
-			bool success = await profileManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
-			}
-		}
-
-		private async Task loadUpdatedProfile(Profile profile)
-		{
-			Profile newProfile = await profileManager.GetProfileId (profile.ProfileId);
-			App.userProfile = await profileManager.GetProfileId (App.userProfile.ProfileId);
-			App.coreView.setContentView (new UserProfile (newProfile, null, null), "UserProfile");
-		}
-
+			
 		private bool IsProfileYou(Profile profile)
 		{
 			bool you = false;

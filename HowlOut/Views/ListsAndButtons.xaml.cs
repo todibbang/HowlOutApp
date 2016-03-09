@@ -154,17 +154,20 @@ namespace HowlOut
 
 			Button newProfileButton = new Button ();
 			buttons.Add (newProfileButton);
-			cellGrid.Children.Add (newProfileButton, 0, 2);
+			cellGrid.Children.Add (newProfileButton, 0, 1);
 
 			StackLayout stackLayout = new StackLayout { Orientation = StackOrientation.Horizontal,};
 
-			Button newAcceptButton = new Button {Text = "Accept"};
-			buttons.Add (newAcceptButton);
-			stackLayout.Children.Add (newAcceptButton);
-
-			Button newDeclineButton = new Button {Text = "Decline"};
-			buttons.Add (newDeclineButton);
-			stackLayout.Children.Add (newDeclineButton);
+			if (acceptButtons != null) {
+				Button newAcceptButton = new Button { Text = "Accept" };
+				acceptButtons.Add (newAcceptButton);
+				stackLayout.Children.Add (newAcceptButton);
+			}
+			if (acceptButtons != null) {
+				Button newDeclineButton = new Button { Text = "Decline" };
+				declineButtons.Add (newDeclineButton);
+				stackLayout.Children.Add (newDeclineButton);
+			}
 
 			cellGrid.Children.Add (stackLayout, 0, 3);
 
