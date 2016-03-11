@@ -40,6 +40,8 @@ namespace HowlOut
 			set{ this.ProfileImageUri = value; }
 		}
 
+		public SearchSettings ProfileSearchSettings { get; set; }
+
 		public Event ()
 		{
 			EventTypes = new List<EventType> ();
