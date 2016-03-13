@@ -33,9 +33,9 @@ namespace HowlOut
 
 		public async Task update()
 		{
-			updateSearch();
-			updateManage();
-			updateProfile();
+			await updateSearch();
+			await updateManage();
+			await updateProfile();
 		}
 
 		public async Task updateSearch() {
@@ -47,7 +47,7 @@ namespace HowlOut
 			App.coreView.manageEvent.updateList ();
 		}
 		public async Task updateProfile() {
-			App.userProfile = await profileApiManager.GetProfileId(App.userProfile.ProfileId);
+			App.userProfile = await profileApiManager.GetProfile(App.userProfile.ProfileId);
 		}
 
 		public async Task<ObservableCollection<Address>> AutoCompletionPlace(string input)
@@ -55,10 +55,8 @@ namespace HowlOut
 			string path = "http://dawa.aws.dk/autocomplete?q=" + input;
 			ObservableCollection<Address> addresses = new ObservableCollection<Address>();
 
-			using (var client = new HttpClient())
-			{
-				HttpResponseMessage response = await client.GetAsync(new Uri(path));
-
+			try { 
+				var response = await httpClient.GetAsync(new Uri(path));
 				if (response.IsSuccessStatusCode)
 				{
 					var content = await response.Content.ReadAsStringAsync();
@@ -68,8 +66,14 @@ namespace HowlOut
 						System.Diagnostics.Debug.WriteLine ("forslagstekst: " + addresses [i].forslagstekst + " " + addresses[i].data.href);
 					}
 				}
-				return addresses;
+			} catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("COULD NOT RECIEVE DATA!!!!!");
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
+
+			return addresses;
+
 		}
 
 		public async Task<Position> GetCoordinates(string input)
@@ -78,13 +82,10 @@ namespace HowlOut
 
 			string adgangspunkt = "";
 
-			using (var client = new HttpClient())
-			{
-				System.Diagnostics.Debug.WriteLine ("Trying to get new coords");
+			Position position = new Position();
 
-				Position position = new Position();
-				HttpResponseMessage response = await client.GetAsync(new Uri(path));
-
+			try { 
+				var response = await httpClient.GetAsync(new Uri(path));
 				if (response.IsSuccessStatusCode)
 				{
 					System.Diagnostics.Debug.WriteLine ("Success getting new coords");
@@ -98,10 +99,13 @@ namespace HowlOut
 					position = new Position (Convert.ToDouble(substrings [1].Substring (35, 16)), Convert.ToDouble(substrings [1].Substring (11, 16)) );
 					//position.Latitude = Convert.ToDouble(substrings [1].Substring (11, 16));
 					//position.Longitude = Convert.ToDouble(substrings [1].Substring (35, 16));
-
 				}
-				return position;
+			} catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("COULD NOT RECIEVE DATA!!!!!");
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
+			return position;
 		}
     }
 }

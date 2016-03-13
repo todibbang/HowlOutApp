@@ -69,7 +69,7 @@ namespace HowlOut
 
 		}
 
-        public async Task storeToken()
+		public async Task storeToken()
         {
             //Writes a New Token upon authentication in the directory
             DependencyService.Get<ISaveAndLoad>().SaveText("token", Token);
@@ -131,7 +131,7 @@ namespace HowlOut
             MainPage = new SignIn();
         }
 
-        private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
+		private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
         {
 
             await storeToken();
@@ -147,7 +147,7 @@ namespace HowlOut
 
 		private async void startProgram()
 		{
-			userProfile = await profileApiManager.GetProfileId (StoredUserFacebookId);
+			userProfile = await profileApiManager.GetProfile (StoredUserFacebookId);
 		}
 
         protected override void OnStart ()

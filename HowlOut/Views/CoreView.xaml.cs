@@ -53,7 +53,8 @@ namespace HowlOut
 			CreateButton.Clicked += (sender, e) =>
 			{
 				if(contentViewTypes[contentViewTypes.Count-1] == "SearchEvent") {
-					App.coreView.setContentView(new FilterSearch(), "FilterSearch");
+					//TODO Changed to null, need searchreference
+					App.coreView.setContentView(new FilterSearch(null), "FilterSearch");
 
 				}
 				if(contentViewTypes[contentViewTypes.Count-1] == "ManageEvent") {

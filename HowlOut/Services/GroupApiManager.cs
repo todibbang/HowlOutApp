@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
+using System.Collections.Generic;
 
 namespace HowlOut
 {
@@ -11,7 +12,7 @@ namespace HowlOut
 	{
 		private HttpClient httpClient;
 
-		public GroupApiManager ()
+		public GroupApiManager (HttpClient httpClient)
 		{
 			this.httpClient = httpClient;
 		}
@@ -20,7 +21,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Group> groups = new ObservableCollection<Group>(); 
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/GetGroups");
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/GetGroups");
 
 			try { 
 				var response = await httpClient.GetAsync(uri);
@@ -40,7 +41,7 @@ namespace HowlOut
 		{
 			Group groupToRetrieve = new Group();
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/" + groupId);
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/" + groupId);
 
 			try
 			{
@@ -62,7 +63,7 @@ namespace HowlOut
 		{
 			if(groupToUpdate.GroupId != null && groupToUpdate.GroupId != "")
 			{
-				var uri = new Uri("https://howlout.gear.host/api/GroupApi/"+groupToUpdate.GroupId);
+				var uri = new Uri("https://www.howlout.net/api/GroupApi/"+groupToUpdate.GroupId);
 
 				try
 				{
@@ -88,7 +89,7 @@ namespace HowlOut
 		public async Task<Group> CreateGroup(GroupDBO groupToCreate)
 		{
 			Group groupReturned = new Group ();
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi");
+			var uri = new Uri("https://www.howlout.net/api/GroupApi");
 
 			try
 			{
@@ -114,7 +115,7 @@ namespace HowlOut
 
 		public async Task<bool> DeleteGroup(string groupId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/"+groupId);
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/"+groupId);
 
 			try
 			{
@@ -133,14 +134,15 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> InviteToGroup(string groupId, string profileId)
+		public async Task<bool> InviteToGroup(string groupId, List<string> profileIds)
 		{
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/InviteToGroup?groupId="+groupId+"&profileId="+profileId);
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/InviteToGroup?groupId="+groupId);
 
 			try
 			{
-				var content = new StringContent("");
+				var json = JsonConvert.SerializeObject(profileIds);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
 				var response = await httpClient.PutAsync(uri, content);
 				if (response.IsSuccessStatusCode)
 				{
@@ -157,7 +159,7 @@ namespace HowlOut
 		public async Task<bool> JoinGroup(string groupId, string profileId)
 		{
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/JoinGroup?groupId="+groupId+"&profileId="+profileId);
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/JoinGroup?groupId="+groupId+"&profileId="+profileId);
 
 			try
 			{
@@ -178,7 +180,7 @@ namespace HowlOut
 		public async Task<bool> DeclineGroupInvite(string groupId, string profileId)
 		{
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/DeclineGroupInvite?groupId="+groupId+"&profileId="+profileId);
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/DeclineGroupInvite?groupId="+groupId+"&profileId="+profileId);
 
 			try
 			{
@@ -199,7 +201,7 @@ namespace HowlOut
 		public async Task<bool> LeaveGroup(string groupId, string profileId)
 		{
 
-			var uri = new Uri("https://howlout.gear.host/api/GroupApi/LeaveGroup?groupId="+groupId+"&profileId="+profileId);
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/LeaveGroup?groupId="+groupId+"&profileId="+profileId);
 
 			try
 			{

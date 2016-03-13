@@ -41,14 +41,14 @@ namespace HowlOut
 			description.TextChanged += (sender, e) => { newEvent.Description = description.Text; };
 
 			/// set event type
-			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
-			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport); };
-			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur); };
-			film.Clicked += (sender, e) => { film = typeButtonPressed(film); };
-			musik.Clicked += (sender, e) => { musik = typeButtonPressed(musik); };
-			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe); };
-			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
-			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
+			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest, EventType.Party); };
+			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport, EventType.Sport); };
+			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur, EventType.Culture); };
+			film.Clicked += (sender, e) => { film = typeButtonPressed(film, EventType.Movie); };
+			musik.Clicked += (sender, e) => { musik = typeButtonPressed(musik, EventType.Music); };
+			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe, EventType.Cafe); };
+			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad, EventType.Food); };
+			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
 
 			/// set time and date
 			startDate.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
@@ -94,8 +94,6 @@ namespace HowlOut
 
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
 		}
-
-
 
 		private void setNewEvent()
 		{
@@ -160,7 +158,7 @@ namespace HowlOut
 		private async void LaunchEvent(Event eventToCreate)
 		{
 			List<EventType> types = new List<EventType> ();
-			types.Add(new EventType{ EventTypeId = 10, Type = "Outdoor" });
+			types.Add(EventType.Culture);
 			eventToCreate.EventTypes = types;
 
 			if (eventToCreate.AddressName == null) {
@@ -194,7 +192,7 @@ namespace HowlOut
 			}
 		}
 
-		private Button typeButtonPressed(Button typeButton)
+		private Button typeButtonPressed(Button typeButton, EventType eventType)
 		{
 
 			System.Diagnostics.Debug.WriteLine ("Color shit");
@@ -202,14 +200,12 @@ namespace HowlOut
 				if (newEvent.EventTypes.Count < 3) {
 					typeButton.BackgroundColor = Color.FromHex ("00E0A0");
 					typeButton.TextColor = Color.White;
-					newEvent.EventTypes.Add (new EventType{Type = typeButton.Text.ToString ()});
+					newEvent.EventTypes.Add (eventType);
 				}
 			} else {
 				typeButton.BackgroundColor = Color.White;
 				typeButton.TextColor = Color.FromHex ("00E0A0");
-				for (int i = 0; i < newEvent.EventTypes.Count; i++) {
-					if(newEvent.EventTypes[i].Type == typeButton.Text.ToString ())newEvent.EventTypes.Remove (newEvent.EventTypes[i]);
-				}
+				newEvent.EventTypes.Remove (eventType);
 			}
 			return typeButton;
 		}

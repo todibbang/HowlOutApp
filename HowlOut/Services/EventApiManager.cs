@@ -22,7 +22,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>(); 
 
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/WithoutOwner/" + App.StoredUserFacebookId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/WithoutOwner/" + App.StoredUserFacebookId);
 
 			try { 
 				var response = await httpClient.GetAsync(uri);
@@ -44,7 +44,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/Owner/" + App.StoredUserFacebookId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + App.StoredUserFacebookId);
 
 			try
 			{
@@ -66,7 +66,7 @@ namespace HowlOut
 		{
 			Event eventToRetrieve = new Event();
 
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/" + eventId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/" + eventId);
 
 			try
 			{
@@ -88,7 +88,7 @@ namespace HowlOut
 		{
 			if(EventToUpdate.EventId != null && EventToUpdate.EventId != "")
 			{
-				var uri = new Uri("https://howlout.gear.host/api/EventsAPI/"+EventToUpdate.EventId);
+				var uri = new Uri("https://www.howlout.net/api/EventsAPI/"+EventToUpdate.EventId);
 
 				try
 				{
@@ -114,7 +114,7 @@ namespace HowlOut
 		public async Task<Event> CreateEvent(EventDBO eventToCreate)
 		{
 			Event eventToRetrieve = new Event ();
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/");
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/");
 
 			try
 			{
@@ -145,7 +145,7 @@ namespace HowlOut
 
 		public async Task<bool> DeleteEvent(string eventId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/"+eventId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/"+eventId);
 
 			try
 			{
@@ -174,7 +174,7 @@ namespace HowlOut
 				eventsIdString += "eventTypesId=" + eventsIdString[i] + "&";
 			}
 
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/SearchEvent" + eventsIdString + "profileId=" + profile.ProfileId + 
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent" + eventsIdString + "profileId=" + profile.ProfileId + 
 				"&age=" + profile.Age + "&userLat="+userLat + "&userLong=" + userLong + "&maxDistance=" + maxDistance);
 
 			try
@@ -197,7 +197,7 @@ namespace HowlOut
 
 		public async Task<bool> FollowEvent(string eventId, string profileId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/FollowEvent/" + eventId + "/" + profileId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/FollowEvent/" + eventId + "/" + profileId);
 
 			try
 			{
@@ -219,7 +219,7 @@ namespace HowlOut
 
 		public async Task<bool> UnfollowEvent(string eventId, string profileId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/UnfollowEvent/" + eventId + "/" + profileId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/UnfollowEvent/" + eventId + "/" + profileId);
 
 			try
 			{
@@ -241,7 +241,7 @@ namespace HowlOut
 
 		public async Task<bool> AttendEvent(string eventId, string profileId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/AttendEvent/" + eventId + "/" + profileId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/AttendEvent/" + eventId + "/" + profileId);
 
 			try
 			{
@@ -263,7 +263,7 @@ namespace HowlOut
 
 		public async Task<bool> UnattendEvent(string eventId, string profileId)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/UnattendEvent/" + eventId + "/" + profileId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/UnattendEvent/" + eventId + "/" + profileId);
 
 			try
 			{
@@ -285,7 +285,7 @@ namespace HowlOut
 
 		public async Task<Event> AddCommentToEvent(string eventId, Comment comment)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/Comment/"+eventId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Comment/"+eventId);
 
 			try
 			{
@@ -311,7 +311,7 @@ namespace HowlOut
 
 		public async Task<Event> InviteToEvent(string eventId, List<string> profileIds)
 		{
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/InviteToEvent/"+eventId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/InviteToEvent/"+eventId);
 
 			try
 			{
@@ -338,7 +338,7 @@ namespace HowlOut
 		public async Task<bool> DeclineEventInvite(string eventId, string profileId)
 		{
 
-			var uri = new Uri("https://howlout.gear.host/api/EventsAPI/DeclineEventInvite?eventId="+eventId+"&profileId="+profileId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/DeclineEventInvite?eventId="+eventId+"&profileId="+profileId);
 
 			try
 			{

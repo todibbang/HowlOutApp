@@ -12,11 +12,17 @@ namespace HowlOut
 	public class UtilityManager
 	{
 		public static Position lastKnownPosition = new Position();
-		ProfileApiManager profileManager = new ProfileApiManager (new HttpClient(new NativeMessageHandler()));
-		EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
+		HttpClient httpClient;
+		ProfileApiManager profileManager;
+		EventApiManager eventApiManager;
+		GroupApiManager groupManager;
 
 		public UtilityManager ()
 		{
+			httpClient = new HttpClient(new NativeMessageHandler());
+			profileManager = new ProfileApiManager (httpClient);
+			eventApiManager= new EventApiManager (httpClient);
+			groupManager = new GroupApiManager (httpClient);
 		}
 
 		public async void updateLastKnownPosition()
@@ -149,8 +155,8 @@ namespace HowlOut
 
 		private async Task loadUpdatedProfile(Profile profile)
 		{
-			Profile newProfile = await profileManager.GetProfileId (profile.ProfileId);
-			App.userProfile = await profileManager.GetProfileId (App.userProfile.ProfileId);
+			Profile newProfile = await profileManager.GetProfile (profile.ProfileId);
+			App.userProfile = await profileManager.GetProfile (App.userProfile.ProfileId);
 			App.coreView.setContentView (new UserProfile (newProfile, null, null), "UserProfile");
 		}
 
@@ -165,8 +171,9 @@ namespace HowlOut
 
 		public async void sendInviteToGroup(Group group, Profile profile)
 		{
-			GroupApiManager groupManager = new GroupApiManager ();
-			await groupManager.InviteToGroup(group.GroupId, profile.ProfileId);
+			List <string> IdsToInvite = new List<string> ();
+			IdsToInvite.Add (profile.ProfileId);
+			await groupManager.InviteToGroup(group.GroupId, IdsToInvite);
 		}
 	}
 }

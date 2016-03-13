@@ -23,40 +23,39 @@ namespace HowlOut
 				distanceLabel.Text = "Distance, " + ((int) distance.Value + " km");
 			};
 
-			if(userSearchSettings.EventTypes.Contains("fest")) { fest = typeButtonPressed(fest); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { sport = typeButtonPressed(sport); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { kultur = typeButtonPressed(kultur); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { film = typeButtonPressed(film); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { musik = typeButtonPressed(musik); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { cafe = typeButtonPressed(cafe); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { mad = typeButtonPressed(mad); };
-			if(userSearchSettings.EventTypes.Contains("fest")) { hobby = typeButtonPressed(hobby); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Party)) { fest = typeButtonPressed(fest, EventType.Party); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Sport)) { sport = typeButtonPressed(sport, EventType.Sport); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Culture)) { kultur = typeButtonPressed(kultur, EventType.Culture); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Movie)) { film = typeButtonPressed(film, EventType.Movie); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Music)) { musik = typeButtonPressed(musik, EventType.Music); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Cafe)) { cafe = typeButtonPressed(cafe, EventType.Cafe); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Food)) { mad = typeButtonPressed(mad, EventType.Food); };
+			if(userSearchSettings.EventTypes.Contains(EventType.Hobby)) { hobby = typeButtonPressed(hobby, EventType.Hobby); };
 
-			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest); };
-			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport); };
-			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur); };
-			film.Clicked += (sender, e) => { film = typeButtonPressed(film); };
-			musik.Clicked += (sender, e) => { musik = typeButtonPressed(musik); };
-			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe); };
-			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad); };
-			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby); };
+			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest, EventType.Party); };
+			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport, EventType.Sport); };
+			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur, EventType.Culture); };
+			film.Clicked += (sender, e) => { film = typeButtonPressed(film, EventType.Movie); };
+			musik.Clicked += (sender, e) => { musik = typeButtonPressed(musik, EventType.Music); };
+			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe, EventType.Cafe); };
+			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad, EventType.Food); };
+			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
 
 		}
 
-		private Button typeButtonPressed(Button typeButton)
+		//TODO cleaned up this part, changed to enum
+		private Button typeButtonPressed(Button typeButton, EventType eventType)
 		{
 
 			System.Diagnostics.Debug.WriteLine ("Color shit");
 			if (typeButton.BackgroundColor == Color.White) {
 				typeButton.BackgroundColor = Color.FromHex ("00E0A0");
 				typeButton.TextColor = Color.White;
-				EventTypes.Add (new EventType{Type = typeButton.Text.ToString ()});
+				EventTypes.Add (eventType);
 			} else {
 				typeButton.BackgroundColor = Color.White;
 				typeButton.TextColor = Color.FromHex ("00E0A0");
-				for (int i = 0; i < EventTypes.Count; i++) {
-					if(EventTypes[i].Type == typeButton.Text.ToString ())EventTypes.Remove (EventTypes[i]);
-				}
+				EventTypes.Remove (eventType);
 			}
 			return typeButton;
 		}
