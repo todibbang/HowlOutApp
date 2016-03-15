@@ -47,7 +47,25 @@ namespace HowlOut
 			App.coreView.manageEvent.updateList ();
 		}
 		public async Task updateProfile() {
-			App.userProfile = await profileApiManager.GetLoggedInProfile(App.StoredUserFacebookId);
+			App.userProfile = new Profile { 
+				Name = "Mr. Tobias Bjerge Bang Von Der Snitsel", 
+				Age = 2, 
+				ProfileId = App.StoredUserFacebookId, 
+				Friends  = new List<Profile>(),
+				SentFriendRequests   = new List<Profile>(),
+				RecievedFriendRequests   = new List<Profile>(),
+
+				Groups = new List<Group>(),
+				GroupsInviteTo = new List<Group>(),
+
+				JoinedEvents = new List<Event>(),
+				EventsInviteTo = new List<Event>(),
+				FollowedEvents = new List<Event>(),
+				AttendedEvents = new List<Event>(),
+
+				Comments = new List <Comment> (),
+			};
+			//App.userProfile = await profileApiManager.GetLoggedInProfile(App.StoredUserFacebookId);
 		}
 
 		public async Task<ObservableCollection<Address>> AutoCompletionPlace(string input)

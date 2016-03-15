@@ -38,7 +38,7 @@ namespace HowlOut
 			if (userProfile != null) {
 				if(userProfile.ProfileId == App.userProfile.ProfileId){
 					count ++;
-					addNew = false;
+					addNew = true;
 				}
 			}
 
@@ -117,26 +117,7 @@ namespace HowlOut
 				}
 			};
 
-			//adds the users profile picture
-			var profilePicUri = dataManager.GetFacebookProfileImageUri(profile.ProfileId);
-			//var profilePicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
-			CircleImage profilePicture = new CircleImage {
-				HeightRequest = 85,
-				WidthRequest = 85,
-				Aspect = Aspect.AspectFill,
-				HorizontalOptions = LayoutOptions.Center,
-				Source = ImageSource.FromUri (profilePicUri)
-			};
-			cellGrid.Children.Add (profilePicture, 0,1);
-
-			cellGrid.Children.Add(new Label {
-				Text = profile.Name + ", " + profile.Age,
-				TextColor = Color.Black,
-				FontSize = 10,
-				HorizontalTextAlignment = TextAlignment.Center,
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-			}, 0, 2);
+			cellGrid.Children.Add (new ProfileDesignView(profile,null, 85, true), 0,1);
 
 			Button newProfileButton = new Button ();
 			buttons.Add (newProfileButton);

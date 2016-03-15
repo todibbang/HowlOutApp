@@ -62,6 +62,8 @@ namespace HowlOut
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(profile.ProfileId);
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
 
+			profileLayout.Content = new ProfileDesignView (profile, null, 80, true);
+
 			friendButton.Clicked += (sender, e) => {
 				if(hasProfileSentYouFriendRequest) {
 					utilityManager.acceptFriendRequest(profile);

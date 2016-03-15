@@ -3,6 +3,19 @@
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	<ContentView.Content>
+		<StackLayout>
+
+		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="400"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="400"/>
+			</Grid.RowDefinitions>
+			<ContentView x:Name="profileLayout"/>
+		</Grid>
+
 
 		<Grid RowSpacing="0" ColumnSpacing="0">
 			<Grid.ColumnDefinitions>
@@ -41,5 +54,6 @@
 			</StackLayout>
 
 		</Grid>
+		</StackLayout>
 	</ContentView.Content>
 </ContentView>
