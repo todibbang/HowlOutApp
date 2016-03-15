@@ -51,7 +51,7 @@ namespace HowlOut
 				}
 			}
 
-			listMaker.createList (profileGrid, profilesToSelectFrom, null, friendButtons, acceptButtons, declineButtons, userProfile, friendRequestButton);
+			listMaker.createList (profileGrid, profilesToSelectFrom, null, friendButtons, acceptButtons, declineButtons, userProfile, null);
 
 			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {

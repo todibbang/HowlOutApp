@@ -46,8 +46,6 @@ namespace HowlOut
 		//TODO cleaned up this part, changed to enum
 		private Button typeButtonPressed(Button typeButton, EventType eventType)
 		{
-
-			System.Diagnostics.Debug.WriteLine ("Color shit");
 			if (typeButton.BackgroundColor == Color.White) {
 				typeButton.BackgroundColor = Color.FromHex ("00E0A0");
 				typeButton.TextColor = Color.White;

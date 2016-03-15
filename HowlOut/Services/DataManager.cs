@@ -47,7 +47,7 @@ namespace HowlOut
 			App.coreView.manageEvent.updateList ();
 		}
 		public async Task updateProfile() {
-			App.userProfile = await profileApiManager.GetProfile(App.userProfile.ProfileId);
+			App.userProfile = await profileApiManager.GetLoggedInProfile(App.StoredUserFacebookId);
 		}
 
 		public async Task<ObservableCollection<Address>> AutoCompletionPlace(string input)

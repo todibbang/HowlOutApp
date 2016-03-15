@@ -177,5 +177,7 @@
     <BundleResource Include="Resources\ic_public.png" />
     <BundleResource Include="Resources\ic_refresh.png" />
     <BundleResource Include="Resources\ic_search.png" />
+    <BundleResource Include="Resources\ic_explore.png" />
+    <BundleResource Include="Resources\ic_calender.png" />
   </ItemGroup>
 </Project>

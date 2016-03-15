@@ -17,30 +17,28 @@ namespace HowlOut
 
 
 
-		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, ObservableCollection<Button> buttons, ObservableCollection<Button> acceptButtons, ObservableCollection<Button> declineButtons, Profile userProfile, Button requestButton)
+		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, 
+			ObservableCollection<Button> buttons, ObservableCollection<Button> acceptButtons, 
+			ObservableCollection<Button> declineButtons, Profile userProfile, Button addNewButton)
 		{
+			int column = 0;
+			int row = 0;
 			int count = 0;
+			int subjectNr = 0;
+			bool addNew = false;
+
 			if (profiles != null) {
 				count = profiles.Count;
 			} else {
 				count = groups.Count;
 			}
 
-			bool addRequestButton = false;
+
 
 			if (userProfile != null) {
 				if(userProfile.ProfileId == App.userProfile.ProfileId){
-					if (profiles != null) {
-						if (userProfile.RecievedFriendRequests.Count != 0) {
-							count++;
-							addRequestButton = true;
-						}
-					} else if (groups != null) {
-						if (userProfile.GroupsInviteTo.Count != 0) {
-							count++;
-							addRequestButton = true;
-						}
-					}
+					count ++;
+					addNew = false;
 				}
 			}
 
@@ -59,9 +57,8 @@ namespace HowlOut
 				ColumnSpacing=0,
 			};
 
-			int subjectNr = 0;
-			int column = 0;
-			int row = 0;
+
+
 
 			for (int i = 0; i < count; i++) {
 				if (column == 3) {
@@ -71,37 +68,26 @@ namespace HowlOut
 				}
 
 				Grid cell = new Grid ();
-				Button button = new Button ();
-				Button acceptButton = new Button ();
-				Button declineButton = new Button ();
 
-				if (addRequestButton) {
+				if (addNew) {
 					if (profiles != null) {
-						cell = requestGrid(userProfile.RecievedFriendRequests.Count);
-						subjectNr--;
+						cell = AddNewGrid (userProfile.RecievedFriendRequests.Count);
 					} else if (groups != null) {
-						cell = requestGrid (userProfile.GroupsInviteTo.Count);
-						subjectNr--;
+						cell = AddNewGrid (userProfile.GroupsInviteTo.Count);
 					}
-
+					grid.Children.Add (cell, column, row);
+					grid.Children.Add (addNewButton, column, row);
+					addNew = false;
 				} else {
 					if (profiles != null) {
 						cell = friendCellCreator (profiles [subjectNr], buttons, acceptButtons, declineButtons);
-
 					} else if (groups != null) {
 						cell = groupCellCreator (groups [subjectNr]);
 					}
+					grid.Children.Add (cell, column, row);
+					subjectNr++;
 				}
-				//adds the whole cell to the grid
-				grid.Children.Add (cell, column, row);
-
-				if (addRequestButton) {
-					grid.Children.Add (requestButton, column, row);
-					addRequestButton = false;
-				} 
-
 				column ++;
-				subjectNr++;
 			}
 			grid = newGrid;
 		}
@@ -163,7 +149,7 @@ namespace HowlOut
 				acceptButtons.Add (newAcceptButton);
 				stackLayout.Children.Add (newAcceptButton);
 			}
-			if (acceptButtons != null) {
+			if (declineButtons != null) {
 				Button newDeclineButton = new Button { Text = "Decline" };
 				declineButtons.Add (newDeclineButton);
 				stackLayout.Children.Add (newDeclineButton);
@@ -209,30 +195,47 @@ namespace HowlOut
 			return cellGrid;
 		}
 
-		private Grid requestGrid(int i)
+		private Grid AddNewGrid(int i)
 		{
 			Grid cellGrid = new Grid {
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
+
+				ColumnDefinitions = {
+					new ColumnDefinition{ Width = 60},
+					new ColumnDefinition{ Width = 25},
+				},
 				RowDefinitions = {
 					new RowDefinition{ Height = 10 },
-					new RowDefinition{ Height = 85 },
+					new RowDefinition{ Height = 25 },
+					new RowDefinition{ Height = 60 },
 					new RowDefinition{ Height = 40 },
-				}
+				},
 			};
 
 			Button groupButton = new Button {
 				HeightRequest = 85,
 				WidthRequest = 85,
 				BorderRadius = 42,
-				BorderWidth = 6,
-				BackgroundColor = Color.White,
+				BackgroundColor = Color.FromHex ("00E0A0"),
 				HorizontalOptions = LayoutOptions.Center,
-				Text = i + "",
-				BorderColor = Color.Red
+				Text = "+",
+				TextColor = Color.White
 			};
+			cellGrid.Children.Add (groupButton, 0,2,1,3);
 
-			cellGrid.Children.Add (groupButton, 0,1);
+			if (i > 0) {
+				Button notificationButton = new Button {
+					HeightRequest = 25,
+					WidthRequest = 25,
+					BorderRadius = 12,
+					BackgroundColor = Color.Red,
+					HorizontalOptions = LayoutOptions.Center,
+					Text = "" + i,
+					TextColor = Color.White
+				};
+				cellGrid.Children.Add (notificationButton, 1, 2, 1, 2);
+			}
 
 			return cellGrid;
 		}

@@ -14,7 +14,7 @@
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="60"/>
 				<RowDefinition Height="20"/>
-				<RowDefinition Height="50"/>
+				<RowDefinition Height="60"/>
 			</Grid.RowDefinitions>
 
 			<Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
 			 <Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOutBackground}" BorderRadius="30" BorderWidth="3" BorderColor="{DynamicResource HowlOut}" ></Button> 
 			 <Image Grid.Row="2" Grid.Column="1" WidthRequest = "25" x:Name="CreateImage" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
 
-			<StackLayout Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2">
+			<StackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2" BackgroundColor="White">
 				<local:BottomBar/> 
 			</StackLayout>
 

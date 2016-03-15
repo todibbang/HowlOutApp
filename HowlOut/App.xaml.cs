@@ -147,7 +147,7 @@ namespace HowlOut
 
 		private async void startProgram()
 		{
-			userProfile = await profileApiManager.GetProfile (StoredUserFacebookId);
+			userProfile = await profileApiManager.GetLoggedInProfile (StoredUserFacebookId);
 		}
 
         protected override void OnStart ()
