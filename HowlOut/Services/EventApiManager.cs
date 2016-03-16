@@ -164,18 +164,12 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<ObservableCollection<Event>> SearchEvents(List<int> eventTypesId, Profile profile, double userLat, double userLong, double maxDistance)
+		public async Task<ObservableCollection<Event>> SearchEvents(string profileId, double userLat, double userLong)
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var eventsIdString = "";
-			for(int i = 0; i < eventTypesId.Count; i++)
-			{
-				eventsIdString += "eventTypesId=" + eventsIdString[i] + "&";
-			}
-
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent" + eventsIdString + "profileId=" + profile.ProfileId + 
-				"&age=" + profile.Age + "&userLat="+userLat + "&userLong=" + userLong + "&maxDistance=" + maxDistance);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
+				"&userLat="+userLat + "&userLong=" + userLong);
 
 			try
 			{
