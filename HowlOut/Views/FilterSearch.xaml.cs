@@ -18,12 +18,13 @@ namespace HowlOut
 			_dataManager = new DataManager ();
 
 			distance.Minimum = 0;
-			distance.Maximum = 30;
+			distance.Maximum = 22000;
 			distance.Value = newSearchSettings.Distance;
 			distanceLabel.Text = "Distance, " + distance.Value + " km";
 
 			distance.ValueChanged += (sender, e) => {
 				distanceLabel.Text = "Distance, " + ((int) distance.Value + " km");
+				newSearchSettings.Distance = distance.Value;
 			};
 
 			if(newSearchSettings.EventTypes.Contains(EventType.Party)) { fest = PreSetButton(fest, EventType.Party); };
@@ -52,6 +53,7 @@ namespace HowlOut
 		private async void UpdateSearch()
 		{
 			await _dataManager.ProfileApiManager.SetSearchSettings (App.userProfile.ProfileId, newSearchSettings);
+			App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile (App.StoredUserFacebookId);
 			App.coreView.setContentView (new SearchEvent (), "SearchEvent");
 		}
 
