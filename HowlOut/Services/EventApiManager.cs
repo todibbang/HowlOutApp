@@ -164,7 +164,7 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<ObservableCollection<Event>> SearchEvents(string profileId, double userLat, double userLong)
+		public async Task<ObservableCollection<Event>> SearchEvents(string profileId, double userLat, double userLong, SearchSettings searchSettings = null)
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
@@ -173,7 +173,9 @@ namespace HowlOut
 
 			try
 			{
-				var response = await httpClient.GetAsync(uri);
+				var json = JsonConvert.SerializeObject(searchSettings);
+				var contentToSend = new StringContent(json);
+				var response = await httpClient.PostAsync(uri, contentToSend);
 
 				if (response.IsSuccessStatusCode)
 				{
