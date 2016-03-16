@@ -16,13 +16,9 @@ namespace HowlOut
 
 		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
 		ObservableCollection <Button> groupButtons = new ObservableCollection <Button>();
-		ObservableCollection <Profile> friendsToInvite = new ObservableCollection <Profile>();
-		ObservableCollection <Group> groupsToInvite = new ObservableCollection <Group>();
 		public CreateEvent createEventView;
 
 		List<Comment> givenList = new List<Comment> ();
-		Button friendRequestButton = new Button {BackgroundColor= Color.Transparent,};
-		Button groupRequestButton = new Button {BackgroundColor= Color.Transparent,};
 		Button FindNewFriendsButton = new Button {BackgroundColor= Color.Transparent,};
 		Button FindNewGroupsButton = new Button {BackgroundColor= Color.Transparent,};
 
@@ -124,7 +120,7 @@ namespace HowlOut
 			}
 
 			FindNewFriendsButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new InviteView (userProfile, null, null, userProfile.RecievedFriendRequests), "UserProfile");
+				App.coreView.setContentView (new InviteView (userProfile, null, null, userProfile.RecievedFriendRequests), "InviteView");
 			};
 
 			FindNewGroupsButton.Clicked += (sender, e) => {

@@ -151,6 +151,15 @@ namespace HowlOut
 
 			minSize.SelectedIndex = minvalue;
 			maxSize.SelectedIndex = maxvalue;
+
+			if(newEvent.EventTypes.Contains(EventType.Party)) { fest = PreSetButton(fest, EventType.Party); };
+			if(newEvent.EventTypes.Contains(EventType.Sport)) { sport = PreSetButton(sport, EventType.Sport); };
+			if(newEvent.EventTypes.Contains(EventType.Culture)) { kultur = PreSetButton(kultur, EventType.Culture); };
+			if(newEvent.EventTypes.Contains(EventType.Movie)) { film = PreSetButton(film, EventType.Movie); };
+			if(newEvent.EventTypes.Contains(EventType.Music)) { musik = PreSetButton(musik, EventType.Music); };
+			if(newEvent.EventTypes.Contains(EventType.Cafe)) { cafe = PreSetButton(cafe, EventType.Cafe); };
+			if(newEvent.EventTypes.Contains(EventType.Food)) { mad = PreSetButton(mad, EventType.Food); };
+			if(newEvent.EventTypes.Contains(EventType.Hobby)) { hobby = PreSetButton(hobby, EventType.Hobby); };
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)
@@ -238,7 +247,15 @@ namespace HowlOut
 			locationButton.Text = name;
 		}
 
+		private Button PreSetButton(Button typeButton, EventType eventType)
+		{
+			System.Diagnostics.Debug.WriteLine ("1234567890");
 
+			typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+			typeButton.TextColor = Color.White;
+
+			return typeButton;
+		}
 	}
 }
 

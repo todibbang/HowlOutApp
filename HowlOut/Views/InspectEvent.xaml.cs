@@ -63,7 +63,7 @@ namespace HowlOut
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new InviteView (null, null, eve, App.userProfile.Friends), "UserProfile");
+				App.coreView.setContentView (new InviteView (null, null, eve, App.userProfile.Friends), "InviteView");
 			};
 		}
 

@@ -164,6 +164,8 @@
     <AndroidResource Include="Resources\drawable\ic_chevron.png" />
     <AndroidResource Include="Resources\drawable\ic_add.png" />
     <AndroidResource Include="Resources\drawable\ic_public.png" />
+    <AndroidResource Include="Resources\drawable\ic_calender.png" />
+    <AndroidResource Include="Resources\drawable\ic_explore.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">

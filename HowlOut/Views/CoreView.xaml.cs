@@ -68,9 +68,10 @@ namespace HowlOut
 				CreateImage.IsVisible = true;
 				CreateImage.Source = "ic_add.png";
 			}
-
+			if(type == "SearchEvent" || type == "ManageEvent" || type == "CreateEvent" || type == "InviteView")
 			contentViews.Add (view);
 			contentViewTypes.Add (type);
+
 			topBar.setNavigationLabel(type);
 
 			await ViewExtensions.ScaleTo(view, 0, 0);
