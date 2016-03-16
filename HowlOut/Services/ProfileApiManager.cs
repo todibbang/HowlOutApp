@@ -41,6 +41,30 @@ namespace HowlOut
 			return false;
 		}
 
+		public async Task<bool> SetSearchSettings(string profileId, SearchSettings searchSettings)
+		{
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/SearchReference/"+profileId);
+
+			try
+			{
+				var json = JsonConvert.SerializeObject(searchSettings);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+				var response = await httpClient.PostAsync(uri, content);
+
+				if (response.IsSuccessStatusCode)
+				{
+					return true;
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Failing");
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+
+			return false;
+		}
+
 		public async Task<Profile> GetProfile(string profileId)
 		{
 			Profile profile = new Profile();
