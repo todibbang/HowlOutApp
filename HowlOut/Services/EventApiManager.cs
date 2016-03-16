@@ -173,7 +173,15 @@ namespace HowlOut
 
 			try
 			{
-				var json = JsonConvert.SerializeObject(searchSettings);
+				string json;
+				if(searchSettings == null)
+				{
+					json = JsonConvert.SerializeObject("");
+				}
+				else
+				{
+					json = JsonConvert.SerializeObject(searchSettings);
+				}
 				var contentToSend = new StringContent(json);
 				var response = await httpClient.PostAsync(uri, contentToSend);
 
