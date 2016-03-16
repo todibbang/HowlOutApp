@@ -2,9 +2,9 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ProfileDesignView"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
-		<Grid x:Name="profileLayout">
-			<Grid Padding="0" RowSpacing="0">
-				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" >
+		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+			<Grid x:Name="profileGrid">
+				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="10*"/>
 						<ColumnDefinition Width="15*"/>
@@ -21,7 +21,6 @@
 						<RowDefinition Height="45*"/>
 						<RowDefinition Height="25*"/>
 						<RowDefinition Height="13*"/>
-						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 					<controls:CircleImage Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2"
 						Source="{Binding EventHolderPhoto}" x:Name="ProfileImage"/>
@@ -30,7 +29,8 @@
 					<Button Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" 
 						Style="{DynamicResource LoyaltyButtonStyle}" BorderRadius="35" BorderWidth="5" FontSize="18" x:Name="Loyalty"></Button>
 				</Grid>
-				<Label Grid.Row="1" x:Name="infoLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+
+				<Label Grid.Row="1" x:Name="infoLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
 			</Grid>
 		</Grid>
 	</ContentView.Content>

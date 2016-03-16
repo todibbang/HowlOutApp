@@ -11,7 +11,6 @@ namespace HowlOut
 {
 	public class UtilityManager
 	{
-		public static Position lastKnownPosition = new Position();
 		HttpClient httpClient;
 		ProfileApiManager profileManager;
 		EventApiManager eventApiManager;
@@ -27,16 +26,13 @@ namespace HowlOut
 
 		public async void updateLastKnownPosition()
 		{
-			var locator = CrossGeolocator.Current;
-			locator.DesiredAccuracy = 50;
-			var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
-			lastKnownPosition = new Position (position.Latitude, position.Longitude);
-			System.Diagnostics.Debug.WriteLine ("Last Known Position: " + lastKnownPosition.Latitude + "" + lastKnownPosition.Longitude);
-		}
-
-		public Position getCurrentUserPosition()
-		{
-			return lastKnownPosition;
+			if (CrossGeolocator.Current.IsGeolocationEnabled && CrossGeolocator.Current.IsGeolocationAvailable) {
+				var locator = CrossGeolocator.Current;
+				locator.DesiredAccuracy = 50;
+				var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
+				App.lastKnownPosition = new Position (position.Latitude, position.Longitude);
+				System.Diagnostics.Debug.WriteLine ("Last Known Position: " + App.lastKnownPosition.Latitude + "" + App.lastKnownPosition.Longitude);
+			}
 		}
 
 		public async void setMapForEvent(Position pos, ExtMap map, StackLayout mapLayout)

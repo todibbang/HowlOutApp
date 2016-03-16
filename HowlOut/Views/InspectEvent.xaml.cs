@@ -16,46 +16,29 @@ namespace HowlOut
 		bool mapInitialized = false;
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
 
-		UtilityManager util = new UtilityManager();
-		DataManager dataManager = new DataManager();
-		HttpClient httpClient;
-		EventApiManager eventApiManager;
+		DataManager _dataManager = new DataManager();
 
 		public InspectEvent (Event eve, bool inspectType)
 		{
 			InitializeComponent ();
+			_dataManager = new DataManager();
 			setInfo (eve);
 
-			httpClient = new HttpClient(new NativeMessageHandler());
-			eventApiManager = new EventApiManager (httpClient);
-
-			if (inspectType) 					{ searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
-			else  								{ searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
+			if (inspectType) { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
+			else  { searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
 
 			detailsButton.Clicked += (sender, e) => 
 			{
 				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false; } 
-				else 								{ detailedInfo.IsVisible = false; quickInfo.IsVisible = true; }
+				else { detailedInfo.IsVisible = false; quickInfo.IsVisible = true; }
 
 				if(mapInitialized != true) { 
 					mapInitialized = true;
-					util.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
-					util.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
+					_dataManager.UtilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
+					_dataManager.UtilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
 				}
 			};
-
-			/*
-			eventHolderButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new UserProfile (eve.Attendees[0], null, null, false, false), "UserProfile");
-				//App.coreView.setContentView(new InspectProfile(eve.Attendees[0]), "InspectProfile");
-			};
-
-			eventGroupButton.Clicked += (sender, e) => {
-				//App.coreView.setContentView (new UserProfile (null, null, null, false, false), "UserProfile");
-
-				//App.coreView.setContentView(new InspectGroup(eve.Attendees), "InspectGroup");
-			};
-			*/
+				
 			mapButton.Clicked += (sender, e) => {
 				App.coreView.setContentView(new MapsView(eve), "MapsView");
 			};
@@ -86,18 +69,18 @@ namespace HowlOut
 
 		public async void setInfo (Event eve)
 		{
-			var profilePicUri = dataManager.GetFacebookProfileImageUri(eve.OwnerId);
+			var profilePicUri = _dataManager.GetFacebookProfileImageUri(eve.OwnerId);
 			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
 
 
-			Position position = util.getCurrentUserPosition();
+			Position position = App.lastKnownPosition;
 
 			// Time
 			DateTime today = DateTime.Now.ToLocalTime();
 			System.Diagnostics.Debug.WriteLine ("- " + (eve.StartDate - today) + " : " + (today - eve.StartDate));
-			quickTime.Text = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
+			quickTime.Text = "" + eve.StartDate.DayOfWeek + " at " + _dataManager.UtilityManager.getTime(eve.StartDate);
 			StartTime.Text = "" + eve.StartDate.DayOfWeek + " the " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM").ToLower();
-			EndTime.Text = "From " + util.getTime(eve.StartDate) + " till " + util.getTime(eve.EndDate);
+			EndTime.Text = "From " + _dataManager.UtilityManager.getTime(eve.StartDate) + " till " + _dataManager.UtilityManager.getTime(eve.EndDate);
 
 			//Place
 			//ObservableCollection<string> addressList = new ObservableCollection<string>();
@@ -108,7 +91,7 @@ namespace HowlOut
 				label.Text = addressList [i];
 				addressLayout.Children.Add(label);
 			}
-			quickDistance.Text = util.distance(new Position(eve.Latitude, eve.Longitude), position);
+			quickDistance.Text = _dataManager.UtilityManager.distance(new Position(eve.Latitude, eve.Longitude), position);
 			Label labelD = new Label ();
 			labelD.Text = quickDistance.Text;
 			addressLayout.Children.Add(labelD);
@@ -126,7 +109,7 @@ namespace HowlOut
 		{
 			bool leaveConfirmed = await App.coreView.displayConfirmMessage("Warning", "You are about to leave this event, would you like to continue?", "Yes", "No");
 			if (leaveConfirmed) {
-				bool hasLeft = await eventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
+				bool hasLeft = await _dataManager.EventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasLeft) {
 					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
 					App.coreView.setContentView (new ManageEvent (), "ManageEvent");
@@ -140,9 +123,9 @@ namespace HowlOut
 		{
 			bool joinConfirmed = await App.coreView.displayConfirmMessage("Joining", "You are about to join this event, would you like to continue?", "Yes", "No");
 			if (joinConfirmed) {
-				bool hasJoined = await eventApiManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
+				bool hasJoined = await _dataManager.EventApiManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasJoined) {
-					Event eventWhenJoined = await eventApiManager.GetEventById (eve.EventId);
+					Event eventWhenJoined = await _dataManager.EventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
 
 					App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined), "UserProfile");
@@ -158,7 +141,7 @@ namespace HowlOut
 		{
 			bool followConfirmed = await App.coreView.displayConfirmMessage("Following", "You are about to follow this event, would you like to continue?", "Yes", "No");
 			if (followConfirmed) {
-				bool hasFollowed = await eventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
+				bool hasFollowed = await _dataManager.EventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
 				if (hasFollowed) {
 					//Event eventWhenJoined = await eventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Followed", "You have successfully followed the event.", "Ok");
@@ -170,11 +153,6 @@ namespace HowlOut
 					await App.coreView.displayAlertMessage ("Event Not Followed", "An error happened and you have not yet followed the event, try again.", "Ok");
 				}
 			}
-
-
-
-
-			await eventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
 		}
 	}
 }

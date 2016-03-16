@@ -31,17 +31,16 @@ namespace HowlOut
 			InitializeComponent ();
 
 			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
-			/*
-			var userPicUri = dataManager.GetFacebookProfileImageUri(App.StoredUserFacebookId);
-			usersPhoto.Source = ImageSource.FromUri (userPicUri);
-			*/
-
-
 
 			if (userProfile != null) {
-				listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, null,null, userProfile, FindNewFriendsButton);
-				listMaker.createList (groupGrid, null, userProfile.Groups, groupButtons, null,null, userProfile, FindNewGroupsButton);
-				givenList = userProfile.Comments;
+				if (userProfile.ProfileId == App.userProfile.ProfileId) {
+					listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, null, null, userProfile, FindNewFriendsButton);
+					listMaker.createList (groupGrid, null, userProfile.Groups, groupButtons, null, null, userProfile, FindNewGroupsButton);
+					givenList = userProfile.Comments;
+
+					groupsButton.IsVisible = true;
+					wallButton.IsVisible = true;
+				}
 				infoView.Content = new InspectProfile (userProfile);
 
 			} else if(userGroup != null) {
@@ -57,8 +56,8 @@ namespace HowlOut
 				givenList = eventObject.Comments;
 
 				bool eventNotJoined = true;
-				for (int i = 0; i < App.userProfile.JoinedEvents.Count; i++) {
-					if (App.userProfile.JoinedEvents [i].EventId == eventObject.EventId) {
+				for (int i = 0; i < eventObject.Attendees.Count; i++) {
+					if (App.userProfile.ProfileId == eventObject.Attendees[i].ProfileId) {
 						eventNotJoined = false;
 					}
 				}
@@ -75,11 +74,6 @@ namespace HowlOut
 				}
 				WallList.ItemsSource = displayedList;
 			}
-
-
-			profileGrid.IsVisible = true;
-			groupGrid.IsVisible = false;
-			wall.IsVisible = false;
 
 			friendsButton.Clicked  += (sender, e) => {
 				profileGrid.IsVisible = true;

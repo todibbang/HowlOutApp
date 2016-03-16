@@ -53,7 +53,7 @@ namespace HowlOut
 			}
 
 			inspectedProfile = profile;
-
+			/*
 			Likes.Text = profile.Likes + "";
 			Loyalty.Text = profile.LoyaltyRating + "";
 			NameAndAge.Text = profile.Name + ", " + profile.Age;
@@ -61,8 +61,8 @@ namespace HowlOut
 			DataManager dataManager = new DataManager();
 			var profilePicUri = dataManager.GetFacebookProfileImageUri(profile.ProfileId);
 			ProfileImage.Source = ImageSource.FromUri(profilePicUri);
-
-			profileLayout.Content = new ProfileDesignView (profile, null, 80, true);
+*/
+			profileLayout.Content = new ProfileDesignView (profile, null, 200, true);
 
 			friendButton.Clicked += (sender, e) => {
 				if(hasProfileSentYouFriendRequest) {

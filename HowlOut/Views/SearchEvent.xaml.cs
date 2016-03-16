@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xamarin.Forms;
 using System.Collections.ObjectModel;
+using Xamarin.Forms;
 
 namespace HowlOut
 {
 	public partial class SearchEvent : ContentView
 	{
 		ObservableCollection<EventForLists> listEvents = new ObservableCollection<EventForLists>();
+		private DataManager _dataManager;
 
 		public SearchEvent ()
 		{
 			InitializeComponent ();
-			//GetAllEvents (SearchEventList);
+			_dataManager = new DataManager();
+			UpdateList ();
 			SearchEventList.ItemSelected += OnItemSelected;
 		}
 
@@ -21,22 +23,21 @@ namespace HowlOut
 			if(SearchEventList.SelectedItem == null)
 				return;
 			var eveForLis = SearchEventList.SelectedItem as EventForLists;
-
-
-			App.coreView.setContentView (new UserProfile (null, null, eveForLis.eve), "UserProfile");
-			//App.coreView.setContentView(new InspectEvent(eveForLis.eve, 1), "InspectEvent");
+			GoToSelectedEvent (eveForLis.eve.EventId);
 			SearchEventList.SelectedItem = null;
 		}
 
-		public void updateList(ObservableCollection<Event> evelist){
-			//var eve = App.coreView.searchEventList;
+		private async void GoToSelectedEvent(string eveID) {
+			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
+			App.coreView.setContentView (new UserProfile (null, null, eve), "UserProfile");
+		}
+
+		public async void UpdateList(){
+			ObservableCollection<Event> evelist = await _dataManager.EventApiManager.SearchEvents (App.userProfile.ProfileId, App.lastKnownPosition.Latitude, App.lastKnownPosition.Longitude);
 			listEvents.Clear ();
-			for (int i = 0; i < evelist.Count; i++) 
-			{
-				System.Diagnostics.Debug.WriteLine ("List: " + i + "");
+			for (int i = 0; i < evelist.Count; i++) {
 				EventForLists EveForLis = new EventForLists (evelist [i]);
 				listEvents.Add (EveForLis);
-
 			}
 			SearchEventList.ItemsSource = listEvents;
 		}

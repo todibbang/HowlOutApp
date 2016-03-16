@@ -11,10 +11,8 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
-		UtilityManager utilityManager = new UtilityManager ();
-		EventApiManager eventApiManager;
 		MapsView mapView;
-		//private HttpClient httpClient;
+		DataManager _dataManager;
 
 		public Event newEvent;
 		Dictionary<string, int> agePicker = new Dictionary<string, int> { };
@@ -22,12 +20,12 @@ namespace HowlOut
 
 		public CreateEvent (Event givenEvent, bool isCreate)
 		{
-			eventApiManager = new EventApiManager(new HttpClient(new NativeMessageHandler()));
+			_dataManager = new DataManager ();
 			newEvent = givenEvent;
 			InitializeComponent ();
 
 
-			mapView = new MapsView (utilityManager.getCurrentUserPosition());
+			mapView = new MapsView (App.lastKnownPosition);
 
 			for (int i = 18; i < 100; i++) agePicker.Add ("" + i, i);
 			foreach (string age in agePicker.Keys) { minAge.Items.Add(age); maxAge.Items.Add(age);}
@@ -59,7 +57,7 @@ namespace HowlOut
 			/// set location
 			locationButton.Clicked += (sender, e) => {
 				if (newEvent.Latitude == 0 && newEvent.Longitude == 0){
-					mapView = new MapsView (utilityManager.getCurrentUserPosition());
+					mapView = new MapsView (App.lastKnownPosition);
 				}
 				else {
 					mapView = new MapsView (new Position(newEvent.Latitude, newEvent.Longitude));
@@ -88,7 +86,7 @@ namespace HowlOut
 				if(isCreate) {
 					LaunchEvent(newEvent);
 				} else {
-					eventApiManager.UpdateEvent(newEvent);
+					UpdateEvent(newEvent);
 				}
 			};
 
@@ -157,45 +155,56 @@ namespace HowlOut
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
-			List<EventType> types = new List<EventType> ();
-			types.Add(EventType.Culture);
-			eventToCreate.EventTypes = types;
-
-			if (eventToCreate.AddressName == null) {
-				eventToCreate.AddressName = "Unknown";
-			}
-			EventDBO newEventAsDBO = new EventDBO{
-				OwnerId = eventToCreate.OwnerId, 
-				Title = eventToCreate.Title, 
-				Description = eventToCreate.Description,
-				StartDate = eventToCreate.StartDate, 
-				EndDate = eventToCreate.EndDate, 
-				MinAge = eventToCreate.MinAge,
-				MaxAge = eventToCreate.MaxAge, 
-				MinSize = eventToCreate.MinSize, 
-				MaxSize = eventToCreate.MaxSize, 
-				Public = true, 
-				Latitude = eventToCreate.Latitude,
-				Longitude = eventToCreate.Longitude, 
-				AddressName = eventToCreate.AddressName, 
-				EventTypes = eventToCreate.EventTypes};
-
-			Event eventCreated = await eventApiManager.CreateEvent (newEventAsDBO);
-
-			if (eventCreated != null) {
-				eventCreated.Attendees = new List<Profile> ();
-				eventCreated.Followers = new List<Profile> ();
-				App.coreView.setContentView (new UserProfile (null, null, eventCreated), "UserProfile");
-				//App.coreView.setContentView (new InspectEvent (eventCreated, 2), "InspectEvent");
+			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
+				App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
+			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
+				App.coreView.displayAlertMessage ("Description Missing", "Description is missing", "Ok");
+			}	else if (eventToCreate.EventTypes.Count == 0) {
+				App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
+			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
+				App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
 			} else {
-				await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
+				EventDBO newEventAsDBO = new EventDBO{
+					OwnerId = eventToCreate.OwnerId, 
+					Title = eventToCreate.Title, 
+					Description = eventToCreate.Description,
+					StartDate = eventToCreate.StartDate, 
+					EndDate = eventToCreate.EndDate, 
+					MinAge = eventToCreate.MinAge,
+					MaxAge = eventToCreate.MaxAge, 
+					MinSize = eventToCreate.MinSize, 
+					MaxSize = eventToCreate.MaxSize, 
+					Public = true, 
+					Latitude = eventToCreate.Latitude,
+					Longitude = eventToCreate.Longitude, 
+					AddressName = eventToCreate.AddressName, 
+					EventTypes = eventToCreate.EventTypes};
+
+				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
+
+				if (eventCreated != null) {
+					eventCreated.Attendees = new List<Profile> ();
+					eventCreated.Followers = new List<Profile> ();
+					App.coreView.setContentView (new UserProfile (null, null, eventCreated), "UserProfile");
+				} else {
+					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
+				}
+			}
+		}
+
+		private async void UpdateEvent(Event eventToUpdate)
+		{
+			bool eventUpdated = await _dataManager.EventApiManager.UpdateEvent (eventToUpdate);
+
+			if (eventUpdated) {
+				App.coreView.setContentView (new UserProfile (null, null, eventToUpdate), "UserProfile");
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
 			}
 		}
 
 		private Button typeButtonPressed(Button typeButton, EventType eventType)
 		{
-
-			System.Diagnostics.Debug.WriteLine ("Color shit");
 			if (typeButton.BackgroundColor == Color.White) {
 				if (newEvent.EventTypes.Count < 3) {
 					typeButton.BackgroundColor = Color.FromHex ("00E0A0");
@@ -215,7 +224,7 @@ namespace HowlOut
 			bool confirmDelete = await App.coreView.displayConfirmMessage ("Warning", "You are about to delete this event permanently, would you like to continue", "Yes", "No");
 
 			if (confirmDelete) {
-				bool wasEventDeleted = await eventApiManager.DeleteEvent (newEvent.EventId);
+				bool wasEventDeleted = await _dataManager.EventApiManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
 					App.coreView.setContentView (new ManageEvent (), "ManageEvent");

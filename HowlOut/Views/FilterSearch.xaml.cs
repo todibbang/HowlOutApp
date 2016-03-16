@@ -8,29 +8,32 @@ namespace HowlOut
 {
 	public partial class FilterSearch : ContentView
 	{	
-		ObservableCollection<EventType> EventTypes = new ObservableCollection<EventType>();
+		SearchSettings newSearchSettings;
+		DataManager _dataManager;
 
 		public FilterSearch (SearchSettings userSearchSettings)
 		{
 			InitializeComponent ();
+			newSearchSettings = userSearchSettings;
+			_dataManager = new DataManager ();
 
 			distance.Minimum = 0;
 			distance.Maximum = 30;
-			distance.Value = userSearchSettings.Distance;
+			distance.Value = newSearchSettings.Distance;
 			distanceLabel.Text = "Distance, " + distance.Value + " km";
 
 			distance.ValueChanged += (sender, e) => {
 				distanceLabel.Text = "Distance, " + ((int) distance.Value + " km");
 			};
 
-			if(userSearchSettings.EventTypes.Contains(EventType.Party)) { fest = typeButtonPressed(fest, EventType.Party); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Sport)) { sport = typeButtonPressed(sport, EventType.Sport); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Culture)) { kultur = typeButtonPressed(kultur, EventType.Culture); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Movie)) { film = typeButtonPressed(film, EventType.Movie); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Music)) { musik = typeButtonPressed(musik, EventType.Music); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Cafe)) { cafe = typeButtonPressed(cafe, EventType.Cafe); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Food)) { mad = typeButtonPressed(mad, EventType.Food); };
-			if(userSearchSettings.EventTypes.Contains(EventType.Hobby)) { hobby = typeButtonPressed(hobby, EventType.Hobby); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Party)) { fest = PreSetButton(fest, EventType.Party); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Sport)) { sport = PreSetButton(sport, EventType.Sport); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Culture)) { kultur = PreSetButton(kultur, EventType.Culture); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Movie)) { film = PreSetButton(film, EventType.Movie); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Music)) { musik = PreSetButton(musik, EventType.Music); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Cafe)) { cafe = PreSetButton(cafe, EventType.Cafe); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Food)) { mad = PreSetButton(mad, EventType.Food); };
+			if(newSearchSettings.EventTypes.Contains(EventType.Hobby)) { hobby = PreSetButton(hobby, EventType.Hobby); };
 
 			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest, EventType.Party); };
 			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport, EventType.Sport); };
@@ -41,6 +44,15 @@ namespace HowlOut
 			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad, EventType.Food); };
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
 
+			updateButton.Clicked += (sender, e) => {
+				UpdateSearch();
+			};
+		}
+
+		private async void UpdateSearch()
+		{
+			await _dataManager.ProfileApiManager.SetSearchSettings (App.userProfile.ProfileId, newSearchSettings);
+			App.coreView.setContentView (new SearchEvent (), "SearchEvent");
 		}
 
 		//TODO cleaned up this part, changed to enum
@@ -49,12 +61,22 @@ namespace HowlOut
 			if (typeButton.BackgroundColor == Color.White) {
 				typeButton.BackgroundColor = Color.FromHex ("00E0A0");
 				typeButton.TextColor = Color.White;
-				EventTypes.Add (eventType);
+				newSearchSettings.EventTypes.Add (eventType);
 			} else {
 				typeButton.BackgroundColor = Color.White;
 				typeButton.TextColor = Color.FromHex ("00E0A0");
-				EventTypes.Remove (eventType);
+				newSearchSettings.EventTypes.Remove (eventType);
 			}
+			return typeButton;
+		}
+
+		private Button PreSetButton(Button typeButton, EventType eventType)
+		{
+			System.Diagnostics.Debug.WriteLine ("1234567890");
+
+			typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+			typeButton.TextColor = Color.White;
+
 			return typeButton;
 		}
 	}

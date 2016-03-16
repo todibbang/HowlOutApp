@@ -4,6 +4,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Net.Http;
 using ModernHttpClient;
+using Xamarin.Forms.Maps;
+using System.Collections.Generic;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -13,9 +15,8 @@ namespace HowlOut
 	{
 		public static CoreView coreView;
 		public static Profile userProfile;
-
-		private ProfileApiManager profileApiManager;
-		private HttpClient httpClient;
+		public static Position lastKnownPosition = new Position(55.5, 12.6);
+		private DataManager _dataManager;
 
         public interface ISaveAndLoad
         {
@@ -35,12 +36,12 @@ namespace HowlOut
 		{
            // coreView = new CoreView(new SearchEvent(), false);
 
+
+
             InitializeComponent();
+			_dataManager = new DataManager ();
 
-			httpClient = new HttpClient(new NativeMessageHandler());
-			profileApiManager = new ProfileApiManager (httpClient);
-
-            //Eventsfired from the LoginPage to trigger actions here
+			//Eventsfired from the LoginPage to trigger actions here
             LoginPage.LoginSucceeded += LoginPage_LoginSucceeded;
             LoginPage.LoginCancelled += LoginPage_LoginCancelled;
 
@@ -51,20 +52,17 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine ("STORED USER FACEBOOK ID");
 			System.Diagnostics.Debug.WriteLine (StoredUserFacebookId);
             
-			UtilityManager util = new UtilityManager ();
-			util.updateLastKnownPosition ();
+			_dataManager.UtilityManager.updateLastKnownPosition ();
 
             if (!App.IsLoggedIn)
             {
-				//MainPage = coreView;
 				MainPage = new SignIn();
             }
             else
             {
-				startProgram();
 				coreView = new CoreView();
 				MainPage = coreView;
-				coreView.setContentView (null, "SearchEvent");
+				startProgram(coreView);
             }
 
 		}
@@ -136,18 +134,25 @@ namespace HowlOut
 
             await storeToken();
             
-			Profile profile = new Profile { ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
-			await profileApiManager.CreateProfile(profile);
+			Profile profile = new Profile (){ ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
+			await _dataManager.ProfileApiManager.CreateProfile(profile);
 
-			startProgram ();
+			coreView = new CoreView();
+			MainPage = coreView;
+			startProgram(coreView);
+			/*
 			coreView = new CoreView();
 			MainPage = coreView;
 			coreView.setContentView (null, "SearchEvent");
+			*/
         }
 
-		private async void startProgram()
+		private async Task startProgram(CoreView coreView)
 		{
-			userProfile = await profileApiManager.GetLoggedInProfile (StoredUserFacebookId);
+			userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile (StoredUserFacebookId);
+			coreView.startCoreView ();
+			coreView.setContentView (null, "SearchEvent");
+
 		}
 
         protected override void OnStart ()

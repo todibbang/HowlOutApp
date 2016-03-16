@@ -29,6 +29,7 @@ namespace HowlOut
 
 		public List <Comment> Comments {get; set;}					//Comments for the users wall
         //public List <string> FriendIDs {get; set;}
+		public SearchSettings SearchReference { get; set; }
 
 		public Profile ()
 		{

@@ -8,61 +8,44 @@ namespace HowlOut
 {
 	public partial class CoreView : ContentPage
 	{
-		public ObservableCollection<Event> searchEventList;
-		public ObservableCollection<Event> manageEventList;
-
 		public List <ContentView> contentViews = new List<ContentView> ();
 		public List <string> contentViewTypes = new List<string> ();
 
-		public SearchEvent searchEvent;
-		public ManageEvent manageEvent;
-
 		public TopBar topBar = new TopBar();
+		DataManager _dataManager;
 
 		public CoreView ()
 		{
 			InitializeComponent ();
-
+			_dataManager = new DataManager ();
 
 			topBarLayout.Children.Add (topBar);
 
-			System.Diagnostics.Debug.WriteLine ("Test Run: 1");
 
-			searchEventList= new ObservableCollection<Event>();
-			manageEventList= new ObservableCollection<Event>();
-
-			System.Diagnostics.Debug.WriteLine ("Test Run: 2");
-
-			DataManager dataManager = new DataManager ();
-			dataManager.update ();
-			System.Diagnostics.Debug.WriteLine ("Test Run: 3");
-
-			searchEvent = new SearchEvent();
-			manageEvent = new ManageEvent();
-
-			System.Diagnostics.Debug.WriteLine ("Test Run: 4");
-			contentViews.Add (searchEvent);
-			contentViewTypes.Add ("SearchEvent");
-			topBar.setNavigationLabel("SearchEvent");
 
 			CreateButton.IsVisible = true;
-			CreateButton.Text = "0";
-
-			mainView.Content = searchEvent;
 
 			CreateButton.Clicked += (sender, e) =>
 			{
 				if(contentViewTypes[contentViewTypes.Count-1] == "SearchEvent") {
-					//TODO Changed to null, need searchreference
-					App.coreView.setContentView(new FilterSearch(null), "FilterSearch");
-
+					App.coreView.setContentView(new FilterSearch(App.userProfile.SearchReference), "FilterSearch");
 				}
 				if(contentViewTypes[contentViewTypes.Count-1] == "ManageEvent") {
 					App.coreView.setContentView(new CreateEvent(new Event(), true), "CreateEvent"); 
-
-					System.Diagnostics.Debug.WriteLine("Hmmm");
 				}
 			};
+		}
+
+		public void startCoreView()
+		{
+			SearchEvent searchEvent = new SearchEvent();
+
+			_dataManager.update ();
+
+			contentViews.Add (searchEvent);
+			contentViewTypes.Add ("SearchEvent");
+			topBar.setNavigationLabel("SearchEvent");
+			mainView.Content = searchEvent;
 		}
 
 		public async void setContentView (ContentView view, string type)
@@ -73,13 +56,13 @@ namespace HowlOut
 			CreateImage.IsVisible = false;
 
 			if (type == "SearchEvent") {
-				view = searchEvent;
+				view = new SearchEvent();
 				CreateButton.IsVisible = true;
 				CreateButton.Text = "";
 				CreateImage.IsVisible = true;
 				CreateImage.Source = "ic_search.png";
 			} else if (type == "ManageEvent") {
-				view = manageEvent;
+				view = new ManageEvent();
 				CreateButton.IsVisible = true;
 				CreateButton.Text = "";
 				CreateImage.IsVisible = true;

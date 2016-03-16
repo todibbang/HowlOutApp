@@ -5,18 +5,16 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	<ContentView.Content>
 		<StackLayout>
 
-		<Grid RowSpacing="0" ColumnSpacing="0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="400"/>
-			</Grid.ColumnDefinitions>
-
-			<Grid.RowDefinitions>
-				<RowDefinition Height="400"/>
-			</Grid.RowDefinitions>
-			<ContentView x:Name="profileLayout"/>
-		</Grid>
 
 
+			<ContentView x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+
+			<StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+				<Button Text="Add Friend" Style="{DynamicResource ButtonStyle}" x:Name="friendButton" HorizontalOptions="CenterAndExpand" WidthRequest="140"></Button>
+				<Button Text="Remove Friend" Style="{DynamicResource ButtonStyle}" x:Name="unFriendButton" HorizontalOptions="CenterAndExpand" WidthRequest="140"></Button>
+				<Button Text="Request Sent" Style="{DynamicResource ButtonStyle}" x:Name="waitButton" HorizontalOptions="CenterAndExpand" WidthRequest="140" IsVisible="false"></Button>
+			</StackLayout>
+			<!-- 
 		<Grid RowSpacing="0" ColumnSpacing="0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -54,6 +52,7 @@
 			</StackLayout>
 
 		</Grid>
+		-->
 		</StackLayout>
 	</ContentView.Content>
 </ContentView>
