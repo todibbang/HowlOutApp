@@ -8,13 +8,13 @@ using ModernHttpClient;
 
 namespace HowlOut
 {
-	public partial class UserProfile : ContentView
+	public partial class InspectController : ContentView
 	{
 		ListsAndButtons listMaker = new ListsAndButtons();
 
 		private EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
 
-		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
+		ObservableCollection <Button> profileButtons = new ObservableCollection <Button>();
 		ObservableCollection <Button> groupButtons = new ObservableCollection <Button>();
 		public CreateEvent createEventView;
 
@@ -22,7 +22,7 @@ namespace HowlOut
 		Button FindNewFriendsButton = new Button {BackgroundColor= Color.Transparent,};
 		Button FindNewGroupsButton = new Button {BackgroundColor= Color.Transparent,};
 
-		public UserProfile (Profile userProfile, Group userGroup, Event eventObject)
+		public InspectController (Profile userProfile, Group userGroup, Event eventObject)
 		{
 			InitializeComponent ();
 
@@ -30,26 +30,29 @@ namespace HowlOut
 
 			if (userProfile != null) {
 				if (userProfile.ProfileId == App.userProfile.ProfileId) {
-					listMaker.createList (profileGrid, userProfile.Friends, null, friendButtons, null, null, userProfile, FindNewFriendsButton);
-					listMaker.createList (groupGrid, null, userProfile.Groups, groupButtons, null, null, userProfile, FindNewGroupsButton);
+					listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, "normal");
+					listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, "normal");
 					givenList = userProfile.Comments;
 
+					friendsButton.IsVisible = true;
 					groupsButton.IsVisible = true;
 					wallButton.IsVisible = true;
 				}
-				infoView.Content = new InspectProfile (userProfile);
+				infoView.Content = new ProfileDesignView (userProfile, null, 200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(userGroup != null) {
-				listMaker.createList (profileGrid, userGroup.Members, null, friendButtons, null,null, userProfile, null);
+				listMaker.createList (profileGrid, userGroup.Members, null, null, "normal");
 				friendsButton.Text = "Members";
 				givenList = userGroup.Comments;
 				infoView.Content = new InspectGroup (userGroup);
-				groupsButton.IsVisible = false;
 
 			} else if(eventObject != null) {
-				listMaker.createList (profileGrid, eventObject.Attendees, null, friendButtons,null, null, null, null);
+				listMaker.createList (profileGrid, eventObject.Attendees, null, null, "normal");
+				profileGrid.IsVisible = true;
 				friendsButton.Text = "Attendees";
 				givenList = eventObject.Comments;
+				wallButton.IsVisible = true;
+				friendsButton.IsVisible = true;
 
 				bool eventNotJoined = true;
 				for (int i = 0; i < eventObject.Attendees.Count; i++) {
@@ -57,9 +60,7 @@ namespace HowlOut
 						eventNotJoined = false;
 					}
 				}
-				System.Diagnostics.Debug.WriteLine ("" + eventNotJoined);
 				infoView.Content = new InspectEvent (eventObject, eventNotJoined);
-				groupsButton.IsVisible = false;
 			}
 
 
@@ -88,16 +89,13 @@ namespace HowlOut
 			};
 
 
-			System.Diagnostics.Debug.WriteLine (friendButtons.Count + " friendButtons");
-
-
-			foreach (Button button in friendButtons) {
+			foreach (Button button in profileButtons) {
 				button.Clicked += (sender, e) => {
 					int counter = 0;
-					for(int i = 0; i < friendButtons.Count; i++){
-						if(friendButtons[i] == button) counter = i;
+					for(int i = 0; i < profileButtons.Count; i++){
+						if(profileButtons[i] == button) counter = i;
 					}
-						
+
 					Profile profile = null;
 
 					if (userProfile != null) {
@@ -109,13 +107,13 @@ namespace HowlOut
 					else if(eventObject != null) { 
 						profile = eventObject.Attendees[counter];
 					}
-					App.coreView.setContentView (new UserProfile (profile, null, null), "UserProfile");
+					App.coreView.setContentView (new InspectController (profile, null, null), "UserProfile");
 				};
 			}
 
 			foreach (Button button in groupButtons) {
 				button.Clicked += (sender, e) => {
-					App.coreView.setContentView (new UserProfile (null, userProfile.Groups[int.Parse(button.Text)], null), "UserProfile");
+					App.coreView.setContentView (new InspectController (null, userProfile.Groups[int.Parse(button.Text)], null), "UserProfile");
 				};
 			}
 
@@ -124,7 +122,7 @@ namespace HowlOut
 			};
 
 			FindNewGroupsButton.Clicked += (sender, e) => {
-
+				App.coreView.setContentView (new CreateGroup(), "Create Group");
 			};
 		}
 
@@ -137,7 +135,7 @@ namespace HowlOut
 				});
 				if (newEvent != null) {
 					commentEntry.Text = "";
-					App.coreView.setContentView (new UserProfile (null, null, newEvent), "UserProfile");
+					App.coreView.setContentView (new InspectController (null, null, newEvent), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}

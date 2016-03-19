@@ -13,17 +13,9 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="60"/>
-				<RowDefinition Height="20"/>
-				<RowDefinition Height="60"/>
 			</Grid.RowDefinitions>
 
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="60"/>
-				<ColumnDefinition Width="20"/>
-			</Grid.ColumnDefinitions>
-
-			<StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5"  x:Name="topBarLayout">
+			<StackLayout Grid.Row="0" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5"  x:Name="topBarLayout">
 				<StackLayout.Padding>
 					<OnPlatform x:TypeArguments="Thickness"
 	                	iOS="5, 25, 5, 5" />
@@ -31,13 +23,10 @@
 				<!-- <local:TopBar/> -->
 			</StackLayout>
 
-			<ContentView Grid.Row="1" Grid.RowSpan="3"  Grid.Column="0" Grid.ColumnSpan="3" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}">
+			<ContentView Grid.Row="1" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}">
 			</ContentView>
 
-			 <Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOutBackground}" BorderRadius="30" BorderWidth="3" BorderColor="{DynamicResource HowlOut}" ></Button> 
-			 <Image Grid.Row="2" Grid.Column="1" WidthRequest = "25" x:Name="CreateImage" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
-
-			<StackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2" BackgroundColor="White">
+			 <StackLayout Grid.Row="2" Padding="0,0,0,2" BackgroundColor="White">
 				<local:BottomBar/> 
 			</StackLayout>
 

@@ -20,55 +20,24 @@ namespace HowlOut
 			_dataManager = new DataManager ();
 
 			topBarLayout.Children.Add (topBar);
-
-
-
-			CreateButton.IsVisible = true;
-
-			CreateButton.Clicked += (sender, e) =>
-			{
-				if(contentViewTypes[contentViewTypes.Count-1] == "SearchEvent") {
-					App.coreView.setContentView(new FilterSearch(App.userProfile.SearchReference), "FilterSearch");
-				}
-				if(contentViewTypes[contentViewTypes.Count-1] == "ManageEvent") {
-					App.coreView.setContentView(new CreateEvent(new Event(), true), "CreateEvent"); 
-				}
-			};
 		}
 
 		public void startCoreView()
 		{
-			SearchEvent searchEvent = new SearchEvent();
+			EventView eventView = new EventView();
 
 			_dataManager.update ();
 
-			contentViews.Add (searchEvent);
-			contentViewTypes.Add ("SearchEvent");
-			topBar.setNavigationLabel("SearchEvent");
-			mainView.Content = searchEvent;
+			contentViews.Add (eventView);
+			contentViewTypes.Add ("Event");
+			topBar.setNavigationLabel("Event");
+			mainView.Content = eventView;
 		}
 
 		public async void setContentView (ContentView view, string type)
 		{
 			await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 
-			CreateButton.IsVisible = false;
-			CreateImage.IsVisible = false;
-
-			if (type == "SearchEvent") {
-				view = new SearchEvent();
-				CreateButton.IsVisible = true;
-				CreateButton.Text = "";
-				CreateImage.IsVisible = true;
-				CreateImage.Source = "ic_search.png";
-			} else if (type == "ManageEvent") {
-				view = new ManageEvent();
-				CreateButton.IsVisible = true;
-				CreateButton.Text = "";
-				CreateImage.IsVisible = true;
-				CreateImage.Source = "ic_add.png";
-			}
-			if(type == "SearchEvent" || type == "ManageEvent" || type == "CreateEvent" || type == "InviteView")
 			contentViews.Add (view);
 			contentViewTypes.Add (type);
 

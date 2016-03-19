@@ -151,7 +151,7 @@ namespace HowlOut
 		{
 			userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile (StoredUserFacebookId);
 			coreView.startCoreView ();
-			coreView.setContentView (null, "SearchEvent");
+			//coreView.setContentView (new EventView(), "Event");
 
 		}
 

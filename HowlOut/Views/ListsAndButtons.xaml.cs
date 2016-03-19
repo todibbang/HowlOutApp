@@ -8,18 +8,15 @@ namespace HowlOut
 {
 	public partial class ListsAndButtons : ContentView
 	{
-		DataManager dataManager = new DataManager();
+		DataManager _dataManager = new DataManager();
 
 		public ListsAndButtons ()
 		{
 			InitializeComponent ();
 		}
 
-
-
 		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, 
-			ObservableCollection<Button> buttons, ObservableCollection<Button> acceptButtons, 
-			ObservableCollection<Button> declineButtons, Profile userProfile, Button addNewButton)
+			Button addNewButton, string gridStyle)
 		{
 			int column = 0;
 			int row = 0;
@@ -33,13 +30,9 @@ namespace HowlOut
 				count = groups.Count;
 			}
 
-
-
-			if (userProfile != null) {
-				if(userProfile.ProfileId == App.userProfile.ProfileId){
+			if (addNewButton != null) {
 					count ++;
 					addNew = true;
-				}
 			}
 
 			Grid newGrid = new Grid {
@@ -48,39 +41,33 @@ namespace HowlOut
 					new ColumnDefinition { Width = GridLength.Auto },
 					new ColumnDefinition { Width = GridLength.Auto }
 				},
-				RowDefinitions = {
-					new RowDefinition{ Height = 150 },
-					new RowDefinition{ Height = 150 },
-					new RowDefinition{ Height = 150 }
-				},
 				RowSpacing=0,
 				ColumnSpacing=0,
+				Padding=0,
 			};
 
-
-
+			grid.RowDefinitions.Add (new RowDefinition{ Height = 140 });
 
 			for (int i = 0; i < count; i++) {
 				if (column == 3) {
 					column = 0;
 					row++;
-					grid.RowDefinitions.Add (new RowDefinition{ Height = 150 });
+					grid.RowDefinitions.Add (new RowDefinition{ Height = 140 });
 				}
-
 				Grid cell = new Grid ();
 
 				if (addNew) {
 					if (profiles != null) {
-						cell = AddNewGrid (userProfile.RecievedFriendRequests.Count);
+						cell = AddNewGrid (App.userProfile.RecievedFriendRequests.Count);
 					} else if (groups != null) {
-						cell = AddNewGrid (userProfile.GroupsInviteTo.Count);
+						cell = AddNewGrid (App.userProfile.GroupsInviteTo.Count);
 					}
 					grid.Children.Add (cell, column, row);
 					grid.Children.Add (addNewButton, column, row);
 					addNew = false;
 				} else {
 					if (profiles != null) {
-						cell = friendCellCreator (profiles [subjectNr], buttons, acceptButtons, declineButtons);
+						cell.Children.Add (new ProfileDesignView(profiles [subjectNr],null, 85, ProfileDesignView.ProfileDesign.WithButtons), 0,0);
 					} else if (groups != null) {
 						cell = groupCellCreator (groups [subjectNr]);
 					}
@@ -92,54 +79,6 @@ namespace HowlOut
 			grid = newGrid;
 		}
 
-		private Button buttonCreator(int i)
-		{
-
-			Button button = new Button {
-				Text = "" + i,
-				TextColor = Color.Transparent,
-				BackgroundColor = Color.Transparent,
-
-			};
-			return button;
-		}
-
-		private Grid friendCellCreator(Profile profile, ObservableCollection<Button> buttons, ObservableCollection<Button> acceptButtons, ObservableCollection<Button> declineButtons)
-		{
-			Grid cellGrid = new Grid {
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				RowDefinitions = {
-					new RowDefinition{ Height = 10 },
-					new RowDefinition{ Height = 85 },
-					new RowDefinition{ Height = 40 },
-					new RowDefinition{ Height = 50 },
-				}
-			};
-
-			cellGrid.Children.Add (new ProfileDesignView(profile,null, 85, true), 0,1);
-
-			Button newProfileButton = new Button ();
-			buttons.Add (newProfileButton);
-			cellGrid.Children.Add (newProfileButton, 0, 1);
-
-			StackLayout stackLayout = new StackLayout { Orientation = StackOrientation.Horizontal,};
-
-			if (acceptButtons != null) {
-				Button newAcceptButton = new Button { Text = "Accept" };
-				acceptButtons.Add (newAcceptButton);
-				stackLayout.Children.Add (newAcceptButton);
-			}
-			if (declineButtons != null) {
-				Button newDeclineButton = new Button { Text = "Decline" };
-				declineButtons.Add (newDeclineButton);
-				stackLayout.Children.Add (newDeclineButton);
-			}
-
-			cellGrid.Children.Add (stackLayout, 0, 3);
-
-			return cellGrid;
-		}
 
 		private Grid groupCellCreator(Group group)
 		{
@@ -183,27 +122,25 @@ namespace HowlOut
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 
 				ColumnDefinitions = {
-					new ColumnDefinition{ Width = 60},
+					new ColumnDefinition{ Width = 50},
 					new ColumnDefinition{ Width = 25},
 				},
 				RowDefinitions = {
-					new RowDefinition{ Height = 10 },
 					new RowDefinition{ Height = 25 },
-					new RowDefinition{ Height = 60 },
-					new RowDefinition{ Height = 40 },
+					new RowDefinition{ Height = 45 },
 				},
 			};
 
 			Button groupButton = new Button {
-				HeightRequest = 85,
-				WidthRequest = 85,
-				BorderRadius = 42,
+				HeightRequest = 75,
+				WidthRequest = 75,
+				BorderRadius = 37,
 				BackgroundColor = Color.FromHex ("00E0A0"),
 				HorizontalOptions = LayoutOptions.Center,
 				Text = "+",
 				TextColor = Color.White
 			};
-			cellGrid.Children.Add (groupButton, 0,2,1,3);
+			cellGrid.Children.Add (groupButton, 0,2,0,2);
 
 			if (i > 0) {
 				Button notificationButton = new Button {
@@ -215,7 +152,7 @@ namespace HowlOut
 					Text = "" + i,
 					TextColor = Color.White
 				};
-				cellGrid.Children.Add (notificationButton, 1, 2, 1, 2);
+				cellGrid.Children.Add (notificationButton, 1, 2, 0, 1);
 			}
 
 			return cellGrid;

@@ -108,69 +108,9 @@ namespace HowlOut
 			return newTime;
 		}
 
-		public async void sendFriendRequest(Profile profile)
-		{
-			Profile newProfile = null;
-			bool success = await profileManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
-			}
-		}
-
-		public async void acceptFriendRequest(Profile profile)
-		{
-			bool success = await profileManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
-			}
-		}
-
-		public async void declineFriendRequest(Profile profile)
-		{
-			bool success = await profileManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
-			}
-		}
-
-		public async void removeFriend(Profile profile)
-		{
-			bool success = await profileManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
-			}
-		}
-
-		private async Task loadUpdatedProfile(Profile profile)
-		{
-			Profile newProfile = await profileManager.GetProfile (profile.ProfileId);
-			App.userProfile = await profileManager.GetProfile (App.userProfile.ProfileId);
-			App.coreView.setContentView (new UserProfile (newProfile, null, null), "UserProfile");
-		}
 
 
-		public async void sendInviteToEvent(Event eve, Profile profile)
-		{
-			
-			List <string> IdsToInvite = new List<string> ();
-			IdsToInvite.Add (profile.ProfileId);
-			await eventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
-		}
 
-		public async void sendInviteToGroup(Group group, Profile profile)
-		{
-			List <string> IdsToInvite = new List<string> ();
-			IdsToInvite.Add (profile.ProfileId);
-			await groupManager.InviteToGroup(group.GroupId, IdsToInvite);
-		}
 	}
 }
 

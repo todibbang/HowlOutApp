@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.UserProfile"
-			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectController"
+		 	 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	
 	<ContentView.Content>
@@ -31,7 +31,7 @@
 						<Button Text="Wall" Style="{DynamicResource ButtonStyle}" x:Name="wallButton" HorizontalOptions="CenterAndExpand" WidthRequest="80" IsVisible="false"></Button>
 					</StackLayout>
 
-					<Grid Grid.Row="3" x:Name="profileGrid" IsVisible="false"></Grid>
+					<Grid Grid.Row="3" x:Name="profileGrid"></Grid>
 					<Grid Grid.Row="3" x:Name="groupGrid" IsVisible="false"></Grid>
 					<StackLayout Grid.Row="3" Spacing="0" Padding="0" x:Name="wall" IsVisible="false">
 						<Grid>

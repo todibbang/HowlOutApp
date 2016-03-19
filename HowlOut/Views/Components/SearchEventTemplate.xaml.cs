@@ -10,6 +10,7 @@ namespace HowlOut
 		public SearchEventTemplate ()
 		{
 			InitializeComponent ();
+
 		}
 	}
 }

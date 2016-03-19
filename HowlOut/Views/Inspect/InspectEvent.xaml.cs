@@ -69,9 +69,8 @@ namespace HowlOut
 
 		public async void setInfo (Event eve)
 		{
-			var profilePicUri = _dataManager.GetFacebookProfileImageUri(eve.OwnerId);
-			eventHolderPhoto.Source = ImageSource.FromUri(profilePicUri);
-
+			ProfileContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain);
+			GroupContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain);
 
 			Position position = App.lastKnownPosition;
 
@@ -99,7 +98,6 @@ namespace HowlOut
 			//Other
 			eventTitle.Text = eve.Title;
 			eventDescription.Text = eve.Description;
-			eventAttending.Text = (eve.Attendees.Count) + "/" + eve.MaxSize;
 
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
@@ -112,7 +110,7 @@ namespace HowlOut
 				bool hasLeft = await _dataManager.EventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasLeft) {
 					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
-					App.coreView.setContentView (new ManageEvent (), "ManageEvent");
+					App.coreView.setContentView (new EventView (), "Event");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Left", "An error happened and you have not yet left the event, try again.", "Ok");
 				}
@@ -128,7 +126,7 @@ namespace HowlOut
 					Event eventWhenJoined = await _dataManager.EventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
 
-					App.coreView.setContentView (new UserProfile (null, null, eventWhenJoined), "UserProfile");
+					App.coreView.setContentView (new InspectController (null, null, eventWhenJoined), "UserProfile");
 					//App.coreView.setContentView (new InspectEvent (eventWhenJoined, 2), "InspectEvent");
 
 				} else {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Xamarin.Forms.Maps;
+using Xamarin.Forms;
 
 namespace HowlOut
 {
@@ -17,6 +18,8 @@ namespace HowlOut
 
 		public string EventAverageLoyalty  {get; set;}
 		public string EventHolderLikes  {get; set;}
+		public ContentView ProfileContent { get; set;}
+		public ContentView GroupContent { get; set;}
 
 		public EventForLists (Event theGivenEvent)
 		{
@@ -34,6 +37,9 @@ namespace HowlOut
 
 			EventAverageLoyalty = eve.Attendees [0].LoyaltyRating + "";
 			EventHolderLikes = eve.Attendees [0].Likes + "";
+
+			//ProfileContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
+			//GroupContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
 
 		}
 	}

@@ -29,7 +29,7 @@ namespace HowlOut
 				await updateBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await updateBtn.ScaleTo(1, 50, Easing.Linear);
-				dataManager.update();
+				App.coreView.setContentView (new EventView (), "Event");
 			};				
 			updateBtn.GestureRecognizers.Add(updateImage);
 

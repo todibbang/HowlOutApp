@@ -41,6 +41,8 @@
 				</StackLayout>
 			</StackLayout>
 
+
+
 			<controls:CircleImage Grid.Row="2" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2" 
 				Source="{Binding ProfileImageUri}"/> 
 			<Button Grid.Row="2" Grid.RowSpan="3" Grid.Column="6" Grid.ColumnSpan="2"
@@ -50,6 +52,9 @@
 				Style="{DynamicResource LikesButtonStyle}" BorderRadius="18" BorderWidth="3"></Button> 
 			<Button Grid.Row="4" Grid.RowSpan="3" Grid.Column="5" Grid.ColumnSpan="2" 
 				Style="{DynamicResource LoyaltyButtonStyle}" BorderRadius="18" BorderWidth="3"></Button> 
+
+			<ContentView Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="4" Content="{Binding ProfileContent}" />
+			<ContentView Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="4" Content="{Binding GroupContent}" />
 
 			<StackLayout Grid.Row="4" Grid.RowSpan="3" Grid.Column="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
 				<Button Text="1" Style="{DynamicResource ButtonStyle}" WidthRequest="36" BorderRadius="18"></Button>

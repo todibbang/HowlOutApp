@@ -103,5 +103,117 @@ namespace HowlOut
 			return position;
 		}
 
+
+		public async void sendFriendRequest(Profile profile)
+		{
+			Profile newProfile = null;
+			bool success = await ProfileApiManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+			}
+		}
+
+		public async Task<bool> acceptFriendRequest(Profile profile, bool goToProfile)
+		{
+			bool success = await ProfileApiManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
+				if(goToProfile) await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			}
+			return success;
+		}
+
+		public async void declineFriendRequest(Profile profile)
+		{
+			bool success = await ProfileApiManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			}
+		}
+
+		public async void removeFriend(Profile profile)
+		{
+			bool success = await ProfileApiManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
+			if (success) {
+				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
+				await loadUpdatedProfile(profile);
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+			}
+		}
+
+		private async Task loadUpdatedProfile(Profile profile)
+		{
+			App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
+			App.coreView.setContentView (new InspectController (profile, null, null), "UserProfile");
+		}
+
+		public async void sendInviteToEvent(Event eve, Profile profile)
+		{
+
+			List <string> IdsToInvite = new List<string> ();
+			IdsToInvite.Add (profile.ProfileId);
+			await EventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
+		}
+
+		public async void sendInviteToGroup(Group group, Profile profile)
+		{
+			List <string> IdsToInvite = new List<string> ();
+			IdsToInvite.Add (profile.ProfileId);
+			await GroupApiManager.InviteToGroup(group.GroupId, IdsToInvite);
+		}
+
+		public bool IsProfileYou(Profile profile)
+		{
+			bool you = false;
+			if (profile.ProfileId == App.userProfile.ProfileId) {
+				you = true;
+			}
+			return you;
+		}
+
+		public bool IsProfileFriend(Profile profile)
+		{
+			bool friend = false;
+			var yourFriends = App.userProfile.Friends;
+			for (int i = 0; i < yourFriends.Count; i++) {
+				if (profile.ProfileId == yourFriends [i].ProfileId) {
+					friend = true;
+				}
+			}
+			return friend;
+		}
+
+		public bool HasProfileSentYouFriendRequest(Profile profile)
+		{
+			bool requested = false;
+			var yourRecievedFriendRequests = App.userProfile.RecievedFriendRequests;
+			for (int i = 0; i < yourRecievedFriendRequests.Count; i++) {
+				if (profile.ProfileId == yourRecievedFriendRequests [i].ProfileId) {
+					requested = true;
+				}
+			}
+			return requested;
+		}
+
+		public bool HaveYouSentProfileFriendRequest(Profile profile)
+		{
+			bool requested = false;
+			var yourSentFriendRequests = App.userProfile.SentFriendRequests;
+			for (int i = 0; i < yourSentFriendRequests.Count; i++) {
+				if (profile.ProfileId == yourSentFriendRequests [i].ProfileId) {
+					requested = true;
+				}
+			}
+			return requested;
+		}
 	}
 }

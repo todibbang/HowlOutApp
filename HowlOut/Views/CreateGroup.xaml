@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateGroup"
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.Padding>
+				<OnPlatform x:TypeArguments="Thickness"
+                	iOS="0, 0, 0, 0" />
+			</Grid.Padding>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
+				<StackLayout>
+					<StackLayout BackgroundColor="White" >
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="50"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<local:Line Grid.Row="0"/> 
+							<Entry Grid.Row="1" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Title..." x:Name="title"></Entry>
+							<local:Line Grid.Row="2"/>
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="80"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+							<local:Line Grid.Row="0"/>
+							<Label Grid.Row="1" Grid.Column="1" Text="Privacy" Style="{DynamicResource TextStyle}"></Label>
+
+							<StackLayout Grid.Row="1" Grid.Column="3" Spacing="0" Padding="0,15,0,15">
+								<Picker HeightRequest="40" Title="Public">
+							        <Picker.Items>
+							            <x:String>Public</x:String> 
+							            <x:String>Private</x:String>
+							        </Picker.Items>
+							    </Picker> 
+							</StackLayout>
+							<local:Line Grid.Row="2"/>
+						</Grid>
+					</StackLayout>
+
+					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+
+					<StackLayout BackgroundColor="White">
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="80"/>
+								<RowDefinition Height="2"/>
+								<RowDefinition Height="80"/>
+								<RowDefinition Height="2"/>
+							</Grid.RowDefinitions>
+							<local:Line Grid.Row="0"/>
+							<StackLayout Grid.Row="1" Padding="20">
+								<Button Text="Launch Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="launchButton"></Button>
+							</StackLayout>
+							<local:Line Grid.Row="2"/>
+							<StackLayout Grid.Row="3" Padding="20">
+								<Button Text="Cancel Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="cancelButton"></Button>
+							</StackLayout>
+						</Grid>
+					</StackLayout>
+
+				</StackLayout>	
+			</ScrollView>
+
+		</Grid>
+	</ContentView.Content>
+</ContentView>

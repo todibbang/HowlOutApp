@@ -54,7 +54,7 @@ namespace HowlOut
 		{
 			await _dataManager.ProfileApiManager.SetSearchSettings (App.userProfile.ProfileId, newSearchSettings);
 			App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile (App.StoredUserFacebookId);
-			App.coreView.setContentView (new SearchEvent (), "SearchEvent");
+			App.coreView.setContentView (new EventView (), "Event");
 		}
 
 		//TODO cleaned up this part, changed to enum

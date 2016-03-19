@@ -121,6 +121,8 @@ namespace HowlOut
 		{
 			cancelButton.IsVisible = true;
 
+			launchButton.Text = "Update";
+
 			title.Text = newEvent.Title;
 			description.Text = newEvent.Description;
 
@@ -194,7 +196,7 @@ namespace HowlOut
 				if (eventCreated != null) {
 					eventCreated.Attendees = new List<Profile> ();
 					eventCreated.Followers = new List<Profile> ();
-					App.coreView.setContentView (new UserProfile (null, null, eventCreated), "UserProfile");
+					App.coreView.setContentView (new InspectController (null, null, eventCreated), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 				}
@@ -206,7 +208,7 @@ namespace HowlOut
 			bool eventUpdated = await _dataManager.EventApiManager.UpdateEvent (eventToUpdate);
 
 			if (eventUpdated) {
-				App.coreView.setContentView (new UserProfile (null, null, eventToUpdate), "UserProfile");
+				App.coreView.setContentView (new InspectController (null, null, eventToUpdate), "UserProfile");
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
 			}
@@ -236,7 +238,7 @@ namespace HowlOut
 				bool wasEventDeleted = await _dataManager.EventApiManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
-					App.coreView.setContentView (new ManageEvent (), "ManageEvent");
+					App.coreView.setContentView (new EventView (), "Event");
 				} else {
 					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");
 				}

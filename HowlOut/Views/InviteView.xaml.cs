@@ -10,24 +10,22 @@ namespace HowlOut
 {
 	public partial class InviteView : ContentView
 	{
-		EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
-		UtilityManager utilityManager = new UtilityManager ();
+		DataManager _dataManager;
 
 		ListsAndButtons listMaker = new ListsAndButtons();
-		DataManager dataManager = new DataManager();
 
 		ObservableCollection <Button> friendButtons = new ObservableCollection <Button>();
 		ObservableCollection <Button> acceptButtons = new ObservableCollection <Button>();
 		ObservableCollection <Button> declineButtons = new ObservableCollection <Button>();
-		Button friendRequestButton = new Button ();
 
 
 		public InviteView (Profile userProfile, Group userGroup, Event eventObject, List<Profile> profilesToSelectFrom)
 		{
 			InitializeComponent ();
+			_dataManager = new DataManager ();
+
 
 			Dictionary<Profile, string> profilesNotToInvite = new Dictionary<Profile, string> { };
-			ObservableCollection <Profile> profilesToInvite = new ObservableCollection <Profile>();
 
 			profileGrid.IsVisible = true;
 
@@ -35,14 +33,17 @@ namespace HowlOut
 				for (int e = 0; e < userProfile.Friends.Count; e++) {
 					profilesNotToInvite.Add (userProfile.Friends [e], userProfile.Friends [e].ProfileId);
 				}
+				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite");
 			} else if (userGroup != null) { 
 				for (int e = 0; e < userGroup.Members.Count; e++) {
 					profilesNotToInvite.Add (userGroup.Members [e], userGroup.Members [e].ProfileId);
 				}
+				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite");
 			} else if (eventObject != null) { 
 				for (int e = 0; e < eventObject.Attendees.Count; e++) {
 					profilesNotToInvite.Add (eventObject.Attendees [e], eventObject.Attendees [e].ProfileId);
 				}
+				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite");
 			}
 
 			for (int i = profilesToSelectFrom.Count - 1; i > -1; i--) {
@@ -51,7 +52,7 @@ namespace HowlOut
 				}
 			}
 
-			listMaker.createList (profileGrid, profilesToSelectFrom, null, friendButtons, acceptButtons, declineButtons, userProfile, null);
+
 
 			foreach (Button button in friendButtons) {
 				button.Clicked += (sender, e) => {
@@ -61,7 +62,7 @@ namespace HowlOut
 					}
 
 					var profile = profilesToSelectFrom[counter];
-					App.coreView.setContentView (new UserProfile (profile, null, null), "UserProfile");
+					App.coreView.setContentView (new InspectController (profile, null, null), "UserProfile");
 				};
 			}
 
@@ -74,15 +75,25 @@ namespace HowlOut
 					var profile = profilesToSelectFrom[counter];
 
 					if (userProfile != null) {
-						utilityManager.acceptFriendRequest(profile);
+						acceptFriendRequest(profile, acceptButtons[counter], declineButtons[counter]);
 					} else if(eventObject != null) {
-						utilityManager.sendInviteToEvent(eventObject, profile);
+						_dataManager.sendInviteToEvent(eventObject, profile);
 					}
 				};
 			}
 		}
 
+		private async void acceptFriendRequest(Profile profile, Button acceptButton, Button declineButton)
+		{
+			bool success = await _dataManager.acceptFriendRequest(profile, false);
+			if (success) {
+				declineButton.IsVisible = false;
+				acceptButton.Text = "Friend Added";
+				acceptButton.IsEnabled = false;
+			}
+		}
 
+		//private void InviteFriendsToProfile
 	}
 }
 

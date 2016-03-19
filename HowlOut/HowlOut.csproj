@@ -50,39 +50,11 @@
     <Compile Include="Views\Components\SearchEventTemplate.xaml.cs">
       <DependentUpon>SearchEventTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BottomBar.xaml.cs">
-      <DependentUpon>BottomBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CoreView.xaml.cs">
-      <DependentUpon>CoreView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\CreateEvent.xaml.cs">
       <DependentUpon>CreateEvent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FilterSearch.xaml.cs">
       <DependentUpon>FilterSearch.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InspectEvent.xaml.cs">
-      <DependentUpon>InspectEvent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InspectGroup.xaml.cs">
-      <DependentUpon>InspectGroup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InspectProfile.xaml.cs">
-      <DependentUpon>InspectProfile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LoginPage.cs" />
-    <Compile Include="Views\ManageEvent.xaml.cs">
-      <DependentUpon>ManageEvent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SearchEvent.xaml.cs">
-      <DependentUpon>SearchEvent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SignIn.xaml.cs">
-      <DependentUpon>SignIn.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TopBar.xaml.cs">
-      <DependentUpon>TopBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\FacebookUserObject.cs" />
     <Compile Include="Models\EventDBO.cs" />
@@ -92,9 +64,6 @@
       <DependentUpon>MapsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\EventForLists.cs" />
-    <Compile Include="Views\UserProfile.xaml.cs">
-      <DependentUpon>UserProfile.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Data.cs" />
@@ -108,10 +77,41 @@
     <Compile Include="Views\InviteView.xaml.cs">
       <DependentUpon>InviteView.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\EventView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <Compile Include="Models\SearchSettings.cs" />
     <Compile Include="Models\EventType.cs" />
     <Compile Include="Views\Components\ProfileDesignView.xaml.cs">
       <DependentUpon>ProfileDesignView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventView.xaml.cs">
+      <DependentUpon>EventView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Inspect\InspectEvent.xaml.cs">
+      <DependentUpon>InspectEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Inspect\InspectGroup.xaml.cs">
+      <DependentUpon>InspectGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InspectController.xaml.cs">
+      <DependentUpon>InspectController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateGroup.xaml.cs">
+      <DependentUpon>CreateGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\BottomBar.xaml.cs">
+      <DependentUpon>BottomBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\CoreView.xaml.cs">
+      <DependentUpon>CoreView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\LoginPage.cs" />
+    <Compile Include="Views\CoreLayout\SignIn.xaml.cs">
+      <DependentUpon>SignIn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\TopBar.xaml.cs">
+      <DependentUpon>TopBar.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -164,6 +164,8 @@
   <ItemGroup>
     <Folder Include="TestRenderer\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\Inspect\" />
+    <Folder Include="Views\CoreLayout\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">
@@ -181,40 +183,13 @@
     <EmbeddedResource Include="Views\Components\SearchEventTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\BottomBar.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\CoreView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateEvent.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FilterSearch.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\InspectEvent.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\InspectGroup.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\InspectProfile.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ManageEvent.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\SearchEvent.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\TopBar.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\MapsView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\UserProfile.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ListsAndButtons.xaml">
@@ -226,11 +201,30 @@
     <EmbeddedResource Include="Views\Components\ProfileDesignView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\SignIn.xaml">
+    <EmbeddedResource Include="Views\Inspect\InspectEvent.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Inspect\InspectGroup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\InspectController.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CreateGroup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\BottomBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\CoreView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\SignIn.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\TopBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

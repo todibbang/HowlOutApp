@@ -7,9 +7,12 @@ namespace HowlOut
 {
 	public partial class BottomBar : ContentView
 	{
+		DataManager _dataManager;
+
 		public BottomBar ()
 		{
 			InitializeComponent ();
+			_dataManager = new DataManager ();
 
 			var exploreImage = new TapGestureRecognizer();
 			exploreImage.Tapped += async (sender, e) => 
@@ -17,7 +20,7 @@ namespace HowlOut
 				await exploreBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await exploreBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(new SearchEvent(), "SearchEvent");
+				App.coreView.setContentView(new EventView(), "Event");
 			};
 			exploreBtn.GestureRecognizers.Add(exploreImage);  
 
@@ -27,7 +30,8 @@ namespace HowlOut
 				await manageBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await manageBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(new ManageEvent(), "ManageEvent");
+				App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
+				App.coreView.setContentView (new InspectController (App.userProfile, null, null), "UserProfile");
 			};
 			manageBtn.GestureRecognizers.Add(manageImage); 
 
@@ -37,7 +41,8 @@ namespace HowlOut
 				await homeBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await homeBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView (new UserProfile (App.userProfile, null, null), "UserProfile");
+				App.coreView.setContentView (new EventView (), "Event");
+
 			};
 			homeBtn.GestureRecognizers.Add(homeImage); 
 		}

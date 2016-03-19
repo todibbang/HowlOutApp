@@ -9,7 +9,8 @@
 			<Color x:Key="NormalTextColor">#ff646464</Color>
 
 			<Color x:Key="HowlOut">#ff00e0a0</Color>
-			<Color x:Key="HowlOutBackground">#ffb9f5e4</Color>
+			<Color x:Key="HowlOutBackground">#ffe1fff7</Color>
+			<!-- <Color x:Key="HowlOutBackground">#ffb9f5e4</Color> -->
 
 			<Color x:Key="ListBackgroundColor">White</Color>
 			<Color x:Key="PlaceHolderColor">Black</Color>
