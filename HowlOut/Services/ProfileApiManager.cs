@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
+using System.Collections.Generic;
 
 namespace HowlOut
 {
@@ -85,6 +86,28 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
 			return profile;
+		}
+
+		public async Task<List<Event>> GetEventsInvitedTo(string profileId)
+		{
+			var events = new List<Event>();
+
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId);
+
+			try
+			{
+				var response = await httpClient.GetAsync(uri);
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					events = JsonConvert.DeserializeObject<List<Event>>(content);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return events;
 		}
 
 		public async Task<Profile> GetLoggedInProfile(string profileId)
