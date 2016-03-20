@@ -303,22 +303,35 @@ namespace HowlOut
 			return null;
 		}
 
-		public async Task<Event> InviteToEvent(string eventId, List<string> profileIds)
+		public async Task<bool> InviteToEvent(string eventId, List<string> profileIds)
 		{
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/InviteToEvent/"+eventId);
+			var profileIdsAsString = "";
+
+			for (int i = 0; i < profileIds.Count; i++) 
+			{
+				if (i == 0) 
+				{
+					profileIdsAsString += "?";
+				} 
+				else 
+				{
+					profileIdsAsString += "&";
+				}
+				profileIdsAsString += "profileIds=" + profileIds[i];
+			}
+
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/InviteToEvent/" + eventId + profileIdsAsString);
 
 			try
 			{
-				var json = JsonConvert.SerializeObject(profileIds);
+				var json = JsonConvert.SerializeObject("");
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
 				var response = await httpClient.PostAsync(uri, content);
 
 				if (response.IsSuccessStatusCode)
 				{
-					var recievedContent = await response.Content.ReadAsStringAsync();
-					var retrievedEvent = JsonConvert.DeserializeObject<Event>(recievedContent);
-					return retrievedEvent;
+					return true;
 				}
 			}
 			catch (Exception ex)
@@ -326,7 +339,7 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
 
-			return null;
+			return false;
 		}
 
 		public async Task<bool> DeclineEventInvite(string eventId, string profileId)

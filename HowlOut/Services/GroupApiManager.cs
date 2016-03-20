@@ -136,12 +136,18 @@ namespace HowlOut
 
 		public async Task<bool> InviteToGroup(string groupId, List<string> profileIds)
 		{
+			var profileIdsAsString = "";
 
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/InviteToGroup?groupId="+groupId);
+			for (int i = 0; i < profileIds.Count; i++) 
+			{
+				profileIdsAsString += "&profileIds=" + profileIds[i];
+			}
+
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/InviteToGroup?groupId=" + groupId + profileIdsAsString);
 
 			try
 			{
-				var json = JsonConvert.SerializeObject(profileIds);
+				var json = JsonConvert.SerializeObject("");
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 				var response = await httpClient.PutAsync(uri, content);
 				if (response.IsSuccessStatusCode)
