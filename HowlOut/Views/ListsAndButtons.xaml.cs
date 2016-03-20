@@ -46,13 +46,13 @@ namespace HowlOut
 				Padding=0,
 			};
 
-			grid.RowDefinitions.Add (new RowDefinition{ Height = 140 });
+			grid.RowDefinitions.Add (new RowDefinition{ Height = 160 });
 
 			for (int i = 0; i < count; i++) {
 				if (column == 3) {
 					column = 0;
 					row++;
-					grid.RowDefinitions.Add (new RowDefinition{ Height = 140 });
+					grid.RowDefinitions.Add (new RowDefinition{ Height = 160 });
 				}
 				Grid cell = new Grid ();
 
@@ -68,9 +68,9 @@ namespace HowlOut
 				} else {
 					if (profiles != null) {
 						if (gridStyle == "invite") {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, 100, ProfileDesignView.ProfileDesign.Invite, eventInvitingTo), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.ProfileDesign.Invite), 0, 0);
 						} else {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, 100, ProfileDesignView.ProfileDesign.WithButtons, null), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0);
 						}
 					} else if (groups != null) {
 						cell = groupCellCreator (groups [subjectNr]);
@@ -139,7 +139,7 @@ namespace HowlOut
 				HeightRequest = 75,
 				WidthRequest = 75,
 				BorderRadius = 37,
-				BackgroundColor = Color.FromHex ("00E0A0"),
+				BackgroundColor = Color.FromHex ("00e1c4"),
 				HorizontalOptions = LayoutOptions.Center,
 				Text = "+",
 				TextColor = Color.White

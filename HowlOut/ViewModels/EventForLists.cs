@@ -45,10 +45,14 @@ namespace HowlOut
 			EventAverageLoyalty = eve.Attendees [0].LoyaltyRating + "";
 			EventHolderLikes = eve.Attendees [0].Likes + "";
 
+			ProfileContent = new ContentView ();
+			var content = new StackLayout ();
+			content.Children.Add (new BoxView(){BackgroundColor = Color.Red,});
+			ProfileContent.Content = content;
+
+
 			//ProfileContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
 			//GroupContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
-
-			System.Diagnostics.Debug.WriteLine (eve.EventTypes.Count + "");
 
 			EventType2Visible = false;
 			EventType3Visible = false;

@@ -6,28 +6,37 @@
 			 xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
-		<Grid RowSpacing="0" ColumnSpacing="0" Padding="10">
+		<Grid RowSpacing="0" ColumnSpacing="0" Padding="10,10,10,10">
 			
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="auto"/>
-				<RowDefinition Height="10"/>
 				<RowDefinition Height="auto"/>
-				<RowDefinition Height="10"/>
-				<RowDefinition Height="30"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="2"/>
+				<RowDefinition Height="0"/>
 				<RowDefinition Height="150"/>
 				<RowDefinition Height="40"/>
 			</Grid.RowDefinitions>
 
-			<Label Grid.Row="0" Style="{DynamicResource TitleStyle}" x:Name="eventTitle" FontSize="25"/>
-			<Button Grid.Row="0" Style="{DynamicResource ButtonStyle}" HorizontalOptions="End" x:Name="detailsButton"/>
 
-			<StackLayout Grid.Row="1" x:Name="quickInfo">
-				<Label Style="{DynamicResource TimeStyle}" x:Name="quickTime" Text="om ca. 4 timer"/>
-				<Label Style="{DynamicResource DistanceStyle}" x:Name="quickDistance" Text="calculating distance"/>
+			<Image Grid.Row="1" Grid.RowSpan="3" Source="Party.png" VerticalOptions="StartAndExpand"></Image>
+			<BoxView Grid.Row="0" Grid.RowSpan="2" BackgroundColor="White"></BoxView>
+
+			<Label Grid.Row="0" Style="{DynamicResource TitleStyle}" x:Name="eventTitle" FontSize="25" VerticalOptions="StartAndExpand"/>
+			<Button Grid.Row="0" Style="{DynamicResource ButtonStyle}" HorizontalOptions="End" x:Name="detailsButton" HeightRequest="30" WidthRequest="50" VerticalOptions="StartAndExpand"/>
+
+			<StackLayout Grid.Row="1" x:Name="quickInfo" Orientation="Horizontal" HorizontalOptions="StartAndExpand" 
+			VerticalOptions="CenterAndExpand" Padding="0,0,0,0" HeightRequest="20">
+				<Label Style="{DynamicResource TimeStyle}" x:Name="quickTime" FontSize="14" HorizontalOptions="Center"></Label>
+				<Label Text=" - " FontSize="14" HorizontalOptions="Center" ></Label>
+				<Label Style="{DynamicResource DistanceStyle}" x:Name="quickDistance" FontSize="14" HorizontalOptions="Center"></Label>
+
 			</StackLayout>
 
-			<StackLayout Grid.Row="1" Padding="10,0,10,0" VerticalOptions="CenterAndExpand" MinimumHeightRequest="80" x:Name="detailedInfo">
+			<StackLayout Grid.Row="2" x:Name="pictureSpace" HeightRequest="130"/>
+
+			<StackLayout Grid.Row="1" Padding="0" VerticalOptions="CenterAndExpand" MinimumHeightRequest="80" x:Name="detailedInfo">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="200"/>
@@ -41,19 +50,20 @@
 						<StackLayout x:Name="addressLayout" ></StackLayout>
 						<StackLayout Padding="0,10,0,10"> <local:Line/> </StackLayout>
 						<StackLayout Orientation="Horizontal">
-							<Label Style="{DynamicResource DistanceStyle}" x:Name="StartTime"/>	
+							<Label Text="{DynamicResource TextColor}" x:Name="StartTime"/>	
 						</StackLayout>
 						<StackLayout Orientation="Horizontal">
-							<Label Style="{DynamicResource DistanceStyle}" x:Name="EndTime"/>	
+							<Label Text="{DynamicResource TextColor}" x:Name="EndTime"/>	
 						</StackLayout>
-						<Label Style="{DynamicResource DistanceStyle}" x:Name="RoughTime" Text="om ca. 4 timer"/>
+						<Label Text="{DynamicResource TextColor}" x:Name="RoughTime"/>
+						<StackLayout Padding="0,10,0,0"> <local:Line/> </StackLayout>
 					</StackLayout>
 				</Grid>
 			</StackLayout>
 
-			<StackLayout Grid.Row="2" Padding="0"> <local:Line/> </StackLayout> 
+			<!-- <StackLayout Grid.Row="2" Padding="0"> <local:Line/> </StackLayout> -->
 
-			<StackLayout Grid.Row="3" Padding="0, 10, 0, 10" VerticalOptions="CenterAndExpand">
+			<StackLayout Grid.Row="3" Padding="0, 10, 0, 10" VerticalOptions="CenterAndExpand" BackgroundColor="White">
 				<Label Style="{DynamicResource DescriptionStyle}" x:Name="eventDescription" />
 			</StackLayout>
 

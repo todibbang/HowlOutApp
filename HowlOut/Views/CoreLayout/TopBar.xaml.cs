@@ -41,7 +41,7 @@ namespace HowlOut
 
 		public void setNavigationLabel(string label)
 		{
-			navigationLabel.Text = label;
+			//navigationLabel.Text = label;
 		}
 	}
 }

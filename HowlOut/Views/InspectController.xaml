@@ -13,17 +13,17 @@
 			-->
 			<ScrollView  Orientation="Vertical" VerticalOptions="FillAndExpand">
 
-				<Grid> 
+				<Grid RowSpacing="0"> 
 					<Grid.RowDefinitions>
 						<RowDefinition Height="auto"/>
-						<RowDefinition Height="20"/>
+						<RowDefinition Height="10"/>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 
-					<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="infoView"></ContentView>
+					<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView"></ContentView>
 
-					<StackLayout Grid.Row="1" Padding="0" VerticalOptions="CenterAndExpand"> <local:Line/> </StackLayout> 
+					<StackLayout Grid.Row="1" Padding="0" Spacing="0" VerticalOptions="StartAndExpand"> <local:Line/> </StackLayout> 
 
 					<StackLayout Grid.Row="2" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 						<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80" IsVisible="false"></Button>

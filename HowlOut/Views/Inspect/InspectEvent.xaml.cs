@@ -29,8 +29,8 @@ namespace HowlOut
 
 			detailsButton.Clicked += (sender, e) => 
 			{
-				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false; } 
-				else { detailedInfo.IsVisible = false; quickInfo.IsVisible = true; }
+				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false;  pictureSpace.IsVisible = false;} 
+				else { detailedInfo.IsVisible = false; quickInfo.IsVisible = true; pictureSpace.IsVisible = true;}
 
 				if(mapInitialized != true) { 
 					mapInitialized = true;
@@ -69,8 +69,8 @@ namespace HowlOut
 
 		public async void setInfo (Event eve)
 		{
-			ProfileContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain, null);
-			GroupContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain, null);
+			ProfileContent.Content = new ProfileDesignView (eve.Attendees[0], null, null, 130, ProfileDesignView.ProfileDesign.Plain);
+			GroupContent.Content = new ProfileDesignView (null, null, eve, 130, ProfileDesignView.ProfileDesign.Plain);
 
 			Position position = App.lastKnownPosition;
 

@@ -38,7 +38,7 @@ namespace HowlOut
 					groupsButton.IsVisible = true;
 					wallButton.IsVisible = true;
 				}
-				infoView.Content = new ProfileDesignView (userProfile, null, 200, ProfileDesignView.ProfileDesign.WithButtons, null);
+				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(userGroup != null) {
 				listMaker.createList (profileGrid, userGroup.Members, null, null, "normal", null);

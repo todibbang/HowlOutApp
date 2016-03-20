@@ -160,8 +160,8 @@ namespace HowlOut
 		{
 			List <string> IdsToInvite = new List<string> ();
 			IdsToInvite.Add (profile.ProfileId);
-			Event ReturnedEve = await EventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
-			if (ReturnedEve == null) {
+			bool success = await EventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
+			if (!success) {
 				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited", "Ok");
 				return false;
 			} else {
