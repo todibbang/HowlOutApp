@@ -327,7 +327,7 @@ namespace HowlOut
 				var json = JsonConvert.SerializeObject("");
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var response = await httpClient.PostAsync(uri, content);
+				var response = await httpClient.PutAsync(uri, content);
 
 				if (response.IsSuccessStatusCode)
 				{
