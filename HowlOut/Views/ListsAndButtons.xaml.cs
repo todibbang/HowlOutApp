@@ -16,7 +16,7 @@ namespace HowlOut
 		}
 
 		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, 
-			Button addNewButton, string gridStyle)
+			Button addNewButton, string gridStyle, Event eventInvitingTo)
 		{
 			int column = 0;
 			int row = 0;
@@ -67,7 +67,11 @@ namespace HowlOut
 					addNew = false;
 				} else {
 					if (profiles != null) {
-						cell.Children.Add (new ProfileDesignView(profiles [subjectNr],null, 85, ProfileDesignView.ProfileDesign.WithButtons), 0,0);
+						if (gridStyle == "invite") {
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, 100, ProfileDesignView.ProfileDesign.Invite, eventInvitingTo), 0, 0);
+						} else {
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, 100, ProfileDesignView.ProfileDesign.WithButtons, null), 0, 0);
+						}
 					} else if (groups != null) {
 						cell = groupCellCreator (groups [subjectNr]);
 					}

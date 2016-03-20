@@ -30,24 +30,24 @@ namespace HowlOut
 
 			if (userProfile != null) {
 				if (userProfile.ProfileId == App.userProfile.ProfileId) {
-					listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, "normal");
-					listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, "normal");
+					listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, "normal", null);
+					listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, "normal", null);
 					givenList = userProfile.Comments;
 
 					friendsButton.IsVisible = true;
 					groupsButton.IsVisible = true;
 					wallButton.IsVisible = true;
 				}
-				infoView.Content = new ProfileDesignView (userProfile, null, 200, ProfileDesignView.ProfileDesign.WithButtons);
+				infoView.Content = new ProfileDesignView (userProfile, null, 200, ProfileDesignView.ProfileDesign.WithButtons, null);
 
 			} else if(userGroup != null) {
-				listMaker.createList (profileGrid, userGroup.Members, null, null, "normal");
+				listMaker.createList (profileGrid, userGroup.Members, null, null, "normal", null);
 				friendsButton.Text = "Members";
 				givenList = userGroup.Comments;
 				infoView.Content = new InspectGroup (userGroup);
 
 			} else if(eventObject != null) {
-				listMaker.createList (profileGrid, eventObject.Attendees, null, null, "normal");
+				listMaker.createList (profileGrid, eventObject.Attendees, null, null, "normal", null);
 				profileGrid.IsVisible = true;
 				friendsButton.Text = "Attendees";
 				givenList = eventObject.Comments;

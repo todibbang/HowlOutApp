@@ -33,17 +33,17 @@ namespace HowlOut
 				for (int e = 0; e < userProfile.Friends.Count; e++) {
 					profilesNotToInvite.Add (userProfile.Friends [e], userProfile.Friends [e].ProfileId);
 				}
-				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite");
+				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite", eventObject);
 			} else if (userGroup != null) { 
 				for (int e = 0; e < userGroup.Members.Count; e++) {
 					profilesNotToInvite.Add (userGroup.Members [e], userGroup.Members [e].ProfileId);
 				}
-				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite");
+				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite", eventObject);
 			} else if (eventObject != null) { 
 				for (int e = 0; e < eventObject.Attendees.Count; e++) {
 					profilesNotToInvite.Add (eventObject.Attendees [e], eventObject.Attendees [e].ProfileId);
 				}
-				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite");
+				listMaker.createList (profileGrid, profilesToSelectFrom, null, null, "invite", eventObject);
 			}
 
 			for (int i = profilesToSelectFrom.Count - 1; i > -1; i--) {

@@ -8,7 +8,7 @@ namespace HowlOut
 	{
 		DataManager _dataManager;
 
-		public ProfileDesignView (Profile profile, Group group, int dimentions, ProfileDesign design)
+		public ProfileDesignView (Profile profile, Group group, int dimentions, ProfileDesign design, Event eventInvitedTo)
 		{
 			_dataManager = new DataManager ();
 			InitializeComponent ();
@@ -19,7 +19,9 @@ namespace HowlOut
 			};
 
 			acceptButton.Clicked += (sender, e) => {
-				if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
+				if (design.Equals (ProfileDesign.Invite)) {
+					sendInviteToEvent(profile, eventInvitedTo);
+				} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
 					_dataManager.acceptFriendRequest(profile, true);
 				} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
 					acceptButton.Text = "Friend Request Sent";
@@ -38,21 +40,28 @@ namespace HowlOut
 					_dataManager.declineFriendRequest(profile);
 				}
 			};
-
-			if (_dataManager.IsProfileYou (profile)) {
-				acceptButton.Text = "YOU";
+			if (design.Equals (ProfileDesign.Invite)) {
+				acceptButton.Text = " Invite ";
+				declineButton.IsVisible = false;
+			} else if (_dataManager.IsProfileYou (profile)) {
+				acceptButton.Text = " YOU ";
 				acceptButton.IsEnabled = false;
 				declineButton.IsVisible = false;
 			} else if (_dataManager.IsProfileFriend (profile)) {
 				acceptButton.IsVisible = false;
-				declineButton.Text = "Remove Friend";
+				declineButton.Text = " Remove Friend ";
 			} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
-				acceptButton.Text = "Accept";
-				declineButton.Text = "Decline";
+				System.Diagnostics.Debug.WriteLine (profile.Name + " has sent you a friendRequest");
+				acceptButton.Text = " Accept ";
+				declineButton.Text = " Decline ";
 			} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
-				acceptButton.Text = "Friend Request Sent";
+				acceptButton.Text = " Friend Request Sent ";
 				declineButton.IsVisible = false;
-			} 
+			} else {
+				acceptButton.Text = " Send Friend Request ";
+				declineButton.IsVisible = false;
+			}
+
 
 		}
 
@@ -61,7 +70,7 @@ namespace HowlOut
 			profileGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
 			profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
 			profileLayout.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
-			if (design.Equals (ProfileDesign.WithButtons)) {
+			if (design.Equals (ProfileDesign.WithButtons) || design.Equals (ProfileDesign.Invite)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.5 });
 			} else if(design.Equals (ProfileDesign.WithName)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
@@ -86,11 +95,20 @@ namespace HowlOut
 
 		}
 
+		private async void sendInviteToEvent(Profile profile, Event eve) {
+			bool success = await _dataManager.sendInviteToEvent(eve, profile);
+			if (success) {
+				acceptButton.Text = "Invite Sent";
+				acceptButton.IsEnabled = false;
+			}
+		}
+
 
 		public enum ProfileDesign {
 			Plain,
 			WithName,
-			WithButtons
+			WithButtons,
+			Invite
 		}
 	}
 }

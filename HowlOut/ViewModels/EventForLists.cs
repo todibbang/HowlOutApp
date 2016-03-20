@@ -21,6 +21,13 @@ namespace HowlOut
 		public ContentView ProfileContent { get; set;}
 		public ContentView GroupContent { get; set;}
 
+		public string EventType1  {get; set;}
+		public string EventType2  {get; set;}
+		public string EventType3  {get; set;}
+
+		public bool EventType2Visible  {get; set;}
+		public bool EventType3Visible  {get; set;}
+
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
@@ -40,6 +47,21 @@ namespace HowlOut
 
 			//ProfileContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
 			//GroupContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
+
+			System.Diagnostics.Debug.WriteLine (eve.EventTypes.Count + "");
+
+			EventType2Visible = false;
+			EventType3Visible = false;
+
+			EventType1 =  eve.EventTypes [0] + "";
+			if (eve.EventTypes.Count > 1) {
+				EventType2 = eve.EventTypes [1] + "";
+				EventType2Visible = true;
+			}
+			if (eve.EventTypes.Count > 2) {
+				EventType3 = eve.EventTypes [2] + "";
+				EventType3Visible = true;
+			}
 
 		}
 	}

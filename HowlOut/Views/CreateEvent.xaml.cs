@@ -18,6 +18,8 @@ namespace HowlOut
 		Dictionary<string, int> agePicker = new Dictionary<string, int> { };
 		Dictionary<string, int> sizePicker = new Dictionary<string, int> { };
 
+		private bool Launching = false;
+
 		public CreateEvent (Event givenEvent, bool isCreate)
 		{
 			_dataManager = new DataManager ();
@@ -83,8 +85,9 @@ namespace HowlOut
 			}
 
 			launchButton.Clicked += (sender, e) => {
-				if(isCreate) {
+				if(isCreate && !Launching) {
 					LaunchEvent(newEvent);
+					Launching = true;
 				} else {
 					UpdateEvent(newEvent);
 				}
@@ -192,6 +195,7 @@ namespace HowlOut
 					EventTypes = eventToCreate.EventTypes};
 
 				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
+				Launching = false;
 
 				if (eventCreated != null) {
 					eventCreated.Attendees = new List<Profile> ();

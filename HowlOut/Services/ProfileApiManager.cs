@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
@@ -88,9 +89,9 @@ namespace HowlOut
 			return profile;
 		}
 
-		public async Task<List<Event>> GetEventsInvitedTo(string profileId)
+		public async Task<ObservableCollection<Event>> GetEventsInvitedTo(string profileId)
 		{
-			var events = new List<Event>();
+			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
 			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId);
 
@@ -100,7 +101,7 @@ namespace HowlOut
 				if (response.IsSuccessStatusCode)
 				{
 					var content = await response.Content.ReadAsStringAsync();
-					events = JsonConvert.DeserializeObject<List<Event>>(content);
+					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
 				}
 			}
 			catch (Exception ex)

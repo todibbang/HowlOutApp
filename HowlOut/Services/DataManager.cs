@@ -156,12 +156,17 @@ namespace HowlOut
 			App.coreView.setContentView (new InspectController (profile, null, null), "UserProfile");
 		}
 
-		public async void sendInviteToEvent(Event eve, Profile profile)
+		public async Task<bool> sendInviteToEvent(Event eve, Profile profile)
 		{
-
 			List <string> IdsToInvite = new List<string> ();
 			IdsToInvite.Add (profile.ProfileId);
-			await EventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
+			Event ReturnedEve = await EventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
+			if (ReturnedEve == null) {
+				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited", "Ok");
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 		public async void sendInviteToGroup(Group group, Profile profile)

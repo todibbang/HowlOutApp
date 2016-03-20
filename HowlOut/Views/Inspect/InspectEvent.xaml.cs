@@ -69,8 +69,8 @@ namespace HowlOut
 
 		public async void setInfo (Event eve)
 		{
-			ProfileContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain);
-			GroupContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain);
+			ProfileContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain, null);
+			GroupContent.Content = new ProfileDesignView (eve.Attendees[0], null, 150, ProfileDesignView.ProfileDesign.Plain, null);
 
 			Position position = App.lastKnownPosition;
 

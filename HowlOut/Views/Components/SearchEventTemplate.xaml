@@ -57,9 +57,9 @@
 			<ContentView Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="4" Content="{Binding GroupContent}" />
 
 			<StackLayout Grid.Row="4" Grid.RowSpan="3" Grid.Column="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-				<Button Text="1" Style="{DynamicResource ButtonStyle}" WidthRequest="36" BorderRadius="18"></Button>
-				<Button Text="2" Style="{DynamicResource ButtonStyle}" WidthRequest="36" BorderRadius="18"></Button>
-				<Button Text="3" Style="{DynamicResource ButtonStyle}" WidthRequest="36" BorderRadius="18"></Button>
+				<Button Style="{DynamicResource TypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
+				<Button Style="{DynamicResource TypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
+				<Button Style="{DynamicResource TypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
 			</StackLayout>
 		</Grid>
 	</ContentView.Content>
