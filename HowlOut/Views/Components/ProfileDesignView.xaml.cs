@@ -121,7 +121,7 @@ namespace HowlOut
 		private async void sendInviteToEvent(Profile profile, Event eve) {
 			bool success = await _dataManager.sendInviteToEvent(eve, profile);
 			if (success) {
-				acceptButton.Text = "Invite Sent";
+				acceptButton.Text = " Invite Sent ";
 				acceptButton.IsEnabled = false;
 			}
 		}

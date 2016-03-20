@@ -34,15 +34,15 @@
 						<RowDefinition Height="39"/>
 						<RowDefinition Height="1"/>
 					</Grid.RowDefinitions>
-					<Button Grid.Column="0" Grid.Row="0" x:Name="SearchButton" Text="Search" TextColor="{DynamicResource TextColor}" FontSize="14" />
+					<Button Grid.Column="0" Grid.Row="0" x:Name="SearchButton" Text="Search" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White" />
 					<BoxView Grid.Column="1" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="2" Grid.Row="0" x:Name="ManageButton" Text="Attended" TextColor="{DynamicResource TextColor}" FontSize="14"/>
+					<Button Grid.Column="2" Grid.Row="0" x:Name="ManageButton" Text="Attended" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
 					<BoxView Grid.Column="3" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="4" Grid.Row="0" x:Name="YoursButton" Text="My" TextColor="{DynamicResource TextColor}" FontSize="14"/>
+					<Button Grid.Column="4" Grid.Row="0" x:Name="YoursButton" Text="My" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
 					<BoxView Grid.Column="5" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="6" Grid.Row="0" x:Name="FollowedButton" Text="Followed" TextColor="{DynamicResource TextColor}" FontSize="14"/>
+					<Button Grid.Column="6" Grid.Row="0" x:Name="FollowedButton" Text="Followed" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
 					<BoxView Grid.Column="7" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="8" Grid.Row="0" x:Name="InviteButton" Text="Invited To" TextColor="{DynamicResource TextColor}" FontSize="14"/>
+					<Button Grid.Column="8" Grid.Row="0" x:Name="InviteButton" Text="Invited To" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
 					<local:Line Grid.Column="0" Grid.Row="1" x:Name="searchLine"/>
 					<local:Line Grid.Column="2" Grid.Row="1" x:Name="manageLine"/>
 					<local:Line Grid.Column="4" Grid.Row="1" x:Name="yoursLine"/>
@@ -70,7 +70,7 @@
 
 					<ListView x:Name="ManageEventList" 
 			  			HasUnevenRows="false"
-						RowHeight="108"
+						RowHeight="115"
 						SeparatorVisibility="None"
 						CachingStrategy="RecycleElement"
 						BackgroundColor="Transparent"

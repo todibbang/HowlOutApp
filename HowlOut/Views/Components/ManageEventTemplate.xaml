@@ -5,15 +5,15 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
 
-		<Grid Padding="2,0,2,0" Style="{DynamicResource ListStyle}">
+		<Grid RowSpacing="0" ColumnSpacing="0" >
 			<Grid.RowDefinitions>
-				<RowDefinition Height="100"/>
+				<RowDefinition Height="105"/>
 				<RowDefinition Height="2"/>
 			</Grid.RowDefinitions>
 
 		
 	
-			<Grid Grid.Row="0" >
+			<Grid Grid.Row="0" BackgroundColor="White">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="65"/>
 					<ColumnDefinition Width="*"/>
@@ -81,8 +81,6 @@
 					<Button Grid.Row="2" Style="{DynamicResource LoyaltyButtonStyle}" BorderRadius="18" BorderWidth="3"></Button>
 				</Grid>
 			</Grid>
-
-			<local:Line Grid.Row="1"/> 
 		</Grid>
 	</ContentView.Content>
 </ContentView>
