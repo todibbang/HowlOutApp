@@ -17,7 +17,6 @@ namespace HowlOut.iOS
 
 			ImageCircleRenderer.Init ();
 
-			/*
 			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
 			{
 				var settings = UIUserNotificationSettings.GetSettingsForTypes(
@@ -25,7 +24,6 @@ namespace HowlOut.iOS
 					new NSSet());
 				UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
 			}
-			*/
 
 			LoadApplication (new App ());
 
