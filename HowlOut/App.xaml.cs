@@ -62,7 +62,6 @@ namespace HowlOut
             }
             else
             {
-				CrossLocalNotifications.Current.Show ("Hej med dig", "Dette er cool", 1, DateTime.Now.AddMinutes(1));
 				coreView = new CoreView();
 				MainPage = coreView;
 				startProgram(coreView);
