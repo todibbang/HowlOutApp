@@ -21,19 +21,12 @@ namespace HowlOut.iOS
                     new NSSet());
                 UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
             }
-
-
+				
             global::Xamarin.Forms.Forms.Init ();
-
 
 			ImageCircleRenderer.Init ();
 
 			LoadApplication (new App ());
-
-			/*
-			var notificationSettings = UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, null);
-			UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
-			*/
 
 			return base.FinishedLaunching (app, options);
 		}
