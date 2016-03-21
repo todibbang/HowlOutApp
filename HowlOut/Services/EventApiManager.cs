@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
-using Plugin.LocalNotifications;
+//using Plugin.LocalNotifications;
 
 namespace HowlOut
 {
@@ -200,11 +200,11 @@ namespace HowlOut
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
 					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(2).AddMinutes(5)) > 0)
 					{
-						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
+						//CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
 					}
 					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(1).AddMinutes(5)) > 0)
 					{
-						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
+						//CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
 					}
 
 					return true;
@@ -231,7 +231,7 @@ namespace HowlOut
 				{
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
-					CrossLocalNotifications.Current.Cancel(int.Parse(eventToRetrieve.EventId));
+					//CrossLocalNotifications.Current.Cancel(int.Parse(eventToRetrieve.EventId));
 					return true;
 				}
 			}
@@ -258,11 +258,11 @@ namespace HowlOut
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
 					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(2).AddMinutes(5)) > 0)
 					{
-						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
+						//CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
 					}
 					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(1).AddMinutes(5)) > 0)
 					{
-						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
+						//CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
 					}
 					return true;
 				}
@@ -288,7 +288,7 @@ namespace HowlOut
 				{
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
-					CrossLocalNotifications.Current.Cancel(int.Parse(eventToRetrieve.EventId));
+					//CrossLocalNotifications.Current.Cancel(int.Parse(eventToRetrieve.EventId));
 					return true;
 				}
 			}
