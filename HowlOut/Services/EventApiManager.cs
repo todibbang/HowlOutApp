@@ -198,11 +198,11 @@ namespace HowlOut
 				{
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
-					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(2).AddMinutes(5)) > 0)
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(-2).AddMinutes(-5)) < 0)
 					{
 						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
 					}
-					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(1).AddMinutes(5)) > 0)
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(-1).AddMinutes(-5)) < 0)
 					{
 						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
 					}
@@ -256,11 +256,11 @@ namespace HowlOut
 				{
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
-					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(2).AddMinutes(5)) > 0)
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(-2).AddMinutes(-5)) < 0)
 					{
 						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
 					}
-					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(1).AddMinutes(5)) > 0)
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(-1).AddMinutes(-5)) < 0)
 					{
 						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
 					}
