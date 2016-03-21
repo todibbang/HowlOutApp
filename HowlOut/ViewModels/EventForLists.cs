@@ -12,7 +12,8 @@ namespace HowlOut
 
 		public string Title  {get; set;}
 		public string Distance  {get; set;}
-		public string Time  {get; set;}
+		public string BigTime  {get; set;}
+		public string SmallTime  {get; set;}
 		public string Attendees  {get; set;}
 		public Uri ProfileImageUri { get; set;}
 
@@ -38,7 +39,8 @@ namespace HowlOut
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
 
-			Time = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
+			setTime (eve.StartDate);
+			//Time = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
 
 			Attendees = eve.Attendees.Count + "/" + eve.MaxSize;
 
@@ -65,6 +67,23 @@ namespace HowlOut
 			if (eve.EventTypes.Count > 2) {
 				EventType3 = eve.EventTypes [2] + "";
 				EventType3Visible = true;
+			}
+
+		}
+
+		private void setTime(DateTime eveTime) {
+			var theTimeNow = DateTime.Now;
+			var timeBetween = eveTime - theTimeNow;
+
+			if (timeBetween.TotalDays < 1) {
+				BigTime = timeBetween.Hours + "";
+				SmallTime = "Hour";
+			} else if (timeBetween.TotalDays < 7) {
+				BigTime = (eveTime.TimeOfDay + "").Substring(0, 5);
+				SmallTime = (eveTime.DayOfWeek + "").Substring(0, 3);
+			} else {
+				BigTime = eveTime.Day + "";
+				SmallTime = eveTime.ToString("MMMM") + "";
 			}
 
 		}

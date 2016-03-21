@@ -6,10 +6,9 @@
 			 xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
-		<Grid RowSpacing="0" ColumnSpacing="0" Padding="10,10,10,10">
+		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,0,0,10">
 			
 			<Grid.RowDefinitions>
-				<RowDefinition Height="40"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
@@ -19,24 +18,68 @@
 				<RowDefinition Height="40"/>
 			</Grid.RowDefinitions>
 
+			<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" x:Name="quickInfo">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="100"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="8"/>
+					<RowDefinition Height="22"/>
+					<RowDefinition Height="14"/>
+					<RowDefinition Height="8"/>
+				</Grid.RowDefinitions>
 
-			<Image Grid.Row="1" Grid.RowSpan="3" Source="Party.png" VerticalOptions="StartAndExpand"></Image>
-			<BoxView Grid.Row="0" Grid.RowSpan="2" BackgroundColor="White"></BoxView>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="4"/>
+					<ColumnDefinition Width="40"/>
+					<ColumnDefinition Width="20"/>
+					<ColumnDefinition Width="16"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="16"/>
+					<ColumnDefinition Width="20"/>
+					<ColumnDefinition Width="40"/>
+					<ColumnDefinition Width="4"/>
+				</Grid.ColumnDefinitions>
 
-			<Label Grid.Row="0" Style="{DynamicResource TitleStyle}" x:Name="eventTitle" FontSize="25" VerticalOptions="StartAndExpand"/>
-			<Button Grid.Row="0" Style="{DynamicResource ButtonStyle}" HorizontalOptions="End" x:Name="detailsButton" HeightRequest="30" WidthRequest="50" VerticalOptions="StartAndExpand"/>
+				<Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="9" Source="Party.png" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand"></Image>
+				<Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="9" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
+				<BoxView Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="9" BackgroundColor="White"></BoxView>
 
-			<StackLayout Grid.Row="1" x:Name="quickInfo" Orientation="Horizontal" HorizontalOptions="StartAndExpand" 
-			VerticalOptions="CenterAndExpand" Padding="0,0,0,0" HeightRequest="20">
-				<Label Style="{DynamicResource TimeStyle}" x:Name="quickTime" FontSize="14" HorizontalOptions="Center"></Label>
-				<Label Text=" - " FontSize="14" HorizontalOptions="Center" ></Label>
-				<Label Style="{DynamicResource DistanceStyle}" x:Name="quickDistance" FontSize="14" HorizontalOptions="Center"></Label>
+				<Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" VerticalOptions="Start">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="5"/>
+						<RowDefinition Height="36"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2"/>
+						<ColumnDefinition Width="54"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="54"/>
+						<ColumnDefinition Width="2"/>
+					</Grid.ColumnDefinitions>
 
-			</StackLayout>
+						<StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Spacing="0">
+							<Label x:Name="BigTime" FontSize="22" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label x:Name="SmallTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						</StackLayout>
 
-			<StackLayout Grid.Row="2" x:Name="pictureSpace" HeightRequest="130"/>
+						<Label x:Name="Title" Grid.Row="1" Grid.Column="2" Style="{DynamicResource TitleStyle}" FontSize="20" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 
-			<StackLayout Grid.Row="1" Padding="0" VerticalOptions="CenterAndExpand" MinimumHeightRequest="80" x:Name="detailedInfo">
+						<StackLayout Grid.Row="1" Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Spacing="0">
+							<Label x:Name="Distance" FontSize="22" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						</StackLayout>
+
+				</Grid>
+
+				<StackLayout Grid.Row="3" Grid.RowSpan="2" Grid.Column="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
+					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
+					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
+				</StackLayout>
+				<Button Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="9" x:Name="detailsButton" ></Button>
+			</Grid>
+
+			<StackLayout Grid.Row="0" Padding="0" VerticalOptions="CenterAndExpand" MinimumHeightRequest="80" x:Name="detailedInfo">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="200"/>
@@ -63,25 +106,25 @@
 
 			<!-- <StackLayout Grid.Row="2" Padding="0"> <local:Line/> </StackLayout> -->
 
-			<StackLayout Grid.Row="3" Padding="0, 10, 0, 10" VerticalOptions="CenterAndExpand" BackgroundColor="White">
+			<StackLayout Grid.Row="2" Padding="0, 10, 0, 10" VerticalOptions="CenterAndExpand" BackgroundColor="White">
 				<Label Style="{DynamicResource DescriptionStyle}" x:Name="eventDescription" />
 			</StackLayout>
 
-			<StackLayout Grid.Row="4" Padding="0"> <local:Line/> </StackLayout> 
+			<StackLayout Grid.Row="3" Padding="0"> <local:Line/> </StackLayout> 
 
-			<Grid Grid.Row="6">
+			<Grid Grid.Row="5">
 				<StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 					<ContentView x:Name="ProfileContent"/>
 					<ContentView x:Name="GroupContent"/>
 				</StackLayout>
 			</Grid>
 
-			<StackLayout Grid.Row="7" x:Name="manageSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+			<StackLayout Grid.Row="6" x:Name="manageSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 				<Button Text="Invite" Style="{DynamicResource ButtonStyle}" x:Name="inviteButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 				<Button Text="Leave" Style="{DynamicResource ButtonStyle}" x:Name="editLeaveButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 			</StackLayout>
 
-			<StackLayout Grid.Row="7" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+			<StackLayout Grid.Row="6" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 				<Button Text="Join" Style="{DynamicResource ButtonStyle}" x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 				<Button Text="Follow" Style="{DynamicResource ButtonStyle}" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 			</StackLayout>

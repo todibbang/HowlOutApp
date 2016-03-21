@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
-	public partial class TopBar : ContentView
+	public partial class UpperBar : ContentView
 	{
-		DataManager dataManager = new DataManager();
-
-		public TopBar ()
+		public UpperBar ()
 		{
 			InitializeComponent ();
 
