@@ -6,6 +6,8 @@ using System.Net.Http;
 using ModernHttpClient;
 using Xamarin.Forms.Maps;
 using System.Collections.Generic;
+using Plugin.LocalNotifications.Abstractions;
+using Plugin.LocalNotifications;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 

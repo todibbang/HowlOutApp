@@ -27,6 +27,9 @@ namespace HowlOut.iOS
 
 			LoadApplication (new App ());
 
+			var notificationSettings = UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, null);
+			UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
+
 			return base.FinishedLaunching (app, options);
 		}
 	}

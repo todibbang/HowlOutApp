@@ -27,6 +27,7 @@ namespace HowlOut.Droid
 		public static void UpdateIdValues()
 		{
 			global::ModernHttpClient.Resource.String.library_name = global::HowlOut.Droid.Resource.String.library_name;
+			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::HowlOut.Droid.Resource.Drawable.plugin_lc_smallicon;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::HowlOut.Droid.Resource.Attribute.actionBarSize;
 		}
 		
@@ -2054,11 +2055,14 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f020086
 			public const int mr_ic_settings_light = 2130837638;
 			
-			// aapt resource value: 0x7f020088
-			public const int notification_template_icon_bg = 2130837640;
+			// aapt resource value: 0x7f020089
+			public const int notification_template_icon_bg = 2130837641;
 			
 			// aapt resource value: 0x7f020087
 			public const int Party = 2130837639;
+			
+			// aapt resource value: 0x7f020088
+			public const int plugin_lc_smallicon = 2130837640;
 			
 			static Drawable()
 			{
