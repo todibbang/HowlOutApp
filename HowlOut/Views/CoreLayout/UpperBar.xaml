@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.TopBar">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.UpperBar">
 	<ContentView.Content>
-		<Grid HeightRequest="40">
+		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="75"/>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="75"/>
 			</Grid.ColumnDefinitions>
-
 			<Image Grid.Column="0" x:Name="backBtn" Source="ic_chevron.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
 			<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" ></Label>
 			<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut" />

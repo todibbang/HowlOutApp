@@ -188,5 +188,6 @@
     <BundleResource Include="Resources\ic_calender.png" />
     <BundleResource Include="Resources\ic_search.png" />
     <BundleResource Include="Resources\ic_add.png" />
+    <BundleResource Include="Resources\gradiant_bg.png" />
   </ItemGroup>
 </Project>
