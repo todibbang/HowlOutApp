@@ -11,14 +11,14 @@ namespace HowlOut
 		public List <ContentView> contentViews = new List<ContentView> ();
 		public List <string> contentViewTypes = new List<string> ();
 
-		public UpperBar topBar;
+		public TopBar topBar = new TopBar();
 		DataManager _dataManager;
 
 		public CoreView ()
 		{
 			InitializeComponent ();
 			_dataManager = new DataManager ();
-			topBar = new UpperBar();
+
 			topBarLayout.Children.Add (topBar);
 		}
 

@@ -72,8 +72,6 @@ namespace HowlOut
 			//} else if (unit == 'N') {
 			//	dist = dist * 0.8684;
 			//}
-
-			/*
 			string distance = "";
 			if (dist < 1)
 				distance = "less than 1 km away";
@@ -81,10 +79,10 @@ namespace HowlOut
 				int Dist = (int)dist;
 				distance = Dist + " km away";
 			}
-			*/		
+					
 
 
-			return (((int)dist) + "");
+			return (distance);
 		}
 
 		private double deg2rad(double deg) {

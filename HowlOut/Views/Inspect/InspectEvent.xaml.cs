@@ -29,8 +29,8 @@ namespace HowlOut
 
 			detailsButton.Clicked += (sender, e) => 
 			{
-				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false;} 
-				else { detailedInfo.IsVisible = false; quickInfo.IsVisible = true;}
+				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false;  pictureSpace.IsVisible = false;} 
+				else { detailedInfo.IsVisible = false; quickInfo.IsVisible = true; pictureSpace.IsVisible = true;}
 
 				if(mapInitialized != true) { 
 					mapInitialized = true;
@@ -77,10 +77,7 @@ namespace HowlOut
 			// Time
 			DateTime today = DateTime.Now.ToLocalTime();
 			System.Diagnostics.Debug.WriteLine ("- " + (eve.StartDate - today) + " : " + (today - eve.StartDate));
-
-			//quickTime.Text = "" + eve.StartDate.DayOfWeek + " at " + _dataManager.UtilityManager.getTime(eve.StartDate);
-
-
+			quickTime.Text = "" + eve.StartDate.DayOfWeek + " at " + _dataManager.UtilityManager.getTime(eve.StartDate);
 			StartTime.Text = "" + eve.StartDate.DayOfWeek + " the " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM").ToLower();
 			EndTime.Text = "From " + _dataManager.UtilityManager.getTime(eve.StartDate) + " till " + _dataManager.UtilityManager.getTime(eve.EndDate);
 
@@ -93,15 +90,13 @@ namespace HowlOut
 				label.Text = addressList [i];
 				addressLayout.Children.Add(label);
 			}
-			Distance.Text = _dataManager.UtilityManager.distance(new Position(eve.Latitude, eve.Longitude), position);
-			Title.Text = eve.Title;
-
+			quickDistance.Text = _dataManager.UtilityManager.distance(new Position(eve.Latitude, eve.Longitude), position);
 			Label labelD = new Label ();
+			labelD.Text = quickDistance.Text;
 			addressLayout.Children.Add(labelD);
 
 			//Other
-			setTime(eve.StartDate);
-
+			eventTitle.Text = eve.Title;
 			eventDescription.Text = eve.Description;
 
 			quickInfo.IsVisible = true;
@@ -156,23 +151,6 @@ namespace HowlOut
 					await App.coreView.displayAlertMessage ("Event Not Followed", "An error happened and you have not yet followed the event, try again.", "Ok");
 				}
 			}
-		}
-
-		private void setTime(DateTime eveTime) {
-			var theTimeNow = DateTime.Now;
-			var timeBetween = eveTime - theTimeNow;
-
-			if (timeBetween.TotalDays < 1) {
-				BigTime.Text = timeBetween.Hours + "";
-				SmallTime.Text = "Hour";
-			} else if (timeBetween.TotalDays < 7) {
-				BigTime.Text = (eveTime.TimeOfDay + "").Substring(0, 5);
-				SmallTime.Text = (eveTime.DayOfWeek + "").Substring(0, 3);
-			} else {
-				BigTime.Text = eveTime.Day + "";
-				SmallTime.Text = eveTime.ToString("MMMM") + "";
-			}
-
 		}
 	}
 }
