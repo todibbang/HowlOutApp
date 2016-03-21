@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
+using Plugin.LocalNotifications;
 
 namespace HowlOut
 {
@@ -118,25 +119,20 @@ namespace HowlOut
 
 			try
 			{
-				System.Diagnostics.Debug.WriteLine("Trying");
 				var json = JsonConvert.SerializeObject(eventToCreate);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 				var response = await httpClient.PostAsync(uri, content);
 
-				System.Diagnostics.Debug.WriteLine("Suchcess ??? " + response.IsSuccessStatusCode);
 
 				if (response.IsSuccessStatusCode)
 				{
-					System.Diagnostics.Debug.WriteLine("Ass ??? ");
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
-					System.Diagnostics.Debug.WriteLine("New Event ID: " + eventToRetrieve.EventId);
 					return eventToRetrieve;
 				}
 			}
 			catch (Exception ex)
 			{
-				System.Diagnostics.Debug.WriteLine("Failing");
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
 
@@ -200,6 +196,17 @@ namespace HowlOut
 
 				if (response.IsSuccessStatusCode)
 				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(-2).AddMinutes(-5)) < 0)
+					{
+						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
+					}
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(-1).AddMinutes(-5)) < 0)
+					{
+						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
+					}
+
 					return true;
 				}
 			}
@@ -222,6 +229,9 @@ namespace HowlOut
 
 				if (response.IsSuccessStatusCode)
 				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
+					CrossLocalNotifications.Current.Cancel(int.Parse(eventToRetrieve.EventId));
 					return true;
 				}
 			}
@@ -244,6 +254,16 @@ namespace HowlOut
 
 				if (response.IsSuccessStatusCode)
 				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(-2).AddMinutes(-5)) < 0)
+					{
+						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
+					}
+					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(-1).AddMinutes(-5)) < 0)
+					{
+						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
+					}
 					return true;
 				}
 			}
@@ -266,6 +286,9 @@ namespace HowlOut
 
 				if (response.IsSuccessStatusCode)
 				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
+					CrossLocalNotifications.Current.Cancel(int.Parse(eventToRetrieve.EventId));
 					return true;
 				}
 			}
