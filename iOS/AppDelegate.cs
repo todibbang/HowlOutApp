@@ -13,15 +13,7 @@ namespace HowlOut.iOS
 	{
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
-            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            {
-                var settings = UIUserNotificationSettings.GetSettingsForTypes(
-                    UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
-                    new NSSet());
-                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
-            }
-
-            global::Xamarin.Forms.Forms.Init ();
+			global::Xamarin.Forms.Forms.Init ();
 
 			ImageCircleRenderer.Init ();
 
