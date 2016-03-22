@@ -110,7 +110,25 @@ namespace HowlOut
 			return newTime;
 		}
 
+		public List<string> setTime(DateTime time) {
+			var theTimeNow = DateTime.Now;
+			var timeBetween = time - theTimeNow;
+			string number;
+			string describer;
 
+			if (timeBetween.TotalDays < 1) {
+				number = timeBetween.Hours + "";
+				describer = "Hour";
+			} else if (timeBetween.TotalDays < 7) {
+				number = (time.TimeOfDay + "").Substring(0, 5);
+				describer = (time.DayOfWeek + "").Substring(0, 3);
+			} else {
+				number = time.Day + "";
+				describer = time.ToString("MMMM") + "";
+			}
+
+			return new List<string> () { number, describer };
+		}
 
 
 	}

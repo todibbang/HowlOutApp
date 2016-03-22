@@ -124,20 +124,24 @@ namespace HowlOut
 			FindNewGroupsButton.Clicked += (sender, e) => {
 				App.coreView.setContentView (new CreateGroup(), "Create Group");
 			};
+
+			postCommentButton.Clicked += (sender, e) => {
+				PostNewComment(eventObject, commentEntry.Text);
+			};
 		}
 
-		private async void PostNewComment(Event eve)
+		private async void PostNewComment(Event eve, string comment)
 		{
-			if(commentEntry.Text != null || commentEntry.Text != "")
+			if(!string.IsNullOrWhiteSpace(comment))
 			{
 				Event newEvent = await eventApiManager.AddCommentToEvent(eve.EventId, new Comment {
-					Content = commentEntry.Text, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
+					Content = comment, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
 				});
 				if (newEvent != null) {
 					commentEntry.Text = "";
 					App.coreView.setContentView (new InspectController (null, null, newEvent), "UserProfile");
 				} else {
-					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
+					await App.coreView.displayAlertMessage ("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
 				}
 			}
 		}

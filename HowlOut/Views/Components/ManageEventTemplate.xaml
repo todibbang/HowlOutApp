@@ -28,6 +28,12 @@
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 					<controls:CircleImage Grid.Row="1" Source="{Binding ProfileImageUri}"/>
+					<Button Grid.Row="1" BorderRadius="32" BackgroundColor="#50000000"/>
+
+					<StackLayout Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Spacing="0" Padding="0,10,0,0">
+						<Label Text="{Binding BigTime}" FontSize="22" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+					</StackLayout>
 					<!-- <Button Grid.Row="1" Style="{DynamicResource AttendingButtonStyle}" BorderRadius="32" BorderWidth="0" BackgroundColor="#ff00a0e0" ></Button>  -->
 				</Grid>
 
@@ -53,17 +59,17 @@
 		<!-- <StackLayout Grid.Row="1" Spacing="0" Padding="0" MinimumHeightRequest="80"> -->
 			<Grid Grid.Row="0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="28"/>
+					<ColumnDefinition Width="33"/>
 					<ColumnDefinition Width="36"/>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="36"/>
-					<ColumnDefinition Width="28"/>
+					<ColumnDefinition Width="33"/>
 				</Grid.ColumnDefinitions>
 
 				<Grid Grid.Column="1" >
 					<Grid.RowDefinitions>
 						<RowDefinition Height="*"/>
-						<RowDefinition Height="50"/>
+						<RowDefinition Height="55"/>
 						<RowDefinition Height="36"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
@@ -74,7 +80,7 @@
 				<Grid Grid.Column="3" >
 					<Grid.RowDefinitions>
 						<RowDefinition Height="*"/>
-						<RowDefinition Height="50"/>
+						<RowDefinition Height="55"/>
 						<RowDefinition Height="36"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>

@@ -41,13 +41,14 @@ namespace HowlOut
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
 
-			setTime (eve.StartDate);
-			//Time = "" + eve.StartDate.DayOfWeek + " at " + util.getTime(eve.StartDate);
+			var Times = util.setTime (eve.StartDate);
+			BigTime = Times [0];
+			SmallTime = Times [1];
 
 			Attendees = eve.Attendees.Count + "/" + eve.MaxSize;
 
-			EventAverageLoyalty = eve.Attendees [0].LoyaltyRating + "";
-			EventHolderLikes = eve.Attendees [0].Likes + "";
+			EventAverageLoyalty = eve.Owner.LoyaltyRating + "";
+			EventHolderLikes = eve.Owner.Likes + "";
 
 			ProfileContent = new ContentView ();
 			var content = new StackLayout ();
@@ -71,26 +72,7 @@ namespace HowlOut
 				EventType3Visible = true;
 			}
 
-
 			BannerHeight = (0.524 * App.coreView.Width) - 60;
-			System.Diagnostics.Debug.WriteLine(BannerHeight);
-		}
-
-		private void setTime(DateTime eveTime) {
-			var theTimeNow = DateTime.Now;
-			var timeBetween = eveTime - theTimeNow;
-
-			if (timeBetween.TotalDays < 1) {
-				BigTime = timeBetween.Hours + "";
-				SmallTime = "Hour";
-			} else if (timeBetween.TotalDays < 7) {
-				BigTime = (eveTime.TimeOfDay + "").Substring(0, 5);
-				SmallTime = (eveTime.DayOfWeek + "").Substring(0, 3);
-			} else {
-				BigTime = eveTime.Day + "";
-				SmallTime = eveTime.ToString("MMMM") + "";
-			}
-
 		}
 	}
 }

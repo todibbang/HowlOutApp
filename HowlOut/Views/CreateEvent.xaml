@@ -76,21 +76,21 @@
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="60"/>
 								<ColumnDefinition Width="5"/>
 								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="50"/>
 								<ColumnDefinition Width="5"/>
 							</Grid.ColumnDefinitions>
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Start" Style="{DynamicResource TextStyle}"></Label>
-							<DatePicker Grid.Row="1" Grid.Column="3" x:Name="startDate">></DatePicker>
-							<TimePicker Grid.Row="1" Grid.Column="4" x:Name="startTime"></TimePicker>
+							<DatePicker Grid.Row="1" Grid.Column="3" x:Name="startDate" Format="dd/MM/yyyy"></DatePicker>
+							<TimePicker Grid.Row="1" Grid.Column="4" x:Name="startTime" Format="HH:mm"></TimePicker>
 							<local:Line Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"/>
 							<Label Grid.Row="3" Grid.Column="1" Text="End" Style="{DynamicResource TextStyle}"></Label>
-							<DatePicker Grid.Row="3" Grid.Column="3" x:Name="endDate">></DatePicker>
-							<TimePicker Grid.Row="3" Grid.Column="4" x:Name="endTime">></TimePicker>
+							<DatePicker Grid.Row="3" Grid.Column="3" x:Name="endDate" Format="dd/MM/yyyy"></DatePicker>
+							<TimePicker Grid.Row="3" Grid.Column="4" x:Name="endTime" Format="HH:mm"></TimePicker>
 							<local:Line Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"/>						
 						</Grid>
 					</StackLayout>
@@ -106,7 +106,7 @@
 							</Grid.RowDefinitions>
 							<local:Line Grid.Row="0"/>
 							<StackLayout Grid.Row="1" x:Name="locationButtonPlace" >
-								<Button Grid.Row="1" Style="{DynamicResource TypeButtonStyle}" Text="Location" x:Name="locationButton" WidthRequest="200" HeightRequest="40"/>
+								<Button Grid.Row="1" Style="{DynamicResource ButtonStyle}" Text="Location" x:Name="locationButton" WidthRequest="200" HeightRequest="40"/>
 							</StackLayout>
 							<!-- <Button Grid.Row="1" Text="Location" x:Name="locationButton"></Button> -->
 							<local:Line Grid.Row="2"/>
@@ -126,7 +126,7 @@
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="55"/>
 								<ColumnDefinition Width="5"/>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="*"/>
@@ -156,7 +156,7 @@
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="55"/>
 								<ColumnDefinition Width="5"/>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="5"/>

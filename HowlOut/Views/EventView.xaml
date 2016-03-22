@@ -53,12 +53,19 @@
 
 			<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="3" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
 
+					<ScrollView> 
+						<StackLayout x:Name="EventListTest">
+						</StackLayout>
+					</ScrollView> 
+
+					<!-- 
 					<ListView x:Name="SearchEventList" 
 			  			HasUnevenRows="false"
 						RowHeight="210"
 						SeparatorVisibility="None"
 						CachingStrategy="RecycleElement"
-						BackgroundColor="Transparent">
+						BackgroundColor="Transparent"
+						IsVisible="false">
 						<ListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
@@ -131,7 +138,9 @@
 							</DataTemplate>
 						</ListView.ItemTemplate>
 					</ListView>
+					-->
 				</StackLayout>
+
 
 			<Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="White" BorderRadius="30" BorderWidth="1" BorderColor="{DynamicResource HowlOut}" ></Button> 
 			<Image Grid.Row="2" Grid.Column="1" WidthRequest="30" Source = "ic_search.png" x:Name="CreateImage" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>

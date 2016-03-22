@@ -26,7 +26,6 @@ namespace HowlOut
 			newEvent = givenEvent;
 			InitializeComponent ();
 
-
 			mapView = new MapsView (App.lastKnownPosition);
 
 			for (int i = 18; i < 100; i++) agePicker.Add ("" + i, i);
@@ -51,8 +50,24 @@ namespace HowlOut
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
 
 			/// set time and date
-			startDate.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
-			startTime.PropertyChanged += (sender, e) => { newEvent.StartDate = startDate.Date.Add(startTime.Time); };
+			startDate.PropertyChanged += (sender, e) => { 
+				newEvent.StartDate = startDate.Date.Add(startTime.Time); 
+				var newTimeSpan = newEvent.StartDate + new TimeSpan(1,0,0);
+				if(newEvent.EndDate.Ticks < newTimeSpan.Ticks) {
+					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2,0,0);
+					endTime.Time = newEvent.EndDate.TimeOfDay;
+					endDate.Date = newEvent.EndDate;
+				}
+			};
+			startTime.PropertyChanged += (sender, e) => { 
+				newEvent.StartDate = startDate.Date.Add(startTime.Time);
+				var newTimeSpan = newEvent.StartDate + new TimeSpan(1,0,0);
+				if(newEvent.EndDate.Ticks < newTimeSpan.Ticks) {
+					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2,0,0);
+					endTime.Time = newEvent.EndDate.TimeOfDay;
+					endDate.Date = newEvent.EndDate;
+				}
+			};
 			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 
@@ -100,6 +115,12 @@ namespace HowlOut
 		{
 			cancelButton.IsVisible = false;
 			newEvent.Owner = new Profile(){ProfileId = App.StoredUserFacebookId};
+
+			startTime.Time = DateTime.Now.TimeOfDay + new TimeSpan (1,10,0);
+
+			endTime.Time = DateTime.Now.TimeOfDay + new TimeSpan (1,10,0);
+
+
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EndDate = endDate.Date.Add(endTime.Time);
 
@@ -222,13 +243,13 @@ namespace HowlOut
 		{
 			if (typeButton.BackgroundColor == Color.White) {
 				if (newEvent.EventTypes.Count < 3) {
-					typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+					typeButton.BackgroundColor = Color.FromHex ("00e1c4");
 					typeButton.TextColor = Color.White;
 					newEvent.EventTypes.Add (eventType);
 				}
 			} else {
 				typeButton.BackgroundColor = Color.White;
-				typeButton.TextColor = Color.FromHex ("00E0A0");
+				typeButton.TextColor = Color.FromHex ("00e1c4");
 				newEvent.EventTypes.Remove (eventType);
 			}
 			return typeButton;
@@ -257,7 +278,7 @@ namespace HowlOut
 		{
 			System.Diagnostics.Debug.WriteLine ("1234567890");
 
-			typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+			typeButton.BackgroundColor = Color.FromHex ("00e1c4");
 			typeButton.TextColor = Color.White;
 
 			return typeButton;

@@ -61,12 +61,12 @@ namespace HowlOut
 		private Button typeButtonPressed(Button typeButton, EventType eventType)
 		{
 			if (typeButton.BackgroundColor == Color.White) {
-				typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+				typeButton.BackgroundColor = Color.FromHex ("00e1c4");
 				typeButton.TextColor = Color.White;
 				newSearchSettings.EventTypes.Add (eventType);
 			} else {
 				typeButton.BackgroundColor = Color.White;
-				typeButton.TextColor = Color.FromHex ("00E0A0");
+				typeButton.TextColor = Color.FromHex ("00e1c4");
 				newSearchSettings.EventTypes.Remove (eventType);
 			}
 			return typeButton;
@@ -76,7 +76,7 @@ namespace HowlOut
 		{
 			System.Diagnostics.Debug.WriteLine ("1234567890");
 
-			typeButton.BackgroundColor = Color.FromHex ("00E0A0");
+			typeButton.BackgroundColor = Color.FromHex ("00e1c4");
 			typeButton.TextColor = Color.White;
 
 			return typeButton;

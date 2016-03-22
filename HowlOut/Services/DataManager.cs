@@ -176,6 +176,48 @@ namespace HowlOut
 			await GroupApiManager.InviteToGroup(group.GroupId, IdsToInvite);
 		}
 
+		public async void leaveEvent(Event eve)
+		{
+			bool leaveConfirmed = await App.coreView.displayConfirmMessage("Warning", "You are about to leave this event, would you like to continue?", "Yes", "No");
+			if (leaveConfirmed) {
+				bool hasLeft = await EventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
+				if (hasLeft) {
+					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
+					App.coreView.setContentView (new EventView (), "Event");
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Left", "An error happened and you have not yet left the event, try again.", "Ok");
+				}
+			}
+		}
+
+		public async void joinEvent(Event eve)
+		{
+			bool joinConfirmed = await App.coreView.displayConfirmMessage("Joining", "You are about to join this event, would you like to continue?", "Yes", "No");
+			if (joinConfirmed) {
+				bool hasJoined = await EventApiManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
+				if (hasJoined) {
+					Event eventWhenJoined = await EventApiManager.GetEventById (eve.EventId);
+					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
+					App.coreView.setContentView (new InspectController (null, null, eventWhenJoined), "UserProfile");
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
+				}
+			}
+		}
+
+		public async void followEvent(Event eve)
+		{
+			bool followConfirmed = await App.coreView.displayConfirmMessage("Following", "You are about to follow this event, would you like to continue?", "Yes", "No");
+			if (followConfirmed) {
+				bool hasFollowed = await EventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
+				if (hasFollowed) {
+					await App.coreView.displayAlertMessage ("Event Followed", "You have successfully followed the event.", "Ok");
+				} else {
+					await App.coreView.displayAlertMessage ("Event Not Followed", "An error happened and you have not yet followed the event, try again.", "Ok");
+				}
+			}
+		}
+
 		public bool IsProfileYou(Profile profile)
 		{
 			bool you = false;
