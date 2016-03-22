@@ -111,6 +111,28 @@ namespace HowlOut
 			return events;
 		}
 
+		public async Task<ObservableCollection<Event>> GetEventsFollowed(string profileId)
+		{
+			ObservableCollection<Event> events = new ObservableCollection<Event>();
+
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsFollowed/" + profileId);
+
+			try
+			{
+				var response = await httpClient.GetAsync(uri);
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return events;
+		}
+
 		public async Task<Profile> GetLoggedInProfile(string profileId)
 		{
 			Profile profile = new Profile();

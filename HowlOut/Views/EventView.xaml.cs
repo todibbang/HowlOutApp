@@ -115,7 +115,7 @@ namespace HowlOut
 			} else if (listToUpdate == 2) {
 				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
 				for (int i = evelist.Count -1; i > -1; i--) {
-					if (evelist [i].OwnerId != App.userProfile.ProfileId) {
+					if (evelist [i].Owner.ProfileId != App.userProfile.ProfileId) {
 						evelist.RemoveAt (i);
 					}
 				}

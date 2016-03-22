@@ -43,11 +43,11 @@ namespace HowlOut
 				App.coreView.setContentView(new MapsView(eve), "MapsView");
 			};
 
-			if (eve.OwnerId == App.StoredUserFacebookId) {
+			if (eve.Owner.ProfileId == App.StoredUserFacebookId) {
 				editLeaveButton.Text = "Edit";
 			}
 			editLeaveButton.Clicked += (sender, e) => {
-				if (eve.OwnerId == App.StoredUserFacebookId) {
+				if (eve.Owner.ProfileId == App.StoredUserFacebookId) {
 					App.coreView.setContentView (new CreateEvent (eve, false), "CreateEvent");
 				} else {
 					leaveEvent (eve);

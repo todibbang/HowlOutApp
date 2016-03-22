@@ -45,7 +45,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + App.StoredUserFacebookId);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + App.StoredUserFacebookId+"?currentTime="+DateTime.Now);
 
 			try
 			{
@@ -170,7 +170,7 @@ namespace HowlOut
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
 			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
-				"&userLat="+userLat + "&userLong=" + userLong);
+				"&userLat="+userLat + "&userLong=" + userLong + "&currentTime="+DateTime.Now);
 
 			try
 			{

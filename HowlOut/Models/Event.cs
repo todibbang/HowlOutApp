@@ -10,7 +10,7 @@ namespace HowlOut
 
 		public string Title {get; set;}
 		public string Description {get; set;}
-		public string OwnerId {get; set;}
+		public Profile Owner {get; set;}
 
         public List<EventType> EventTypes { get; set; }
 
@@ -36,7 +36,7 @@ namespace HowlOut
 
 		public bool Public {get; set;}
 
-		public Uri ProfileImageUri { get { return new Uri ("https://graph.facebook.com/v2.5/"+OwnerId+"/picture?height=150&width=150"); }
+		public Uri ProfileImageUri { get { return new Uri ("https://graph.facebook.com/v2.5/"+Owner.ProfileId+"/picture?height=150&width=150"); }
 			set{ this.ProfileImageUri = value; }
 		}
 

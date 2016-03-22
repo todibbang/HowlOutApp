@@ -99,7 +99,7 @@ namespace HowlOut
 		private void setNewEvent()
 		{
 			cancelButton.IsVisible = false;
-			newEvent.OwnerId = App.StoredUserFacebookId;
+			newEvent.Owner = new Profile(){ProfileId = App.StoredUserFacebookId};
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EndDate = endDate.Date.Add(endTime.Time);
 
@@ -179,7 +179,7 @@ namespace HowlOut
 				App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
 			} else {
 				EventDBO newEventAsDBO = new EventDBO{
-					OwnerId = eventToCreate.OwnerId, 
+					Owner = eventToCreate.Owner, 
 					Title = eventToCreate.Title, 
 					Description = eventToCreate.Description,
 					StartDate = eventToCreate.StartDate, 
