@@ -71,6 +71,7 @@ namespace HowlOut
 		{
 			ProfileContent.Content = new ProfileDesignView (eve.Attendees[0], null, null, 130, ProfileDesignView.ProfileDesign.Plain);
 			GroupContent.Content = new ProfileDesignView (null, null, eve, 130, ProfileDesignView.ProfileDesign.Plain);
+			BannerHeight.Height = (0.524 * App.coreView.Width) - 60;
 
 			Position position = App.lastKnownPosition;
 
@@ -89,7 +90,7 @@ namespace HowlOut
 			string [] addressList = new string [3];
 			addressList = Regex.Split(eve.AddressName, ",");
 			for (int i = 0; i < addressList.Length; i++) { 
-				Label label = new Label (); 
+				Label label = new Label () {TextColor = Color.FromHex("646464")}; 
 				label.Text = addressList [i];
 				addressLayout.Children.Add(label);
 			}

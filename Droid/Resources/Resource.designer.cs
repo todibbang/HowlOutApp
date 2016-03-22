@@ -26,8 +26,17 @@ namespace HowlOut.Droid
 		
 		public static void UpdateIdValues()
 		{
+<<<<<<< Updated upstream
 			global::ModernHttpClient.Resource.String.library_name = global::HowlOut.Droid.Resource.String.library_name;
 			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::HowlOut.Droid.Resource.Drawable.plugin_lc_smallicon;
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+			global::ModernHttpClient.Resource.String.library_name = global::HowlOut.Droid.Resource.String.library_name;
+=======
+			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::HowlOut.Droid.Resource.Drawable.plugin_lc_smallicon;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 			global::Xamarin.Forms.Platform.Resource.Animation.abc_fade_in = global::HowlOut.Droid.Resource.Animation.abc_fade_in;
 			global::Xamarin.Forms.Platform.Resource.Animation.abc_fade_out = global::HowlOut.Droid.Resource.Animation.abc_fade_out;
 			global::Xamarin.Forms.Platform.Resource.Animation.abc_grow_fade_in_from_bottom = global::HowlOut.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -1486,6 +1495,18 @@ namespace HowlOut.Droid
 			global::Xamarin.Forms.Platform.Resource.Styleable.ViewStubCompat_android_id = global::HowlOut.Droid.Resource.Styleable.ViewStubCompat_android_id;
 			global::Xamarin.Forms.Platform.Resource.Styleable.ViewStubCompat_android_inflatedId = global::HowlOut.Droid.Resource.Styleable.ViewStubCompat_android_inflatedId;
 			global::Xamarin.Forms.Platform.Resource.Styleable.ViewStubCompat_android_layout = global::HowlOut.Droid.Resource.Styleable.ViewStubCompat_android_layout;
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::HowlOut.Droid.Resource.Drawable.plugin_lc_smallicon;
+			global::ModernHttpClient.Resource.String.library_name = global::HowlOut.Droid.Resource.String.library_name;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::HowlOut.Droid.Resource.Attribute.actionBarSize;
+>>>>>>> parent of 207a854... Revert "Ændringer"
+=======
+			global::ModernHttpClient.Resource.String.library_name = global::HowlOut.Droid.Resource.String.library_name;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 		}
 		
 		public partial class Animation
@@ -4140,14 +4161,23 @@ namespace HowlOut.Droid
 		public partial class String
 		{
 			
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+>>>>>>> Stashed changes
 			// aapt resource value: 0x7f050041
 			public const int ApplicationName = 2131034177;
 			
 			// aapt resource value: 0x7f050040
 			public const int Hello = 2131034176;
+=======
+			// aapt resource value: 0x7f050042
+			public const int ApplicationName = 2131034178;
+>>>>>>> Stashed changes
 			
-			// aapt resource value: 0x7f05002d
-			public const int abc_action_bar_home_description = 2131034157;
+			// aapt resource value: 0x7f050041
+			public const int Hello = 2131034177;
 			
 			// aapt resource value: 0x7f05002e
 			public const int abc_action_bar_home_description_format = 2131034158;
@@ -4302,8 +4332,8 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f05001d
 			public const int common_signin_button_text_long = 2131034141;
 			
-			// aapt resource value: 0x7f050042
-			public const int library_name = 2131034178;
+			// aapt resource value: 0x7f050040
+			public const int library_name = 2131034176;
 			
 			// aapt resource value: 0x7f050022
 			public const int mr_media_route_button_content_description = 2131034146;

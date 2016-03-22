@@ -29,6 +29,8 @@ namespace HowlOut
 		public bool EventType2Visible  {get; set;}
 		public bool EventType3Visible  {get; set;}
 
+		public double BannerHeight { get; set;}
+
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
@@ -69,6 +71,9 @@ namespace HowlOut
 				EventType3Visible = true;
 			}
 
+
+			BannerHeight = (0.524 * App.coreView.Width) - 60;
+			System.Diagnostics.Debug.WriteLine(BannerHeight);
 		}
 
 		private void setTime(DateTime eveTime) {

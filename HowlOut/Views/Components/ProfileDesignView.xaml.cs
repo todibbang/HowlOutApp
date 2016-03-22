@@ -15,7 +15,7 @@ namespace HowlOut
 			ScaleLayout (profile, group, eve, dimentions, design);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(profile,group,null),"");
+				App.coreView.setContentView(new InspectController(profile,group,eve),"");
 			};
 
 			acceptButton.Clicked += (sender, e) => {

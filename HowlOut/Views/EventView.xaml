@@ -55,7 +55,7 @@
 
 					<ListView x:Name="SearchEventList" 
 			  			HasUnevenRows="false"
-						RowHeight="200"
+						RowHeight="210"
 						SeparatorVisibility="None"
 						CachingStrategy="RecycleElement"
 						BackgroundColor="Transparent">

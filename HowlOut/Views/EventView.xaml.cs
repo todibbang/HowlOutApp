@@ -14,6 +14,8 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 			_dataManager = new DataManager();
+			SearchEventList.RowHeight = (int) ((0.524 * App.coreView.Width) + 32);
+
 			setViewDesign(0, SearchEventList);
 
 			SearchButton.Clicked += (sender, e) => {
@@ -52,6 +54,9 @@ namespace HowlOut
 				}
 			};
 			CreateImage.GestureRecognizers.Add(createImage); 
+
+
+
 		}
 
 		void OnManageItemSelected(object sender, SelectedItemChangedEventArgs e)
