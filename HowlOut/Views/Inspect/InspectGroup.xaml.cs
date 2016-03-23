@@ -19,9 +19,9 @@ namespace HowlOut
 			NameAndAge.Text = group.Name;
 			groupImage.Text = group.Members.Count + "";
 
-			friendRequestButton.Clicked += (sender, e) => 
+			invite.Clicked += (sender, e) => 
 			{
-
+				App.coreView.setContentView (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
 			};
 		}
 	}

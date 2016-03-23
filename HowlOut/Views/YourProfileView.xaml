@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.YourProfileView"
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<StackLayout BackgroundColor="White" Grid.Column="0" Grid.Row="0">
+				<Grid RowSpacing="0" ColumnSpacing="0" Padding="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="1"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="1"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="39"/>
+						<RowDefinition Height="1"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Column="0" Grid.Row="0" x:Name="profileButton" Text="You" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White" />
+					<BoxView Grid.Column="1" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
+					<Button Grid.Column="2" Grid.Row="0" x:Name="findButton" Text="Find" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
+					<BoxView Grid.Column="3" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
+					<Button Grid.Column="4" Grid.Row="0" x:Name="createGroupButton" Text="Create Group" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
+					<local:Line Grid.Column="0" Grid.Row="1" x:Name="profileLine"/>
+					<local:Line Grid.Column="2" Grid.Row="1" x:Name="findLine"/>
+					<local:Line Grid.Column="4" Grid.Row="1" x:Name="createGroupLine"/>
+				</Grid>
+			</StackLayout>
+
+			<StackLayout Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
+				<ContentView x:Name="profileContent"/>
+				<ContentView x:Name="findContent" IsVisible="false"/>
+				<ContentView x:Name="createGroupContent" IsVisible="false"/>
+			</StackLayout>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

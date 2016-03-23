@@ -54,7 +54,7 @@
 			<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="3" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
 
 					<ScrollView> 
-						<StackLayout x:Name="EventListTest">
+						<StackLayout x:Name="EventListTest" Spacing="0">
 						</StackLayout>
 					</ScrollView> 
 

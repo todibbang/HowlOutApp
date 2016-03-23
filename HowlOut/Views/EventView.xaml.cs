@@ -117,10 +117,24 @@ namespace HowlOut
 			int month = dateTimeMonth.Month;
 			for (int i = 0; i < orderedList.Count; i++) {
 				if (month != orderedList [i].StartDate.Month) {
-					EventListTest.Children.Add (new Label (){ Text = ("  " + orderedList [i].StartDate.ToString("MMMM")), BackgroundColor = Color.White, TextColor = Color.FromHex("00e1c4"), FontSize=25});
+					EventListTest.Children.Add (new Label () {
+						Text = ("  " + orderedList [i].StartDate.ToString ("MMMM")),
+						BackgroundColor = Color.FromHex ("707070"),
+						TextColor = Color.White,
+						FontSize = 25,
+						HeightRequest = 40,
+						VerticalTextAlignment = TextAlignment.Center
+					});
 					month = orderedList [i].StartDate.Month;
+
 				}
-				EventListTest.Children.Add (new SearchEventTemplate (new EventForLists (orderedList [i])));
+				if (listToUpdate == 0) { EventListTest.Children.Add (new SearchEventTemplate (orderedList [i]));
+				} else if (listToUpdate == 1) { EventListTest.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
+				} else if (listToUpdate == 2) { EventListTest.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
+				} else if (listToUpdate == 3) { EventListTest.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
+				} else if (listToUpdate == 4) { EventListTest.Children.Add (new MessageView (orderedList [i],MessageView.MessageType.Invite));
+				}
+
 			}
 		}
 

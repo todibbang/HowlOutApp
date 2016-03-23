@@ -71,11 +71,11 @@
 							</Grid.RowDefinitions>
 							<local:Line Grid.Row="0"/>
 							<StackLayout Grid.Row="1" Padding="20">
-								<Button Text="Launch Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="launchButton"></Button>
+								<Button Text="Create Group" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="launchButton"></Button>
 							</StackLayout>
 							<local:Line Grid.Row="2"/>
 							<StackLayout Grid.Row="3" Padding="20">
-								<Button Text="Cancel Event" Style="{DynamicResource ButtonStyle}" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="cancelButton"></Button>
+								<Button Text="Delete Group" Style="{DynamicResource ButtonStyle}" TextColor="Red" BorderRadius="10" VerticalOptions="CenterAndExpand" x:Name="cancelButton" IsVisible="false"></Button>
 							</StackLayout>
 						</Grid>
 					</StackLayout>

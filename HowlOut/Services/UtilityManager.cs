@@ -118,7 +118,7 @@ namespace HowlOut
 
 			if (timeBetween.TotalDays < 1) {
 				number = timeBetween.Hours + "";
-				describer = "Hour";
+				describer = "hour";
 			} else if (timeBetween.TotalDays < 7) {
 				number = (time.TimeOfDay + "").Substring(0, 5);
 				describer = (time.DayOfWeek + "").Substring(0, 3);

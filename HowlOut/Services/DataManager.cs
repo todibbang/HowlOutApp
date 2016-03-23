@@ -218,6 +218,14 @@ namespace HowlOut
 			}
 		}
 
+		public async void declineEvent(Event eve)
+		{
+			bool hasFollowed = await EventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
+			if (!hasFollowed) {
+				await App.coreView.displayAlertMessage ("Event Not Declined", "An error happened and you have not yet declined the invite, try again.", "Ok");
+			}
+		}
+
 		public bool IsProfileYou(Profile profile)
 		{
 			bool you = false;
@@ -261,6 +269,30 @@ namespace HowlOut
 				}
 			}
 			return requested;
+		}
+
+		public bool IsEventYours(Event eve)
+		{
+			bool yours = false;
+			if (eve.Owner.ProfileId == App.userProfile.ProfileId) {
+				yours = true;
+			}
+			return yours;
+		}
+
+		public bool IsEventJoined(Event eve)
+		{
+			bool yours = false;
+			if (IsEventYours (eve)) {
+				yours = true;
+			} else {
+				for(int i = 0; i < eve.Attendees.Count; i++) {
+					if (eve.Attendees [i].ProfileId == App.userProfile.ProfileId) {
+						yours = true;
+					}
+				}
+			}
+			return yours;
 		}
 	}
 }

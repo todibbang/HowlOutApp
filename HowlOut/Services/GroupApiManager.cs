@@ -17,9 +17,9 @@ namespace HowlOut
 			this.httpClient = httpClient;
 		}
 
-		public async Task<ObservableCollection<Group>> GetAllGroups()
+		public async Task<List<Group>> GetAllGroups()
 		{
-			ObservableCollection<Group> groups = new ObservableCollection<Group>(); 
+			List<Group> groups = new List<Group>(); 
 
 			var uri = new Uri("https://www.howlout.net/api/GroupApi/GetGroups");
 
@@ -28,7 +28,7 @@ namespace HowlOut
 				if(response.IsSuccessStatusCode)
 				{
 					var content = await response.Content.ReadAsStringAsync();
-					groups = JsonConvert.DeserializeObject<ObservableCollection<Group>>(content);
+					groups = JsonConvert.DeserializeObject<List<Group>>(content);
 				}
 			} catch (Exception ex)
 			{

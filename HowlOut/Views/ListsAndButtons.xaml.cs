@@ -16,7 +16,7 @@ namespace HowlOut
 		}
 
 		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, 
-			Button addNewButton, string gridStyle, Event eventInvitingTo)
+			Button addNewButton, ListType listType, Event eventInvitingTo, Group groupInvitingTo)
 		{
 			int column = 0;
 			int row = 0;
@@ -67,12 +67,15 @@ namespace HowlOut
 					addNew = false;
 				} else {
 					if (profiles != null) {
-						if (gridStyle == "invite") {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.ProfileDesign.Invite), 0, 0);
+						if (listType.Equals(ListType.InviteToEvent)) {
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.ProfileDesign.InviteProfileToEvent), 0, 0);
+						} else if (listType.Equals(ListType.InviteToGroup)) {
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.ProfileDesign.InviteProfileToGroup), 0, 0);
 						} else {
 							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0);
 						}
 					} else if (groups != null) {
+						cell.Children.Add (new ProfileDesignView (null, groups [subjectNr], eventInvitingTo, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0); 
 						cell = groupCellCreator (groups [subjectNr]);
 					}
 					grid.Children.Add (cell, column, row);
@@ -160,6 +163,12 @@ namespace HowlOut
 			}
 
 			return cellGrid;
+		}
+
+		public enum ListType {
+			Normal,
+			InviteToEvent,
+			InviteToGroup
 		}
 	}
 }

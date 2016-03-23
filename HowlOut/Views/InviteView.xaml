@@ -8,27 +8,25 @@
 
 			<Grid> 
 				<Grid.RowDefinitions>
-					<!-- <RowDefinition Height="auto"/>
-					<RowDefinition Height="40"/>
-					<RowDefinition Height="20"/> -->
+					<!-- <RowDefinition Height="auto"/>-->
+					<RowDefinition Height="40"/> 
+					<RowDefinition Height="40"/> 
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<!--
-				<StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0, 20, 0, 0" x:Name="inviteLayout">
-					<Button Text="Send Invites" x:Name="inviteButton" Style="{DynamicResource ButtonStyle}"/>
+				<StackLayout Grid.Row="0" x:Name="searchLayout" HeightRequest="40" Padding="0" IsVisible="false">
+					<SearchBar x:Name="searchBar" HeightRequest="40" />
 				</StackLayout>
 
-				<StackLayout Grid.Row="1" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="friendGroupButtons">
+
+				<StackLayout Grid.Row="1" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="buttons">
 					<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 					<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 				</StackLayout>
 
-				<StackLayout Grid.Row="2" Padding="0" VerticalOptions="CenterAndExpand"> <local:Line/> </StackLayout> 
-				-->
+				<Grid Grid.Row="2" x:Name="groupGrid" IsVisible="false"></Grid>
+				<Grid Grid.Row="2" x:Name="profileGrid"></Grid>
 
-				<Grid Grid.Row="0" x:Name="profileGrid"></Grid>
-				<!-- <Grid Grid.Row="1" x:Name="groupGrid"></Grid> -->
 			</Grid>
 		</ScrollView>
 	</ContentView.Content>

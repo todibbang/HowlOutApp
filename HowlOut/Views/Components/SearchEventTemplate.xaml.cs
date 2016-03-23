@@ -7,20 +7,21 @@ namespace HowlOut
 {
 	public partial class SearchEventTemplate : ContentView
 	{
+		DataManager _dataManager = new DataManager();
 		public SearchEventTemplate ()
 		{
 			InitializeComponent ();
 		}
-		public SearchEventTemplate (EventForLists eve)
+		public SearchEventTemplate (Event eve)
 		{
 			InitializeComponent ();
-			BindingContext = eve;
+			BindingContext = new EventForLists(eve);
 
-			ProfilView.Content = new ProfileDesignView (eve.eve.Owner, null, null, 80, ProfileDesignView.ProfileDesign.Plain);
-			EventView.Content = new ProfileDesignView (null, null, eve.eve, 80, ProfileDesignView.ProfileDesign.Plain);
+			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.ProfileDesign.Plain);
+			EventView.Content = new ProfileDesignView (null, null, eve, 80, ProfileDesignView.ProfileDesign.Plain);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(null,null,eve.eve),"");
+				App.coreView.setContentView(new InspectController(null,null,eve),"");
 			};
 		}
 	}

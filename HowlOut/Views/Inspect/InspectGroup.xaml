@@ -90,7 +90,7 @@
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
-							<Button Grid.Column="0" Text="Befriend" Style="{DynamicResource ButtonStyle}" x:Name="friendRequestButton"></Button>
+							<Button Grid.Column="0" Text="Invite" Style="{DynamicResource ButtonStyle}" x:Name="invite"></Button>
 							<Button Grid.Column="1" Text="2" Style="{DynamicResource ButtonStyle}"></Button>
 							<Button Grid.Column="2" Text="3" Style="{DynamicResource ButtonStyle}"></Button>
 						</Grid>

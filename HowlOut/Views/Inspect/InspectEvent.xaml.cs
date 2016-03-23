@@ -23,7 +23,7 @@ namespace HowlOut
 			_dataManager = new DataManager();
 			setInfo (eve);
 
-			if (inspectType) { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
+			if (!_dataManager.IsEventJoined(eve)) { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
 			else  { searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
 
 			detailsButton.Clicked += (sender, e) => 
@@ -62,7 +62,7 @@ namespace HowlOut
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new InviteView (null, null, eve, App.userProfile.Friends), "InviteView");
+				App.coreView.setContentView (new InviteView (null, eve, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView");
 			};
 		}
 
