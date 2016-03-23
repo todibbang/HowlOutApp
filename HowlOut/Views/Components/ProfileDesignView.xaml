@@ -34,7 +34,7 @@
 				</Grid>
 
 				<Label Grid.Row="1" x:Name="infoLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
-				<StackLayout Grid.Row="2" HeightRequest="30" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+				<StackLayout Grid.Row="2" HeightRequest="30" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="buttonLayout">
 					<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptButton" Text="accept" HorizontalOptions="CenterAndExpand"/>
 					<Button Style="{DynamicResource ButtonStyle}" x:Name="declineButton" Text="decline"  HorizontalOptions="CenterAndExpand"/>
 				</StackLayout>

@@ -75,8 +75,11 @@ namespace HowlOut
 							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0);
 						}
 					} else if (groups != null) {
-						cell.Children.Add (new ProfileDesignView (null, groups [subjectNr], eventInvitingTo, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0); 
-						cell = groupCellCreator (groups [subjectNr]);
+						if (listType.Equals (ListType.InviteToEvent)) {
+							cell.Children.Add (new ProfileDesignView (null, groups [subjectNr], eventInvitingTo, 100, ProfileDesignView.ProfileDesign.InviteGroupToEvent), 0, 0); 
+						} else {
+							cell.Children.Add (new ProfileDesignView (null, groups [subjectNr], eventInvitingTo, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0); 
+						}//cell = groupCellCreator (groups [subjectNr]);
 					}
 					grid.Children.Add (cell, column, row);
 					subjectNr++;
@@ -84,42 +87,6 @@ namespace HowlOut
 				column ++;
 			}
 			grid = newGrid;
-		}
-
-
-		private Grid groupCellCreator(Group group)
-		{
-			Grid cellGrid = new Grid {
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				RowDefinitions = {
-					new RowDefinition{ Height = 10 },
-					new RowDefinition{ Height = 85 },
-					new RowDefinition{ Height = 40 },
-				}
-			};
-
-			Button groupButton = new Button {
-				HeightRequest = 85,
-				WidthRequest = 85,
-				BorderRadius = 42,
-				BorderWidth = 6,
-				BackgroundColor = Color.White,
-				HorizontalOptions = LayoutOptions.Center,
-				Text = group.Members.Count + "",
-			};
-			cellGrid.Children.Add (groupButton, 0,1);
-
-			cellGrid.Children.Add(new Label {
-				Text = group.Name,
-				TextColor = Color.Black,
-				FontSize = 10,
-				HorizontalTextAlignment = TextAlignment.Center,
-				VerticalOptions = LayoutOptions.CenterAndExpand,
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-			}, 0, 2);
-
-			return cellGrid;
 		}
 
 		private Grid AddNewGrid(int i)
