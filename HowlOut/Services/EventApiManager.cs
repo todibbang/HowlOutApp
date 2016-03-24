@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 using Plugin.LocalNotifications;
+using System.Text.RegularExpressions;
 
 namespace HowlOut
 {
@@ -169,8 +170,16 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
+			var lat = userLat.ToString();
+			var lon = userLong.ToString();
+
+			Regex.Replace(lat, "\\,", "\\.");
+			Regex.Replace(lon, "\\,", "\\.");
+
+			if(lat.Contains(",")) System.Diagnostics.Debug.WriteLine("True");
+
 			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
-				"&userLat="+userLat + "&userLong=" + userLong + "&currentTime="+DateTime.Now);
+				"&userLat="+lat + "&userLong=" + lon + "&currentTime="+DateTime.Now);
 
 			try
 			{

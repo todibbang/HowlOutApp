@@ -21,16 +21,12 @@ namespace HowlOut
 			};
 
 			acceptButton.Clicked += (sender, e) => {
-				if (design.Equals (ProfileDesign.InviteProfileToEvent)) {
-					sendEventInviteToProfile(profile, eve);
-				} 
-				else if(design.Equals(ProfileDesign.InviteProfileToGroup)) {
-					sendGroupInviteToProfile(profile, group);
-				}
-				else if(design.Equals (ProfileDesign.InviteGroupToEvent)) {
-					sendEventInviteToGroup (group, eve);
-				} else if(profile != null) {
-					if (_dataManager.IsProfileYou (profile)) {
+				if(profile != null) {
+					if (design.Equals (ProfileDesign.InviteProfileToEvent)) {
+						sendEventInviteToProfile(profile, eve);
+					} else if(design.Equals(ProfileDesign.InviteProfileToGroup)) {
+						sendGroupInviteToProfile(profile, group);
+					} else if (_dataManager.IsProfileYou (profile)) {
 						//Edit Profile ??
 					} else if (_dataManager.IsProfileFriend (profile)) {
 						//Like
@@ -41,9 +37,10 @@ namespace HowlOut
 					} else {
 						_dataManager.sendFriendRequest(profile);
 					}
-					Loyalty.IsVisible = false;
 				} else if (group != null) {
-					if (_dataManager.AreYouGroupOwner (group) || _dataManager.AreYouGroupMember (group)) {
+					if(design.Equals (ProfileDesign.InviteGroupToEvent)) {
+						sendEventInviteToGroup (group, eve);
+					} else if (_dataManager.AreYouGroupOwner (group) || _dataManager.AreYouGroupMember (group)) {
 						App.coreView.setContentView (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
 					} else if (_dataManager.AreYouInvitedToGroup(group)) {
 						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
@@ -54,13 +51,15 @@ namespace HowlOut
 			};
 
 			declineButton.Clicked += (sender, e) => {
-				if(_dataManager.IsProfileFriend (profile)) {
-					_dataManager.removeFriend(profile);
-				} else if(_dataManager.HasProfileSentYouFriendRequest (profile)) {
-					_dataManager.declineFriendRequest(profile);
+				if(profile != null) {
+					if(_dataManager.IsProfileFriend (profile)) {
+						_dataManager.removeFriend(profile);
+					} else if(_dataManager.HasProfileSentYouFriendRequest (profile)) {
+						_dataManager.declineFriendRequest(profile);
+					}
 				} else if (group != null) {
 					if (_dataManager.AreYouGroupOwner (group)) {
-						App.coreView.setContentView (new CreateGroup (), "");
+						App.coreView.setContentView (new CreateGroup (group), "");
 					} else if (_dataManager.AreYouGroupMember (group)) {
 						_dataManager.GroupApiManager.LeaveGroup(group.GroupId,App.userProfile.ProfileId);
 					} else if (_dataManager.AreYouInvitedToGroup(group)) {
@@ -68,11 +67,6 @@ namespace HowlOut
 					} 
 				} 
 			};
-
-
-
-
-
 		}
 
 		private void ScaleLayout(Profile profile, Group group, Event eve, int dimentions, ProfileDesign design){
@@ -110,10 +104,10 @@ namespace HowlOut
 				MainButton.BorderRadius = (int) (0.375 * dimentions);
 				MainButton.BorderWidth = (int) (0.04 * dimentions);
 				if (group != null) {
-					MainButton.Text = group.Members.Count + "";
+					MainButton.Text = group.Members.Count + 1 + "";
 					infoLabel.Text = group.Name;
 				} else if (eve != null){
-					MainButton.Text = eve.Attendees.Count + "/" + eve.MaxSize;
+					MainButton.Text = eve.Attendees.Count + 1 + "/" + eve.MaxSize;
 					infoLabel.Text = eve.Title;
 				}
 			}
@@ -129,7 +123,6 @@ namespace HowlOut
 					acceptButton.IsVisible = false;
 					declineButton.Text = " Remove Friend ";
 				} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
-					System.Diagnostics.Debug.WriteLine (profile.Name + " has sent you a friendRequest");
 					acceptButton.Text = " Accept ";
 					declineButton.Text = " Decline ";
 				} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {

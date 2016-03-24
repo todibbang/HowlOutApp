@@ -14,7 +14,7 @@ namespace HowlOut
 			InitializeComponent ();
 
 			profileContent.Content = new InspectController (App.userProfile, null, null);
-			createGroupContent.Content = new CreateGroup ();
+			createGroupContent.Content = new CreateGroup (null);
 
 			profileButton.Clicked += (sender, e) => {
 				setViewDesign(0);
@@ -47,7 +47,6 @@ namespace HowlOut
 		{
 			var profileSearchResult = App.userProfile.Friends;
 			var groupSearchResult = await _dataManager.GroupApiManager.GetAllGroups ();
-			groupSearchResult.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
 			listMaker.createList (profileGrid, profileSearchResult, null, null, ListsAndButtons.ListType.Normal, null, null);
 			listMaker.createList (groupGrid, null, groupSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
 		}

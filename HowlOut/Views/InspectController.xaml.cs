@@ -16,7 +16,8 @@ namespace HowlOut
 
 		public CreateEvent createEventView;
 
-		List<Comment> givenList = new List<Comment> ();
+		List<Comment> givenCommentList = new List<Comment> ();
+		List<Profile> profileList = new List<Profile> ();
 		Button FindNewFriendsButton = new Button {BackgroundColor= Color.Transparent,};
 		Button FindNewGroupsButton = new Button {BackgroundColor= Color.Transparent,};
 
@@ -37,29 +38,36 @@ namespace HowlOut
 					if (userProfile.GroupsInviteTo.Count > 0) {
 						listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, ListsAndButtons.ListType.Normal, null, null);
 					} else {
-						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
+						//TODO following three lines are dummy data
+						var groups = new List<Group> ();
+						groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
+						listMaker.createList (groupGrid, null, groups, null, ListsAndButtons.ListType.Normal, null, null);
+
+
+						//listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
 					}
-
-					givenList = userProfile.Comments;
-
 					friendsButton.IsVisible = true;
 					groupsButton.IsVisible = true;
-					wallButton.IsVisible = true;
 				}
 				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(userGroup != null) {
-				listMaker.createList (profileGrid, userGroup.Members, null, null, ListsAndButtons.ListType.Normal, null, null);
+				profileList = userGroup.Members;
+				profileList.Add (userGroup.Owner);
+				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				friendsButton.Text = "Members";
-				givenList = userGroup.Comments;
-				//infoView.Content = new InspectGroup (userGroup);
+				givenCommentList = userGroup.Comments;
+				wallButton.IsVisible = true;
+				friendsButton.IsVisible = true;
 				infoView.Content = new ProfileDesignView (null, userGroup,null,200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(eventObject != null) {
-				listMaker.createList (profileGrid, eventObject.Attendees, null, null, ListsAndButtons.ListType.Normal, null, null);
+				profileList = eventObject.Attendees;
+				profileList.Add (eventObject.Owner);
+				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				profileGrid.IsVisible = true;
 				friendsButton.Text = "Attendees";
-				givenList = eventObject.Comments;
+				givenCommentList = eventObject.Comments;
 				wallButton.IsVisible = true;
 				friendsButton.IsVisible = true;
 
@@ -73,10 +81,10 @@ namespace HowlOut
 			}
 
 
-			if (givenList != null) {
+			if (givenCommentList != null) {
 				List<Comment> displayedList = new List<Comment> ();
-				for (int i = givenList.Count - 1; i > -1; i--) {
-					displayedList.Add (givenList [i]);
+				for (int i = givenCommentList.Count - 1; i > -1; i--) {
+					displayedList.Add (givenCommentList [i]);
 				}
 				WallList.ItemsSource = displayedList;
 			}

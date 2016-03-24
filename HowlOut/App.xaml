@@ -16,7 +16,7 @@
 			<Color x:Key="HowlOut">#ff00e1c4</Color>
 			<!-- <Color x:Key="HowlOut">#fffdaa00</Color>  -->
 
-			<Color x:Key="HowlOutBackground">#ffe6e6e6</Color>
+			<Color x:Key="HowlOutBackground">#ffeeeeee</Color>
 			<!-- <Color x:Key="HowlOutBackground">#ffb9f5e4</Color> -->
 
 			<Color x:Key="ListBackgroundColor">White</Color>

@@ -7,13 +7,13 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
-				<RowDefinition Height="60"/>
+				<RowDefinition Height="70"/>
 				<RowDefinition Height="20"/>
 			</Grid.RowDefinitions>
 
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="60"/>
+				<ColumnDefinition Width="70"/>
 				<ColumnDefinition Width="20"/>
 			</Grid.ColumnDefinitions>
 
@@ -142,7 +142,7 @@
 				</StackLayout>
 
 
-			<Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="White" BorderRadius="30" BorderWidth="1" BorderColor="{DynamicResource HowlOut}" ></Button> 
+			<Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="35" ></Button> 
 			<Image Grid.Row="2" Grid.Column="1" WidthRequest="30" Source = "ic_search.png" x:Name="CreateImage" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
 
 		</Grid>

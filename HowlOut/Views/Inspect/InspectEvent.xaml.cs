@@ -20,6 +20,7 @@ namespace HowlOut
 		public InspectEvent (Event eve, bool inspectType)
 		{
 			InitializeComponent ();
+			BindingContext = new EventForLists (eve);
 			_dataManager = new DataManager();
 			setInfo (eve);
 

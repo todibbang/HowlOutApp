@@ -9,17 +9,30 @@ namespace HowlOut
 		public Group newGroup;
 		DataManager _dataManager;
 
-		public CreateGroup ()
+		public CreateGroup (Group group)
 		{
 			_dataManager = new DataManager ();
 			InitializeComponent ();
 
-			newGroup = new Group ();
+			if (group != null) {
+				newGroup = group;
+				launchButton.Text = "Edit";
+				cancelButton.IsVisible = true;
+			} else {
+				newGroup = new Group ();
+			}
 
 			title.TextChanged += (sender, e) => { newGroup.Name = title.Text; };
 
 			launchButton.Clicked += (sender, e) => {
-				LaunchGroup(newGroup);
+				if (group != null) {
+					UpdateGroup(newGroup);
+				} else {
+					LaunchGroup(newGroup);
+				}
+			};
+			cancelButton.Clicked += (sender, e) => {
+				DeleteGroup(group);
 			};
 		}
 
@@ -37,6 +50,32 @@ namespace HowlOut
 				App.coreView.setContentView (new InspectController (null, groupCreated, null), "UserProfile");
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
+			}
+		}
+
+		private async void UpdateGroup(Group groupToUpdate)
+		{
+			bool groupUpdated = await _dataManager.GroupApiManager.UpdateGroup(groupToUpdate);
+
+			if (groupUpdated) {
+				App.coreView.setContentView (new InspectController (null, groupToUpdate, null), "Group");
+			} else {
+				await App.coreView.displayAlertMessage ("Error", "Group not updated, try again", "Ok");
+			}
+		}
+
+		public async void DeleteGroup(Group groupToDelete)
+		{
+			bool confirmDelete = await App.coreView.displayConfirmMessage ("Warning", "You are about to delete this group permanently, would you like to continue", "Yes", "No");
+
+			if (confirmDelete) {
+				bool groupDeleted = await _dataManager.GroupApiManager.DeleteGroup (groupToDelete.GroupId);
+				if (groupDeleted) {
+					await App.coreView.displayAlertMessage ("Group Deleted", "The group was successfully deleted", "Ok");
+					App.coreView.setContentView (new HomeView (), "Home");
+				} else {
+					App.coreView.displayAlertMessage ("Group Not Deleted", "The group was not deleted, try again", "Ok");
+				}
 			}
 		}
 	}

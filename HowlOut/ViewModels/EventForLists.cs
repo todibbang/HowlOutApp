@@ -29,13 +29,15 @@ namespace HowlOut
 		public bool EventType2Visible  {get; set;}
 		public bool EventType3Visible  {get; set;}
 
+		public string Banner { get; set;}
 		public double BannerHeight { get; set;}
+
 
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
 			ProfileImageUri = eve.ProfileImageUri;
-
+			Banner = "Party.png";
 			Title = eve.Title;
 
 			Position position = App.lastKnownPosition;

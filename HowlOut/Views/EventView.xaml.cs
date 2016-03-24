@@ -44,8 +44,7 @@ namespace HowlOut
 				await CreateImage.ScaleTo(1, 50, Easing.Linear);
 				if(currentView == 0) {
 					App.coreView.setContentView(new FilterSearch(App.userProfile.SearchReference), "FilterSearch");
-				}
-				if(currentView == 1) {
+				} else {
 					App.coreView.setContentView(new CreateEvent(new Event(), true), "CreateEvent"); 
 				}
 			};
@@ -62,7 +61,6 @@ namespace HowlOut
 
 		public async void UpdateManageList(int listToUpdate){
 			ObservableCollection<Event> evelist = new ObservableCollection<Event>();
-			ObservableCollection<EventForLists> listEvents = new ObservableCollection<EventForLists>();
 			currentView = listToUpdate;
 			var first = DateTime.Now;
 			if (listToUpdate == 0) {
@@ -101,15 +99,6 @@ namespace HowlOut
 				evelist.Remove (itemToAdd);
 			}
 
-			/*
-			listEvents.Clear ();
-			for (int i = 0; i < orderedList.Count; i++) {
-				EventForLists EveForLis = new EventForLists (orderedList [i]);
-				listEvents.Add (EveForLis);
-			}
-			theListToUpdate.ItemsSource = listEvents;
-			*/
-
 			while(EventListTest.Children.Count != 0) {
 				EventListTest.Children.RemoveAt(0);
 			}
@@ -119,7 +108,7 @@ namespace HowlOut
 				if (month != orderedList [i].StartDate.Month) {
 					EventListTest.Children.Add (new Label () {
 						Text = ("  " + orderedList [i].StartDate.ToString ("MMMM")),
-						BackgroundColor = Color.FromHex ("707070"),
+						BackgroundColor = Color.FromHex ("cccccc"),
 						TextColor = Color.White,
 						FontSize = 25,
 						HeightRequest = 40,
@@ -134,8 +123,8 @@ namespace HowlOut
 				} else if (listToUpdate == 3) { EventListTest.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
 				} else if (listToUpdate == 4) { EventListTest.Children.Add (new MessageView (orderedList [i],MessageView.MessageType.Invite));
 				}
-
 			}
+			EventListTest.Children.Add (new BoxView(){HeightRequest=120});
 		}
 
 		private void setViewDesign(int number){
@@ -147,8 +136,8 @@ namespace HowlOut
 			SearchEventList.IsVisible = false;
 			FollowedEventList.IsVisible = false;
 			*/
-			CreateButton.IsVisible = false;
-			CreateImage.IsVisible = false;
+			//CreateButton.IsVisible = false;
+			//CreateImage.IsVisible = false;
 			SearchButton.FontAttributes = FontAttributes.None;
 			ManageButton.FontAttributes = FontAttributes.None;
 			YoursButton.FontAttributes = FontAttributes.None;
@@ -161,29 +150,23 @@ namespace HowlOut
 			followLine.IsVisible = true;
 
 			if (number == 0) {
-				CreateButton.IsVisible = true;
-				CreateImage.IsVisible = true;
 				CreateImage.Source = "ic_search.png";
-				//SearchEventList.IsVisible = true;
 				SearchButton.FontAttributes = FontAttributes.Bold;
 				searchLine.IsVisible = false;
 			} else if (number == 1) {
-				CreateButton.IsVisible = true;
-				CreateImage.IsVisible = true;
 				CreateImage.Source = "ic_add.png";
-				//ManageEventList.IsVisible = true;
 				ManageButton.FontAttributes = FontAttributes.Bold;
 				manageLine.IsVisible = false;
 			} else if (number == 2) {
-				//YourEventList.IsVisible = true;
+				CreateImage.Source = "ic_add.png";
 				YoursButton.FontAttributes = FontAttributes.Bold;
 				yoursLine.IsVisible = false;
 			} else if (number == 3) {
-				//FollowedEventList.IsVisible = true;
+				CreateImage.Source = "ic_add.png";
 				FollowedButton.FontAttributes = FontAttributes.Bold;
 				followLine.IsVisible = false;
 			} else if (number == 4) {
-				//InviteEventList.IsVisible = true;
+				CreateImage.Source = "ic_add.png";
 				InviteButton.FontAttributes = FontAttributes.Bold;
 				inviteLine.IsVisible = false;
 			}
