@@ -31,7 +31,7 @@ namespace HowlOut
 				await Task.Delay(60);
 				await manageBtn.ScaleTo(1, 50, Easing.Linear);
 				App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
-				App.coreView.setContentView (new YourProfileView(), "You");
+				App.coreView.setContentView (new HomeView(), "You");
 			};
 			manageBtn.GestureRecognizers.Add(manageImage); 
 

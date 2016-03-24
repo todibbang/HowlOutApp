@@ -10,8 +10,7 @@ namespace HowlOut
 {
 	public partial class InviteView : ContentView
 	{
-		DataManager _dataManager;
-
+		DataManager _dataManager = new DataManager ();
 		ListsAndButtons listMaker = new ListsAndButtons();
 
 		ListsAndButtons.ListType ListType = ListsAndButtons.ListType.Normal;
@@ -20,33 +19,22 @@ namespace HowlOut
 		private List<Group> groupsToFind = new List<Group>();
 		private List<Profile> profilesNotToFind = new List<Profile>();
 
-		public InviteView (Group groupObject, Event eventObject, WhatToShow whatToFind)
+		public InviteView (Group groupObject, Event eventObject, WhatToShow whatToShow)
 		{
 			InitializeComponent ();
-			_dataManager = new DataManager ();
-			profileGrid.IsVisible = true;
 
 			Dictionary<Profile, string> profilesNotToInvite = new Dictionary<Profile, string> { };
 
-			if (whatToFind.Equals (WhatToShow.FriendRequests)) {
-				profilesToFind = App.userProfile.RecievedFriendRequests;
-				buttons.IsVisible = false;
-			} else if (whatToFind.Equals (WhatToShow.GroupRequests)) {
-				groupsToFind = App.userProfile.GroupsInviteTo;
-				buttons.IsVisible = false;
-				groupGrid.IsVisible = true;
-				profileGrid.IsVisible = false;
-			} else if (whatToFind.Equals (WhatToShow.PeopleToInviteToEvent)) {
+			if (whatToShow.Equals (WhatToShow.PeopleToInviteToEvent)) {
 				profilesToFind = App.userProfile.Friends;
 				profilesNotToFind = eventObject.Attendees;
 				groupsToFind = App.userProfile.Groups;
 				ListType = ListsAndButtons.ListType.InviteToEvent;
-			} else if (whatToFind.Equals (WhatToShow.PeopleToInviteToGroup)) {
+			} else if (whatToShow.Equals (WhatToShow.PeopleToInviteToGroup)) {
 				profilesToFind = App.userProfile.Friends;
 				profilesNotToFind = groupObject.Members;
 				ListType = ListsAndButtons.ListType.InviteToGroup;
-			} else if(whatToFind.Equals(WhatToShow.NewPeople)) {
-				searchLayout.IsVisible = true;
+				buttonsLayout.IsVisible = false;
 			}
 
 			for (int i = 0; i < profilesNotToFind.Count; i++) {
@@ -62,13 +50,7 @@ namespace HowlOut
 			if(profilesToFind.Count > 0) listMaker.createList (profileGrid, profilesToFind, null, null, ListType, eventObject, groupObject);
 			if(groupsToFind.Count > 0) listMaker.createList (groupGrid, null, groupsToFind, null, ListType, eventObject, groupObject);
 
-			searchBar.TextChanged += (sender, e) => {
-				if(searchBar.Text == "" || searchBar.Text == null) { 
-					
-				} else {
-					updateAutocompleteList(groupObject, eventObject);
-				}
-			};
+
 
 			friendsButton.Clicked += (sender, e) => {
 				profileGrid.IsVisible = true;
@@ -80,23 +62,9 @@ namespace HowlOut
 			};
 		}
 
-		public async void updateAutocompleteList(Group groupObject, Event eventObject)
-		{
-			var profileSearchResult = App.userProfile.Friends;
-			var groupSearchResult = await _dataManager.GroupApiManager.GetAllGroups ();
-			groupSearchResult.Add (new Group () {Owner = App.userProfile, Name = "Test Group", Public = true, Members = new List<Profile>() });
-			listMaker.createList (profileGrid, profileSearchResult, null, null, ListType, eventObject, groupObject);
-			listMaker.createList (groupGrid, null, groupSearchResult, null, ListType, eventObject, groupObject);
-		}
-
 		public enum WhatToShow {
-			FriendRequests,
-			GroupRequests,
-			NewPeople,
 			PeopleToInviteToEvent,
 			PeopleToInviteToGroup,
-			Plain,
-			MyFriendsAndGroups
 		}
 	}
 }

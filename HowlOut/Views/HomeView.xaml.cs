@@ -4,14 +4,16 @@ using Xamarin.Forms;
 
 namespace HowlOut
 {
-	public partial class YourProfileView : ContentView
+	public partial class HomeView : ContentView
 	{
-		public YourProfileView ()
+		DataManager _dataManager = new DataManager ();
+		ListsAndButtons listMaker = new ListsAndButtons();
+
+		public HomeView ()
 		{
 			InitializeComponent ();
 
 			profileContent.Content = new InspectController (App.userProfile, null, null);
-			findContent.Content = new InviteView (null, null, InviteView.WhatToShow.NewPeople);
 			createGroupContent.Content = new CreateGroup ();
 
 			profileButton.Clicked += (sender, e) => {
@@ -23,6 +25,31 @@ namespace HowlOut
 			createGroupButton.Clicked += (sender, e) => {
 				setViewDesign(2);
 			};
+
+			friendsButton.Clicked += (sender, e) => {
+				profileGrid.IsVisible = true;
+				groupGrid.IsVisible = false;
+			};
+			groupsButton.Clicked += (sender, e) => {
+				profileGrid.IsVisible = false;
+				groupGrid.IsVisible = true;
+			};
+			searchBar.TextChanged += (sender, e) => {
+				if(searchBar.Text == "" || searchBar.Text == null) { 
+
+				} else {
+					updateAutocompleteList();
+				}
+			};
+		}
+
+		public async void updateAutocompleteList()
+		{
+			var profileSearchResult = App.userProfile.Friends;
+			var groupSearchResult = await _dataManager.GroupApiManager.GetAllGroups ();
+			groupSearchResult.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
+			listMaker.createList (profileGrid, profileSearchResult, null, null, ListsAndButtons.ListType.Normal, null, null);
+			listMaker.createList (groupGrid, null, groupSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
 		}
 
 		private void setViewDesign(int number){

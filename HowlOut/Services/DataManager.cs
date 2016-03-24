@@ -156,7 +156,7 @@ namespace HowlOut
 			App.coreView.setContentView (new InspectController (profile, null, null), "UserProfile");
 		}
 
-		public async Task<bool> sendInviteToEvent(Event eve, Profile profile)
+		public async Task<bool> sendProfileInviteToEvent(Event eve, Profile profile)
 		{
 			List <string> IdsToInvite = new List<string> ();
 			IdsToInvite.Add (profile.ProfileId);
@@ -169,11 +169,17 @@ namespace HowlOut
 			}
 		}
 
-		public async void sendInviteToGroup(Group group, Profile profile)
+		public async Task<bool>  sendProfileInviteToGroup(Group group, Profile profile)
 		{
 			List <string> IdsToInvite = new List<string> ();
 			IdsToInvite.Add (profile.ProfileId);
-			await GroupApiManager.InviteToGroup(group.GroupId, IdsToInvite);
+			bool success = await GroupApiManager.InviteToGroup(group.GroupId, IdsToInvite);
+			if (!success) {
+				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited to the group " + group.Name, "Ok");
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 		public async void leaveEvent(Event eve)
@@ -293,6 +299,36 @@ namespace HowlOut
 				}
 			}
 			return yours;
+		}
+
+		public bool AreYouGroupOwner(Group group)
+		{
+			bool you = false;
+			if (group.Owner.ProfileId == App.userProfile.ProfileId) {
+				you = true;
+			}
+			return you;
+		}
+
+		public bool AreYouGroupMember(Group group)
+		{
+			bool you = false;
+			for (int i = 0; i < group.Members.Count; i++) {
+				if (group.Members [i].ProfileId == App.userProfile.ProfileId) {
+					you = true;
+				}
+			}
+			return you;
+		}
+		public bool AreYouInvitedToGroup(Group group)
+		{
+			bool you = false;
+			for (int i = 0; i < App.userProfile.GroupsInviteTo.Count; i++) {
+				if (App.userProfile.GroupsInviteTo [i].GroupId == group.GroupId) {
+					you = true;
+				}
+			}
+			return you;
 		}
 	}
 }

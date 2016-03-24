@@ -52,7 +52,8 @@ namespace HowlOut
 				listMaker.createList (profileGrid, userGroup.Members, null, null, ListsAndButtons.ListType.Normal, null, null);
 				friendsButton.Text = "Members";
 				givenList = userGroup.Comments;
-				infoView.Content = new InspectGroup (userGroup);
+				//infoView.Content = new InspectGroup (userGroup);
+				infoView.Content = new ProfileDesignView (null, userGroup,null,200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(eventObject != null) {
 				listMaker.createList (profileGrid, eventObject.Attendees, null, null, ListsAndButtons.ListType.Normal, null, null);
@@ -98,11 +99,11 @@ namespace HowlOut
 
 
 			FindNewFriendsButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new InviteView (null, null, InviteView.WhatToShow.FriendRequests), "InviteView");
+				App.coreView.setContentView (new FriendAndGroupRequestsView(true), "");
 			};
 
 			FindNewGroupsButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new InviteView (null, null, InviteView.WhatToShow.GroupRequests), "InviteView");
+				App.coreView.setContentView (new FriendAndGroupRequestsView(false), "");
 			};
 
 			postCommentButton.Clicked += (sender, e) => {

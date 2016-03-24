@@ -91,9 +91,6 @@
     <Compile Include="Views\Inspect\InspectEvent.xaml.cs">
       <DependentUpon>InspectEvent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Inspect\InspectGroup.xaml.cs">
-      <DependentUpon>InspectGroup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\InspectController.xaml.cs">
       <DependentUpon>InspectController.xaml</DependentUpon>
     </Compile>
@@ -122,11 +119,17 @@
     <Compile Include="Views\Components\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\YourProfileView.xaml">
+    <EmbeddedResource Include="Views\FriendAndGroupRequestsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <Compile Include="Views\YourProfileView.xaml.cs">
-      <DependentUpon>YourProfileView.xaml</DependentUpon>
+    <Compile Include="Views\FriendAndGroupRequestsView.xaml.cs">
+      <DependentUpon>FriendAndGroupRequestsView.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\HomeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -220,9 +223,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Inspect\InspectEvent.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Inspect\InspectGroup.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InspectController.xaml">

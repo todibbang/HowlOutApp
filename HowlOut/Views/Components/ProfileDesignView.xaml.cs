@@ -14,9 +14,10 @@ namespace HowlOut
 			InitializeComponent ();
 			ScaleLayout (profile, group, eve, dimentions, design);
 
+			setTypeSpecificDesign (profile, group, eve, dimentions, design);
+
 			SubjectButton.Clicked += (sender, e) => {
-				System.Diagnostics.Debug.WriteLine("Lort");
-				//App.coreView.setContentView(new InspectController(profile,group,eve),"");
+				App.coreView.setContentView(new InspectController(profile,group,eve),"");
 			};
 
 			acceptButton.Clicked += (sender, e) => {
@@ -28,17 +29,27 @@ namespace HowlOut
 				}
 				else if(design.Equals (ProfileDesign.InviteGroupToEvent)) {
 					sendEventInviteToGroup (group, eve);
-				} 
-				else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
-					_dataManager.acceptFriendRequest(profile, true);
-				} 
-				else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
-					acceptButton.Text = "Friend Request Sent";
-					declineButton.IsVisible = false;
-				} else if (_dataManager.IsProfileFriend (profile)) {
-					
-				} else {
-					_dataManager.sendFriendRequest(profile);
+				} else if(profile != null) {
+					if (_dataManager.IsProfileYou (profile)) {
+						//Edit Profile ??
+					} else if (_dataManager.IsProfileFriend (profile)) {
+						//Like
+					} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
+						_dataManager.acceptFriendRequest(profile, true);
+					} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
+						//Cancel the sent friend request
+					} else {
+						_dataManager.sendFriendRequest(profile);
+					}
+					Loyalty.IsVisible = false;
+				} else if (group != null) {
+					if (_dataManager.AreYouGroupOwner (group) || _dataManager.AreYouGroupMember (group)) {
+						App.coreView.setContentView (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
+					} else if (_dataManager.AreYouInvitedToGroup(group)) {
+						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
+					} else {
+						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
+					}
 				}
 			};
 
@@ -47,40 +58,21 @@ namespace HowlOut
 					_dataManager.removeFriend(profile);
 				} else if(_dataManager.HasProfileSentYouFriendRequest (profile)) {
 					_dataManager.declineFriendRequest(profile);
-				}
+				} else if (group != null) {
+					if (_dataManager.AreYouGroupOwner (group)) {
+						App.coreView.setContentView (new CreateGroup (), "");
+					} else if (_dataManager.AreYouGroupMember (group)) {
+						_dataManager.GroupApiManager.LeaveGroup(group.GroupId,App.userProfile.ProfileId);
+					} else if (_dataManager.AreYouInvitedToGroup(group)) {
+						_dataManager.GroupApiManager.DeclineGroupInvite(group.GroupId, App.userProfile.ProfileId);
+					} 
+				} 
 			};
-			if (profile != null) {
-				if (design.Equals (ProfileDesign.InviteProfileToEvent) || design.Equals (ProfileDesign.InviteProfileToGroup)) {
-					acceptButton.Text = " Invite ";
-					declineButton.IsVisible = false;
-				} else if (_dataManager.IsProfileYou (profile)) {
-					acceptButton.Text = " YOU ";
-					acceptButton.IsEnabled = false;
-					declineButton.IsVisible = false;
-				} else if (_dataManager.IsProfileFriend (profile)) {
-					acceptButton.IsVisible = false;
-					declineButton.Text = " Remove Friend ";
-				} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
-					System.Diagnostics.Debug.WriteLine (profile.Name + " has sent you a friendRequest");
-					acceptButton.Text = " Accept ";
-					declineButton.Text = " Decline ";
-				} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
-					acceptButton.Text = " Friend Request Sent ";
-					declineButton.IsVisible = false;
-				} else {
-					acceptButton.Text = " Send Friend Request ";
-					declineButton.IsVisible = false;
-				}
-				Loyalty.IsVisible = false;
-			} else if(group != null) {
-				if (design.Equals (ProfileDesign.InviteGroupToEvent)) {
-					acceptButton.Text = " Invite ";
-					declineButton.IsVisible = false;
-				} else {
-					buttonLayout.IsVisible = false;
-				}
-				Likes.IsVisible = false;
-			}
+
+
+
+
+
 		}
 
 		private void ScaleLayout(Profile profile, Group group, Event eve, int dimentions, ProfileDesign design){
@@ -89,15 +81,10 @@ namespace HowlOut
 			profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
 			profileLayout.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
 
-			if (profile != null) {
-				if (design.Equals (ProfileDesign.WithButtons) || !design.Equals (ProfileDesign.Plain)) {
-					profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.5 });
-				} else if (design.Equals (ProfileDesign.WithName)) {
-					profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
-				} else {
-					profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
-					infoLabel.IsVisible = false;
-				}
+			if (design.Equals (ProfileDesign.Plain)) {
+				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+			} else if (design.Equals (ProfileDesign.WithName)) {
+				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
 			} else {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.5 });
 			}
@@ -132,8 +119,56 @@ namespace HowlOut
 			}
 		}
 
+		private void setTypeSpecificDesign(Profile profile, Group group, Event eve, int dimentions, ProfileDesign design) {
+			if(profile != null) {
+				if (_dataManager.IsProfileYou (profile)) {
+					acceptButton.Text = " YOU ";
+					acceptButton.IsEnabled = false;
+					declineButton.IsVisible = false;
+				} else if (_dataManager.IsProfileFriend (profile)) {
+					acceptButton.IsVisible = false;
+					declineButton.Text = " Remove Friend ";
+				} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
+					System.Diagnostics.Debug.WriteLine (profile.Name + " has sent you a friendRequest");
+					acceptButton.Text = " Accept ";
+					declineButton.Text = " Decline ";
+				} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
+					acceptButton.Text = " Request Sent ";
+					declineButton.IsVisible = false;
+				} else {
+					acceptButton.Text = " Add Friend ";
+					declineButton.IsVisible = false;
+				}
+				Loyalty.IsVisible = false;
+			} else if (group != null) {
+				if (_dataManager.AreYouGroupOwner (group)) {
+					acceptButton.Text = " Invite ";
+					declineButton.Text = " Edit ";
+				} else if (_dataManager.AreYouGroupMember (group)) {
+					acceptButton.Text = " Invite ";
+					declineButton.Text = " Leave ";
+				} else if (_dataManager.AreYouInvitedToGroup(group)) {
+					acceptButton.Text = " Accept ";
+					declineButton.Text = " Decline ";
+				} else {
+					acceptButton.Text = " Join ";
+					declineButton.IsVisible = false;
+				}
+				Loyalty.IsVisible = false;
+			} else {
+				Likes.IsVisible = false;
+			}
+
+			if (design.Equals (ProfileDesign.InviteProfileToEvent) || design.Equals(ProfileDesign.InviteProfileToGroup) || 
+				design.Equals (ProfileDesign.InviteGroupToEvent)) {
+				acceptButton.Text = " Invite ";
+				acceptButton.IsVisible = true;
+				declineButton.IsVisible = false;
+			} 
+		}
+
 		private async void sendEventInviteToProfile(Profile profile, Event eve) {
-			bool success = await _dataManager.sendInviteToEvent(eve, profile);
+			bool success = await _dataManager.sendProfileInviteToEvent(eve, profile);
 			if (success) {
 				acceptButton.Text = " Invite Sent ";
 				acceptButton.IsEnabled = false;
@@ -142,12 +177,12 @@ namespace HowlOut
 
 		private async void sendEventInviteToGroup (Group group, Event eve) {
 			for(int i = 0; i < group.Members.Count; i++) {
-				await _dataManager.sendInviteToEvent(eve, group.Members[i]);
+				await _dataManager.sendProfileInviteToEvent(eve, group.Members[i]);
 			}
 		}
 
 		private async void sendGroupInviteToProfile(Profile profile, Group group) {
-			bool success = await _dataManager.sendInviteToGroup(group, profile);
+			bool success = await _dataManager.sendProfileInviteToGroup(group, profile);
 			if (success) {
 				acceptButton.Text = " Invite Sent ";
 				acceptButton.IsEnabled = false;
