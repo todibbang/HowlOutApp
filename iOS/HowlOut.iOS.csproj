@@ -188,5 +188,14 @@
     <BundleResource Include="Resources\ic_search.png" />
     <BundleResource Include="Resources\ic_add.png" />
     <BundleResource Include="Resources\gradiant_bg.png" />
+    <BundleResource Include="Resources\Controller.jpeg" />
+    <BundleResource Include="Resources\Fodbold.jpeg" />
+    <BundleResource Include="Resources\Golf.jpeg" />
+    <BundleResource Include="Resources\Gravid.jpeg" />
+    <BundleResource Include="Resources\Hjort.jpeg" />
+    <BundleResource Include="Resources\Scrabble.jpeg" />
+    <BundleResource Include="Resources\Skak.jpeg" />
+    <BundleResource Include="Resources\Skater.jpeg" />
+    <BundleResource Include="Resources\Surf.jpeg" />
   </ItemGroup>
 </Project>

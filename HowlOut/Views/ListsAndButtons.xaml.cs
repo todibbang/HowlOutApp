@@ -34,6 +34,7 @@ namespace HowlOut
 					count ++;
 					addNew = true;
 			}
+			/*
 
 			Grid newGrid = new Grid {
 				ColumnDefinitions = {
@@ -45,6 +46,10 @@ namespace HowlOut
 				ColumnSpacing=0,
 				Padding=0,
 			};
+			*/
+			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
 
 			grid.RowDefinitions.Add (new RowDefinition{ Height = 160 });
 
@@ -86,7 +91,10 @@ namespace HowlOut
 				}
 				column ++;
 			}
-			grid = newGrid;
+			grid.RowDefinitions.Add (new RowDefinition{ Height = 100 });
+			//grid.Children.Add (new StackLayout(){HeightRequest=100},0,row);
+
+			//grid = newGrid;
 		}
 
 		private Grid AddNewGrid(int i)

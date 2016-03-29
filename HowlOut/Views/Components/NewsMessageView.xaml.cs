@@ -4,15 +4,15 @@ using Xamarin.Forms;
 
 namespace HowlOut
 {
-	public partial class MessageView : ContentView
+	public partial class NewsMessageView : ContentView
 	{
 		DataManager _dataManager = new DataManager();
 
-		public MessageView (Event eventObject, MessageType type)
+		public NewsMessageView (Event eventObject, MessageType type)
 		{
 			InitializeComponent ();
 
-			headerLayout.IsVisible = false;
+			//headerLayout.IsVisible = false;
 
 			HeaderContent.Content = new ProfileDesignView (eventObject.Owner, null, null, 50, ProfileDesignView.ProfileDesign.Plain);
 
@@ -33,11 +33,8 @@ namespace HowlOut
 		}
 
 		public enum MessageType {
-			Plain,
-			Buttons,
-			Label,
-			LabelAndButtons,
-			Invite
+			Invite,
+			Info,
 		}
 	}
 }

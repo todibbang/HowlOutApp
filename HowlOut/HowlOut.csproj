@@ -113,12 +113,6 @@
     <Compile Include="Views\CoreLayout\UpperBar.xaml.cs">
       <DependentUpon>UpperBar.xaml</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\Components\MessageView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Components\MessageView.xaml.cs">
-      <DependentUpon>MessageView.xaml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Views\FriendAndGroupRequestsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -130,6 +124,19 @@
     </EmbeddedResource>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\Components\NewsMessageView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\Components\NewsMessageView.xaml.cs">
+      <DependentUpon>NewsMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewsMessage.cs" />
+    <EmbeddedResource Include="Views\SelectBannerView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\SelectBannerView.xaml.cs">
+      <DependentUpon>SelectBannerView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -3,7 +3,7 @@
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid RowSpacing="0" ColumnSpacing="0">
+		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
@@ -53,12 +53,31 @@
 
 			<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="3" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
 
-					<ScrollView> 
-						<StackLayout x:Name="EventListTest" Spacing="0">
-						</StackLayout>
-					</ScrollView> 
 
-					<!-- 
+				<ScrollView x:Name="HorizontalScrollView">
+					<StackLayout x:Name="searchList" Spacing="0">
+					</StackLayout>
+				</ScrollView>
+
+				<!-- 
+				<ScrollView Orientation="Horizontal" x:Name="HorizontalScrollView" IsEnabled="false">
+					<StackLayout x:Name="HorizontalStackLayout" Orientation="Horizontal">
+						<ScrollView x:Name="searchScrollView"> 
+							<StackLayout x:Name="searchList" Spacing="0">
+							</StackLayout>
+						</ScrollView> 
+						<ScrollView x:Name="manageScrollView"> 
+							<StackLayout x:Name="manageList" Spacing="0">
+							</StackLayout>
+						</ScrollView> 
+						<ScrollView x:Name="otherScrollView"> 
+							<StackLayout x:Name="otherList" Spacing="0">
+							</StackLayout>
+						</ScrollView> 
+					</StackLayout>
+				</ScrollView>
+
+					
 					<ListView x:Name="SearchEventList" 
 			  			HasUnevenRows="false"
 						RowHeight="210"

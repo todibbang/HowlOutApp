@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.SelectBannerView">
+	<ContentView.Content>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<ScrollView x:Name="HorizontalScrollView" Grid.Row="0" Grid.Column="0">
+				<StackLayout x:Name="bannerList" Spacing="5">
+				</StackLayout>
+			</ScrollView>
+
+		</Grid>
+
+	</ContentView.Content>
+</ContentView>

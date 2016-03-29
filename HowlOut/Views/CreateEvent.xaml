@@ -61,12 +61,29 @@
 							</Grid>
 							<local:Line Grid.Row="6"/>
 						</Grid>
+
+						<Grid RowSpacing="0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Button Grid.Row="0" Style="{DynamicResource ButtonStyle}" Text="Select Banner" x:Name="selectBannerButton" WidthRequest="200" HeightRequest="50"/>
+							<!-- <Button Grid.Row="1" Text="Location" x:Name="locationButton"></Button> -->
+						</Grid>
 					</StackLayout>
 
 					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
 
 					<StackLayout BackgroundColor="White">
 						<Grid RowSpacing="10">
+
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="70"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="80"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
 								<RowDefinition Height="50"/>
@@ -74,14 +91,6 @@
 								<RowDefinition Height="50"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="60"/>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="50"/>
-								<ColumnDefinition Width="5"/>
-							</Grid.ColumnDefinitions>
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Start" Style="{DynamicResource TextStyle}"></Label>
@@ -117,6 +126,15 @@
 
 					<StackLayout BackgroundColor="White">
 						<Grid RowSpacing="10">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="70"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
+
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
 								<RowDefinition Height="50"/>
@@ -124,14 +142,7 @@
 								<RowDefinition Height="50"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="55"/>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="5"/>
-							</Grid.ColumnDefinitions>
+
 
 							<local:Line Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Age" Style="{DynamicResource TextStyle}"></Label>
@@ -149,18 +160,20 @@
 
 					<StackLayout BackgroundColor="White">
 						<Grid RowSpacing="0">
+
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="70"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="5"/>
+							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
 								<RowDefinition Height="80"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="55"/>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="5"/>
-							</Grid.ColumnDefinitions>
+
 							<local:Line Grid.Row="0"/>
 							<Label Grid.Row="1" Grid.Column="1" Text="Privacy" Style="{DynamicResource TextStyle}"></Label>
 

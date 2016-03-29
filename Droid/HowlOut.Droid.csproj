@@ -174,6 +174,15 @@
     <AndroidResource Include="Resources\drawable\ic_public.png" />
     <AndroidResource Include="Resources\drawable\ic_calender.png" />
     <AndroidResource Include="Resources\drawable\ic_explore.png" />
+    <AndroidResource Include="Resources\drawable\Controller.png" />
+    <AndroidResource Include="Resources\drawable\Fodbold.png" />
+    <AndroidResource Include="Resources\drawable\Golf.png" />
+    <AndroidResource Include="Resources\drawable\Gravid.png" />
+    <AndroidResource Include="Resources\drawable\Hjort.png" />
+    <AndroidResource Include="Resources\drawable\Scrabble.png" />
+    <AndroidResource Include="Resources\drawable\Skak.png" />
+    <AndroidResource Include="Resources\drawable\Skater.png" />
+    <AndroidResource Include="Resources\drawable\Surf.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">

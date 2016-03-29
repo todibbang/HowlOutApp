@@ -83,6 +83,12 @@ namespace HowlOut
 				App.coreView.setContentView (mapView, "MapsView");
 			};
 
+			selectBannerButton.Clicked += (sender, e) => {
+				SelectBannerView selectBannerView = new SelectBannerView();
+				selectBannerView.createEventView = this;
+				App.coreView.setContentView(selectBannerView, "");
+			};
+
 			/// set age and size limits
 			minAge.SelectedIndexChanged += (sender, args) => {
 				if (minAge.SelectedIndex != -1) { string age = minAge.Items[minAge.SelectedIndex]; newEvent.MinAge = agePicker[age]; } };
@@ -111,14 +117,29 @@ namespace HowlOut
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
 		}
 
+		public void setBanner(string banner) {
+			selectBannerButton.Text = "";
+			selectBannerButton.Image = banner;
+			selectBannerButton.WidthRequest = App.coreView.Width;
+			selectBannerButton.HeightRequest = App.coreView.Width / 2;
+		}
+
 		private void setNewEvent()
 		{
 			cancelButton.IsVisible = false;
 			newEvent.Owner = new Profile(){ProfileId = App.StoredUserFacebookId};
 
-			startTime.Time = DateTime.Now.TimeOfDay + new TimeSpan (1,10,0);
+			System.Diagnostics.Debug.WriteLine (startTime.Time);
+			System.Diagnostics.Debug.WriteLine (DateTime.Now.TimeOfDay);
+			System.Diagnostics.Debug.WriteLine (new TimeSpan (1,10,0));
 
-			endTime.Time = DateTime.Now.TimeOfDay + new TimeSpan (1,10,0);
+			startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
+			endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+
+
+			//startTime.Time = (DateTime.Now.TimeOfDay + new TimeSpan (1,10,0));
+
+			//endTime.Time = DateTime.Now.TimeOfDay + new TimeSpan (1,10,0);
 
 
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
@@ -150,8 +171,10 @@ namespace HowlOut
 			title.Text = newEvent.Title;
 			description.Text = newEvent.Description;
 
-			startDate.Date = newEvent.StartDate;
-			endDate.Date = newEvent.EndDate;
+			startTime.Time = newEvent.StartDate.TimeOfDay;
+			endTime.Time = newEvent.EndDate.TimeOfDay;
+			startDate.Date = newEvent.StartDate.Date;
+			endDate.Date = newEvent.EndDate.Date;
 
 			locationButton.Text = newEvent.AddressName;
 
@@ -198,7 +221,9 @@ namespace HowlOut
 				App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
 				App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
-			} else {
+			} else if (String.IsNullOrWhiteSpace (eventToCreate.Banner)) {
+				App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
+			}else {
 				EventDBO newEventAsDBO = new EventDBO{
 					Owner = eventToCreate.Owner, 
 					Title = eventToCreate.Title, 

@@ -12,7 +12,8 @@ namespace HowlOut
 	{
 		ListsAndButtons listMaker = new ListsAndButtons();
 
-		private EventApiManager eventApiManager= new EventApiManager (new HttpClient(new NativeMessageHandler()));
+		private DataManager _dataManager = new DataManager ();
+
 
 		public CreateEvent createEventView;
 
@@ -29,6 +30,7 @@ namespace HowlOut
 
 			if (userProfile != null) {
 				if (userProfile.ProfileId == App.userProfile.ProfileId) {
+					userProfile = App.userProfile;
 					if (userProfile.RecievedFriendRequests.Count > 0) {
 						listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, ListsAndButtons.ListType.Normal, null, null);
 					} else {
@@ -63,7 +65,7 @@ namespace HowlOut
 
 			} else if(eventObject != null) {
 				profileList = eventObject.Attendees;
-				profileList.Add (eventObject.Owner);
+				//profileList.Add (eventObject.Owner);
 				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				profileGrid.IsVisible = true;
 				friendsButton.Text = "Attendees";
@@ -123,7 +125,7 @@ namespace HowlOut
 		{
 			if(!string.IsNullOrWhiteSpace(comment))
 			{
-				Event newEvent = await eventApiManager.AddCommentToEvent(eve.EventId, new Comment {
+				Event newEvent = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, new Comment {
 					Content = comment, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
 				});
 				if (newEvent != null) {
