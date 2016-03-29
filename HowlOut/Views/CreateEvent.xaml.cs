@@ -238,7 +238,8 @@ namespace HowlOut
 					Latitude = eventToCreate.Latitude,
 					Longitude = eventToCreate.Longitude, 
 					AddressName = eventToCreate.AddressName, 
-					EventTypes = eventToCreate.EventTypes};
+					EventTypes = eventToCreate.EventTypes,
+					Banner = eventToCreate.Banner};
 
 				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
 				Launching = false;
