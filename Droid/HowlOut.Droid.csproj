@@ -165,7 +165,6 @@
     <AndroidResource Include="Resources\values\Styles.xml" />
     <AndroidResource Include="Resources\drawable\howloutsplash.png" />
     <AndroidResource Include="Resources\drawable\howlouticongrown.png" />
-    <AndroidResource Include="Resources\drawable\Party.png" />
     <AndroidResource Include="Resources\drawable\ic_event.png" />
     <AndroidResource Include="Resources\drawable\ic_refresh.png" />
     <AndroidResource Include="Resources\drawable\ic_search.png" />
@@ -174,15 +173,16 @@
     <AndroidResource Include="Resources\drawable\ic_public.png" />
     <AndroidResource Include="Resources\drawable\ic_calender.png" />
     <AndroidResource Include="Resources\drawable\ic_explore.png" />
-    <AndroidResource Include="Resources\drawable\Controller.png" />
-    <AndroidResource Include="Resources\drawable\Fodbold.png" />
-    <AndroidResource Include="Resources\drawable\Golf.png" />
-    <AndroidResource Include="Resources\drawable\Gravid.png" />
-    <AndroidResource Include="Resources\drawable\Hjort.png" />
-    <AndroidResource Include="Resources\drawable\Scrabble.png" />
-    <AndroidResource Include="Resources\drawable\Skak.png" />
-    <AndroidResource Include="Resources\drawable\Skater.png" />
-    <AndroidResource Include="Resources\drawable\Surf.png" />
+    <AndroidResource Include="Resources\drawable\Controller.jpeg" />
+    <AndroidResource Include="Resources\drawable\Fodbold.jpeg" />
+    <AndroidResource Include="Resources\drawable\Golf.jpeg" />
+    <AndroidResource Include="Resources\drawable\Gravid.jpeg" />
+    <AndroidResource Include="Resources\drawable\Hjort.jpeg" />
+    <AndroidResource Include="Resources\drawable\Party.png" />
+    <AndroidResource Include="Resources\drawable\Scrabble.jpeg" />
+    <AndroidResource Include="Resources\drawable\Skak.jpeg" />
+    <AndroidResource Include="Resources\drawable\Skater.jpeg" />
+    <AndroidResource Include="Resources\drawable\Surf.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">

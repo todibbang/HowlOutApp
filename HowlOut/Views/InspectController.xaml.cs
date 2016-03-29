@@ -25,9 +25,7 @@ namespace HowlOut
 		public InspectController (Profile userProfile, Group userGroup, Event eventObject)
 		{
 			InitializeComponent ();
-
 			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
-
 			if (userProfile != null) {
 				if (userProfile.ProfileId == App.userProfile.ProfileId) {
 					userProfile = App.userProfile;
@@ -44,9 +42,6 @@ namespace HowlOut
 						var groups = new List<Group> ();
 						groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
 						listMaker.createList (groupGrid, null, groups, null, ListsAndButtons.ListType.Normal, null, null);
-
-
-						//listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
 					}
 					friendsButton.IsVisible = true;
 					groupsButton.IsVisible = true;
