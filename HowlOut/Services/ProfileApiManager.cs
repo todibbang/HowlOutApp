@@ -67,6 +67,28 @@ namespace HowlOut
 			return false;
 		}
 
+		public async Task<List<Profile>> GetProfilesFromName(string name)
+		{
+			List<Profile> profiles = new List<Profile>(); 
+
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetFromName/" + name);
+
+			try
+			{
+				var response = await httpClient.GetAsync(uri);
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					profiles = JsonConvert.DeserializeObject<List<Profile>>(content);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return profiles;
+		}
+
 		public async Task<Profile> GetProfile(string profileId)
 		{
 			Profile profile = new Profile();
@@ -93,7 +115,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId);
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId + "?currentTime="+DateTime.Now);
 
 			try
 			{
@@ -115,7 +137,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsFollowed/" + profileId);
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsFollowed/" + profileId + "?currentTime="+DateTime.Now);
 
 			try
 			{

@@ -37,6 +37,72 @@ namespace HowlOut
 			return groups;
 		}
 
+		public async Task<List<Group>> GetGroupsFromName(string name)
+		{
+			List<Group> groups = new List<Group>(); 
+
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/GetFromName/"+name);
+
+			try { 
+				var response = await httpClient.GetAsync(uri);
+				if(response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					groups = JsonConvert.DeserializeObject<List<Group>>(content);
+				}
+			} catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return groups;
+		}
+
+		public async Task<List<Comment>> GetGroupComments(string groupId)
+		{
+			List<Comment> comments = new List<Comment>(); 
+
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/Comment/"+groupId);
+
+			try { 
+				var response = await httpClient.GetAsync(uri);
+				if(response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					comments = JsonConvert.DeserializeObject<List<Comment>>(content);
+				}
+			} catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return comments;
+		}
+
+		public async Task<List<Comment>> AddCommentToGroup(string groupId, Comment comment)
+		{
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/Comment/"+groupId);
+
+			try
+			{
+				var json = JsonConvert.SerializeObject(comment);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+				var response = await httpClient.PostAsync(uri, content);
+
+				if (response.IsSuccessStatusCode)
+				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					var retrievedEvent = JsonConvert.DeserializeObject<List<Comment>>(recievedContent);
+					return retrievedEvent;
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+
+			return null;
+		}
+
 		public async Task<Group> GetGroupById(string groupId)
 		{
 			Group groupToRetrieve = new Group();

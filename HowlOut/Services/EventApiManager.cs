@@ -86,6 +86,26 @@ namespace HowlOut
 			return eventToRetrieve;
 		}
 
+		public async Task<ObservableCollection<Comment>> GetEventComments(string eventId)
+		{
+			ObservableCollection<Comment> comments = new ObservableCollection<Comment>(); 
+
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Comments/" + eventId);
+
+			try { 
+				var response = await httpClient.GetAsync(uri);
+				if(response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					comments = JsonConvert.DeserializeObject<ObservableCollection<Comment>>(content);
+				}
+			} catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return comments;
+		}
+
 		public async Task<bool> UpdateEvent(Event EventToUpdate)
 		{
 			if(EventToUpdate.EventId != null && EventToUpdate.EventId != "")
@@ -313,7 +333,7 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<Event> AddCommentToEvent(string eventId, Comment comment)
+		public async Task<List<Comment>> AddCommentToEvent(string eventId, Comment comment)
 		{
 			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Comment/"+eventId);
 
@@ -327,7 +347,7 @@ namespace HowlOut
 				if (response.IsSuccessStatusCode)
 				{
 					var recievedContent = await response.Content.ReadAsStringAsync();
-					var retrievedEvent = JsonConvert.DeserializeObject<Event>(recievedContent);
+					var retrievedEvent = JsonConvert.DeserializeObject<List<Comment>>(recievedContent);
 					return retrievedEvent;
 				}
 			}

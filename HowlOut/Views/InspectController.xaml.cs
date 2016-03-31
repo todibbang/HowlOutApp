@@ -120,12 +120,19 @@ namespace HowlOut
 		{
 			if(!string.IsNullOrWhiteSpace(comment))
 			{
-				Event newEvent = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, new Comment {
-					Content = comment, SenderID = App.StoredUserFacebookId, DateAndTime = DateTime.Now.ToLocalTime(),
-				});
-				if (newEvent != null) {
+				//TODO changed this to recieve comment object instead of event
+				var commentObj = new Comment {
+					Content = comment, 
+					SenderID = App.StoredUserFacebookId, 
+					DateAndTime = DateTime.Now.ToLocalTime ()
+				};
+
+				List<Comment> updatedComments = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, commentObj);
+
+				if (updatedComments != null) {
+					eve.Comments = updatedComments;
 					commentEntry.Text = "";
-					App.coreView.setContentView (new InspectController (null, null, newEvent), "UserProfile");
+					App.coreView.setContentView (new InspectController (null, null, eve), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
 				}
