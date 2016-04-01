@@ -47,10 +47,12 @@ namespace HowlOut
 				Padding=0,
 			};
 			*/
-			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
-			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
-			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
 
+			/*
+			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+			grid.ColumnDefinitions.Add (new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+			*/
 			grid.RowDefinitions.Add (new RowDefinition{ Height = 160 });
 
 			for (int i = 0; i < count; i++) {

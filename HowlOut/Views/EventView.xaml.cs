@@ -166,7 +166,7 @@ namespace HowlOut
 					}
 				}
 			} else if (listToUpdate == 3) {
-				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo (App.userProfile.ProfileId);
+				evelist = await _dataManager.ProfileApiManager.GetEventsFollowed ();
 			} else if (listToUpdate == 4) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo (App.userProfile.ProfileId);
 				var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId ();

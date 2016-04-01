@@ -49,7 +49,7 @@ namespace HowlOut
 			if (groupCreated != null) {
 				App.coreView.setContentView (new InspectController (null, groupCreated, null), "UserProfile");
 			} else {
-				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
+				await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 			}
 		}
 

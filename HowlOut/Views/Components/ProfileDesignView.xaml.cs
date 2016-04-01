@@ -172,6 +172,8 @@ namespace HowlOut
 			for(int i = 0; i < group.Members.Count; i++) {
 				await _dataManager.sendProfileInviteToEvent(eve, group.Members[i]);
 			}
+			acceptButton.Text = " Invite Sent ";
+			acceptButton.IsEnabled = false;
 		}
 
 		private async void sendGroupInviteToProfile(Profile profile, Group group) {

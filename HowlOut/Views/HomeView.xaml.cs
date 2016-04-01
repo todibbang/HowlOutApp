@@ -36,18 +36,26 @@ namespace HowlOut
 			};
 			searchBar.TextChanged += (sender, e) => {
 				if(searchBar.Text == "" || searchBar.Text == null) { 
-
+					profileGrid.Children.Clear ();
+					groupGrid.Children.Clear ();
 				} else {
-					updateAutocompleteList();
+					updateAutoCompleteProfileList(searchBar.Text);
+					updateAutoCompleteGroupList(searchBar.Text);
 				}
 			};
 		}
 
-		public async void updateAutocompleteList()
+		public async void updateAutoCompleteProfileList(string input)
 		{
-			var profileSearchResult = App.userProfile.Friends;
-			var groupSearchResult = await _dataManager.GroupApiManager.GetAllGroups ();
+			profileGrid.Children.Clear ();
+			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
 			listMaker.createList (profileGrid, profileSearchResult, null, null, ListsAndButtons.ListType.Normal, null, null);
+		}
+
+		public async void updateAutoCompleteGroupList(string input)
+		{
+			groupGrid.Children.Clear ();
+			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
 			listMaker.createList (groupGrid, null, groupSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
 		}
 

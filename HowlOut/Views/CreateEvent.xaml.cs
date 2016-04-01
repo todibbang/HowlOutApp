@@ -136,22 +136,11 @@ namespace HowlOut
 			startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
 			endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
 
-
-			//startTime.Time = (DateTime.Now.TimeOfDay + new TimeSpan (1,10,0));
-
-			//endTime.Time = DateTime.Now.TimeOfDay + new TimeSpan (1,10,0);
-
-
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EndDate = endDate.Date.Add(endTime.Time);
 
-			//newEvent.address.data.position = utilityManager.getCurrentUserPosition();
-
-
 			minAge.SelectedIndex = 0;
 			maxAge.SelectedIndex = agePicker.Count;
-
-
 
 			newEvent.MinAge = agePicker [minAge.Items[minAge.SelectedIndex]];
 			newEvent.MaxAge = agePicker [maxAge.Items[maxAge.SelectedIndex]];

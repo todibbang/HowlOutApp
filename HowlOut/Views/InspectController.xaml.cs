@@ -39,9 +39,9 @@ namespace HowlOut
 						listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, ListsAndButtons.ListType.Normal, null, null);
 					} else {
 						//TODO following three lines are dummy data
-						var groups = new List<Group> ();
-						groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
-						listMaker.createList (groupGrid, null, groups, null, ListsAndButtons.ListType.Normal, null, null);
+						//var groups = new List<Group> ();
+						//groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
+						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
 					}
 					friendsButton.IsVisible = true;
 					groupsButton.IsVisible = true;
@@ -49,7 +49,11 @@ namespace HowlOut
 				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(userGroup != null) {
-				profileList = userGroup.Members;
+				if (userGroup.Members != null) {
+					for (int i = 0; i < userGroup.Members.Count; i++) {
+						profileList.Add (userGroup.Members[i]);
+					}
+				}
 				profileList.Add (userGroup.Owner);
 				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				friendsButton.Text = "Members";
@@ -59,8 +63,12 @@ namespace HowlOut
 				infoView.Content = new ProfileDesignView (null, userGroup,null,200, ProfileDesignView.ProfileDesign.WithButtons);
 
 			} else if(eventObject != null) {
-				profileList = eventObject.Attendees;
-				//profileList.Add (eventObject.Owner);
+				if (eventObject.Attendees != null) {
+					for (int i = 0; i < eventObject.Attendees.Count; i++) {
+						profileList.Add (eventObject.Attendees[i]);
+					}
+				}
+				profileList.Add (eventObject.Owner);
 				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				profileGrid.IsVisible = true;
 				friendsButton.Text = "Attendees";
@@ -77,14 +85,7 @@ namespace HowlOut
 				infoView.Content = new InspectEvent (eventObject, eventNotJoined);
 			}
 
-
-			if (givenCommentList != null) {
-				List<Comment> displayedList = new List<Comment> ();
-				for (int i = givenCommentList.Count - 1; i > -1; i--) {
-					displayedList.Add (givenCommentList [i]);
-				}
-				WallList.ItemsSource = displayedList;
-			}
+			createWall(givenCommentList);
 
 			friendsButton.Clicked  += (sender, e) => {
 				profileGrid.IsVisible = true;
@@ -112,11 +113,11 @@ namespace HowlOut
 			};
 
 			postCommentButton.Clicked += (sender, e) => {
-				PostNewComment(eventObject, commentEntry.Text);
+				PostNewComment(userGroup, eventObject, commentEntry.Text);
 			};
 		}
 
-		private async void PostNewComment(Event eve, string comment)
+		private async void PostNewComment(Group group, Event eve, string comment)
 		{
 			if(!string.IsNullOrWhiteSpace(comment))
 			{
@@ -127,15 +128,32 @@ namespace HowlOut
 					DateAndTime = DateTime.Now.ToLocalTime ()
 				};
 
-				List<Comment> updatedComments = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, commentObj);
+				List<Comment> updatedComments = null;
+				if(group != null) {
+					updatedComments = await _dataManager.GroupApiManager.AddCommentToGroup(group.GroupId, commentObj);
+				} else if(eve != null) {
+					updatedComments = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, commentObj);
+				}
+
 
 				if (updatedComments != null) {
-					eve.Comments = updatedComments;
+					createWall(updatedComments);
 					commentEntry.Text = "";
-					App.coreView.setContentView (new InspectController (null, null, eve), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
 				}
+			}
+		}
+
+		private void createWall(List<Comment> comments){
+			if (comments != null) {
+				while(WallList.Children.Count != 0) {
+					WallList.Children.RemoveAt(0);
+				}
+				for (int i = comments.Count - 1; i > -1; i--) {
+					WallList.Children.Add (new InspectManageComment(comments [i]));
+				}
+				//WallList.ItemsSource = displayedList;
 			}
 		}
 	}

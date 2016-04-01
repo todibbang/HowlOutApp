@@ -58,8 +58,16 @@
 						<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 					</StackLayout>
 
-					<Grid Grid.Row="2" x:Name="groupGrid" IsVisible="false"></Grid>
-					<Grid Grid.Row="2" x:Name="profileGrid"></Grid>
+					<ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
+						<Grid RowSpacing="0"> 
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<Grid Grid.Row="0" x:Name="groupGrid" IsVisible="false"></Grid>
+							<Grid Grid.Row="0" x:Name="profileGrid"></Grid>
+						</Grid>
+					</ScrollView>
+
 
 				</Grid>
 			</StackLayout>

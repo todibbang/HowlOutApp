@@ -14,8 +14,6 @@ namespace HowlOut
 		public List <Profile> Members {get; set;}			//People in the event
 		public List <Profile> InvitedProfiles {get; set;}	//People which has been invited to join the groups
 
-		//public List <Event> EventsInviteTo {get; set;}
-
 		public List <Comment> Comments {get; set;}			//List of comments within the group
 
 		public bool Public {get; set;}

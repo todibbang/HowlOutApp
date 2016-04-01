@@ -27,7 +27,7 @@ namespace HowlOut
 				await updateBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await updateBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView (new CreateEvent( new Event(), false), "Create Event");
+				App.coreView.setContentView (new CreateEvent( new Event(), true), "Create Event");
 			};				
 			updateBtn.GestureRecognizers.Add(updateImage);
 

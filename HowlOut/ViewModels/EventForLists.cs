@@ -38,6 +38,7 @@ namespace HowlOut
 			eve = theGivenEvent;
 			ProfileImageUri = eve.ProfileImageUri;
 			Banner = "Party.png";
+			if(!string.IsNullOrWhiteSpace(eve.Banner)) System.Diagnostics.Debug.WriteLine ("Banner works");
 			Title = eve.Title;
 
 			Position position = App.lastKnownPosition;
@@ -64,7 +65,10 @@ namespace HowlOut
 			EventType2Visible = false;
 			EventType3Visible = false;
 
-			EventType1 =  eve.EventTypes [0] + "";
+			if (eve.EventTypes.Count != 0) {
+				System.Diagnostics.Debug.WriteLine ("EventTypes works");
+				EventType1 = eve.EventTypes [0] + "";
+			}
 			if (eve.EventTypes.Count > 1) {
 				EventType2 = eve.EventTypes [1] + "";
 				EventType2Visible = true;

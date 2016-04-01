@@ -57,6 +57,9 @@
 
 						</Grid>
 						<StackLayout Padding="10,10,10,0"> <local:Line/> </StackLayout> 
+						<StackLayout x:Name="WallList"></StackLayout>
+
+						<!--
 							<ListView x:Name="WallList"
 							  			HasUnevenRows="false"
 										RowHeight="120"
@@ -70,6 +73,7 @@
 									</DataTemplate>
 								</ListView.ItemTemplate>	
 							</ListView>
+							-->
 						</StackLayout>
 					</Grid>
 			</ScrollView>

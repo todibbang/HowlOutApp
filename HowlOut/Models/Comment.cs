@@ -19,6 +19,7 @@ namespace HowlOut
 
 		public Comment ()
 		{
+			
 		}
 	}
 }

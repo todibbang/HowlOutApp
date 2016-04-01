@@ -10,6 +10,11 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 		}
+		public InspectManageComment (Comment comment)
+		{
+			InitializeComponent ();
+			BindingContext = comment;
+		}
 	}
 }
 

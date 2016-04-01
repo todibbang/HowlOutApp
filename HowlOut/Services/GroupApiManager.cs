@@ -200,16 +200,17 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> InviteToGroup(string groupId, List<string> profileIds)
+		public async Task<bool> InviteToGroup(string groupId, string profileId)
 		{
 			var profileIdsAsString = "";
 
+			/*
 			for (int i = 0; i < profileIds.Count; i++) 
 			{
 				profileIdsAsString += "&profileIds=" + profileIds[i];
 			}
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/InviteToGroup?groupId=" + groupId + profileIdsAsString);
+*/
+			var uri = new Uri("https://www.howlout.net/api/GroupApi/InviteToGroup?groupId="+groupId+"&profileId="+profileId);
 
 			try
 			{

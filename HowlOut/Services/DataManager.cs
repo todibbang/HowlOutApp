@@ -171,15 +171,15 @@ namespace HowlOut
 
 		public async Task<bool>  sendProfileInviteToGroup(Group group, Profile profile)
 		{
-			List <string> IdsToInvite = new List<string> ();
-			IdsToInvite.Add (profile.ProfileId);
-			bool success = await GroupApiManager.InviteToGroup(group.GroupId, IdsToInvite);
+			bool success = await GroupApiManager.InviteToGroup(group.GroupId, profile.ProfileId);
 			if (!success) {
 				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited to the group " + group.Name, "Ok");
 				return false;
 			} else {
 				return true;
 			}
+
+			System.Diagnostics.Debug.WriteLine ("Boo");
 		}
 
 		public async void leaveEvent(Event eve)
@@ -226,7 +226,7 @@ namespace HowlOut
 
 		public async void declineEvent(Event eve)
 		{
-			bool hasFollowed = await EventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
+			bool hasFollowed = await EventApiManager.DeclineEventInvite (eve.EventId, App.userProfile.ProfileId);
 			if (!hasFollowed) {
 				await App.coreView.displayAlertMessage ("Event Not Declined", "An error happened and you have not yet declined the invite, try again.", "Ok");
 			}
