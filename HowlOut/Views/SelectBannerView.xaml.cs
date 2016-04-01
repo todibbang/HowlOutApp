@@ -37,8 +37,8 @@ namespace HowlOut
 			foreach(Button button in bannerButtons) {
 				button.Clicked += (sender, e) => {
 					System.Diagnostics.Debug.WriteLine(button.Image.File + " ");
-					createEventView.newEvent.Banner = button.Image.File;
-					createEventView.setBanner(createEventView.newEvent.Banner);
+					createEventView.newEvent.BannerName = button.Image.File;
+					createEventView.setBanner(createEventView.newEvent.BannerName);
 					App.coreView.setContentView (createEventView, "CreateEvent");
 				};
 			}

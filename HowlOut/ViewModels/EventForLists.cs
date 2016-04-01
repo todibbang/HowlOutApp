@@ -38,7 +38,7 @@ namespace HowlOut
 			eve = theGivenEvent;
 			ProfileImageUri = eve.ProfileImageUri;
 			Banner = "Party.png";
-			if(!string.IsNullOrWhiteSpace(eve.Banner)) System.Diagnostics.Debug.WriteLine ("Banner works");
+			if(!string.IsNullOrWhiteSpace(eve.BannerName)) System.Diagnostics.Debug.WriteLine ("Banner works");
 			Title = eve.Title;
 
 			Position position = App.lastKnownPosition;

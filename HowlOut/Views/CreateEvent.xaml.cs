@@ -210,7 +210,7 @@ namespace HowlOut
 				App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
 				App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
-			} else if (String.IsNullOrWhiteSpace (eventToCreate.Banner)) {
+			} else if (String.IsNullOrWhiteSpace (eventToCreate.BannerName)) {
 				App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
 			}else {
 				EventDBO newEventAsDBO = new EventDBO{
@@ -228,7 +228,7 @@ namespace HowlOut
 					Longitude = eventToCreate.Longitude, 
 					AddressName = eventToCreate.AddressName, 
 					EventTypes = eventToCreate.EventTypes,
-					Banner = eventToCreate.Banner};
+					Banner = eventToCreate.BannerName};
 
 				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
 				Launching = false;
