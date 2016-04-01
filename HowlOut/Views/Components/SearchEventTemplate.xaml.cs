@@ -17,8 +17,8 @@ namespace HowlOut
 			InitializeComponent ();
 			BindingContext = new EventForLists(eve);
 
-			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.ProfileDesign.Plain);
-			EventView.Content = new ProfileDesignView (null, null, eve, 80, ProfileDesignView.ProfileDesign.Plain);
+			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain);
+			EventView.Content = new EventDesignView (eve, 80, EventDesignView.Design.Plain);
 
 			SubjectButton.Clicked += (sender, e) => {
 				App.coreView.setContentView(new InspectController(null,null,eve),"");

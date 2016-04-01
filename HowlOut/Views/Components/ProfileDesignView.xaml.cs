@@ -7,29 +7,26 @@ namespace HowlOut
 	public partial class ProfileDesignView : ContentView
 	{
 		DataManager _dataManager;
-
-		public ProfileDesignView (Profile profile, Group group, Event eve, int dimentions, ProfileDesign design)
+		public ProfileDesignView (Profile profile, Group groupInvitedTo, Event eventInvitedTo, int dimentions, Design design)
 		{
 			_dataManager = new DataManager ();
 			InitializeComponent ();
-			ScaleLayout (profile, group, eve, dimentions, design);
+			ScaleLayout (profile, dimentions, design);
 
-			setTypeSpecificDesign (profile, group, eve, dimentions, design);
+			setTypeSpecificDesign (profile, dimentions, design);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(profile,group,eve),"");
+				App.coreView.setContentView(new InspectController(profile,null,null),"");
 			};
 
 			acceptButton.Clicked += (sender, e) => {
 				if(profile != null) {
-					if (design.Equals (ProfileDesign.InviteProfileToEvent)) {
-						sendEventInviteToProfile(profile, eve);
-					} else if(design.Equals(ProfileDesign.InviteProfileToGroup)) {
-						sendGroupInviteToProfile(profile, group);
+					if (design.Equals (Design.InviteProfileToEvent)) {
+						sendEventInviteToProfile(profile, eventInvitedTo);
+					} else if(design.Equals(Design.InviteProfileToGroup)) {
+						sendGroupInviteToProfile(profile, groupInvitedTo);
 					} else if (_dataManager.IsProfileYou (profile)) {
 						//Edit Profile ??
-					} else if (_dataManager.IsProfileFriend (profile)) {
-						//Like
 					} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
 						_dataManager.acceptFriendRequest(profile, true);
 					} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
@@ -37,17 +34,7 @@ namespace HowlOut
 					} else {
 						_dataManager.sendFriendRequest(profile);
 					}
-				} else if (group != null) {
-					if(design.Equals (ProfileDesign.InviteGroupToEvent)) {
-						sendEventInviteToGroup (group, eve);
-					} else if (_dataManager.AreYouGroupOwner (group) || _dataManager.AreYouGroupMember (group)) {
-						App.coreView.setContentView (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
-					} else if (_dataManager.AreYouInvitedToGroup(group)) {
-						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
-					} else {
-						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
-					}
-				}
+				} 
 			};
 
 			declineButton.Clicked += (sender, e) => {
@@ -57,27 +44,19 @@ namespace HowlOut
 					} else if(_dataManager.HasProfileSentYouFriendRequest (profile)) {
 						_dataManager.declineFriendRequest(profile);
 					}
-				} else if (group != null) {
-					if (_dataManager.AreYouGroupOwner (group)) {
-						App.coreView.setContentView (new CreateGroup (group), "");
-					} else if (_dataManager.AreYouGroupMember (group)) {
-						_dataManager.GroupApiManager.LeaveGroup(group.GroupId,App.userProfile.ProfileId);
-					} else if (_dataManager.AreYouInvitedToGroup(group)) {
-						_dataManager.GroupApiManager.DeclineGroupInvite(group.GroupId, App.userProfile.ProfileId);
-					} 
 				} 
 			};
 		}
 
-		private void ScaleLayout(Profile profile, Group group, Event eve, int dimentions, ProfileDesign design){
+		private void ScaleLayout(Profile profile, int dimentions, Design design){
 
 			profileGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
 			profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
 			profileLayout.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
 
-			if (design.Equals (ProfileDesign.Plain)) {
+			if (design.Equals (Design.Plain)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
-			} else if (design.Equals (ProfileDesign.WithName)) {
+			} else if (design.Equals (Design.WithName)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
 			} else {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.5 });
@@ -99,61 +78,52 @@ namespace HowlOut
 				infoLabel.Text = profile.Name + ", " + profile.Age;
 				ProfileImage.Source = "https://graph.facebook.com/v2.5/" + profile.ProfileId + "/picture?height=" + dimentions + "&width=" + dimentions;
 				ProfileImage.IsVisible = true;
-			} else {
-				MainButton.IsVisible = true;
-				MainButton.BorderRadius = (int) (0.375 * dimentions);
-				MainButton.BorderWidth = (int) (0.04 * dimentions);
-				if (group != null) {
-					MainButton.Text = group.Members.Count + 1 + "";
-					infoLabel.Text = group.Name;
-				} else if (eve != null){
-					MainButton.Text = eve.Attendees.Count + 1 + "/" + eve.MaxSize;
-					infoLabel.Text = eve.Title;
-				}
-			}
+			} 
 		}
 
-		private void setTypeSpecificDesign(Profile profile, Group group, Event eve, int dimentions, ProfileDesign design) {
+		private void setTypeSpecificDesign(Profile profile, int dimentions, Design design) {
 			if(profile != null) {
-				if (_dataManager.IsProfileYou (profile)) {
-					acceptButton.Text = " YOU ";
+				if (design.Equals (Design.WithDescription)) {
+					declineButton.IsVisible = false;
 					acceptButton.IsEnabled = false;
-					declineButton.IsVisible = false;
-				} else if (_dataManager.IsProfileFriend (profile)) {
-					acceptButton.IsVisible = false;
-					declineButton.Text = " Remove Friend ";
-				} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
-					acceptButton.Text = " Accept ";
-					declineButton.Text = " Decline ";
-				} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
-					acceptButton.Text = " Request Sent ";
-					declineButton.IsVisible = false;
-				} else {
-					acceptButton.Text = " Add Friend ";
-					declineButton.IsVisible = false;
+					if (_dataManager.IsProfileYou (profile)) {
+						acceptButton.Text = " You ";
+					} else if (_dataManager.IsProfileFriend (profile)) {
+						declineButton.Text = " Friend ";
+					} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
+						acceptButton.Text = " Sent You Request ";
+					} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
+						acceptButton.Text = " Request Sent ";
+					} else {
+						acceptButton.IsVisible = false;
+					}
+				} else if (design.Equals (Design.WithOptions)) {
+					likeButton.IsVisible = true;
+					if (_dataManager.IsProfileYou (profile)) {
+						acceptButton.Text = " Edit ";
+						acceptButton.IsEnabled = false;
+						declineButton.IsVisible = false;
+					} else if (_dataManager.IsProfileFriend (profile)) {
+						acceptButton.IsVisible = false;
+						declineButton.Text = " Remove Friend ";
+					} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
+						acceptButton.Text = " Accept ";
+						declineButton.Text = " Decline ";
+					} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {
+						acceptButton.Text = " Request Sent ";
+						declineButton.IsVisible = false;
+					} else {
+						acceptButton.Text = " Add Friend ";
+						declineButton.IsVisible = false;
+					}
 				}
 				Loyalty.IsVisible = false;
-			} else if (group != null) {
-				if (_dataManager.AreYouGroupOwner (group)) {
-					acceptButton.Text = " Invite ";
-					declineButton.Text = " Edit ";
-				} else if (_dataManager.AreYouGroupMember (group)) {
-					acceptButton.Text = " Invite ";
-					declineButton.Text = " Leave ";
-				} else if (_dataManager.AreYouInvitedToGroup(group)) {
-					acceptButton.Text = " Accept ";
-					declineButton.Text = " Decline ";
-				} else {
-					acceptButton.Text = " Join ";
-					declineButton.IsVisible = false;
+				if (_dataManager.IsProfileYou (profile)) {
+					likeButton.IsVisible = false;
 				}
-				Loyalty.IsVisible = false;
-			} else {
-				Likes.IsVisible = false;
 			}
 
-			if (design.Equals (ProfileDesign.InviteProfileToEvent) || design.Equals(ProfileDesign.InviteProfileToGroup) || 
-				design.Equals (ProfileDesign.InviteGroupToEvent)) {
+			if (design.Equals (Design.InviteProfileToEvent) || design.Equals(Design.InviteProfileToGroup)) {
 				acceptButton.Text = " Invite ";
 				acceptButton.IsVisible = true;
 				declineButton.IsVisible = false;
@@ -168,14 +138,6 @@ namespace HowlOut
 			}
 		}
 
-		private async void sendEventInviteToGroup (Group group, Event eve) {
-			for(int i = 0; i < group.Members.Count; i++) {
-				await _dataManager.sendProfileInviteToEvent(eve, group.Members[i]);
-			}
-			acceptButton.Text = " Invite Sent ";
-			acceptButton.IsEnabled = false;
-		}
-
 		private async void sendGroupInviteToProfile(Profile profile, Group group) {
 			bool success = await _dataManager.sendProfileInviteToGroup(group, profile);
 			if (success) {
@@ -185,13 +147,13 @@ namespace HowlOut
 		}
 
 
-		public enum ProfileDesign {
+		public enum Design {
 			Plain,
 			WithName,
-			WithButtons,
+			WithDescription,
+			WithOptions,
 			InviteProfileToEvent,
 			InviteProfileToGroup,
-			InviteGroupToEvent
 		}
 	}
 }

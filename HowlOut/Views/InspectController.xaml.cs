@@ -25,68 +25,7 @@ namespace HowlOut
 		public InspectController (Profile userProfile, Group userGroup, Event eventObject)
 		{
 			InitializeComponent ();
-			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
-			if (userProfile != null) {
-				if (userProfile.ProfileId == App.userProfile.ProfileId) {
-					userProfile = App.userProfile;
-					if (userProfile.RecievedFriendRequests.Count > 0) {
-						listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, ListsAndButtons.ListType.Normal, null, null);
-					} else {
-						listMaker.createList (profileGrid, userProfile.Friends, null, null, ListsAndButtons.ListType.Normal, null, null);
-					}
-
-					if (userProfile.GroupsInviteTo.Count > 0) {
-						listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, ListsAndButtons.ListType.Normal, null, null);
-					} else {
-						//TODO following three lines are dummy data
-						//var groups = new List<Group> ();
-						//groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
-						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
-					}
-					friendsButton.IsVisible = true;
-					groupsButton.IsVisible = true;
-				}
-				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.ProfileDesign.WithButtons);
-
-			} else if(userGroup != null) {
-				if (userGroup.Members != null) {
-					for (int i = 0; i < userGroup.Members.Count; i++) {
-						profileList.Add (userGroup.Members[i]);
-					}
-				}
-				profileList.Add (userGroup.Owner);
-				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
-				friendsButton.Text = "Members";
-				givenCommentList = userGroup.Comments;
-				wallButton.IsVisible = true;
-				friendsButton.IsVisible = true;
-				infoView.Content = new ProfileDesignView (null, userGroup,null,200, ProfileDesignView.ProfileDesign.WithButtons);
-
-			} else if(eventObject != null) {
-				if (eventObject.Attendees != null) {
-					for (int i = 0; i < eventObject.Attendees.Count; i++) {
-						profileList.Add (eventObject.Attendees[i]);
-					}
-				}
-				profileList.Add (eventObject.Owner);
-				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
-				profileGrid.IsVisible = true;
-				friendsButton.Text = "Attendees";
-				givenCommentList = eventObject.Comments;
-				wallButton.IsVisible = true;
-				friendsButton.IsVisible = true;
-
-				bool eventNotJoined = true;
-				for (int i = 0; i < eventObject.Attendees.Count; i++) {
-					if (App.userProfile.ProfileId == eventObject.Attendees[i].ProfileId) {
-						eventNotJoined = false;
-					}
-				}
-				infoView.Content = new InspectEvent (eventObject, eventNotJoined);
-			}
-
-			createWall(givenCommentList);
-
+			setInfo ( userProfile,  userGroup,  eventObject);
 			friendsButton.Clicked  += (sender, e) => {
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
@@ -155,6 +94,76 @@ namespace HowlOut
 				}
 				//WallList.ItemsSource = displayedList;
 			}
+		}
+
+		private async void setInfo (Profile userProfile, Group userGroup, Event eventObject){
+			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
+			if (userProfile != null) {
+				if (userProfile.ProfileId == App.userProfile.ProfileId) {
+					userProfile = App.userProfile;
+					if (userProfile.RecievedFriendRequests.Count > 0) {
+						listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, ListsAndButtons.ListType.Normal, null, null);
+					} else {
+						listMaker.createList (profileGrid, userProfile.Friends, null, null, ListsAndButtons.ListType.Normal, null, null);
+					}
+
+					if (userProfile.GroupsInviteTo.Count > 0) {
+						listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, ListsAndButtons.ListType.Normal, null, null);
+					} else {
+						//TODO following three lines are dummy data
+						//var groups = new List<Group> ();
+						//groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
+						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
+					}
+					friendsButton.IsVisible = true;
+					groupsButton.IsVisible = true;
+				} else {
+					userProfile = await _dataManager.ProfileApiManager.GetProfile (userProfile.ProfileId);
+				}
+				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.Design.WithOptions);
+
+			} else if(userGroup != null) {
+				//TODO denne det uddokumenterede kald skal bruges når det returnerer de rigtige værdier 
+				userGroup = await _dataManager.GroupApiManager.GetGroupById (userGroup.GroupId);
+				profileList.Add (userGroup.Owner);
+				if (userGroup.Members != null) {
+					for (int i = 0; i < userGroup.Members.Count; i++) {
+						profileList.Add (userGroup.Members[i]);
+					}
+				}
+				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
+				friendsButton.Text = "Members";
+				givenCommentList = userGroup.Comments;
+				wallButton.IsVisible = true;
+				friendsButton.IsVisible = true;
+				infoView.Content = new GroupDesignView (userGroup,null,200, GroupDesignView.Design.WithOptions);
+
+			} else if(eventObject != null) {
+				eventObject = await _dataManager.EventApiManager.GetEventById (eventObject.EventId);
+				profileList.Add (eventObject.Owner);
+				if (eventObject.Attendees != null) {
+					for (int i = 0; i < eventObject.Attendees.Count; i++) {
+						profileList.Add (eventObject.Attendees[i]);
+					}
+				}
+				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
+				profileGrid.IsVisible = true;
+				friendsButton.Text = "Attendees";
+				givenCommentList = eventObject.Comments;
+				wallButton.IsVisible = true;
+				friendsButton.IsVisible = true;
+
+				bool eventNotJoined = true;
+				for (int i = 0; i < eventObject.Attendees.Count; i++) {
+					if (App.userProfile.ProfileId == eventObject.Attendees[i].ProfileId) {
+						eventNotJoined = false;
+					}
+				}
+				infoView.Content = new InspectEvent (eventObject, eventNotJoined);
+			}
+
+			createWall(givenCommentList);
+
 		}
 	}
 }

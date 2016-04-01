@@ -72,8 +72,8 @@ namespace HowlOut
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
 
-			ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.ProfileDesign.Plain);
-			GroupContent.Content = new ProfileDesignView (null, null, eve, 130, ProfileDesignView.ProfileDesign.Plain);
+			ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain);
+			GroupContent.Content = new GroupDesignView (null, null, 130, GroupDesignView.Design.Plain);
 			BannerHeight.Height = (0.524 * App.coreView.Width) - 60;
 
 			Title.Text = eve.Title;

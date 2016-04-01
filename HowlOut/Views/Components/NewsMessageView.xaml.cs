@@ -14,7 +14,7 @@ namespace HowlOut
 
 			//headerLayout.IsVisible = false;
 
-			HeaderContent.Content = new ProfileDesignView (eventObject.Owner, null, null, 50, ProfileDesignView.ProfileDesign.Plain);
+			HeaderContent.Content = new ProfileDesignView (eventObject.Owner, null, null, 50, ProfileDesignView.Design.Plain);
 
 			MessageContent.Content = new SearchEventTemplate (eventObject);
 

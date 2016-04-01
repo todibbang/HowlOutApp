@@ -37,7 +37,7 @@ namespace HowlOut
 		{
 			eve = theGivenEvent;
 			ProfileImageUri = eve.ProfileImageUri;
-			Banner = "Party.png";
+			Banner = eve.BannerName;
 			if(!string.IsNullOrWhiteSpace(eve.BannerName)) System.Diagnostics.Debug.WriteLine ("Banner works");
 			Title = eve.Title;
 
@@ -77,6 +77,8 @@ namespace HowlOut
 				EventType3 = eve.EventTypes [2] + "";
 				EventType3Visible = true;
 			}
+
+			Image banner = new Image (){ Source=eve.BannerName};
 
 			BannerHeight = (0.524 * App.coreView.Width) - 60;
 		}

@@ -203,15 +203,15 @@ namespace HowlOut
 		private async void LaunchEvent(Event eventToCreate)
 		{
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
-				App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
+				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
-				App.coreView.displayAlertMessage ("Description Missing", "Description is missing", "Ok");
+				await App.coreView.displayAlertMessage ("Description Missing", "Description is missing", "Ok");
 			}	else if (eventToCreate.EventTypes.Count == 0) {
-				App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
+				await App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
-				App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
+				await App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.BannerName)) {
-				App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
+				await App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
 			}else {
 				EventDBO newEventAsDBO = new EventDBO{
 					Owner = eventToCreate.Owner, 
@@ -228,7 +228,7 @@ namespace HowlOut
 					Longitude = eventToCreate.Longitude, 
 					AddressName = eventToCreate.AddressName, 
 					EventTypes = eventToCreate.EventTypes,
-					Banner = eventToCreate.BannerName};
+					BannerName = eventToCreate.BannerName};
 
 				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
 				Launching = false;

@@ -14,9 +14,9 @@ namespace HowlOut
 			InitializeComponent ();
 
 			if(profiles) {
-				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, null, ListsAndButtons.ListType.Normal, null, null);
+				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
 			} else { 
-				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, null, ListsAndButtons.ListType.Normal, null, null);
+				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
 			}
 		}
 	}

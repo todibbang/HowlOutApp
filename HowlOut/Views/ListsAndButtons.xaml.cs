@@ -75,17 +75,21 @@ namespace HowlOut
 				} else {
 					if (profiles != null) {
 						if (listType.Equals(ListType.InviteToEvent)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.ProfileDesign.InviteProfileToEvent), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.Design.InviteProfileToEvent), 0, 0);
 						} else if (listType.Equals(ListType.InviteToGroup)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.ProfileDesign.InviteProfileToGroup), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.InviteProfileToGroup), 0, 0);
+						} else if (listType.Equals(ListType.FriendAndGroupRequests)) {
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.WithOptions), 0, 0);
 						} else {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.Design.WithDescription), 0, 0);
 						}
 					} else if (groups != null) {
 						if (listType.Equals (ListType.InviteToEvent)) {
-							cell.Children.Add (new ProfileDesignView (null, groups [subjectNr], eventInvitingTo, 100, ProfileDesignView.ProfileDesign.InviteGroupToEvent), 0, 0); 
+							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.InviteGroupToEvent), 0, 0); 
+						} else if (listType.Equals(ListType.FriendAndGroupRequests)) {
+							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithOptions), 0, 0);
 						} else {
-							cell.Children.Add (new ProfileDesignView (null, groups [subjectNr], eventInvitingTo, 100, ProfileDesignView.ProfileDesign.WithButtons), 0, 0); 
+							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithDescription), 0, 0); 
 						}//cell = groupCellCreator (groups [subjectNr]);
 					}
 					grid.Children.Add (cell, column, row);
@@ -145,7 +149,8 @@ namespace HowlOut
 		public enum ListType {
 			Normal,
 			InviteToEvent,
-			InviteToGroup
+			InviteToGroup,
+			FriendAndGroupRequests
 		}
 	}
 }

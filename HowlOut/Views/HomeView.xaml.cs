@@ -47,15 +47,15 @@ namespace HowlOut
 
 		public async void updateAutoCompleteProfileList(string input)
 		{
-			profileGrid.Children.Clear ();
 			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
+			profileGrid.Children.Clear ();
 			listMaker.createList (profileGrid, profileSearchResult, null, null, ListsAndButtons.ListType.Normal, null, null);
 		}
 
 		public async void updateAutoCompleteGroupList(string input)
 		{
-			groupGrid.Children.Clear ();
 			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
+			groupGrid.Children.Clear ();
 			listMaker.createList (groupGrid, null, groupSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
 		}
 
