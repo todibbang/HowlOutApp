@@ -171,7 +171,9 @@ namespace HowlOut
 
 		public async Task<bool>  sendProfileInviteToGroup(Group group, Profile profile)
 		{
-			bool success = await GroupApiManager.InviteToGroup(group.GroupId, profile.ProfileId);
+			List<string> profileIds = new List<string> ();
+			profileIds.Add (profile.ProfileId);
+			bool success = await GroupApiManager.InviteToGroup(group.GroupId, profileIds);
 			if (!success) {
 				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited to the group " + group.Name, "Ok");
 				return false;
