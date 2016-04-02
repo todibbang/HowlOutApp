@@ -107,6 +107,7 @@ namespace HowlOut
 						listMaker.createList (profileGrid, userProfile.Friends, null, null, ListsAndButtons.ListType.Normal, null, null);
 					}
 
+
 					if (userProfile.GroupsInviteTo.Count > 0) {
 						listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, ListsAndButtons.ListType.Normal, null, null);
 					} else {
@@ -123,7 +124,6 @@ namespace HowlOut
 				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.Design.WithOptions);
 
 			} else if(userGroup != null) {
-				//TODO denne det uddokumenterede kald skal bruges når det returnerer de rigtige værdier 
 				userGroup = await _dataManager.GroupApiManager.GetGroupById (userGroup.GroupId);
 				profileList.Add (userGroup.Owner);
 				if (userGroup.Members != null) {

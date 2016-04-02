@@ -168,7 +168,7 @@ namespace HowlOut
 			} else if (listToUpdate == 3) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsFollowed ();
 			} else if (listToUpdate == 4) {
-				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo (App.userProfile.ProfileId);
+				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo ();
 				var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
 				for (int i = evelist.Count -1; i > -1; i--) {
 					for (int m = 0; m < evesAttended.Count; m++) {
@@ -219,9 +219,9 @@ namespace HowlOut
 
 				}
 				if (listToUpdate == 0) { list.Children.Add (new SearchEventTemplate (orderedList [i]));
-				} else if (listToUpdate == 1) { list.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
-				} else if (listToUpdate == 2) { list.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
-				} else if (listToUpdate == 3) { list.Children.Add (new ManageEventTemplate (new EventForLists (orderedList [i])));
+				} else if (listToUpdate == 1) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
+				} else if (listToUpdate == 2) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
+				} else if (listToUpdate == 3) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 4) { list.Children.Add (new NewsMessageView (orderedList [i],NewsMessageView.MessageType.Invite));
 				}
 			}

@@ -50,7 +50,7 @@
 							</Grid.RowDefinitions>
 
 							<controls:CircleImage Grid.Row="1" Grid.Column="1" x:Name="usersPhoto"/> 
-							<Button Grid.Column="1" Grid.Row="2" Text="Post" x:Name="postCommentButton"/>
+							<Button Grid.Column="1" Grid.Row="2" Text="Post" x:Name="postCommentButton" Style="{DynamicResource ButtonStyle}"/>
 							<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 								<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntry" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
 							</StackLayout>

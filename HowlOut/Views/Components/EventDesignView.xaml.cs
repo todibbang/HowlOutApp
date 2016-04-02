@@ -54,7 +54,10 @@ namespace HowlOut
 			MainButton.IsVisible = true;
 			MainButton.BorderRadius = (int) (0.375 * dimentions);
 			MainButton.BorderWidth = (int) (0.04 * dimentions);
-			MainButton.Text = eve.Attendees.Count + 1 + "";
+			MainButton.Text = eve.NumberOfAttendees + "";
+			if(eve.NumberOfAttendees == 0 && eve.Attendees != null) {
+				MainButton.Text = eve.Attendees.Count + "";
+			}
 			infoLabel.Text = eve.Title;
 		}
 

@@ -11,21 +11,21 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 		}
-		public ManageEventTemplate (EventForLists eve)
+		public ManageEventTemplate (Event eve)
 		{
 			InitializeComponent ();
-			BindingContext = eve;
+			BindingContext = new EventForLists(eve);
 
-			distance.Text = eve.Distance + " km";
-			var times = _dataManager.UtilityManager.setTime (eve.eve.StartDate);
+			distance.Text += " km";
+			var times = _dataManager.UtilityManager.setTime (eve.StartDate);
 			time.Text = times[0] + " " + times[1];
 			//address.Text = "At " + eve.eve.AddressName;
 
-			ProfilView.Content = new ProfileDesignView (eve.eve.Owner, null, null, 80, ProfileDesignView.Design.Plain);
-			EventView.Content = new EventDesignView (eve.eve, 80, EventDesignView.Design.Plain);
+			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain);
+			EventView.Content = new EventDesignView (eve, 80, EventDesignView.Design.Plain);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(null,null,eve.eve),"");
+				App.coreView.setContentView(new InspectController(null,null,eve),"");
 			};
 		}
 	}

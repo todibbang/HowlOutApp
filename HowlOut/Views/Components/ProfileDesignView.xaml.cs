@@ -89,7 +89,7 @@ namespace HowlOut
 					if (_dataManager.IsProfileYou (profile)) {
 						acceptButton.Text = " You ";
 					} else if (_dataManager.IsProfileFriend (profile)) {
-						declineButton.Text = " Friend ";
+						acceptButton.Text = " Friend ";
 					} else if (_dataManager.HasProfileSentYouFriendRequest (profile)) {
 						acceptButton.Text = " Sent You Request ";
 					} else if (_dataManager.HaveYouSentProfileFriendRequest (profile)) {

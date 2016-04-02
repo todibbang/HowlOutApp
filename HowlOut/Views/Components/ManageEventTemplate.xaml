@@ -21,7 +21,7 @@
 			<StackLayout Grid.Column="1" Grid.Row="0" Padding="0,10,0,0" Spacing="0" >
 				<Label Style="{DynamicResource TitleStyle}"/>
 				<Label Style="{DynamicResource TimeStyle}" x:Name="time"/>
-				<Label Style="{DynamicResource DistanceStyle}" x:Name="distance"/>
+				<Label Style="{DynamicResource DistanceStyle}" Text="{Binding Distance}" x:Name="distance"/>
 			</StackLayout>
 
 			<Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" x:Name="SubjectButton" BackgroundColor="Transparent" />

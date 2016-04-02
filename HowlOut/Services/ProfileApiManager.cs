@@ -111,8 +111,9 @@ namespace HowlOut
 			return profile;
 		}
 
-		public async Task<ObservableCollection<Event>> GetEventsInvitedTo(string profileId)
+		public async Task<ObservableCollection<Event>> GetEventsInvitedTo()
 		{
+			string profileId = App.userProfile.ProfileId;
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
 			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId + "?currentTime="+DateTime.Now);

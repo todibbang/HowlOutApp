@@ -133,8 +133,24 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine (DateTime.Now.TimeOfDay);
 			System.Diagnostics.Debug.WriteLine (new TimeSpan (1,10,0));
 
-			startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
-			endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+			bool didTrySucceed = false;
+			try 
+			{
+				startTime.Time.Add (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
+				endTime.Time.Add (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+				didTrySucceed = true;
+			} 
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			/*
+			if(!didTrySucceed)
+			{
+				startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
+				endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+			}
+			*/
 
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EndDate = endDate.Date.Add(endTime.Time);

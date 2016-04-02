@@ -7,20 +7,15 @@ namespace HowlOut
 	public class EventForLists
 	{
 		public Event eve = new Event();
-
 		UtilityManager util = new UtilityManager();
 
 		public string Title  {get; set;}
 		public string Distance  {get; set;}
 		public string BigTime  {get; set;}
 		public string SmallTime  {get; set;}
-		public string Attendees  {get; set;}
-		public Uri ProfileImageUri { get; set;}
 
 		public string EventAverageLoyalty  {get; set;}
 		public string EventHolderLikes  {get; set;}
-		public ContentView ProfileContent { get; set;}
-		public ContentView GroupContent { get; set;}
 
 		public string EventType1  {get; set;}
 		public string EventType2  {get; set;}
@@ -36,34 +31,16 @@ namespace HowlOut
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
-			ProfileImageUri = eve.ProfileImageUri;
 			Banner = eve.BannerName;
-			if(!string.IsNullOrWhiteSpace(eve.BannerName)) System.Diagnostics.Debug.WriteLine ("Banner works");
+			BannerHeight = (0.524 * App.coreView.Width) - 60;
 			Title = eve.Title;
-
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
-
 			var Times = util.setTime (eve.StartDate);
 			BigTime = Times [0];
 			SmallTime = Times [1];
-
-			Attendees = eve.Attendees.Count + "/" + eve.MaxSize;
-
 			EventAverageLoyalty = eve.Owner.LoyaltyRating + "";
 			EventHolderLikes = eve.Owner.Likes + "";
-
-			ProfileContent = new ContentView ();
-			var content = new StackLayout ();
-			content.Children.Add (new BoxView(){BackgroundColor = Color.Red,});
-			ProfileContent.Content = content;
-
-
-			//ProfileContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
-			//GroupContent = new ProfileDesignView (eve.Attendees[0], null, 80, ProfileDesignView.ProfileDesign.Plain);
-
-			EventType2Visible = false;
-			EventType3Visible = false;
 
 			if (eve.EventTypes.Count != 0) {
 				System.Diagnostics.Debug.WriteLine ("EventTypes works");
@@ -77,10 +54,6 @@ namespace HowlOut
 				EventType3 = eve.EventTypes [2] + "";
 				EventType3Visible = true;
 			}
-
-			Image banner = new Image (){ Source=eve.BannerName};
-
-			BannerHeight = (0.524 * App.coreView.Width) - 60;
 		}
 	}
 }

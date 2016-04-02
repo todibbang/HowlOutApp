@@ -12,6 +12,7 @@ namespace HowlOut
 		public string Description {get; set;}
 		public Profile Owner {get; set;}
 		public string BannerName {get; set;}
+		public int NumberOfAttendees {get; set;}
 
         public List<EventType> EventTypes { get; set; }
 

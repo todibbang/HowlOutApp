@@ -75,7 +75,7 @@ namespace HowlOut
 			MainButton.BorderRadius = (int) (0.375 * dimentions);
 			MainButton.BorderWidth = (int) (0.04 * dimentions);
 			if (group != null) {
-				MainButton.Text = group.Members.Count + 1 + "";
+				MainButton.Text = group.NumberOfMembers + "";
 				infoLabel.Text = group.Name;
 			}
 		}
