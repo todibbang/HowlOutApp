@@ -47,7 +47,7 @@ namespace HowlOut
 			var groupCreated = await _dataManager.GroupApiManager.CreateGroup(newGroupAsDBO);
 
 			if (groupCreated != null) {
-				App.coreView.setContentView (new InspectController (null, groupCreated, null), "UserProfile");
+				App.coreView.setContentViewWithQueue (new InspectController (null, groupCreated, null), "UserProfile");
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 			}
@@ -58,7 +58,7 @@ namespace HowlOut
 			bool groupUpdated = await _dataManager.GroupApiManager.UpdateGroup(groupToUpdate);
 
 			if (groupUpdated) {
-				App.coreView.setContentView (new InspectController (null, groupToUpdate, null), "Group");
+				App.coreView.setContentViewWithQueue (new InspectController (null, groupToUpdate, null), "Group");
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Group not updated, try again", "Ok");
 			}
@@ -72,7 +72,7 @@ namespace HowlOut
 				bool groupDeleted = await _dataManager.GroupApiManager.DeleteGroup (groupToDelete.GroupId);
 				if (groupDeleted) {
 					await App.coreView.displayAlertMessage ("Group Deleted", "The group was successfully deleted", "Ok");
-					App.coreView.setContentView (new HomeView (), "Home");
+					App.coreView.setContentView (2);
 				} else {
 					App.coreView.displayAlertMessage ("Group Not Deleted", "The group was not deleted, try again", "Ok");
 				}

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Plugin.LocalNotifications;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace HowlOut
 {
@@ -46,7 +47,7 @@ namespace HowlOut
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + App.StoredUserFacebookId+"?currentTime="+DateTime.Now);
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + App.StoredUserFacebookId+"?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
 
 			try
 			{
@@ -186,20 +187,56 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<ObservableCollection<Event>> SearchEvents(string profileId, double userLat, double userLong)
+		public async Task<ObservableCollection<Event>> SearchEvents()
 		{
+			string profileId = App.userProfile.ProfileId;
+			double userLat = App.lastKnownPosition.Latitude;
+			double userLong = App.lastKnownPosition.Longitude;
+
+
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
 			var lat = userLat.ToString();
 			var lon = userLong.ToString();
 
-			Regex.Replace(lat, "\\,", "\\.");
-			Regex.Replace(lon, "\\,", "\\.");
+			string newLat = "";
+			string newLon = "";
 
-			if(lat.Contains(",")) System.Diagnostics.Debug.WriteLine("True");
+			//Regex.Replace(lat, "\\,", "\\.");
+			//Regex.Replace(lon, "\\,", "\\.");
+
+			//lat.Replace ("\\,", "\\.");
+			//lon.Replace ("\\,", "\\.");
+
+			for (int i = 0; i < lat.Length; i++) {
+				if (lat [i].Equals ("\\,")) {
+					newLat += "\\.";
+				} else {
+					newLat += lat [i];
+				}
+			}
+
+			for (int i = 0; i < lon.Length; i++) {
+				if (lon [i].Equals ("\\,")) {
+					newLon += "\\.";
+				} else {
+					newLon += lon [i];
+				}
+			}
 
 			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
-				"&userLat="+lat + "&userLong=" + lon + "&currentTime="+DateTime.Now);
+				"&userLat="+newLat + "&userLong=" + newLon + "&currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
+
+
+			if (lat.Contains (",")) {
+				var newLatSplit = Regex.Split (newLat, "\\,");
+				var newLonSplit = Regex.Split (newLon, "\\,");
+
+				uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
+					"&userLat="+ newLatSplit[0] + "." + newLatSplit[1] + "&userLong=" + 
+					newLonSplit[0] + "." + newLonSplit[1] + "&currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
+			} 
+				
 
 			try
 			{

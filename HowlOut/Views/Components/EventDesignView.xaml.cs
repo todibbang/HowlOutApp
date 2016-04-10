@@ -15,7 +15,7 @@ namespace HowlOut
 			setTypeSpecificDesign (eve, dimentions, design);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(null,null,eve),"");
+				//App.coreView.setContentViewWithQueue(new InspectController(null,null,eve),"");
 			};
 
 			acceptButton.Clicked += (sender, e) => {
@@ -54,9 +54,9 @@ namespace HowlOut
 			MainButton.IsVisible = true;
 			MainButton.BorderRadius = (int) (0.375 * dimentions);
 			MainButton.BorderWidth = (int) (0.04 * dimentions);
-			MainButton.Text = eve.NumberOfAttendees + "";
+			MainButton.Text = eve.NumberOfAttendees + "/" + eve.MaxSize ;
 			if(eve.NumberOfAttendees == 0 && eve.Attendees != null) {
-				MainButton.Text = eve.Attendees.Count + "";
+				MainButton.Text = eve.Attendees.Count + 1  + "/" + eve.MaxSize;
 			}
 			infoLabel.Text = eve.Title;
 		}

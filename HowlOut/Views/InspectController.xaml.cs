@@ -44,11 +44,11 @@ namespace HowlOut
 
 
 			FindNewFriendsButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new FriendAndGroupRequestsView(true), "");
+				App.coreView.setContentViewWithQueue (new FriendAndGroupRequestsView(true), "");
 			};
 
 			FindNewGroupsButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new FriendAndGroupRequestsView(false), "");
+				App.coreView.setContentViewWithQueue (new FriendAndGroupRequestsView(false), "");
 			};
 
 			postCommentButton.Clicked += (sender, e) => {
@@ -100,6 +100,7 @@ namespace HowlOut
 			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
 			if (userProfile != null) {
 				if (userProfile.ProfileId == App.userProfile.ProfileId) {
+					App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
 					userProfile = App.userProfile;
 					if (userProfile.RecievedFriendRequests.Count > 0) {
 						listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, ListsAndButtons.ListType.Normal, null, null);
@@ -121,7 +122,7 @@ namespace HowlOut
 				} else {
 					userProfile = await _dataManager.ProfileApiManager.GetProfile (userProfile.ProfileId);
 				}
-				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.Design.WithOptions);
+				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.Design.WithOptions, false);
 
 			} else if(userGroup != null) {
 				userGroup = await _dataManager.GroupApiManager.GetGroupById (userGroup.GroupId);

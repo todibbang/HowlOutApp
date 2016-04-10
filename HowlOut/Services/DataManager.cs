@@ -153,7 +153,7 @@ namespace HowlOut
 		private async Task loadUpdatedProfile(Profile profile)
 		{
 			App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
-			App.coreView.setContentView (new InspectController (profile, null, null), "UserProfile");
+			App.coreView.setContentViewWithQueue (new InspectController (profile, null, null), "UserProfile");
 		}
 
 		public async Task<bool> sendProfileInviteToEvent(Event eve, Profile profile)
@@ -191,7 +191,7 @@ namespace HowlOut
 				bool hasLeft = await EventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
 				if (hasLeft) {
 					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
-					App.coreView.setContentView (new EventView (), "Event");
+					App.coreView.setContentView (1);
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Left", "An error happened and you have not yet left the event, try again.", "Ok");
 				}
@@ -206,7 +206,7 @@ namespace HowlOut
 				if (hasJoined) {
 					Event eventWhenJoined = await EventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
-					App.coreView.setContentView (new InspectController (null, null, eventWhenJoined), "UserProfile");
+					App.coreView.setContentViewWithQueue (new InspectController (null, null, eventWhenJoined), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}

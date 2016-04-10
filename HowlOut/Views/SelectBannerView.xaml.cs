@@ -13,7 +13,10 @@ namespace HowlOut
 
 		List<string> avaliableBanners;
 
-		List<string> partyBanners = new List<string>{"Party.png", "Controller.jpeg", "Fodbold.jpeg", "Golf.jpeg", "Gravid.jpeg", "Hjort.jpeg", "Scrabble.jpeg", "Skak.jpeg", "Skater.jpeg", "Surf.jpeg" };
+		List<string> partyBanners = new List<string>{"Party.png", "Controller.jpeg", "Fodbold.jpeg", "Golf.jpeg", "Gravid.jpeg", "Hjort.jpeg", 
+			"Scrabble.jpeg", "Skak.jpeg", "Skater.jpeg", "Surf.jpeg",}; // "Blade.jpg", "Donut.jpg", "Fotografiapparat.jpg", "Gadelys.jpg",
+			//"Grøntmarked.jpg", "Kaffebønner.jpg", "Kaffemaskine.jpg", "Motor.jpg", "Publikum koncert.jpg", "RebPaaStol.jpg", "Sejl.jpg",
+			//"Skovsø.jpg", "Snedker.jpg", "surf tunnel.jpg", "Vinglas.jpg", "Zigaret.jpg"};
 
 		public SelectBannerView ()
 		{
@@ -39,7 +42,8 @@ namespace HowlOut
 					System.Diagnostics.Debug.WriteLine(button.Image.File + " ");
 					createEventView.newEvent.BannerName = button.Image.File;
 					createEventView.setBanner(createEventView.newEvent.BannerName);
-					App.coreView.setContentView (createEventView, "CreateEvent");
+					//App.coreView.setContentView (createEventView, "CreateEvent");
+					App.coreView.returnToPreviousView();
 				};
 			}
 

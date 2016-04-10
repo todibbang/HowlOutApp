@@ -75,8 +75,9 @@
 				<Setter Property="HeightRequest" Value="36"/>
 				<Setter Property="WidthRequest" Value="36"/>
 				<Setter Property="BorderColor" Value="{DynamicResource HowlOutBackground}"/>
-				<Setter Property="BackgroundColor" Value="White" />
+				<Setter Property="BackgroundColor" Value="#ffeeeeee" />
 				<Setter Property="FontSize" Value="10"/>
+				<Setter Property="FontAttributes" Value="Bold"/>
 			</Style>
 
 			<Style x:Key="TypeButtonSelectedStyle" TargetType="Button">

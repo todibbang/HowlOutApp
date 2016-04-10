@@ -27,7 +27,7 @@ namespace HowlOut
 				await updateBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await updateBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView (new CreateEvent( new Event(), true), "Create Event");
+				App.coreView.setContentViewWithQueue (new CreateEvent( new Event(), true), "Create Event");
 			};				
 			updateBtn.GestureRecognizers.Add(updateImage);
 
@@ -40,6 +40,15 @@ namespace HowlOut
 		public void setNavigationLabel(string label)
 		{
 			//navigationLabel.Text = label;
+		}
+
+		public void setBackButton(bool active)
+		{
+			if (active) {
+				backBtn.IsVisible = true;
+			} else {
+				backBtn.IsVisible = false;
+			}
 		}
 	}
 }

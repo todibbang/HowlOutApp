@@ -229,9 +229,9 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> JoinGroup(string groupId, string profileId)
+		public async Task<bool> JoinGroup(string groupId)
 		{
-
+			string profileId = App.userProfile.ProfileId;
 			var uri = new Uri("https://www.howlout.net/api/GroupApi/JoinGroup?groupId="+groupId+"&profileId="+profileId);
 
 			try

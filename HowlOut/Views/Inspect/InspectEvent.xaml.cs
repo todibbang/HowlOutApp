@@ -40,7 +40,7 @@ namespace HowlOut
 			};
 				
 			mapButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new MapsView(eve), "MapsView");
+				App.coreView.setContentViewWithQueue(new MapsView(eve), "MapsView");
 			};
 
 			if (eve.Owner.ProfileId == App.StoredUserFacebookId) {
@@ -48,7 +48,7 @@ namespace HowlOut
 			}
 			editLeaveButton.Clicked += (sender, e) => {
 				if (eve.Owner.ProfileId == App.StoredUserFacebookId) {
-					App.coreView.setContentView (new CreateEvent (eve, false), "CreateEvent");
+					App.coreView.setContentViewWithQueue (new CreateEvent (eve, false), "CreateEvent");
 				} else {
 					_dataManager.leaveEvent (eve);
 				}
@@ -63,7 +63,7 @@ namespace HowlOut
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (new InviteView (null, eve, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView");
+				App.coreView.setContentViewWithQueue (new InviteView (null, eve, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView");
 			};
 		}
 
@@ -72,16 +72,16 @@ namespace HowlOut
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
 
-			ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain);
+			ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain, true);
 			GroupContent.Content = new EventDesignView (eve, 130, EventDesignView.Design.Plain);
-			BannerHeight.Height = (0.524 * App.coreView.Width) - 60;
+			//BannerHeight.Height = (0.524 * App.coreView.Width) - 60;
 
-			Title.Text = eve.Title;
+			//Title.Text = eve.Title;
 			eventDescription.Text = eve.Description;
-			Distance.Text = _dataManager.UtilityManager.distance(new Position(eve.Latitude, eve.Longitude), App.lastKnownPosition);
-			var Times = _dataManager.UtilityManager.setTime(eve.StartDate);
-			BigTime.Text = Times [0];
-			SmallTime.Text = Times [1];
+			//Distance.Text = _dataManager.UtilityManager.distance(new Position(eve.Latitude, eve.Longitude), App.lastKnownPosition);
+			//var Times = _dataManager.UtilityManager.setTime(eve.StartDate);
+			//BigTime.Text = Times [0];
+			//SmallTime.Text = Times [1];
 
 			StartTime.Text = "" + eve.StartDate.DayOfWeek + " the " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM").ToLower();
 			EndTime.Text = "From " + _dataManager.UtilityManager.getTime(eve.StartDate) + " till " + _dataManager.UtilityManager.getTime(eve.EndDate);

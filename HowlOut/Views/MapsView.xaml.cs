@@ -40,7 +40,8 @@ namespace HowlOut
 			};
 
 			selectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView (createEventView, "CreateEvent");
+				//App.coreView.setContentView (createEventView, "CreateEvent");
+				App.coreView.returnToPreviousView();
 			};
 
 			searchBar.TextChanged += (sender, e) => {

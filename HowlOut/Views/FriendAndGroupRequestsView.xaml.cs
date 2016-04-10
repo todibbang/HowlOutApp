@@ -15,9 +15,28 @@ namespace HowlOut
 
 			if(profiles) {
 				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
+				profileGrid.IsVisible = true;
+				groupGrid.IsVisible = false;
+				friendsButton.FontAttributes = FontAttributes.Bold;
 			} else { 
 				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
+				profileGrid.IsVisible = false;
+				groupGrid.IsVisible = true;
+				groupsButton.FontAttributes = FontAttributes.Bold;
 			}
+
+			friendsButton.Clicked  += (sender, e) => {
+				profileGrid.IsVisible = true;
+				groupGrid.IsVisible = false;
+				groupsButton.FontAttributes = FontAttributes.None;
+				friendsButton.FontAttributes = FontAttributes.Bold;
+			};
+			groupsButton.Clicked  += (sender, e) => {
+				profileGrid.IsVisible = false;
+				groupGrid.IsVisible = true;
+				groupsButton.FontAttributes = FontAttributes.Bold;
+				friendsButton.FontAttributes = FontAttributes.None;
+			};
 		}
 	}
 }

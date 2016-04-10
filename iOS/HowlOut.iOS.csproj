@@ -177,7 +177,6 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_action_search.png" />
     <BundleResource Include="Resources\ic_chevron_left.png" />
-    <BundleResource Include="Resources\Party.png" />
     <BundleResource Include="Resources\howlouticongrown.png" />
     <BundleResource Include="Resources\ic_chevron.png" />
     <BundleResource Include="Resources\ic_event.png" />
@@ -188,14 +187,34 @@
     <BundleResource Include="Resources\ic_search.png" />
     <BundleResource Include="Resources\ic_add.png" />
     <BundleResource Include="Resources\gradiant_bg.png" />
-    <BundleResource Include="Resources\Controller.jpeg" />
-    <BundleResource Include="Resources\Fodbold.jpeg" />
-    <BundleResource Include="Resources\Golf.jpeg" />
-    <BundleResource Include="Resources\Gravid.jpeg" />
-    <BundleResource Include="Resources\Hjort.jpeg" />
-    <BundleResource Include="Resources\Scrabble.jpeg" />
-    <BundleResource Include="Resources\Skak.jpeg" />
-    <BundleResource Include="Resources\Skater.jpeg" />
-    <BundleResource Include="Resources\Surf.jpeg" />
+    <BundleResource Include="Resources\Banner\Hjort.jpeg" />
+    <BundleResource Include="Resources\Banner\Controller.jpeg" />
+    <BundleResource Include="Resources\Banner\Fodbold.jpeg" />
+    <BundleResource Include="Resources\Banner\Golf.jpeg" />
+    <BundleResource Include="Resources\Banner\Gravid.jpeg" />
+    <BundleResource Include="Resources\Banner\Party.png" />
+    <BundleResource Include="Resources\Banner\Scrabble.jpeg" />
+    <BundleResource Include="Resources\Banner\Skak.jpeg" />
+    <BundleResource Include="Resources\Banner\Skater.jpeg" />
+    <BundleResource Include="Resources\Banner\Surf.jpeg" />
+    <BundleResource Include="Resources\Banner\Blade.jpg" />
+    <BundleResource Include="Resources\Banner\Donut.jpg" />
+    <BundleResource Include="Resources\Banner\Fotografiapparat.jpg" />
+    <BundleResource Include="Resources\Banner\Gadelys.jpg" />
+    <BundleResource Include="Resources\Banner\Grøntmarked.jpg" />
+    <BundleResource Include="Resources\Banner\Kaffebønner.jpg" />
+    <BundleResource Include="Resources\Banner\Kaffemaskine.jpg" />
+    <BundleResource Include="Resources\Banner\Motor.jpg" />
+    <BundleResource Include="Resources\Banner\Publikum koncert.jpg" />
+    <BundleResource Include="Resources\Banner\Sejl.jpg" />
+    <BundleResource Include="Resources\Banner\Skovsø.jpg" />
+    <BundleResource Include="Resources\Banner\Snedker.jpg" />
+    <BundleResource Include="Resources\Banner\Surf tunnel.jpg" />
+    <BundleResource Include="Resources\Banner\Vinglas.jpg" />
+    <BundleResource Include="Resources\Banner\Zigaret.jpg" />
+    <BundleResource Include="Resources\Banner\RebPaaStol.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Banner\" />
   </ItemGroup>
 </Project>

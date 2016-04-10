@@ -55,9 +55,11 @@
 
 
 				<ScrollView x:Name="HorizontalScrollView">
-					<StackLayout x:Name="searchList" Spacing="0">
+					<StackLayout x:Name="searchList" Spacing="0" >
 					</StackLayout>
 				</ScrollView>
+
+
 
 				<!-- 
 				<ScrollView Orientation="Horizontal" x:Name="HorizontalScrollView" IsEnabled="false">
@@ -159,6 +161,9 @@
 					</ListView>
 					-->
 				</StackLayout>
+
+				<ActivityIndicator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="3"  
+				Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading"/>
 
 
 			<Button Grid.Row="2" Grid.Column="1" x:Name="CreateButton" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="35" ></Button> 

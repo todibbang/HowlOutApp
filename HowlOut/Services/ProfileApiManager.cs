@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace HowlOut
 {
@@ -116,7 +117,8 @@ namespace HowlOut
 			string profileId = App.userProfile.ProfileId;
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId + "?currentTime="+DateTime.Now);
+			//4/10/2016 7:12:43 PM - virker !! 
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
 
 			try
 			{
@@ -140,7 +142,7 @@ namespace HowlOut
 
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsFollowed/" + profileId + "?currentTime="+DateTime.Now);
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsFollowed/" + profileId + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
 
 			try
 			{

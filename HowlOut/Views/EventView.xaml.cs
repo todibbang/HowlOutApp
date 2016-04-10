@@ -82,9 +82,9 @@ namespace HowlOut
 				await Task.Delay(60);
 				await CreateImage.ScaleTo(1, 50, Easing.Linear);
 				if(currentView == 0) {
-					App.coreView.setContentView(new FilterSearch(App.userProfile.SearchReference), "FilterSearch");
+					App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchReference), "FilterSearch");
 				} else {
-					App.coreView.setContentView(new CreateEvent(new Event(), true), "CreateEvent"); 
+					App.coreView.setContentViewWithQueue(new CreateEvent(new Event(), true), "CreateEvent"); 
 				}
 			};
 			CreateImage.GestureRecognizers.Add(createImage); 
@@ -101,12 +101,13 @@ namespace HowlOut
 			
 		private async void GoToSelectedEvent(string eveID) {
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
-			App.coreView.setContentView (new InspectController (null, null, eve), "UserProfile");
+			App.coreView.setContentViewWithQueue (new InspectController (null, null, eve), "UserProfile");
 		}
 
 
 
 		private void setViewDesign(int number, StackLayout list){
+			loading.IsVisible = true;
 			UpdateManageList(number, list);
 			/*
 			ManageEventList.IsVisible = false;
@@ -115,8 +116,8 @@ namespace HowlOut
 			SearchEventList.IsVisible = false;
 			FollowedEventList.IsVisible = false;
 			*/
-			CreateButton.IsVisible = false;
-			CreateImage.IsVisible = false;
+			//CreateButton.IsVisible = false;
+			//CreateImage.IsVisible = false;
 			SearchButton.FontAttributes = FontAttributes.None;
 			ManageButton.FontAttributes = FontAttributes.None;
 			YoursButton.FontAttributes = FontAttributes.None;
@@ -150,12 +151,15 @@ namespace HowlOut
 		}
 
 		public async void UpdateManageList(int listToUpdate, StackLayout list){
+
+			while(list.Children.Count != 0) {
+				list.Children.RemoveAt(0);
+			}
 			ObservableCollection<Event> evelist = new ObservableCollection<Event>();
 			currentView = listToUpdate;
 			var first = DateTime.Now;
 			if (listToUpdate == 0) {
-				evelist = await _dataManager.EventApiManager.SearchEvents (App.userProfile.ProfileId, App.lastKnownPosition.Latitude, App.lastKnownPosition.Longitude);
-				//evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
+				evelist = await _dataManager.EventApiManager.SearchEvents ();
 			} else if (listToUpdate == 1) {
 				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
 			} else if (listToUpdate == 2) {
@@ -199,9 +203,7 @@ namespace HowlOut
 				evelist.Remove (itemToAdd);
 			}
 
-			while(list.Children.Count != 0) {
-				list.Children.RemoveAt(0);
-			}
+
 			var dateTimeMonth = DateTime.Now + new TimeSpan (-32, 0, 0, 0);
 			int month = dateTimeMonth.Month;
 			//for(int e = 0; e < 4; e++) {
@@ -226,7 +228,7 @@ namespace HowlOut
 				}
 			}
 			list.Children.Add (new BoxView(){HeightRequest=120});
-			//}
+			loading.IsVisible = false;
 		}
 	}
 }

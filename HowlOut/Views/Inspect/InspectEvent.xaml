@@ -21,11 +21,9 @@
 
 			<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" x:Name="quickInfo">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="150" x:Name="BannerHeight"/>
-					<RowDefinition Height="30"/>
+					<RowDefinition Height="{Binding InspectBannerHeight}" x:Name="BannerHeight"/>
 					<RowDefinition Height="8"/>
-					<RowDefinition Height="22"/>
-					<RowDefinition Height="14"/>
+					<RowDefinition Height="36"/>
 					<RowDefinition Height="8"/>
 				</Grid.RowDefinitions>
 
@@ -41,9 +39,9 @@
 					<ColumnDefinition Width="4"/>
 				</Grid.ColumnDefinitions>
 
-				<Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="9" Source="{Binding Banner}"></Image>
-				<Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="9" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
-				<BoxView Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="9" BackgroundColor="White"></BoxView>
+				<Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Source="{Binding Banner}"></Image>
+				<Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
+				<BoxView Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="9" BackgroundColor="White"></BoxView>
 
 				<Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" VerticalOptions="Start">
 					<Grid.RowDefinitions>
@@ -59,20 +57,24 @@
 					</Grid.ColumnDefinitions>
 
 						<StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Spacing="0">
-							<Label x:Name="BigTime" FontSize="22" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label x:Name="SmallTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding BigTime}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
-						<Label x:Name="Title" Grid.Row="1" Grid.Column="2" Style="{DynamicResource TitleStyle}" FontSize="20" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<StackLayout Grid.Row="1" Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Padding="0,0,0,0">
+							<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"/>
+						</StackLayout>
 
+						<!-- <Label Grid.Row="1" Grid.Column="2" Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						-->
 						<StackLayout Grid.Row="1" Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Spacing="0">
-							<Label x:Name="Distance" FontSize="22" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding Distance}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
 				</Grid>
 
-				<StackLayout Grid.Row="3" Grid.RowSpan="2" Grid.Column="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+				<StackLayout Grid.Row="2" Grid.Column="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
 					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
 					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>

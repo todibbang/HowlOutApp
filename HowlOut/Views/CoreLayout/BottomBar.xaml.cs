@@ -14,6 +14,7 @@ namespace HowlOut
 			InitializeComponent ();
 			_dataManager = new DataManager ();
 
+			/*
 			var exploreImage = new TapGestureRecognizer();
 			exploreImage.Tapped += async (sender, e) => 
 			{
@@ -23,28 +24,17 @@ namespace HowlOut
 				App.coreView.setContentView(new EventView(), "Event");
 			};
 			exploreBtn.GestureRecognizers.Add(exploreImage);  
+			*/
 
-			var manageImage = new TapGestureRecognizer();
-			manageImage.Tapped += async (sender, e) => 
+			meBtn.Clicked += (sender, e) => 
 			{
-				await manageBtn.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
-				await manageBtn.ScaleTo(1, 50, Easing.Linear);
-				App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
-				App.coreView.setContentView (new HomeView(), "You");
+				App.coreView.setContentView (2);
 			};
-			manageBtn.GestureRecognizers.Add(manageImage); 
 
-			var homeImage = new TapGestureRecognizer();
-			homeImage.Tapped += async (sender, e) => 
+			eventBtn.Clicked += (sender, e) => 
 			{
-				await homeBtn.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
-				await homeBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView (new EventView (), "Event");
-
+				App.coreView.setContentView (1);
 			};
-			homeBtn.GestureRecognizers.Add(homeImage); 
 		}
 	}
 }

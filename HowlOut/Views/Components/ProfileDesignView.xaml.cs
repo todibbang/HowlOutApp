@@ -7,7 +7,7 @@ namespace HowlOut
 	public partial class ProfileDesignView : ContentView
 	{
 		DataManager _dataManager;
-		public ProfileDesignView (Profile profile, Group groupInvitedTo, Event eventInvitedTo, int dimentions, Design design)
+		public ProfileDesignView (Profile profile, Group groupInvitedTo, Event eventInvitedTo, int dimentions, Design design, bool clickable)
 		{
 			_dataManager = new DataManager ();
 			InitializeComponent ();
@@ -16,7 +16,9 @@ namespace HowlOut
 			setTypeSpecificDesign (profile, dimentions, design);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(profile,null,null),"");
+				if(clickable) {
+					App.coreView.setContentViewWithQueue(new InspectController(profile,null,null),"");
+				}
 			};
 
 			acceptButton.Clicked += (sender, e) => {
@@ -56,6 +58,7 @@ namespace HowlOut
 
 			if (design.Equals (Design.Plain)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				infoLayout.IsVisible = false;
 			} else if (design.Equals (Design.WithName)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
 			} else {
@@ -76,6 +79,7 @@ namespace HowlOut
 
 			if (profile != null) {
 				infoLabel.Text = profile.Name + ", " + profile.Age;
+				infoLabel.HeightRequest = dimentions * 0.3;
 				ProfileImage.Source = "https://graph.facebook.com/v2.5/" + profile.ProfileId + "/picture?height=" + dimentions + "&width=" + dimentions;
 				ProfileImage.IsVisible = true;
 			} 

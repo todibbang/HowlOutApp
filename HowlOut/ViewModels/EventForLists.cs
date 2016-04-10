@@ -26,13 +26,14 @@ namespace HowlOut
 
 		public string Banner { get; set;}
 		public double BannerHeight { get; set;}
-
-
+		public double InspectBannerHeight { get; set;}
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
 			Banner = eve.BannerName;
-			BannerHeight = (0.524 * App.coreView.Width) - 60;
+			//BannerHeight = (0.524 * App.coreView.Width) - 60;
+			BannerHeight = (0.56 * App.coreView.Width) - 30;
+			InspectBannerHeight = (0.56 * App.coreView.Width);
 			Title = eve.Title;
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
@@ -43,7 +44,6 @@ namespace HowlOut
 			EventHolderLikes = eve.Owner.Likes + "";
 
 			if (eve.EventTypes.Count != 0) {
-				System.Diagnostics.Debug.WriteLine ("EventTypes works");
 				EventType1 = eve.EventTypes [0] + "";
 			}
 			if (eve.EventTypes.Count > 1) {

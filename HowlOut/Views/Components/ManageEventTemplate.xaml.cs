@@ -21,11 +21,11 @@ namespace HowlOut
 			time.Text = times[0] + " " + times[1];
 			//address.Text = "At " + eve.eve.AddressName;
 
-			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain);
+			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain, false);
 			EventView.Content = new EventDesignView (eve, 80, EventDesignView.Design.Plain);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(null,null,eve),"");
+				App.coreView.setContentViewWithQueue(new InspectController(null,null,eve),"");
 			};
 		}
 	}

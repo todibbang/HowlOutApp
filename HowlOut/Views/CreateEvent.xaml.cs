@@ -80,13 +80,13 @@ namespace HowlOut
 					mapView = new MapsView (new Position(newEvent.Latitude, newEvent.Longitude));
 				}
 				mapView.createEventView = this;
-				App.coreView.setContentView (mapView, "MapsView");
+				App.coreView.setContentViewWithQueue (mapView, "MapsView");
 			};
 
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
-				App.coreView.setContentView(selectBannerView, "");
+				App.coreView.setContentViewWithQueue(selectBannerView, "");
 			};
 
 			/// set age and size limits
@@ -109,7 +109,7 @@ namespace HowlOut
 				if(isCreate && !Launching) {
 					LaunchEvent(newEvent);
 					Launching = true;
-				} else {
+				} else if(!isCreate && !Launching) {
 					UpdateEvent(newEvent);
 				}
 			};
@@ -136,21 +136,20 @@ namespace HowlOut
 			bool didTrySucceed = false;
 			try 
 			{
-				startTime.Time.Add (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
-				endTime.Time.Add (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+				startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
+				endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+
 				didTrySucceed = true;
 			} 
 			catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
-			/*
 			if(!didTrySucceed)
 			{
-				startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
-				endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
+				startTime.Time.Add (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
+				endTime.Time.Add (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
 			}
-			*/
 
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EndDate = endDate.Date.Add(endTime.Time);
@@ -222,7 +221,7 @@ namespace HowlOut
 				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
 				await App.coreView.displayAlertMessage ("Description Missing", "Description is missing", "Ok");
-			}	else if (eventToCreate.EventTypes.Count == 0) {
+			} else if (eventToCreate.EventTypes.Count == 0) {
 				await App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
 				await App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
@@ -247,16 +246,16 @@ namespace HowlOut
 					BannerName = eventToCreate.BannerName};
 
 				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
-				Launching = false;
 
 				if (eventCreated != null) {
 					eventCreated.Attendees = new List<Profile> ();
 					eventCreated.Followers = new List<Profile> ();
-					App.coreView.setContentView (new InspectController (null, null, eventCreated), "UserProfile");
+					App.coreView.setContentViewWithQueue (new InspectController (null, null, eventCreated), "UserProfile");
 				} else {
 					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 				}
 			}
+			Launching = false;
 		}
 
 		private async void UpdateEvent(Event eventToUpdate)
@@ -264,7 +263,7 @@ namespace HowlOut
 			bool eventUpdated = await _dataManager.EventApiManager.UpdateEvent (eventToUpdate);
 
 			if (eventUpdated) {
-				App.coreView.setContentView (new InspectController (null, null, eventToUpdate), "UserProfile");
+				App.coreView.setContentViewWithQueue (new InspectController (null, null, eventToUpdate), "UserProfile");
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
 			}
@@ -294,7 +293,7 @@ namespace HowlOut
 				bool wasEventDeleted = await _dataManager.EventApiManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
-					App.coreView.setContentView (new EventView (), "Event");
+					App.coreView.setContentView (1);
 				} else {
 					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");
 				}

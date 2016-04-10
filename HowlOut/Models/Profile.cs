@@ -16,6 +16,7 @@ namespace HowlOut
         //public List <string> EventIDsFollowed {get; set;}
 
 		public List<Profile> Friends { get; set; }					//Your friends
+		public List<Profile> ProfilesFollowingYou { get; set; }		
 		public List<Profile> SentFriendRequests { get; set; }		//List of people who you want to be friends with
 		public List<Profile> RecievedFriendRequests { get; set; }	//List of people who want to be your friend
 

@@ -75,13 +75,13 @@ namespace HowlOut
 				} else {
 					if (profiles != null) {
 						if (listType.Equals(ListType.InviteToEvent)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.Design.InviteProfileToEvent), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.Design.InviteProfileToEvent, true), 0, 0);
 						} else if (listType.Equals(ListType.InviteToGroup)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.InviteProfileToGroup), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.InviteProfileToGroup, true), 0, 0);
 						} else if (listType.Equals(ListType.FriendAndGroupRequests)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.WithOptions), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.WithOptions, true), 0, 0);
 						} else {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.Design.WithDescription), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.Design.WithDescription, true), 0, 0);
 						}
 					} else if (groups != null) {
 						if (listType.Equals (ListType.InviteToEvent)) {
@@ -110,12 +110,13 @@ namespace HowlOut
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 
 				ColumnDefinitions = {
-					new ColumnDefinition{ Width = 50},
+					new ColumnDefinition{ Width = 45},
 					new ColumnDefinition{ Width = 25},
 				},
 				RowDefinitions = {
 					new RowDefinition{ Height = 25 },
 					new RowDefinition{ Height = 45 },
+					new RowDefinition{ Height = 55 },
 				},
 			};
 

@@ -3,7 +3,7 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
 		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-			<Grid x:Name="profileGrid">
+			<Grid x:Name="profileGrid" RowSpacing="0">
 				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="10*"/>
@@ -31,7 +31,10 @@
 					<Button Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="0" Grid.RowSpan="5" x:Name="SubjectButton" BackgroundColor="Transparent" />
 				</Grid>
 
-				<Label Grid.Row="1" x:Name="infoLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
+				<StackLayout Grid.Row="1" x:Name="infoLayout">
+					<Label  x:Name="infoLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
+				</StackLayout>
+
 				<StackLayout Grid.Row="2" HeightRequest="30" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="buttonLayout">
 					<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptButton" Text="accept" HorizontalOptions="CenterAndExpand"/>
 					<Button Style="{DynamicResource ButtonStyle}" x:Name="declineButton" Text="decline"  HorizontalOptions="CenterAndExpand"/>

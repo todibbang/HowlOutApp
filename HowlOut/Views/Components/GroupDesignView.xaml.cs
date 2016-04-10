@@ -15,7 +15,7 @@ namespace HowlOut
 			setTypeSpecificDesign (group, dimentions, design);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentView(new InspectController(null,group,null),"");
+				App.coreView.setContentViewWithQueue(new InspectController(null,group,null),"");
 			};
 
 			acceptButton.Clicked += (sender, e) => {
@@ -23,19 +23,17 @@ namespace HowlOut
 					if(design.Equals (Design.InviteGroupToEvent)) {
 						sendEventInviteToGroup (group, eventInvitedTo);
 					} else if (_dataManager.AreYouGroupOwner (group) || _dataManager.AreYouGroupMember (group)) {
-						App.coreView.setContentView (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
+						App.coreView.setContentViewWithQueue (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
 					} else if (_dataManager.AreYouInvitedToGroup(group)) {
-						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
-					} else {
-						_dataManager.GroupApiManager.JoinGroup(group.GroupId, App.userProfile.ProfileId);
-					}
+						acceptGroupInvite(group);
+					} 
 				}
 			};
 
 			declineButton.Clicked += (sender, e) => {
 				if (group != null) {
 					if (_dataManager.AreYouGroupOwner (group)) {
-						App.coreView.setContentView (new CreateGroup (group), "");
+						App.coreView.setContentViewWithQueue (new CreateGroup (group), "");
 					} else if (_dataManager.AreYouGroupMember (group)) {
 						_dataManager.GroupApiManager.LeaveGroup(group.GroupId,App.userProfile.ProfileId);
 					} else if (_dataManager.AreYouInvitedToGroup(group)) {
@@ -74,10 +72,12 @@ namespace HowlOut
 			MainButton.IsVisible = true;
 			MainButton.BorderRadius = (int) (0.375 * dimentions);
 			MainButton.BorderWidth = (int) (0.04 * dimentions);
-			if (group != null) {
-				MainButton.Text = group.NumberOfMembers + "";
-				infoLabel.Text = group.Name;
+
+			MainButton.Text = group.NumberOfMembers + "";
+			if (group.NumberOfMembers == 0) {
+				MainButton.Text = group.Members.Count + 1 + "";
 			}
+			infoLabel.Text = group.Name;
 		}
 
 		private void setTypeSpecificDesign(Group group, int dimentions, Design design) {
@@ -121,11 +121,20 @@ namespace HowlOut
 		}
 
 		private async void sendEventInviteToGroup (Group group, Event eve) {
+			group = await _dataManager.GroupApiManager.GetGroupById (group.GroupId);
 			for(int i = 0; i < group.Members.Count; i++) {
 				await _dataManager.sendProfileInviteToEvent(eve, group.Members[i]);
 			}
 			acceptButton.Text = " Invite Sent ";
 			acceptButton.IsEnabled = false;
+		}
+
+		private async void acceptGroupInvite(Group group) {
+			bool success = await _dataManager.GroupApiManager.JoinGroup(group.GroupId);
+			if (success) {
+				acceptButton.Text = " Joined ";
+				acceptButton.IsEnabled = false;
+			}
 		}
 
 		public enum Design {
