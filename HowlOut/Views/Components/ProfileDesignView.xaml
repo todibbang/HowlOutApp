@@ -35,10 +35,9 @@
 					<Label  x:Name="infoLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
 				</StackLayout>
 
-				<StackLayout Grid.Row="2" HeightRequest="30" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="buttonLayout">
-					<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptButton" Text="accept" HorizontalOptions="CenterAndExpand"/>
-					<Button Style="{DynamicResource ButtonStyle}" x:Name="declineButton" Text="decline"  HorizontalOptions="CenterAndExpand"/>
-					<Button Style="{DynamicResource ButtonStyle}" x:Name="likeButton" Text="Like"  HorizontalOptions="CenterAndExpand" IsVisible="false"/>
+				<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="buttonLayout">
+					<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptButton" Text="accept"/>
+					<Button Style="{DynamicResource ButtonStyle}" x:Name="declineButton" Text="decline"/>
 				</StackLayout>
 			</Grid>
 		</Grid>

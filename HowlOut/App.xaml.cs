@@ -6,6 +6,7 @@ using System.Net.Http;
 using ModernHttpClient;
 using Xamarin.Forms.Maps;
 using System.Collections.Generic;
+using Plugin.LocalNotifications;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -60,6 +61,7 @@ namespace HowlOut
             }
             else
             {
+				CrossLocalNotifications.Current.Show ("Notifications works!!", "Nice",99,DateTime.Now.AddSeconds(30));
 				coreView = new CoreView();
 				MainPage = coreView;
 				startProgram(coreView);

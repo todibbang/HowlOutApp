@@ -54,6 +54,7 @@
 				<Setter Property="BorderWidth" Value="1"/>
 				<Setter Property="BorderColor" Value="{DynamicResource LightGray}"/>
 				<Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+				<Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
 				<Setter Property="BackgroundColor" Value="White"/>
 			</Style>
 

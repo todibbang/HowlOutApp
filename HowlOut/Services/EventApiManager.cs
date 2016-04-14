@@ -269,13 +269,14 @@ namespace HowlOut
 				{
 					var recievedContent = await response.Content.ReadAsStringAsync();
 					var eventToRetrieve = JsonConvert.DeserializeObject<Event>(recievedContent);
-					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(2).AddMinutes(5)) > 0)
+					//if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddHours(2).AddMinutes(5)) > 0)
+					if(eventToRetrieve.StartDate > DateTime.Now.AddHours(2).AddMinutes(5))
 					{
-						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.AddHours(-2));	
+						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 2 hours!", int.Parse(eventId), eventToRetrieve.StartDate.ToLocalTime().AddHours(-4));	
 					}
-					if(eventToRetrieve.StartDate.CompareTo(DateTime.Now.AddDays(1).AddMinutes(5)) > 0)
+					if(eventToRetrieve.StartDate > DateTime.Now.AddDays(1).AddMinutes(5))
 					{
-						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId), eventToRetrieve.StartDate.AddDays(-1));	
+						CrossLocalNotifications.Current.Show ("Event: " + eventToRetrieve.Title, "Is starting in 1 day!", int.Parse(eventId + 1), eventToRetrieve.StartDate.ToLocalTime().AddHours(-2).AddDays(-1));	
 					}
 					return true;
 				}

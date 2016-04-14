@@ -138,10 +138,19 @@ namespace HowlOut
 					BorderRadius = 12,
 					BackgroundColor = Color.Red,
 					HorizontalOptions = LayoutOptions.Center,
-					Text = "" + i,
-					TextColor = Color.White
+					//Text = "" + i,
+					//TextColor = Color.White
 				};
 				cellGrid.Children.Add (notificationButton, 1, 2, 0, 1);
+
+				Label newLabel = new Label {
+					Text = "" + i,
+					TextColor = Color.White,
+					HorizontalOptions = LayoutOptions.Center,
+					VerticalOptions = LayoutOptions.Center,
+					BackgroundColor = Color.Transparent,
+				};
+				cellGrid.Children.Add (newLabel, 1, 2, 0, 1);
 			}
 
 			return cellGrid;

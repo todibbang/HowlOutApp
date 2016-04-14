@@ -9,7 +9,7 @@ namespace HowlOut
 		public string HeaderMessage { get; set; }
 		public List<Profile> HeaderProfiles { get; set; }
 		public Event ContentEvent { get; set; }
-		public Event ContentGroup { get; set; }
+		public Group ContentGroup { get; set; }
 
 		public NewsMessage ()
 		{

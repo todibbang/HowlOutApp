@@ -45,16 +45,21 @@ namespace HowlOut
 
 		private void ScaleLayout(Group group, int dimentions, Design design){
 
-			profileGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
-			profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
 			profileLayout.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
-
+			profileGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
 			if (design.Equals (Design.Plain)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				infoLayout.IsVisible = false;
 			} else if (design.Equals (Design.WithName)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 0.2});
 			} else {
-				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.5 });
+				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.6 });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 0.3});
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 0.3});
 			}
 
 
@@ -72,7 +77,7 @@ namespace HowlOut
 			MainButton.IsVisible = true;
 			MainButton.BorderRadius = (int) (0.375 * dimentions);
 			MainButton.BorderWidth = (int) (0.04 * dimentions);
-
+			MainButton.FontSize = (int) (0.15 * dimentions);
 			MainButton.Text = group.NumberOfMembers + "";
 			if (group.NumberOfMembers == 0) {
 				MainButton.Text = group.Members.Count + 1 + "";

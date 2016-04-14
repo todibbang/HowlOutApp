@@ -52,23 +52,27 @@ namespace HowlOut
 
 		private void ScaleLayout(Profile profile, int dimentions, Design design){
 
-			profileGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
-			profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
 			profileLayout.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
-
+			profileGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = dimentions });
 			if (design.Equals (Design.Plain)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
 				infoLayout.IsVisible = false;
 			} else if (design.Equals (Design.WithName)) {
 				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.2 });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 0.2});
 			} else {
-				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.5 });
+				profileLayout.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 1.6 });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions });
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 0.3});
+				profileGrid.RowDefinitions.Add (new RowDefinition{ Height = dimentions * 0.3});
 			}
 
 
 			infoLabel.FontSize = (int) (0.1 * dimentions);
-			acceptButton.FontSize = (int) (0.1 * dimentions);
-			declineButton.FontSize = (int) (0.1 * dimentions);
+			acceptButton.FontSize = (int) (0.115 * dimentions);
+			declineButton.FontSize = (int) (0.115 * dimentions);
 			Likes.BorderRadius = (int) (0.175 * dimentions);
 			Loyalty.BorderRadius = (int)(0.175 * dimentions);
 			Likes.BorderWidth = (int) (0.025 * dimentions);
@@ -102,7 +106,6 @@ namespace HowlOut
 						acceptButton.IsVisible = false;
 					}
 				} else if (design.Equals (Design.WithOptions)) {
-					likeButton.IsVisible = true;
 					if (_dataManager.IsProfileYou (profile)) {
 						acceptButton.Text = " Edit ";
 						acceptButton.IsEnabled = false;
@@ -122,9 +125,6 @@ namespace HowlOut
 					}
 				}
 				Loyalty.IsVisible = false;
-				if (_dataManager.IsProfileYou (profile)) {
-					likeButton.IsVisible = false;
-				}
 			}
 
 			if (design.Equals (Design.InviteProfileToEvent) || design.Equals(Design.InviteProfileToGroup)) {
