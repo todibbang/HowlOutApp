@@ -187,24 +187,21 @@
     <BundleResource Include="Resources\ic_search.png" />
     <BundleResource Include="Resources\ic_add.png" />
     <BundleResource Include="Resources\gradiant_bg.png" />
-    <BundleResource Include="Resources\Banner\Controller.png" />
-    <BundleResource Include="Resources\Banner\Donut.png" />
-    <BundleResource Include="Resources\Banner\Fodbold.png" />
-    <BundleResource Include="Resources\Banner\Golf.png" />
-    <BundleResource Include="Resources\Banner\Gravid.png" />
-    <BundleResource Include="Resources\Banner\Hjort.png" />
-    <BundleResource Include="Resources\Banner\Kaffe.png" />
-    <BundleResource Include="Resources\Banner\Marked.png" />
-    <BundleResource Include="Resources\Banner\Publikum.png" />
-    <BundleResource Include="Resources\Banner\Scrabble.png" />
-    <BundleResource Include="Resources\Banner\Skak.png" />
-    <BundleResource Include="Resources\Banner\Skater.png" />
-    <BundleResource Include="Resources\Banner\Skovsoe.png" />
-    <BundleResource Include="Resources\Banner\Surf.png" />
-    <BundleResource Include="Resources\Banner\Vinglas.png" />
-    <BundleResource Include="Resources\Banner\Blade.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Banner\" />
+    <BundleResource Include="Resources\banner_blade.png" />
+    <BundleResource Include="Resources\banner_controller.png" />
+    <BundleResource Include="Resources\banner_donut.png" />
+    <BundleResource Include="Resources\banner_fodbold.png" />
+    <BundleResource Include="Resources\banner_golf.png" />
+    <BundleResource Include="Resources\banner_gravid.png" />
+    <BundleResource Include="Resources\banner_hjort.png" />
+    <BundleResource Include="Resources\banner_kaffe.png" />
+    <BundleResource Include="Resources\banner_marked.png" />
+    <BundleResource Include="Resources\banner_publikum.png" />
+    <BundleResource Include="Resources\banner_scrabble.png" />
+    <BundleResource Include="Resources\banner_skak.png" />
+    <BundleResource Include="Resources\banner_skater.png" />
+    <BundleResource Include="Resources\banner_skovsoe.png" />
+    <BundleResource Include="Resources\banner_surf.png" />
+    <BundleResource Include="Resources\banner_vinglas.png" />
   </ItemGroup>
 </Project>

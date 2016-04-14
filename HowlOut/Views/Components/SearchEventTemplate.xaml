@@ -21,8 +21,9 @@
 			</Grid.ColumnDefinitions>
 
 			<Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Banner}"></Image>
-			<BoxView Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#55000000"></BoxView>
-			<!-- <Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
+			<Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
+			<!-- <BoxView Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#55000000"></BoxView>
+			<Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 			-->
 			<BoxView Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White"></BoxView>
 
