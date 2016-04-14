@@ -31,6 +31,9 @@ namespace HowlOut
 		{
 			eve = theGivenEvent;
 			Banner = eve.BannerName;
+
+			Banner = eve.BannerName;
+
 			//BannerHeight = (0.524 * App.coreView.Width) - 60;
 			BannerHeight = (0.56 * App.coreView.Width) - 30;
 			InspectBannerHeight = (0.56 * App.coreView.Width);

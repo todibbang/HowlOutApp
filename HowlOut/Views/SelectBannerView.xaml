@@ -11,7 +11,7 @@
 			</Grid.ColumnDefinitions>
 
 			<ScrollView x:Name="HorizontalScrollView" Grid.Row="0" Grid.Column="0">
-				<StackLayout x:Name="bannerList" Spacing="5">
+				<StackLayout x:Name="bannerList" Spacing="0" Padding="0">
 				</StackLayout>
 			</ScrollView>
 

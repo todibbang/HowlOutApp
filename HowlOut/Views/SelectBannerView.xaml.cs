@@ -13,8 +13,8 @@ namespace HowlOut
 
 		List<string> avaliableBanners;
 
-		List<string> partyBanners = new List<string>{"Party.png", "Controller.jpeg", "Fodbold.jpeg", "Golf.jpeg", "Gravid.jpeg", "Hjort.jpeg", 
-			"Scrabble.jpeg", "Skak.jpeg", "Skater.jpeg", "Surf.jpeg",}; // "Blade.jpg", "Donut.jpg", "Fotografiapparat.jpg", "Gadelys.jpg",
+		List<string> partyBanners = new List<string>{"Blade.png", "Controller.png", "Donut.png", "Fodbold.png", "Golf.png", "Gravid.png", "Hjort.png", 
+			"Kaffe.png", "Marked.png", "Publikum.png", "Scrabble.png", "Skak.png", "Skater.png", "Skovsoe.png", "Surf.png", "Vinglas.png",}; // "Blade.jpg", "Donut.jpg", "Fotografiapparat.jpg", "Gadelys.jpg",
 			//"Grøntmarked.jpg", "Kaffebønner.jpg", "Kaffemaskine.jpg", "Motor.jpg", "Publikum koncert.jpg", "RebPaaStol.jpg", "Sejl.jpg",
 			//"Skovsø.jpg", "Snedker.jpg", "surf tunnel.jpg", "Vinglas.jpg", "Zigaret.jpg"};
 
@@ -27,20 +27,43 @@ namespace HowlOut
 			avaliableBanners.AddRange(partyBanners);
 
 			for (int i = 0; i < avaliableBanners.Count; i++) {
-				Button newBannerButton = new Button () { 
-					Image = avaliableBanners [i],
+				Grid newGrid = new Grid () {
+					RowSpacing = 0,
+					ColumnSpacing = 0,
+					Padding = 0,
 					WidthRequest = App.coreView.Width,
-					HeightRequest = App.coreView.Width / 2
+					HeightRequest = App.coreView.Width * 0.56
 				};
-				bannerList.Children.Add (newBannerButton);
+				newGrid.RowDefinitions.Add (new RowDefinition{ Height = App.coreView.Width  * 0.563 });
+				newGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = App.coreView.Width });
+
+				Button newBannerButton = new Button () { 
+					Text = "Banner/" + avaliableBanners [i],
+					TextColor = Color.Transparent,
+					HeightRequest = App.coreView.Width  * 0.563,
+
+				};
+
+				Image newImage = new Image () {
+					Source = avaliableBanners [i],
+				};
+
+				newImage.Source = "Banner/" + avaliableBanners [i];
+
+				newGrid.Children.Add (newImage, 0, 0);
+				newGrid.Children.Add (newBannerButton, 0, 0);
+
+
+
+				bannerList.Children.Add (newGrid);
 				bannerButtons.Add (newBannerButton);
-				bannerList.Children.Add (new StackLayout(){Padding=5});
+				//bannerList.Children.Add (new StackLayout(){Padding=5});
 			}
 
 			foreach(Button button in bannerButtons) {
 				button.Clicked += (sender, e) => {
-					System.Diagnostics.Debug.WriteLine(button.Image.File + " ");
-					createEventView.newEvent.BannerName = button.Image.File;
+					System.Diagnostics.Debug.WriteLine(button.Text + " ");
+					createEventView.newEvent.BannerName = button.Text;
 					createEventView.setBanner(createEventView.newEvent.BannerName);
 					//App.coreView.setContentView (createEventView, "CreateEvent");
 					App.coreView.returnToPreviousView();
