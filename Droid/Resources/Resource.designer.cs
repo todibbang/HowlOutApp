@@ -2490,32 +2490,32 @@ namespace HowlOut.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f060051
-			public const int abc_background_cache_hint_selector_material_dark = 2131099729;
+			// aapt resource value: 0x7f06005f
+			public const int abc_background_cache_hint_selector_material_dark = 2131099743;
 			
-			// aapt resource value: 0x7f060052
-			public const int abc_background_cache_hint_selector_material_light = 2131099730;
+			// aapt resource value: 0x7f060060
+			public const int abc_background_cache_hint_selector_material_light = 2131099744;
 			
-			// aapt resource value: 0x7f060053
-			public const int abc_color_highlight_material = 2131099731;
+			// aapt resource value: 0x7f060061
+			public const int abc_color_highlight_material = 2131099745;
 			
 			// aapt resource value: 0x7f06000e
 			public const int abc_input_method_navigation_guard = 2131099662;
 			
-			// aapt resource value: 0x7f060054
-			public const int abc_primary_text_disable_only_material_dark = 2131099732;
+			// aapt resource value: 0x7f060062
+			public const int abc_primary_text_disable_only_material_dark = 2131099746;
 			
-			// aapt resource value: 0x7f060055
-			public const int abc_primary_text_disable_only_material_light = 2131099733;
+			// aapt resource value: 0x7f060063
+			public const int abc_primary_text_disable_only_material_light = 2131099747;
 			
-			// aapt resource value: 0x7f060056
-			public const int abc_primary_text_material_dark = 2131099734;
+			// aapt resource value: 0x7f060064
+			public const int abc_primary_text_material_dark = 2131099748;
 			
-			// aapt resource value: 0x7f060057
-			public const int abc_primary_text_material_light = 2131099735;
+			// aapt resource value: 0x7f060065
+			public const int abc_primary_text_material_light = 2131099749;
 			
-			// aapt resource value: 0x7f060058
-			public const int abc_search_url_text = 2131099736;
+			// aapt resource value: 0x7f060066
+			public const int abc_search_url_text = 2131099750;
 			
 			// aapt resource value: 0x7f06000f
 			public const int abc_search_url_text_normal = 2131099663;
@@ -2526,11 +2526,11 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f060011
 			public const int abc_search_url_text_selected = 2131099665;
 			
-			// aapt resource value: 0x7f060059
-			public const int abc_secondary_text_material_dark = 2131099737;
+			// aapt resource value: 0x7f060067
+			public const int abc_secondary_text_material_dark = 2131099751;
 			
-			// aapt resource value: 0x7f06005a
-			public const int abc_secondary_text_material_light = 2131099738;
+			// aapt resource value: 0x7f060068
+			public const int abc_secondary_text_material_light = 2131099752;
 			
 			// aapt resource value: 0x7f060012
 			public const int accent_material_dark = 2131099666;
@@ -2549,6 +2549,15 @@ namespace HowlOut.Droid
 			
 			// aapt resource value: 0x7f060017
 			public const int background_material_light = 2131099671;
+			
+			// aapt resource value: 0x7f060056
+			public const int blueDark = 2131099734;
+			
+			// aapt resource value: 0x7f060057
+			public const int blueLight = 2131099735;
+			
+			// aapt resource value: 0x7f060055
+			public const int bluePrimary = 2131099733;
 			
 			// aapt resource value: 0x7f060018
 			public const int bright_foreground_disabled_material_dark = 2131099672;
@@ -2616,11 +2625,11 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f060005
 			public const int common_signin_btn_light_text_pressed = 2131099653;
 			
-			// aapt resource value: 0x7f06005b
-			public const int common_signin_btn_text_dark = 2131099739;
+			// aapt resource value: 0x7f060069
+			public const int common_signin_btn_text_dark = 2131099753;
 			
-			// aapt resource value: 0x7f06005c
-			public const int common_signin_btn_text_light = 2131099740;
+			// aapt resource value: 0x7f06006a
+			public const int common_signin_btn_text_light = 2131099754;
 			
 			// aapt resource value: 0x7f060048
 			public const int design_fab_shadow_end_color = 2131099720;
@@ -2666,6 +2675,27 @@ namespace HowlOut.Droid
 			
 			// aapt resource value: 0x7f060025
 			public const int foreground_material_light = 2131099685;
+			
+			// aapt resource value: 0x7f06005a
+			public const int grayDark = 2131099738;
+			
+			// aapt resource value: 0x7f060059
+			public const int grayLight = 2131099737;
+			
+			// aapt resource value: 0x7f06005b
+			public const int grayMedium = 2131099739;
+			
+			// aapt resource value: 0x7f060058
+			public const int grayPrimary = 2131099736;
+			
+			// aapt resource value: 0x7f060054
+			public const int greenDark = 2131099732;
+			
+			// aapt resource value: 0x7f060053
+			public const int greenLight = 2131099731;
+			
+			// aapt resource value: 0x7f060052
+			public const int greenPrimary = 2131099730;
 			
 			// aapt resource value: 0x7f060026
 			public const int highlighted_text_material_dark = 2131099686;
@@ -2739,6 +2769,12 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f06003d
 			public const int primary_text_disabled_material_light = 2131099709;
 			
+			// aapt resource value: 0x7f06005c
+			public const int purpleDark = 2131099740;
+			
+			// aapt resource value: 0x7f06005d
+			public const int purplePrimary = 2131099741;
+			
 			// aapt resource value: 0x7f06003e
 			public const int ripple_material_dark = 2131099710;
 			
@@ -2763,17 +2799,23 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f060045
 			public const int switch_thumb_disabled_material_light = 2131099717;
 			
-			// aapt resource value: 0x7f06005d
-			public const int switch_thumb_material_dark = 2131099741;
+			// aapt resource value: 0x7f06006b
+			public const int switch_thumb_material_dark = 2131099755;
 			
-			// aapt resource value: 0x7f06005e
-			public const int switch_thumb_material_light = 2131099742;
+			// aapt resource value: 0x7f06006c
+			public const int switch_thumb_material_light = 2131099756;
 			
 			// aapt resource value: 0x7f060046
 			public const int switch_thumb_normal_material_dark = 2131099718;
 			
 			// aapt resource value: 0x7f060047
 			public const int switch_thumb_normal_material_light = 2131099719;
+			
+			// aapt resource value: 0x7f06005e
+			public const int textPrimary = 2131099742;
+			
+			// aapt resource value: 0x7f060051
+			public const int white = 2131099729;
 			
 			static Color()
 			{
@@ -3426,145 +3468,148 @@ namespace HowlOut.Droid
 			public const int design_snackbar_background = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int howlouticongrown = 2130837610;
+			public const int gradiant_bg = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int howloutsplash = 2130837611;
+			public const int howlouticongrown = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int ic_add = 2130837612;
+			public const int howloutsplash = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int ic_calender = 2130837613;
+			public const int ic_add = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int ic_cast_dark = 2130837614;
+			public const int ic_calender = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int ic_cast_disabled_light = 2130837615;
+			public const int ic_cast_dark = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int ic_cast_light = 2130837616;
+			public const int ic_cast_disabled_light = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int ic_cast_off_light = 2130837617;
+			public const int ic_cast_light = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int ic_cast_on_0_light = 2130837618;
+			public const int ic_cast_off_light = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int ic_cast_on_1_light = 2130837619;
+			public const int ic_cast_on_0_light = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int ic_cast_on_2_light = 2130837620;
+			public const int ic_cast_on_1_light = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int ic_cast_on_light = 2130837621;
+			public const int ic_cast_on_2_light = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int ic_chevron = 2130837622;
+			public const int ic_cast_on_light = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int ic_event = 2130837623;
+			public const int ic_chevron = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int ic_explore = 2130837624;
+			public const int ic_event = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int ic_media_pause = 2130837625;
+			public const int ic_explore = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int ic_media_play = 2130837626;
+			public const int ic_media_pause = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int ic_media_route_disabled_mono_dark = 2130837627;
+			public const int ic_media_play = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int ic_media_route_off_mono_dark = 2130837628;
+			public const int ic_media_route_disabled_mono_dark = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int ic_media_route_on_0_mono_dark = 2130837629;
+			public const int ic_media_route_off_mono_dark = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int ic_media_route_on_1_mono_dark = 2130837630;
+			public const int ic_media_route_on_0_mono_dark = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int ic_media_route_on_2_mono_dark = 2130837631;
+			public const int ic_media_route_on_1_mono_dark = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int ic_media_route_on_mono_dark = 2130837632;
+			public const int ic_media_route_on_2_mono_dark = 2130837632;
 			
 			// aapt resource value: 0x7f020081
-			public const int ic_pause_dark = 2130837633;
+			public const int ic_media_route_on_mono_dark = 2130837633;
 			
 			// aapt resource value: 0x7f020082
-			public const int ic_pause_light = 2130837634;
+			public const int ic_pause_dark = 2130837634;
 			
 			// aapt resource value: 0x7f020083
-			public const int ic_play_dark = 2130837635;
+			public const int ic_pause_light = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int ic_play_light = 2130837636;
+			public const int ic_play_dark = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int ic_public = 2130837637;
+			public const int ic_play_light = 2130837637;
 			
 			// aapt resource value: 0x7f020086
-			public const int ic_refresh = 2130837638;
+			public const int ic_public = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int ic_search = 2130837639;
+			public const int ic_refresh = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int ic_setting_dark = 2130837640;
+			public const int ic_search = 2130837640;
 			
 			// aapt resource value: 0x7f020089
-			public const int ic_setting_light = 2130837641;
+			public const int ic_setting_dark = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int icon = 2130837642;
+			public const int ic_setting_light = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int mr_ic_cast_dark = 2130837643;
+			public const int icon = 2130837643;
 			
 			// aapt resource value: 0x7f02008c
-			public const int mr_ic_cast_light = 2130837644;
+			public const int mr_ic_cast_dark = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int mr_ic_media_route_connecting_mono_dark = 2130837645;
+			public const int mr_ic_cast_light = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
-			public const int mr_ic_media_route_connecting_mono_light = 2130837646;
+			public const int mr_ic_media_route_connecting_mono_dark = 2130837646;
 			
 			// aapt resource value: 0x7f02008f
-			public const int mr_ic_media_route_mono_dark = 2130837647;
+			public const int mr_ic_media_route_connecting_mono_light = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int mr_ic_media_route_mono_light = 2130837648;
+			public const int mr_ic_media_route_mono_dark = 2130837648;
 			
 			// aapt resource value: 0x7f020091
-			public const int mr_ic_pause_dark = 2130837649;
+			public const int mr_ic_media_route_mono_light = 2130837649;
 			
 			// aapt resource value: 0x7f020092
-			public const int mr_ic_pause_light = 2130837650;
+			public const int mr_ic_pause_dark = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int mr_ic_play_dark = 2130837651;
+			public const int mr_ic_pause_light = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int mr_ic_play_light = 2130837652;
+			public const int mr_ic_play_dark = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int mr_ic_settings_dark = 2130837653;
+			public const int mr_ic_play_light = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int mr_ic_settings_light = 2130837654;
-			
-			// aapt resource value: 0x7f020098
-			public const int notification_template_icon_bg = 2130837656;
+			public const int mr_ic_settings_dark = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int plugin_lc_smallicon = 2130837655;
+			public const int mr_ic_settings_light = 2130837655;
+			
+			// aapt resource value: 0x7f020099
+			public const int notification_template_icon_bg = 2130837657;
+			
+			// aapt resource value: 0x7f020098
+			public const int plugin_lc_smallicon = 2130837656;
 			
 			static Drawable()
 			{
@@ -4837,6 +4882,9 @@ namespace HowlOut.Droid
 			// aapt resource value: 0x7f090006
 			public const int CardView_Light = 2131296262;
 			
+			// aapt resource value: 0x7f090145
+			public const int GrayTheme = 2131296581;
+			
 			// aapt resource value: 0x7f090016
 			public const int Platform_AppCompat = 2131296278;
 			
@@ -4866,6 +4914,15 @@ namespace HowlOut.Droid
 			
 			// aapt resource value: 0x7f09001a
 			public const int Platform_Widget_AppCompat_Spinner = 2131296282;
+			
+			// aapt resource value: 0x7f090146
+			public const int PurpleTheme = 2131296582;
+			
+			// aapt resource value: 0x7f090148
+			public const int RobotoButtonStyle = 2131296584;
+			
+			// aapt resource value: 0x7f090147
+			public const int RobotoTextViewStyle = 2131296583;
 			
 			// aapt resource value: 0x7f090027
 			public const int RtlOverlay_DialogWindowTitle_AppCompat = 2131296295;

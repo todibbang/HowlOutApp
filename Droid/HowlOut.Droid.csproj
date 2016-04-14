@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout\" />
+    <Folder Include="Resources\values-v21\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
@@ -189,6 +190,9 @@
     <AndroidResource Include="Resources\drawable\banner_donut.png" />
     <AndroidResource Include="Resources\drawable\banner_controller.png" />
     <AndroidResource Include="Resources\drawable\banner_blade.png" />
+    <AndroidResource Include="Resources\drawable\gradiant_bg.png" />
+    <AndroidResource Include="Resources\values-v21\Styles.xml" />
+    <AndroidResource Include="Resources\values\Colors.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">
