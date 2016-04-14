@@ -13,8 +13,8 @@ namespace HowlOut
 
 		List<string> avaliableBanners;
 
-		List<string> partyBanners = new List<string>{"Blade.png", "Controller.png", "Donut.png", "Fodbold.png", "Golf.png", "Gravid.png", "Hjort.png", 
-			"Kaffe.png", "Marked.png", "Publikum.png", "Scrabble.png", "Skak.png", "Skater.png", "Skovsoe.png", "Surf.png", "Vinglas.png",}; // "Blade.jpg", "Donut.jpg", "Fotografiapparat.jpg", "Gadelys.jpg",
+		List<string> partyBanners = new List<string>{"banner_blade.png", "banner_controller.png", "banner_donut.png", "banner_fodbold.png", "banner_golf.png", "banner_gravid.png", "banner_hjort.png", 
+			"banner_kaffe.png", "banner_marked.png", "banner_publikum.png", "banner_scrabble.png", "banner_skak.png", "banner_skater.png", "banner_skovsoe.png", "banner_surf.png", "banner_vinglas.png",}; // "Blade.jpg", "Donut.jpg", "Fotografiapparat.jpg", "Gadelys.jpg",
 			//"Grøntmarked.jpg", "Kaffebønner.jpg", "Kaffemaskine.jpg", "Motor.jpg", "Publikum koncert.jpg", "RebPaaStol.jpg", "Sejl.jpg",
 			//"Skovsø.jpg", "Snedker.jpg", "surf tunnel.jpg", "Vinglas.jpg", "Zigaret.jpg"};
 
@@ -38,7 +38,7 @@ namespace HowlOut
 				newGrid.ColumnDefinitions.Add (new ColumnDefinition{ Width = App.coreView.Width });
 
 				Button newBannerButton = new Button () { 
-					Text = "Banner/" + avaliableBanners [i],
+					Text = avaliableBanners [i],
 					TextColor = Color.Transparent,
 					HeightRequest = App.coreView.Width  * 0.563,
 
@@ -48,7 +48,7 @@ namespace HowlOut
 					Source = avaliableBanners [i],
 				};
 
-				newImage.Source = "Banner/" + avaliableBanners [i];
+				newImage.Source = avaliableBanners [i];
 
 				newGrid.Children.Add (newImage, 0, 0);
 				newGrid.Children.Add (newBannerButton, 0, 0);
