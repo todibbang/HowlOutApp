@@ -153,9 +153,26 @@
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="packages.config" />
+    <None Include="Resources\drawable\Banner\Blade.png" />
+    <None Include="Resources\drawable\Banner\Controller.png" />
+    <None Include="Resources\drawable\Banner\Donut.png" />
+    <None Include="Resources\drawable\Banner\Fodbold.png" />
+    <None Include="Resources\drawable\Banner\Golf.png" />
+    <None Include="Resources\drawable\Banner\Gravid.png" />
+    <None Include="Resources\drawable\Banner\Hjort.png" />
+    <None Include="Resources\drawable\Banner\Kaffe.png" />
+    <None Include="Resources\drawable\Banner\Marked.png" />
+    <None Include="Resources\drawable\Banner\Publikum.png" />
+    <None Include="Resources\drawable\Banner\Scrabble.png" />
+    <None Include="Resources\drawable\Banner\Skak.png" />
+    <None Include="Resources\drawable\Banner\Skater.png" />
+    <None Include="Resources\drawable\Banner\Skovsoe.png" />
+    <None Include="Resources\drawable\Banner\Surf.png" />
+    <None Include="Resources\drawable\Banner\Vinglas.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout\" />
+    <Folder Include="Resources\drawable\Banner\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
