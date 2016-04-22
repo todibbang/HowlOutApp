@@ -15,6 +15,9 @@
 				<RowDefinition Height="60"/>
 			</Grid.RowDefinitions>
 
+			<ContentView Grid.Row="1" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}">
+			</ContentView>
+
 			<StackLayout Grid.Row="0" BackgroundColor="{DynamicResource HowlOut}" Padding="5,5,5,5"  x:Name="topBarLayout">
 				<StackLayout.Padding>
 					<OnPlatform x:TypeArguments="Thickness"
@@ -22,9 +25,6 @@
 				</StackLayout.Padding>
 				<!-- <local:TopBar/> -->
 			</StackLayout>
-
-			<ContentView Grid.Row="1" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}">
-			</ContentView>
 
 			 <StackLayout Grid.Row="2" Padding="0,0,0,2" BackgroundColor="White">
 				<local:BottomBar/> 

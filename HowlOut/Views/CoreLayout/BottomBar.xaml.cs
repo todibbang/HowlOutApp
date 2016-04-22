@@ -8,23 +8,23 @@ namespace HowlOut
 	public partial class BottomBar : ContentView
 	{
 		DataManager _dataManager;
+		private StandardButton standardButton = new StandardButton();
 
 		public BottomBar ()
 		{
 			InitializeComponent ();
 			_dataManager = new DataManager ();
 
-			/*
+			MeButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Transparent, "", 0));
+			EventButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Transparent, "", 0));
+
+
 			var exploreImage = new TapGestureRecognizer();
 			exploreImage.Tapped += async (sender, e) => 
 			{
-				await exploreBtn.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
-				await exploreBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(new EventView(), "Event");
+				App.coreView.setContentViewWithQueue(new MapTest(), "");
 			};
 			exploreBtn.GestureRecognizers.Add(exploreImage);  
-			*/
 
 			meBtn.Clicked += (sender, e) => 
 			{

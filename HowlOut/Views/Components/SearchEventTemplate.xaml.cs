@@ -11,13 +11,18 @@ namespace HowlOut
 		public SearchEventTemplate ()
 		{
 			InitializeComponent ();
+
+
 		}
 		public SearchEventTemplate (Event eve)
 		{
 			InitializeComponent ();
 			BindingContext = new EventForLists(eve);
 
-			ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain, false);
+			//ProfilView1.SetBinding (Content, "ProfileLayout");
+			//ProfilView0.Children.Add (new ContentView(){Content = "{}"});
+
+			//ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain, false);
 			EventView.Content = new EventDesignView (eve, 80, EventDesignView.Design.Plain);
 
 			SubjectButton.Clicked += (sender, e) => {

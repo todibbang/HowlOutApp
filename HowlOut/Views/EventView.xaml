@@ -27,27 +27,26 @@
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="1"/>
 						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="1"/>
-						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="39"/>
 						<RowDefinition Height="1"/>
 					</Grid.RowDefinitions>
-					<Button Grid.Column="0" Grid.Row="0" x:Name="SearchButton" Text="Search" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White" />
+					<StackLayout Grid.Column="0" Grid.Row="0" x:Name="SearchButtonLayout" WidthRequest="1000" HorizontalOptions="CenterAndExpand"/>
+					<Button Grid.Column="0" Grid.Row="0" x:Name="SearchButton" BackgroundColor="Transparent" />
 					<BoxView Grid.Column="1" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="2" Grid.Row="0" x:Name="ManageButton" Text="Attended" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
+					<StackLayout Grid.Column="2" Grid.Row="0" x:Name="ManageButtonLayout" WidthRequest="1000" HorizontalOptions="CenterAndExpand"/>
+					<Button Grid.Column="2" Grid.Row="0" x:Name="ManageButton" BackgroundColor="Transparent"/>
 					<BoxView Grid.Column="3" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="4" Grid.Row="0" x:Name="YoursButton" Text="My" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
+					<StackLayout Grid.Column="4" Grid.Row="0" x:Name="FollowButtonLayout" WidthRequest="1000" HorizontalOptions="CenterAndExpand"/>
+					<Button Grid.Column="4" Grid.Row="0" x:Name="FollowedButton" BackgroundColor="Transparent"/>
 					<BoxView Grid.Column="5" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="6" Grid.Row="0" x:Name="FollowedButton" Text="Followed" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
-					<BoxView Grid.Column="7" Grid.Row="0" BackgroundColor="{DynamicResource LightGray}"></BoxView>
-					<Button Grid.Column="8" Grid.Row="0" x:Name="InviteButton" Text="Invites" TextColor="{DynamicResource TextColor}" FontSize="14" BackgroundColor="White"/>
+					<StackLayout Grid.Column="6" Grid.Row="0" x:Name="InviteButtonLayout" WidthRequest="1000" HorizontalOptions="CenterAndExpand"/>
+					<Button Grid.Column="6" Grid.Row="0" x:Name="InviteButton" BackgroundColor="Transparent"/>
 					<local:Line Grid.Column="0" Grid.Row="1" x:Name="searchLine"/>
 					<local:Line Grid.Column="2" Grid.Row="1" x:Name="manageLine"/>
-					<local:Line Grid.Column="4" Grid.Row="1" x:Name="yoursLine"/>
-					<local:Line Grid.Column="6" Grid.Row="1" x:Name="followLine"/>
-					<local:Line Grid.Column="8" Grid.Row="1" x:Name="inviteLine"/>
+					<local:Line Grid.Column="4" Grid.Row="1" x:Name="followLine"/>
+					<local:Line Grid.Column="6" Grid.Row="1" x:Name="inviteLine"/>
 				</Grid>
 			</StackLayout>
 

@@ -41,7 +41,7 @@ namespace HowlOut
 					Text = avaliableBanners [i],
 					TextColor = Color.Transparent,
 					HeightRequest = App.coreView.Width  * 0.563,
-
+					BackgroundColor = Color.Transparent,
 				};
 
 				Image newImage = new Image () {

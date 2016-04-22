@@ -9,6 +9,7 @@ namespace HowlOut
 	public partial class EventView : ContentView
 	{
 		private DataManager _dataManager;
+		private StandardButton standardButton = new StandardButton();
 		bool beingRepositioned = false;
 		int currentView = 0;
 
@@ -17,6 +18,10 @@ namespace HowlOut
 			InitializeComponent ();
 			_dataManager = new DataManager();
 
+			SearchButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Search",0));
+			ManageButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Attending",0));
+			FollowButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Following",0));
+			InviteButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Invited",0));
 
 			//var gesture = new PanGestureRecognizer();
 			//gesture.PanUpdated += OnPanUpdated;
@@ -58,11 +63,6 @@ namespace HowlOut
 				//HorizontalScrollView.ScrollToAsync(App.coreView.Width, 0, true);
 				//setViewDesign(1, manageList);
 				setViewDesign(1, searchList);
-			};
-			YoursButton.Clicked += (sender, e) => {
-				//HorizontalScrollView.ScrollToAsync(App.coreView.Width * 2, 0, true);
-				//setViewDesign(2, otherList);
-				setViewDesign(2, searchList);
 			};
 			FollowedButton.Clicked += (sender, e) => {
 				//HorizontalScrollView.ScrollToAsync(App.coreView.Width * 2, 0, true);
@@ -120,12 +120,10 @@ namespace HowlOut
 			//CreateImage.IsVisible = false;
 			SearchButton.FontAttributes = FontAttributes.None;
 			ManageButton.FontAttributes = FontAttributes.None;
-			YoursButton.FontAttributes = FontAttributes.None;
 			InviteButton.FontAttributes = FontAttributes.None;
 			FollowedButton.FontAttributes = FontAttributes.None;
 			searchLine.IsVisible = true;
 			manageLine.IsVisible = true;
-			yoursLine.IsVisible = true;
 			inviteLine.IsVisible = true;
 			followLine.IsVisible = true;
 
@@ -138,9 +136,6 @@ namespace HowlOut
 			} else if (number == 1) {
 				ManageButton.FontAttributes = FontAttributes.Bold;
 				manageLine.IsVisible = false;
-			} else if (number == 2) {
-				YoursButton.FontAttributes = FontAttributes.Bold;
-				yoursLine.IsVisible = false;
 			} else if (number == 3) {
 				FollowedButton.FontAttributes = FontAttributes.Bold;
 				followLine.IsVisible = false;
@@ -162,13 +157,6 @@ namespace HowlOut
 				evelist = await _dataManager.EventApiManager.SearchEvents ();
 			} else if (listToUpdate == 1) {
 				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
-			} else if (listToUpdate == 2) {
-				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
-				for (int i = evelist.Count -1; i > -1; i--) {
-					if (evelist [i].Owner.ProfileId != App.userProfile.ProfileId) {
-						evelist.RemoveAt (i);
-					}
-				}
 			} else if (listToUpdate == 3) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsFollowed ();
 			} else if (listToUpdate == 4) {
@@ -222,7 +210,6 @@ namespace HowlOut
 				}
 				if (listToUpdate == 0) { list.Children.Add (new SearchEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 1) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
-				} else if (listToUpdate == 2) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 3) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 4) { list.Children.Add (new NewsMessageView (orderedList [i],NewsMessageView.MessageType.Invite));
 				}
@@ -230,6 +217,8 @@ namespace HowlOut
 			list.Children.Add (new BoxView(){HeightRequest=120});
 			loading.IsVisible = false;
 		}
+
+
 	}
 }
 
