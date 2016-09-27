@@ -14,8 +14,14 @@ namespace HowlOut
 		public UpperBar topBar;
 		DataManager _dataManager;
 
+
+		public CreateEvent createEventView;
+		public EventView searchEventView;
+		public EventView manageEventView;
+		public EventView friendsEventView;
 		public HomeView homeView;
-		public EventView eventView;
+
+		int lastCoreView = 2;
 
 		public CoreView ()
 		{
@@ -23,41 +29,72 @@ namespace HowlOut
 			_dataManager = new DataManager ();
 			topBar = new UpperBar();
 			topBarLayout.Children.Add (topBar);
+			topBar.hideAll();
 		}
 
 		public void startCoreView()
 		{
-			homeView = new HomeView ();
-			eventView = new EventView ();
+			createEventView = new CreateEvent(new Event(), true);
+			searchEventView = new EventView(0);
+			manageEventView = new EventView(1);
+			friendsEventView = new EventView(2);
+			homeView = new HomeView();
 
 			_dataManager.update ();
 
-			contentViews.Add (eventView);
+			contentViews.Add (manageEventView);
 			contentViewTypes.Add ("Event");
 			topBar.setNavigationLabel("Event");
-			mainView.Content = eventView;
-
+			mainView.Content = manageEventView;
+			topBar.showOptionGrid(true, "Attending", "Following");
 			loading.IsVisible = false;
 		}
 
 		public async void setContentView (int type)
 		{
+			topBar.hideAll();
+
 			var first = DateTime.Now;
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			ContentView view = null;
 
 			//System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
+			if (type == 0)
+			{
+				view = createEventView;
+			} else if (type == 1)
+			{
+				view = searchEventView;
+				topBar.showFilterSearchButton(true);
+				topBar.showSearchBar(true);
+			} else if (type == 2)
+			{
+				view = manageEventView;
+				topBar.showOptionGrid(true, "Attending", "Following");
+			} else if (type == 3)
+			{
+				view = friendsEventView;
+				topBar.showOptionGrid(true, "Friends", "Invites");
+			} else if (type == 4)
+			{
+				view = homeView;
+				topBar.showSearchBar(true);
+				topBar.showCreateNewGroupButton(true);
+			}
+
+			lastCoreView = type;
+
+			/*
 			if (type == 1) {
 				view = new EventView();
 			} else if (type == 2) {
 				view = new HomeView();
 			}
+			*/
 
 			contentViews.Clear ();
 			contentViewTypes.Clear ();
 			contentViews.Add (view);
-
-			topBar.setBackButton (false);
 
 
 			//await ViewExtensions.ScaleTo(view, 0, 0);
@@ -72,13 +109,14 @@ namespace HowlOut
 		public async void setContentViewWithQueue (ContentView view, string type)
 		{
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
+			topBar.hideAll();
 
 			System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
 
 			contentViews.Add (view);
 			contentViewTypes.Add (type);
 
-			topBar.setBackButton (true);
+			topBar.showBackButton (true);
 
 			topBar.setNavigationLabel(type);
 
@@ -108,12 +146,15 @@ namespace HowlOut
 					contentViewTypes.RemoveAt (contentViewTypes.Count - 1);
 
 				} else if (count == 2) {
+					App.coreView.setContentView(lastCoreView);
+					//TODO
+					/*
 					if (oldView.ToString () == new EventView ().ToString ()) {
 						App.coreView.setContentView (1);
 					} else if (oldView.ToString () == new HomeView ().ToString ()) {
 						App.coreView.setContentView (2);
 					} 
-
+					*/
 
 				}
 			}

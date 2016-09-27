@@ -26,16 +26,26 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 			setInfo ( userProfile,  userGroup,  eventObject);
+
 			friendsButton.Clicked  += (sender, e) => {
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 				wall.IsVisible = false;
 			};
-			groupsButton.Clicked  += (sender, e) => {
+			friendsTwoButton.Clicked += (sender, e) =>
+			{
+				profileGrid.IsVisible = true;
+				groupGrid.IsVisible = false;
+				wall.IsVisible = false;
+			};
+
+			groupsButton.Clicked += (sender, e) =>
+			{
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 				wall.IsVisible = false;
 			};
+
 			wallButton.Clicked += (sender, e) =>  {
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = false;
@@ -117,8 +127,9 @@ namespace HowlOut
 						//groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
 						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
 					}
-					friendsButton.IsVisible = true;
-					groupsButton.IsVisible = true;
+					friendsGroupsGrid.IsVisible = true;
+					//friendsButton.IsVisible = true;
+					//groupsButton.IsVisible = true;
 				} else {
 					userProfile = await _dataManager.ProfileApiManager.GetProfile (userProfile.ProfileId);
 				}
@@ -135,8 +146,7 @@ namespace HowlOut
 				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				friendsButton.Text = "Members";
 				givenCommentList = userGroup.Comments;
-				wallButton.IsVisible = true;
-				friendsButton.IsVisible = true;
+				friendsWallGrid.IsVisible = true;
 				infoView.Content = new GroupDesignView (userGroup,null,200, GroupDesignView.Design.WithOptions);
 
 			} else if(eventObject != null) {
@@ -151,8 +161,7 @@ namespace HowlOut
 				profileGrid.IsVisible = true;
 				friendsButton.Text = "Attendees";
 				givenCommentList = eventObject.Comments;
-				wallButton.IsVisible = true;
-				friendsButton.IsVisible = true;
+				friendsWallGrid.IsVisible = true;
 
 				bool eventNotJoined = true;
 				for (int i = 0; i < eventObject.Attendees.Count; i++) {

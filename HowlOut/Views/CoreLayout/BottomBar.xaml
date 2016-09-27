@@ -1,12 +1,19 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.BottomBar" BackgroundColor="Transparent"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HowlOut.BottomBar" BackgroundColor="Transparent"
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+		xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid Padding="0,0,0,2" RowSpacing="0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="5"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="45"/>
+				<ColumnDefinition Width="5"/>
+				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
@@ -16,25 +23,35 @@
 				<RowDefinition Height="45"/>
 				<RowDefinition Height="13"/>
 			</Grid.RowDefinitions>
-			<local:Line Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" VerticalOptions="StartAndExpand"/>
-
-			<Image Grid.Column="0" Grid.Row="1" x:Name="exploreBtn" Source="ic_explore.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="35"></Image>
-
-			<Button Grid.Column="2" Grid.Row="1" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="22" VerticalOptions="Fill" HorizontalOptions="Fill"/>
-			<Image Grid.Column="2" Grid.Row="1" x:Name="eventImg" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="26"></Image>
-			<StackLayout Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" x:Name="EventButtonLayout" WidthRequest="55" HorizontalOptions="CenterAndExpand"/>
-			<Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" x:Name="eventBtn" BackgroundColor="Transparent"/>
 			
+			<!-- <local:Line Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" VerticalOptions="StartAndExpand"/> -->
 
+			<controls:IconView Grid.Column="0" Grid.Row="1" x:Name="create" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="35" Foreground="{DynamicResource HowlOut}"/>
+
+			<controls:IconView Grid.Column="2" Grid.Row="1" x:Name="search" Source="ic_search.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="35" Foreground="{DynamicResource HowlOut}"/>
+
+			<Button Grid.Column="4" Grid.Row="1" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="22" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+			<Image Grid.Column="4" Grid.Row="1" x:Name="eventImg" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="26"/>
+			<StackLayout Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" x:Name="EventButtonLayout" WidthRequest="55" HorizontalOptions="CenterAndExpand"/>
+			<Button Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" x:Name="events" BackgroundColor="Transparent"/>
+			
+			<controls:IconView Grid.Column="6" Grid.Row="1" x:Name="friends" Source="ic_explore.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="35" Foreground="{DynamicResource HowlOut}"/>
+
+			<controls:IconView Grid.Column="8" Grid.Row="1" x:Name="me" Source="ic_social.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="35" Foreground="{DynamicResource HowlOut}"/>
+
+			<!--
 			<Image Grid.Column="4" Grid.Row="1"  x:Name="meImg" Source="ic_calender.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="30"></Image>
 			<StackLayout Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" x:Name="MeButtonLayout" WidthRequest="50" HorizontalOptions="CenterAndExpand"/>
 			<Button Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" x:Name="meBtn" BackgroundColor="Transparent" />
+			-->
 			
 			<!-- <Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" x:Name="knapOne" BackgroundColor="Transparent"></Button>
 			<Button Grid.Column="1" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BackgroundColor="Transparent"></Button> -->
-			<Label Grid.Column="0" Grid.Row="2" Text="News" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			<Label Grid.Column="2" Grid.Row="2" Text="Events" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			<Label Grid.Column="4" Grid.Row="2" Text="Me" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="0" Grid.Row="2" Text="Create" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="2" Grid.Row="2" Text="Search" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="4" Grid.Row="2" Text="Events" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="6" Grid.Row="2" Text="Freinds" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="8" Grid.Row="2" Text="Me" FontSize="10" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

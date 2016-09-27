@@ -15,26 +15,42 @@ namespace HowlOut
 			InitializeComponent ();
 			_dataManager = new DataManager ();
 
-			MeButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Transparent, "", 0));
+			//MeButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Transparent, "", 0));
 			EventButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Transparent, "", 0));
 
+
+			var createImage = new TapGestureRecognizer();
+			createImage.Tapped += async (sender, e) =>
+			{
+				App.coreView.setContentView(0);
+			};
+			create.GestureRecognizers.Add(createImage);
 
 			var exploreImage = new TapGestureRecognizer();
 			exploreImage.Tapped += async (sender, e) => 
 			{
-				App.coreView.setContentViewWithQueue(new MapTest(), "");
+				App.coreView.setContentView(1);
 			};
-			exploreBtn.GestureRecognizers.Add(exploreImage);  
+			search.GestureRecognizers.Add(exploreImage);  
 
-			meBtn.Clicked += (sender, e) => 
+			events.Clicked += (sender, e) => 
 			{
 				App.coreView.setContentView (2);
 			};
 
-			eventBtn.Clicked += (sender, e) => 
+			var friendsImage = new TapGestureRecognizer();
+			friendsImage.Tapped += async (sender, e) =>
 			{
-				App.coreView.setContentView (1);
+				App.coreView.setContentView(3);
 			};
+			friends.GestureRecognizers.Add(friendsImage);
+
+			var socialImage = new TapGestureRecognizer();
+			socialImage.Tapped += async (sender, e) =>
+			{
+				App.coreView.setContentView(4);
+			};
+			me.GestureRecognizers.Add(socialImage);
 		}
 	}
 }

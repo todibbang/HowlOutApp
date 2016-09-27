@@ -13,83 +13,43 @@ namespace HowlOut
 		bool beingRepositioned = false;
 		int currentView = 0;
 
-		public EventView ()
+		int EventViewType;
+
+		public EventView (int viewType)
 		{
 			InitializeComponent ();
 			_dataManager = new DataManager();
+			EventViewType = viewType;
 
+
+			/*
 			SearchButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Search",0));
 			ManageButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Attending",0));
 			FollowButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Following",0));
 			InviteButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Invited",0));
-
-			//var gesture = new PanGestureRecognizer();
-			//gesture.PanUpdated += OnPanUpdated;
-			//contentTest.GestureRecognizers.Add(gesture);
-
-
-			/*
-			HorizontalStackLayout.WidthRequest = App.coreView.Width * 3;
-			searchScrollView.WidthRequest = App.coreView.Width;
-			manageScrollView.WidthRequest = App.coreView.Width;
-			otherScrollView.WidthRequest = App.coreView.Width;
-
-			//searchScrollView.IsEnabled = false;
-
-			
-
-			//SearchEventList.RowHeight = (int) ((0.524 * App.coreView.Width) + 32);
-
-			HorizontalScrollView.Scrolled += (sender, e) => {
-				if (HorizontalScrollView.ScrollX > App.coreView.Width * 1.5) {
-					HorizontalScrollView.ScrollToAsync (App.coreView.Width * 2, 0, true);
-				} else if (HorizontalScrollView.ScrollX > App.coreView.Width * 0.5) {
-					HorizontalScrollView.ScrollToAsync (App.coreView.Width * 1, 0, true);
-				} else {
-					HorizontalScrollView.ScrollToAsync (0, 0, true);
-				}
-			};
 			*/
-			setViewDesign(0, searchList);
-			//setViewDesign(1, manageList);
-			//setViewDesign(2, otherList);
+			setViewDesign(viewType, searchList);
 
-
-			SearchButton.Clicked += (sender, e) => {
-				//HorizontalScrollView.ScrollToAsync(0, 0, true);
-				setViewDesign(0, searchList);
-			};
-			ManageButton.Clicked += (sender, e) => {
-				//HorizontalScrollView.ScrollToAsync(App.coreView.Width, 0, true);
-				//setViewDesign(1, manageList);
-				setViewDesign(1, searchList);
-			};
-			FollowedButton.Clicked += (sender, e) => {
-				//HorizontalScrollView.ScrollToAsync(App.coreView.Width * 2, 0, true);
-				//setViewDesign(3, otherList);
-				setViewDesign(3, searchList);
-			};
-			InviteButton.Clicked += (sender, e) => {
-				//HorizontalScrollView.ScrollToAsync(App.coreView.Width * 2, 0, true);
-				//setViewDesign(4, otherList);
-				setViewDesign(4, searchList);
-			};
-
-			var createImage = new TapGestureRecognizer();
-			createImage.Tapped += async (sender, e) => 
+			App.coreView.topBar.getOptionButtons()[0].Clicked += (sender, e) =>
 			{
-				await CreateImage.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
-				await CreateImage.ScaleTo(1, 50, Easing.Linear);
-				if(currentView == 0) {
-					App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchReference), "FilterSearch");
-				} else {
-					App.coreView.setContentViewWithQueue(new CreateEvent(new Event(), true), "CreateEvent"); 
+				if (EventViewType == 1)
+				{
+					setViewDesign(1, searchList);
+				} else if (EventViewType == 2)
+				{
+					setViewDesign(2, searchList);
 				}
 			};
-			CreateImage.GestureRecognizers.Add(createImage); 
-
-
+			App.coreView.topBar.getOptionButtons()[1].Clicked += (sender, e) =>
+			{
+				if (EventViewType == 1)
+				{
+					setViewDesign(3, searchList);
+				}else if (EventViewType == 2)
+				{
+					setViewDesign(2, searchList);
+				}
+			};
 
 		}
 
@@ -97,27 +57,16 @@ namespace HowlOut
 		{
 			System.Diagnostics.Debug.WriteLine (e.TotalX + " " + e.TotalX);
 		}
-
 			
 		private async void GoToSelectedEvent(string eveID) {
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
 			App.coreView.setContentViewWithQueue (new InspectController (null, null, eve), "UserProfile");
 		}
 
-
-
 		private void setViewDesign(int number, StackLayout list){
 			loading.IsVisible = true;
 			UpdateManageList(number, list);
 			/*
-			ManageEventList.IsVisible = false;
-			YourEventList.IsVisible = false;
-			InviteEventList.IsVisible = false;
-			SearchEventList.IsVisible = false;
-			FollowedEventList.IsVisible = false;
-			*/
-			//CreateButton.IsVisible = false;
-			//CreateImage.IsVisible = false;
 			SearchButton.FontAttributes = FontAttributes.None;
 			ManageButton.FontAttributes = FontAttributes.None;
 			InviteButton.FontAttributes = FontAttributes.None;
@@ -128,9 +77,6 @@ namespace HowlOut
 			followLine.IsVisible = true;
 
 			if (number == 0) {
-				CreateButton.IsVisible = true;
-				CreateImage.IsVisible = true;
-				CreateImage.Source = "ic_search.png";
 				SearchButton.FontAttributes = FontAttributes.Bold;
 				searchLine.IsVisible = false;
 			} else if (number == 1) {
@@ -143,6 +89,7 @@ namespace HowlOut
 				InviteButton.FontAttributes = FontAttributes.Bold;
 				inviteLine.IsVisible = false;
 			}
+			*/
 		}
 
 		public async void UpdateManageList(int listToUpdate, StackLayout list){
@@ -155,11 +102,14 @@ namespace HowlOut
 			var first = DateTime.Now;
 			if (listToUpdate == 0) {
 				evelist = await _dataManager.EventApiManager.SearchEvents ();
+
 			} else if (listToUpdate == 1) {
 				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
+
 			} else if (listToUpdate == 3) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsFollowed ();
-			} else if (listToUpdate == 4) {
+
+			} else if (listToUpdate == 2) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo ();
 				var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
 				for (int i = evelist.Count -1; i > -1; i--) {
@@ -194,13 +144,13 @@ namespace HowlOut
 
 			var dateTimeMonth = DateTime.Now + new TimeSpan (-32, 0, 0, 0);
 			int month = dateTimeMonth.Month;
-			//for(int e = 0; e < 4; e++) {
 			for (int i = 0; i < orderedList.Count; i++) {
 				if (month != orderedList [i].StartDate.Month) {
-					list.Children.Add (new Label () {
+					list.Children.Add (
+						new Label () {
 						Text = ("  " + orderedList [i].StartDate.ToString ("MMMM")),
-						BackgroundColor = Color.FromHex ("cccccc"),
-						TextColor = Color.White,
+						//BackgroundColor = Color.FromHex ("cccccc"),
+						TextColor = Color.FromHex("df7a7a"),
 						FontSize = 25,
 						HeightRequest = 40,
 						VerticalTextAlignment = TextAlignment.Center

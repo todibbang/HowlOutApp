@@ -9,21 +9,50 @@ namespace HowlOut
 		DataManager _dataManager = new DataManager ();
 		ListsAndButtons listMaker = new ListsAndButtons();
 
+		int currentView = 0;
+
 		public HomeView ()
 		{
 			InitializeComponent ();
 
+			/*
+			App.coreView.topBar.showSearchBar(true);
+			App.coreView.topBar.showCreateNewButton(true);
+			*/
+
 			profileContent.Content = new InspectController (App.userProfile, null, null);
 			createGroupContent.Content = new CreateGroup (null);
 
-			profileButton.Clicked += (sender, e) => {
-				setViewDesign(0);
+			App.coreView.topBar.getSearchBar().TextChanged += (sender, e) =>
+			{
+				if (String.IsNullOrWhiteSpace(App.coreView.topBar.getSearchBar().Text))
+				{
+					if (currentView != 0)
+					{
+						setViewDesign(0);
+						profileGrid.Children.Clear();
+						groupGrid.Children.Clear();
+					}
+				}
+				else {
+					if (currentView != 1)
+					{
+						setViewDesign(1);
+					}
+					updateAutoCompleteProfileList(App.coreView.topBar.getSearchBar().Text);
+					updateAutoCompleteGroupList(App.coreView.topBar.getSearchBar().Text);
+				}
 			};
-			findButton.Clicked += (sender, e) => {
-				setViewDesign(1);
-			};
-			createGroupButton.Clicked += (sender, e) => {
-				setViewDesign(2);
+
+			App.coreView.topBar.getSearchBar().Focused += (sender, e) =>
+			{
+				if (String.IsNullOrWhiteSpace(App.coreView.topBar.getSearchBar().Text))
+				{
+					setViewDesign(0);
+				}
+				else {
+					setViewDesign(1);
+				}
 			};
 
 			friendsButton.Clicked += (sender, e) => {
@@ -33,15 +62,6 @@ namespace HowlOut
 			groupsButton.Clicked += (sender, e) => {
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
-			};
-			searchBar.TextChanged += (sender, e) => {
-				if(searchBar.Text == "" || searchBar.Text == null) { 
-					profileGrid.Children.Clear ();
-					groupGrid.Children.Clear ();
-				} else {
-					updateAutoCompleteProfileList(searchBar.Text);
-					updateAutoCompleteGroupList(searchBar.Text);
-				}
 			};
 		}
 
@@ -63,26 +83,16 @@ namespace HowlOut
 			profileContent.IsVisible = false;
 			findContent.IsVisible = false;
 			createGroupContent.IsVisible = false;
-			profileButton.FontAttributes = FontAttributes.None;
-			findButton.FontAttributes = FontAttributes.None;
-			createGroupButton.FontAttributes = FontAttributes.None;
-			profileLine.IsVisible = true;
-			findLine.IsVisible = true;
-			createGroupLine.IsVisible = true;
+			currentView = number;
 
 			if (number == 0) {
 				profileContent.IsVisible = true;
-				profileButton.FontAttributes = FontAttributes.Bold;
-				profileLine.IsVisible = false;
 			} else if (number == 1) {
 				findContent.IsVisible = true;
-				findButton.FontAttributes = FontAttributes.Bold;
-				findLine.IsVisible = false;
 			} else if (number == 2) {
 				createGroupContent.IsVisible = true;
-				createGroupButton.FontAttributes = FontAttributes.Bold;
-				createGroupLine.IsVisible = false;
 			}
+
 		}
 	}
 }

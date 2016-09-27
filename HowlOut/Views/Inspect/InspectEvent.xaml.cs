@@ -72,8 +72,8 @@ namespace HowlOut
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
 
-			ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain, true);
-			GroupContent.Content = new EventDesignView (eve, 130, EventDesignView.Design.Plain);
+			//ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain, true);
+			//GroupContent.Content = new EventDesignView (eve, 130, EventDesignView.Design.Plain);
 			//BannerHeight.Height = (0.524 * App.coreView.Width) - 60;
 
 			//Title.Text = eve.Title;
@@ -84,13 +84,14 @@ namespace HowlOut
 			//SmallTime.Text = Times [1];
 
 			StartTime.Text = "" + eve.StartDate.DayOfWeek + " the " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM").ToLower();
-			EndTime.Text = "From " + _dataManager.UtilityManager.getTime(eve.StartDate) + " till " + _dataManager.UtilityManager.getTime(eve.EndDate);
+			EndTime.Text =  _dataManager.UtilityManager.getTime(eve.StartDate) + " - " + _dataManager.UtilityManager.getTime(eve.EndDate);
 
 			string [] addressList = new string [3];
 			addressList = Regex.Split(eve.AddressName, ",");
 			for (int i = 0; i < addressList.Length; i++) { 
 				Label label = new Label () {TextColor = Color.FromHex("646464")}; 
 				label.Text = addressList [i];
+				label.FontSize = 12;
 				addressLayout.Children.Add(label);
 			}
 		}

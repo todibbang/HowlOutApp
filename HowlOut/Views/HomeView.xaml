@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.HomeView"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"  BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
@@ -9,10 +9,10 @@
 			</Grid.ColumnDefinitions>
 
 			<Grid.RowDefinitions>
-				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
+			<!--
 			<StackLayout BackgroundColor="White" Grid.Column="0" Grid.Row="0">
 				<Grid RowSpacing="0" ColumnSpacing="0" Padding="0">
 					<Grid.ColumnDefinitions>
@@ -37,28 +37,26 @@
 				</Grid>
 			</StackLayout>
 
-			<StackLayout Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
+			-->
+
+			<StackLayout Grid.Column="0" Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
 				<ContentView x:Name="profileContent"/>
 				<ContentView x:Name="createGroupContent" IsVisible="false"/>
 				<Grid x:Name="findContent" IsVisible="false"> 
 					<Grid.RowDefinitions>
 						<!-- <RowDefinition Height="auto"/>-->
-						<RowDefinition Height="auto"/> 
 						<RowDefinition Height="40"/> 
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 
-					<StackLayout Grid.Row="0" x:Name="searchLayout" HeightRequest="40" Padding="0">
-						<SearchBar x:Name="searchBar" HeightRequest="40"/>
-					</StackLayout>
 
 
-					<StackLayout Grid.Row="1" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="buttons">
+					<StackLayout Grid.Row="0" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="buttons">
 						<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 						<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
 					</StackLayout>
 
-					<ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
+					<ScrollView Grid.Row="1" VerticalOptions="FillAndExpand">
 						<Grid RowSpacing="0"> 
 							<Grid.RowDefinitions>
 								<RowDefinition Height="*"/>

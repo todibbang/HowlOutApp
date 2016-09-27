@@ -1,0 +1,1 @@
+﻿using System; using Xamarin.Forms;  namespace HowlOut { 	public class CustomEntry : Entry 	{ 	} }

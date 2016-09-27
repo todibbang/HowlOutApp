@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectEvent"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
@@ -10,148 +10,98 @@
 			
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="2"/>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="2"/>
-				<RowDefinition Height="0"/>
-				<RowDefinition Height="150"/>
-				<RowDefinition Height="40"/>
+				<RowDefinition Height="70"/>
+				<RowDefinition Height="50"/>
 			</Grid.RowDefinitions>
 
-			<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" x:Name="quickInfo">
+			<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" x:Name="quickInfo" >
 				<Grid.RowDefinitions>
-					<RowDefinition Height="{Binding InspectBannerHeight}" x:Name="BannerHeight"/>
-					<RowDefinition Height="8"/>
-					<RowDefinition Height="36"/>
-					<RowDefinition Height="8"/>
+					<RowDefinition Height="{Binding InspectBannerHeight}"/>
+					<RowDefinition Height="60"/>
 				</Grid.RowDefinitions>
 
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="4"/>
-					<ColumnDefinition Width="40"/>
-					<ColumnDefinition Width="20"/>
-					<ColumnDefinition Width="16"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="16"/>
-					<ColumnDefinition Width="20"/>
-					<ColumnDefinition Width="40"/>
-					<ColumnDefinition Width="4"/>
-				</Grid.ColumnDefinitions>
+				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
+				<Image Grid.Row="0" Source="{Binding Banner}"></Image>
+				<Image Grid.Row="0" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
-				<Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Source="{Binding Banner}"></Image>
-				<Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
-				<BoxView Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="9" BackgroundColor="White"></BoxView>
+				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
+				<StackLayout Grid.Row="0" VerticalOptions="Start" >
+					<StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="Fill" >
 
-				<Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" VerticalOptions="Start">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="5"/>
-						<RowDefinition Height="36"/>
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="2"/>
-						<ColumnDefinition Width="54"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="54"/>
-						<ColumnDefinition Width="2"/>
-					</Grid.ColumnDefinitions>
-
-						<StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Spacing="0">
+						<StackLayout HorizontalOptions="StartAndExpand" >
 							<Label Text="{Binding BigTime}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
-						<StackLayout Grid.Row="1" Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Padding="0,0,0,0">
-							<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"/>
-						</StackLayout>
+						
+						<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"/>
 
-						<!-- <Label Grid.Row="1" Grid.Column="2" Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-						-->
-						<StackLayout Grid.Row="1" Grid.Column="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Spacing="0">
+						<StackLayout HorizontalOptions="EndAndExpand" >
 							<Label Text="{Binding Distance}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
-				</Grid>
-
-				<StackLayout Grid.Row="2" Grid.Column="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
-					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
-					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
+					</StackLayout>
 				</StackLayout>
-				<!-- <Button Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="9" ></Button> -->
+
+				<!-- Her vises eventholders billede, antal deltagere og de kategorier som eventet høre under  -->
+				<StackLayout Grid.Row="1" TranslationY="-30" Orientation="Horizontal" Padding="10,0,10,0" HorizontalOptions="Fill" Spacing="0" >
+					
+					<controls:CircleImage Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
+
+					<Label Text="14 deltagere" FontSize="16" VerticalOptions="End" HorizontalOptions="StartAndExpand"/>
+
+					<StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
+						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
+						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
+						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
+					</StackLayout>
+				</StackLayout>
+
+				<!-- Eventets Beskrivelse -->
+				<StackLayout Grid.Row="1" Padding="10, 10, 10, 0" VerticalOptions="Start" HeightRequest="200" TranslationY="30">
+					<Label Style="{DynamicResource DescriptionStyle}" x:Name="eventDescription" FontSize="13"/>
+				</StackLayout>
 			</Grid>
 
+			<!-- Dette layout indeholder en Maps visning af eventets lokation samt præcis sted og tidspunkt -->
 			<StackLayout Grid.Row="0" Padding="0" VerticalOptions="CenterAndExpand" x:Name="detailedInfo">
 				<Grid>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="200"/>
-						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="{Binding InspectBannerHeight}"/>
+						<RowDefinition Height="53"/>
 					</Grid.RowDefinitions>
 					<StackLayout Grid.Row="0" x:Name="mapLayout"></StackLayout>
 					<StackLayout Grid.Row="0"> 
 						<Button x:Name="mapButton" BackgroundColor="#00000000" VerticalOptions="FillAndExpand"/>
 					</StackLayout>
 
-					<StackLayout Grid.Row="1" Padding="10,10,10,10">
-						<StackLayout x:Name="addressLayout" ></StackLayout>
-						<StackLayout Padding="0,10,0,10"> <local:Line/> </StackLayout>
-						<StackLayout Orientation="Horizontal">
-							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="StartTime"/>	
+					<StackLayout Grid.Row="1" Padding="10,10,10,10" Orientation="Horizontal" HorizontalOptions="Fill" >
+						<StackLayout x:Name="addressLayout" Spacing="0"></StackLayout>
+						<StackLayout HorizontalOptions="EndAndExpand">
+							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="StartTime" Text="17:00" FontSize="12" HorizontalOptions="EndAndExpand"/>	
+							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="EndTime" Text="17:00" FontSize="12" HorizontalOptions="EndAndExpand"/>	
 						</StackLayout>
-						<StackLayout Orientation="Horizontal">
-							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="EndTime"/>	
-						</StackLayout>
-						<Label TextColor="{DynamicResource NormalTextColor}" x:Name="RoughTime"/>
 					</StackLayout>
 				</Grid>
 			</StackLayout>
 
-
-			<Grid Grid.Row="0" WidthRequest="70" HorizontalOptions="EndAndExpand">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="50"/>
-					<ColumnDefinition Width="20"/>
-				</Grid.ColumnDefinitions>
-
-				<Grid.RowDefinitions>
-					<RowDefinition Height="100"/>
-					<RowDefinition Height="50"/>
-				</Grid.RowDefinitions>
-
-				<Button Grid.Column="0" Grid.Row="1" BorderRadius="25" BackgroundColor="{DynamicResource HowlOut}" x:Name="detailsButton" />
-			</Grid>
-
-			<StackLayout Grid.Row="2" Padding="10,0,10,0"> <local:Line/> </StackLayout> 
-
-			<StackLayout Grid.Row="3" Padding="10, 20, 10, 20" VerticalOptions="CenterAndExpand" BackgroundColor="White">
-				<Label Style="{DynamicResource DescriptionStyle}" x:Name="eventDescription" />
+			<!-- Knappen som gør man kan kan få mere / mindre info -->
+			<StackLayout Grid.Row="1" VerticalOptions="EndAndExpand">
+				<Button TextColor="{DynamicResource TextColor}" x:Name="detailsButton" Text="    More Information" FontAttributes="Bold" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
 			</StackLayout>
 
-			<StackLayout Grid.Row="4" Padding="10,0,10,0"> <local:Line/> </StackLayout> 
-
-			<Grid Grid.Row="6">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="auto"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="auto"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-
-					<ContentView Grid.Column="1" x:Name="ProfileContent"/>
-					<ContentView Grid.Column="3" x:Name="GroupContent"/>
-			</Grid>
-
-			<StackLayout Grid.Row="7" x:Name="manageSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-				<Button Text="Invite" Style="{DynamicResource ButtonStyle}" x:Name="inviteButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-				<Button Text="Leave" Style="{DynamicResource ButtonStyle}" x:Name="editLeaveButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+			<!-- Knapper der giver mulighed for at deltage, followe, invite og leave afhængigt af om man er med i event eller ej -->
+			<StackLayout Grid.Row="2" x:Name="manageSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
+				<Button Text="Invite" x:Name="inviteButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button Text="Leave"  x:Name="editLeaveButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
 
-			<StackLayout Grid.Row="7" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-				<Button Text="Join" Style="{DynamicResource ButtonStyle}" x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-				<Button Text="Follow" Style="{DynamicResource ButtonStyle}" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
+			<StackLayout Grid.Row="2" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
+				<Button Text="Join"   x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button Text="Follow" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
+
 
 		</Grid>
 	</ContentView.Content>

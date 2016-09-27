@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectController"
 		 	 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
@@ -11,71 +11,95 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 			-->
-			<ScrollView  Orientation="Vertical" VerticalOptions="FillAndExpand">
+		<ScrollView  Orientation="Vertical" VerticalOptions="FillAndExpand">
 
-				<Grid RowSpacing="0"> 
-					<Grid.RowDefinitions>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="40"/>
-						<RowDefinition Height="*"/>
-					</Grid.RowDefinitions>
+			<Grid RowSpacing="0"> 
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="10"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="10"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="50"/>
+				</Grid.ColumnDefinitions>
 
-					<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView"></ContentView>
+				<ContentView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView"></ContentView>
 
-					<StackLayout Grid.Row="1" Padding="0" Spacing="0" VerticalOptions="StartAndExpand"> <local:Line/> </StackLayout> 
+				<StackLayout Grid.Row="2" Grid.Column="1">
+					<Button BackgroundColor="White" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="15" HeightRequest="30"/>
+				</StackLayout>
+			
+				<Grid Grid.Row="2" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" Grid.Column="1"  x:Name="friendsWallGrid" IsVisible="false">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="1"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Button Grid.Column="0" Text="Friends" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" TextColor="{DynamicResource HowlOut}"></Button>
+					<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
+					<Button Grid.Column="2"  Text="Wall" x:Name="wallButton" HorizontalOptions="CenterAndExpand" TextColor="{DynamicResource HowlOut}"></Button>
+				</Grid>
 
-					<StackLayout Grid.Row="2" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-						<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80" IsVisible="false"></Button>
-						<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80" IsVisible="false"></Button>
-						<Button Text="Wall" Style="{DynamicResource ButtonStyle}" x:Name="wallButton" HorizontalOptions="CenterAndExpand" WidthRequest="80" IsVisible="false"></Button>
-					</StackLayout>
+				<Grid Grid.Row="2" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" Grid.Column="1" x:Name="friendsGroupsGrid" IsVisible="false">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="1"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Button Grid.Column="0" Text="Friends" x:Name="friendsTwoButton" HorizontalOptions="CenterAndExpand" TextColor="{DynamicResource HowlOut}"></Button>
+					<StackLayout Grid.Column="1" WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
+					<Button Grid.Column="2" Text="Groups" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" TextColor="{DynamicResource HowlOut}"></Button>
+				</Grid>
 
-					<Grid Grid.Row="3" x:Name="profileGrid"></Grid>
-					<Grid Grid.Row="3" x:Name="groupGrid" IsVisible="false"></Grid>
-					<StackLayout Grid.Row="3" Spacing="0" Padding="0" x:Name="wall" IsVisible="false">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="5"/>
-								<ColumnDefinition Width="65"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="5"/>
-							</Grid.ColumnDefinitions>
+				<Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" x:Name="profileGrid"></Grid>
+				<Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" x:Name="groupGrid" IsVisible="false"></Grid>
+				<StackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Spacing="0" Padding="0" x:Name="wall" IsVisible="false">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="5"/>
+							<ColumnDefinition Width="65"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="5"/>
+						</Grid.ColumnDefinitions>
 
-							<Grid.RowDefinitions>
-								<RowDefinition Height="5"/>
-								<RowDefinition Height="65"/>
-								<RowDefinition Height="20"/>
-								<RowDefinition Height="*"/>
-							</Grid.RowDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="5"/>
+							<RowDefinition Height="65"/>
+							<RowDefinition Height="20"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
 
-							<controls:CircleImage Grid.Row="1" Grid.Column="1" x:Name="usersPhoto"/> 
-							<Button Grid.Column="1" Grid.Row="2" Text="Post" x:Name="postCommentButton" Style="{DynamicResource ButtonStyle}"/>
-							<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-								<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntry" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
-							</StackLayout>
-
-						</Grid>
-						<StackLayout Padding="10,10,10,0"> <local:Line/> </StackLayout> 
-						<StackLayout x:Name="WallList"></StackLayout>
-
-						<!--
-							<ListView x:Name="WallList"
-							  			HasUnevenRows="false"
-										RowHeight="120"
-										SeparatorVisibility="None"
-										BackgroundColor="Transparent">
-								<ListView.ItemTemplate>
-									<DataTemplate>
-										<ViewCell>
-											<local:InspectManageComment  />
-										</ViewCell>
-									</DataTemplate>
-								</ListView.ItemTemplate>	
-							</ListView>
-							-->
+						<controls:CircleImage Grid.Row="1" Grid.Column="1" x:Name="usersPhoto"/> 
+						<Button Grid.Column="1" Grid.Row="2" Text="Post" x:Name="postCommentButton" Style="{DynamicResource ButtonStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="Fill"/>
+						<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+							<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntry" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{DynamicResource HowlOutFade}"/>
 						</StackLayout>
+
 					</Grid>
+					<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="10,10,10,0"> <local:Line/> </StackLayout> 
+					<StackLayout Grid.Column="0" Grid.ColumnSpan="3" x:Name="WallList"></StackLayout>
+
+					<!--
+						<ListView x:Name="WallList"
+						  			HasUnevenRows="false"
+									RowHeight="120"
+									SeparatorVisibility="None"
+									BackgroundColor="Transparent">
+							<ListView.ItemTemplate>
+								<DataTemplate>
+									<ViewCell>
+										<local:InspectManageComment  />
+									</ViewCell>
+								</DataTemplate>
+							</ListView.ItemTemplate>	
+						</ListView>
+						-->
+					</StackLayout>
+				</Grid>
 			</ScrollView>
 		<!-- </Grid> -->
 	</ContentView.Content>

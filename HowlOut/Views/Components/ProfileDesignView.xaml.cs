@@ -11,9 +11,12 @@ namespace HowlOut
 		{
 			_dataManager = new DataManager ();
 			InitializeComponent ();
+
+			setTypeSpecificDesign(profile, dimentions, design);
+
 			ScaleLayout (profile, dimentions, design);
 
-			setTypeSpecificDesign (profile, dimentions, design);
+
 
 			SubjectButton.Clicked += (sender, e) => {
 				if(clickable) {
@@ -71,8 +74,20 @@ namespace HowlOut
 
 
 			infoLabel.FontSize = (int) (0.1 * dimentions);
+			buttonLayout.HeightRequest = (int)(0.16 * dimentions);
+			acceptButton.BorderRadius = (int)(0.08 * dimentions);
+			declineButton.BorderRadius = (int)(0.08 * dimentions);
+			acceptButton.BorderWidth = (0.003 * dimentions);
+			declineButton.BorderWidth = (0.003 * dimentions);
+
+
+			acceptButton.WidthRequest = (acceptButton.Text.Length * .07 * dimentions);
+			declineButton.WidthRequest = (acceptButton.Text.Length * .07 * dimentions);
+
+
 			acceptButton.FontSize = (int) (0.115 * dimentions);
 			declineButton.FontSize = (int) (0.115 * dimentions);
+			/*
 			Likes.BorderRadius = (int) (0.175 * dimentions);
 			Loyalty.BorderRadius = (int)(0.175 * dimentions);
 			Likes.BorderWidth = (int) (0.025 * dimentions);
@@ -80,10 +95,11 @@ namespace HowlOut
 
 			Likes.Text = "";
 			Loyalty.Text = "";
+			*/
 
 			if (profile != null) {
 				infoLabel.Text = profile.Name + ", " + profile.Age;
-				infoLabel.HeightRequest = dimentions * 0.3;
+				infoLabel.HeightRequest = dimentions * 0.2;
 				ProfileImage.Source = "https://graph.facebook.com/v2.5/" + profile.ProfileId + "/picture?height=" + dimentions + "&width=" + dimentions;
 				ProfileImage.IsVisible = true;
 			} 
@@ -124,7 +140,7 @@ namespace HowlOut
 						declineButton.IsVisible = false;
 					}
 				}
-				Loyalty.IsVisible = false;
+				//Loyalty.IsVisible = false;
 			}
 
 			if (design.Equals (Design.InviteProfileToEvent) || design.Equals(Design.InviteProfileToGroup)) {

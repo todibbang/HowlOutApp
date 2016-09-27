@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDisplayName</key>
 	<string>HowlOut</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.howlout.howlout.howlout</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -56,8 +54,10 @@
 		</dict>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
-    	<string>Can we use your location</string>
+	<string>Can we use your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-    	<string>We are using your location</string>
+	<string>We are using your location</string>
+	<key>CFBundleName</key>
+	<string>HowlOut</string>
 </dict>
 </plist>

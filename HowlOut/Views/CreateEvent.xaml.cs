@@ -72,6 +72,21 @@ namespace HowlOut
 			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 
 			/// set location
+			locationEntry.Focused += (sender, e) =>
+			{
+				this.Focus();
+
+				if (newEvent.Latitude == 0 && newEvent.Longitude == 0)
+				{
+					mapView = new MapsView(App.lastKnownPosition);
+				}
+				else {
+					mapView = new MapsView(new Position(newEvent.Latitude, newEvent.Longitude));
+				}
+				mapView.createEventView = this;
+				App.coreView.setContentViewWithQueue(mapView, "MapsView");
+			};
+			/*
 			locationButton.Clicked += (sender, e) => {
 				if (newEvent.Latitude == 0 && newEvent.Longitude == 0){
 					mapView = new MapsView (App.lastKnownPosition);
@@ -82,11 +97,17 @@ namespace HowlOut
 				mapView.createEventView = this;
 				App.coreView.setContentViewWithQueue (mapView, "MapsView");
 			};
+			*/
 
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
 				App.coreView.setContentViewWithQueue(selectBannerView, "");
+			};
+
+			takePictureButton.Clicked += (sender, e) =>
+			{
+
 			};
 
 			/// set age and size limits
@@ -118,10 +139,12 @@ namespace HowlOut
 		}
 
 		public void setBanner(string banner) {
-			selectBannerButton.Text = "";
-			selectBannerButton.Image = banner;
-			selectBannerButton.WidthRequest = App.coreView.Width;
-			selectBannerButton.HeightRequest = App.coreView.Width / 2;
+			selectBannerButton.BackgroundColor = Color.Transparent;
+			//selectBannerButton.Image = banner;
+			SelectedBannerLayout.Children.Clear();
+			SelectedBannerLayout.Children.Add(new Image() {Source = banner });
+			//selectBannerButton.WidthRequest = App.coreView.Width;
+			//selectBannerButton.HeightRequest = App.coreView.Width / 2;
 		}
 
 		private void setNewEvent()
@@ -180,7 +203,7 @@ namespace HowlOut
 			startDate.Date = newEvent.StartDate.Date;
 			endDate.Date = newEvent.EndDate.Date;
 
-			locationButton.Text = newEvent.AddressName;
+			locationEntry.Text = newEvent.AddressName;
 
 			int minvalue = 0;
 			int maxvalue = 0;
@@ -301,7 +324,7 @@ namespace HowlOut
 		}
 
 		public void setLocationButton(string name) {
-			locationButton.Text = name;
+			locationEntry.Text = name;
 		}
 
 		private Button PreSetButton(Button typeButton, EventType eventType)
