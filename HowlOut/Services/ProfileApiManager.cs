@@ -44,6 +44,7 @@ namespace HowlOut
 			return false;
 		}
 
+
 		public async Task<bool> SetSearchSettings(string profileId, SearchSettings searchSettings)
 		{
 			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/SearchReference/"+profileId);
@@ -260,6 +261,48 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
 			return false;
+		}
+
+		public async Task<ObservableCollection<Notification>> GetNotifications(Event testeve, Profile testpro, Group testGroup)
+		{
+			ObservableCollection<Notification> notifications = new ObservableCollection<Notification>();
+
+			Array values = Enum.GetValues(typeof(Notification.NotificationType));
+			Random random = new Random();
+			Notification.NotificationType randomBar = (Notification.NotificationType)values.GetValue(random.Next(values.Length));
+
+			for (int i = 0; i < 40; i++)
+			{
+				notifications.Add(new Notification()
+				{
+					TypeOfMessage = (Notification.NotificationType)values.GetValue(random.Next(values.Length)),
+					SendTime = DateTime.Now.AddMonths(random.Next(8)*-1).AddHours(random.Next(200)),
+					ContentEvent = testeve,
+					ContentGroup = testGroup,
+					HeaderProfiles = new List<Profile>() {testpro},
+				});
+			}
+
+
+			/*
+			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetFromName/" + name);
+
+			try
+			{
+				var response = await httpClient.GetAsync(uri);
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					profiles = JsonConvert.DeserializeObject<List<Profile>>(content);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			*/
+
+			return notifications;
 		}
 	}
 }

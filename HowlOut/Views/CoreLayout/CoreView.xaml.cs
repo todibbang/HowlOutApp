@@ -16,9 +16,9 @@ namespace HowlOut
 
 
 		public CreateEvent createEventView;
-		public EventView searchEventView;
 		public EventView manageEventView;
-		public EventView friendsEventView;
+		public EventView exploreEventView;
+		public YourNotifications howlsEventView;
 		public HomeView homeView;
 
 		int lastCoreView = 2;
@@ -30,14 +30,19 @@ namespace HowlOut
 			topBar = new UpperBar();
 			topBarLayout.Children.Add (topBar);
 			topBar.hideAll();
+
+
+
+
+
 		}
 
 		public void startCoreView()
 		{
 			createEventView = new CreateEvent(new Event(), true);
-			searchEventView = new EventView(0);
-			manageEventView = new EventView(1);
-			friendsEventView = new EventView(2);
+			manageEventView = new EventView(0);
+			exploreEventView = new EventView(1);
+			howlsEventView = new YourNotifications();
 			homeView = new HomeView();
 
 			_dataManager.update ();
@@ -46,14 +51,13 @@ namespace HowlOut
 			contentViewTypes.Add ("Event");
 			topBar.setNavigationLabel("Event");
 			mainView.Content = manageEventView;
-			topBar.showOptionGrid(true, "Attending", "Following");
 			loading.IsVisible = false;
 		}
 
 		public async void setContentView (int type)
 		{
 			topBar.hideAll();
-
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard(); 
 			var first = DateTime.Now;
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			ContentView view = null;
@@ -62,24 +66,26 @@ namespace HowlOut
 			if (type == 0)
 			{
 				view = createEventView;
+				topBar.showCreateNewGroupButton(true);
+				topBar.setNavigationLabel("Create Event");
 			} else if (type == 1)
 			{
-				view = searchEventView;
-				topBar.showFilterSearchButton(true);
-				topBar.showSearchBar(true);
+				view = manageEventView;
+				topBar.setNavigationLabel("Your Events");
 			} else if (type == 2)
 			{
-				view = manageEventView;
-				topBar.showOptionGrid(true, "Attending", "Following");
+				view = exploreEventView;
+				topBar.showFilterSearchButton(true);
+				topBar.setNavigationLabel("Find Events");
 			} else if (type == 3)
 			{
-				view = friendsEventView;
-				topBar.showOptionGrid(true, "Friends", "Invites");
+				view = howlsEventView;
+				topBar.setNavigationLabel("Howls");
 			} else if (type == 4)
 			{
 				view = homeView;
-				topBar.showSearchBar(true);
-				topBar.showCreateNewGroupButton(true);
+
+				topBar.setNavigationLabel("Me");
 			}
 
 			lastCoreView = type;
@@ -110,6 +116,7 @@ namespace HowlOut
 		{
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			topBar.hideAll();
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 
 			System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
 
@@ -127,8 +134,7 @@ namespace HowlOut
 
 		public void returnToPreviousView()
 		{
-
-			System.Diagnostics.Debug.WriteLine ("contentViews.Count: " + contentViews.Count);
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard(); 			System.Diagnostics.Debug.WriteLine ("contentViews.Count: " + contentViews.Count);
 			int count = contentViews.Count;
 			if (count != 1) {
 
@@ -167,17 +173,88 @@ namespace HowlOut
 			return true;
 		}
 
+
+		public async void GoToSelectedEvent(string eveID)
+		{
+			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
+			setContentViewWithQueue(new InspectController(null, null, eve), "UserProfile");
+		}
+
+		public async void GoToSelectedGroup(string groupID)
+		{
+			Group grp = await _dataManager.GroupApiManager.GetGroupById(groupID);
+			setContentViewWithQueue(new InspectController(null, grp, null), "Group");
+		}
+
 		public async Task displayAlertMessage (string title, string message, string buttonText)
 		{
-			await DisplayAlert (title, message, buttonText);
+			optionOne.IsVisible = false;
+			optionTwo.IsVisible = false;
+			optionsBorder.IsVisible = false;
+			optionOK.IsVisible = true;
+
+			WarningTitle.Text = title;
+			WarningDescription.Text = message;
+			optionOK.Text = buttonText;
+
+
+
+			await DisplayAlert();
 		}
 
 		public async Task<bool> displayConfirmMessage (string title, string message, string confirm, string decline)
 		{
-			var answer = await DisplayAlert (title, message, confirm, decline);
+			optionOne.IsVisible = true;
+			optionTwo.IsVisible = true;
+			optionsBorder.IsVisible = true;
+			optionOK.IsVisible = false;
+
+			WarningTitle.Text = title;
+			WarningDescription.Text = message;
+			optionOne.Text = decline;
+			optionTwo.Text = confirm;
+
+			var answer = await DisplayAlert();
 			return answer;
 		}
 
+		async Task<bool> DisplayAlert()
+		{
+			System.Diagnostics.Debug.WriteLine("1");
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			System.Diagnostics.Debug.WriteLine("2");
+			bool answer = false;
+			WarningLayout.IsVisible = true;
+
+
+
+			optionOne.Clicked += (sender, e) =>
+			{
+				answer = false;
+				tcs.TrySetResult(true);
+				System.Diagnostics.Debug.WriteLine("Press1");
+			};
+			optionTwo.Clicked += (sender, e) =>
+			{
+				answer = true;
+				System.Diagnostics.Debug.WriteLine("Press2.1");
+				tcs.TrySetResult(true);
+				System.Diagnostics.Debug.WriteLine("Press2.2");
+			};
+			optionOK.Clicked += (sender, e) =>
+			{
+				answer = true;
+				tcs.TrySetResult(true);
+				System.Diagnostics.Debug.WriteLine("Press3");
+			};
+
+
+			await tcs.Task;
+			//tcs.SetCanceled();
+			System.Diagnostics.Debug.WriteLine("3");
+			WarningLayout.IsVisible = false;
+			return answer;
+		}
 	}
 }
 

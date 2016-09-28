@@ -6,6 +6,7 @@ using Plugin.Geolocator;
 using Xamarin.Forms.Maps;
 using System.Net.Http;
 using ModernHttpClient;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -37,7 +38,10 @@ namespace HowlOut
 
 			/// set title and description
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
-			description.TextChanged += (sender, e) => { newEvent.Description = description.Text; };
+			description.TextChanged += (sender, e) => { 
+				newEvent.Description = description.Text;
+				System.Diagnostics.Debug.WriteLine("Called again: " + newEvent.Description);
+			};
 
 			/// set event type
 			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest, EventType.Party); };
@@ -296,13 +300,13 @@ namespace HowlOut
 		{
 			if (typeButton.BackgroundColor == Color.White) {
 				if (newEvent.EventTypes.Count < 3) {
-					typeButton.BackgroundColor = Color.FromHex ("00e1c4");
+					typeButton.BackgroundColor = App.HowlOut;
 					typeButton.TextColor = Color.White;
 					newEvent.EventTypes.Add (eventType);
 				}
 			} else {
 				typeButton.BackgroundColor = Color.White;
-				typeButton.TextColor = Color.FromHex ("00e1c4");
+				typeButton.TextColor = App.HowlOut;
 				newEvent.EventTypes.Remove (eventType);
 			}
 			return typeButton;
@@ -329,9 +333,7 @@ namespace HowlOut
 
 		private Button PreSetButton(Button typeButton, EventType eventType)
 		{
-			System.Diagnostics.Debug.WriteLine ("1234567890");
-
-			typeButton.BackgroundColor = Color.FromHex ("00e1c4");
+			typeButton.BackgroundColor = App.HowlOut;
 			typeButton.TextColor = Color.White;
 
 			return typeButton;

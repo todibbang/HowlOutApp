@@ -11,8 +11,11 @@
 			if (Control != null && element != null)
 			{
 				Placeholder = element.Placeholder;
-				Control.TextColor = Color.White.ToUIColor();
-				Control.Text = Placeholder;
+
+				if (Control.Text == "" || Control.Text == Placeholder)
+				{ 					Control.TextColor = Color.FromRgba(200, 200, 200, 255).ToUIColor();
+					Control.Text = Placeholder; 				}
+				else { 					Control.TextColor = Color.FromRgba(0, 0, 0, 255).ToUIColor(); 				}
 				Control.Layer.BorderColor = Color.White.ToCGColor();
 				Control.Layer.BorderWidth = 1; 				Control.Layer.CornerRadius = 4; 				Control.TextAlignment = UITextAlignment.Left;
 

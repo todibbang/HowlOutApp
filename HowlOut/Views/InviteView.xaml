@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InviteView"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
@@ -8,14 +8,21 @@
 
 			<Grid> 
 				<Grid.RowDefinitions>
-					<RowDefinition Height="40"/> 
+					<RowDefinition Height="auto"/> 
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<StackLayout Grid.Row="0" Padding="10,0,10,0" Orientation="Horizontal" VerticalOptions ="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="buttonsLayout">
-					<Button Text="Friends" Style="{DynamicResource ButtonStyle}" x:Name="friendsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-					<Button Text="Groups" Style="{DynamicResource ButtonStyle}" x:Name="groupsButton" HorizontalOptions="CenterAndExpand" WidthRequest="80"></Button>
-				</StackLayout>
+				<Grid Grid.Row="0" Padding="10,5,10,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="{DynamicResource HowlOutFade}" >
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="1"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Button Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="15" HeightRequest="30" />
+					<Button Grid.Column="0" Text="Friends" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="18" FontAttributes="Bold"></Button>
+					<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
+					<Button Grid.Column="2"  Text="Groups" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
+				</Grid>
 
 				<Grid Grid.Row="1" x:Name="groupGrid" IsVisible="false"></Grid>
 				<Grid Grid.Row="1" x:Name="profileGrid"></Grid>

@@ -81,8 +81,8 @@ namespace HowlOut
 			declineButton.BorderWidth = (0.003 * dimentions);
 
 
-			acceptButton.WidthRequest = (acceptButton.Text.Length * .07 * dimentions);
-			declineButton.WidthRequest = (acceptButton.Text.Length * .07 * dimentions);
+			acceptButton.WidthRequest = (acceptButton.Text.Length * .06 * dimentions);
+			declineButton.WidthRequest = (acceptButton.Text.Length * .06 * dimentions);
 
 
 			acceptButton.FontSize = (int) (0.115 * dimentions);
@@ -153,7 +153,7 @@ namespace HowlOut
 		private async void sendEventInviteToProfile(Profile profile, Event eve) {
 			bool success = await _dataManager.sendProfileInviteToEvent(eve, profile);
 			if (success) {
-				acceptButton.Text = " Invite Sent ";
+				acceptButton.Text = " Invited ";
 				acceptButton.IsEnabled = false;
 			}
 		}

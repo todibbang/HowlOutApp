@@ -30,8 +30,40 @@
 				<local:BottomBar/> 
 			</StackLayout>
 
-			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="{DynamicResource HowlOut}" Color="White" IsRunning="true"/>
+			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="{DynamicResource HowlOut}" Color="White" IsRunning="true" IsVisible="false"/>
 
+			<StackLayout Grid.Row="0" Grid.RowSpan="3" BackgroundColor="#70000000" x:Name="WarningLayout" IsVisible="false">
+				
+
+				<Grid Padding="20,150,20,0" VerticalOptions ="Start" HorizontalOptions="Fill" x:Name="optionGrid" RowSpacing="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="1"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="5"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="1"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="{DynamicResource HowlOut}" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="10" />
+
+					<Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningTitle" Text="Title" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="White" FontAttributes="Bold"/>
+
+					<Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningDescription" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="White" Text="Warning here is a ver long message just for test purposes and i want to see how the text behaves which it so far is doing pretty devently ---- as to be expected" />
+					
+					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" BorderColor="White" BorderWidth="1" BorderRadius="15" HeightRequest="30" />
+					<Button Grid.Row="2" Grid.Column="1" Text="optionOne" x:Name="optionOne" HorizontalOptions="Fill" TextColor="White" FontSize="16" ></Button>
+					<StackLayout Grid.Row="2" Grid.Column="2"  WidthRequest="1" BackgroundColor="White" x:Name="optionsBorder"/>
+					<Button Grid.Row="2" Grid.Column="3"  Text="optionTwo" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
+					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  Text="OK" x:Name="optionOK" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
+				</Grid>
+			</StackLayout>
+
+			
 		</Grid>
 	</ContentPage.Content>
 </ContentPage>

@@ -19,6 +19,8 @@ namespace HowlOut
 			distance.Text += " km";
 			var times = _dataManager.UtilityManager.setTime (eve.StartDate);
 			time.Text = times[0] + " " + times[1];
+			attending.Text = (eve.NumberOfAttendees) + "/" + eve.MaxSize;
+
 			//address.Text = "At " + eve.eve.AddressName;
 
 			//ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain, false);

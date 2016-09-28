@@ -22,35 +22,69 @@ namespace HowlOut
 			var createImage = new TapGestureRecognizer();
 			createImage.Tapped += async (sender, e) =>
 			{
+				await create.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await create.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.setContentView(0);
+				unselectAll();
+				create.Foreground = App.HowlOut;
 			};
 			create.GestureRecognizers.Add(createImage);
 
-			var exploreImage = new TapGestureRecognizer();
-			exploreImage.Tapped += async (sender, e) => 
+			var manageImage = new TapGestureRecognizer();
+			manageImage.Tapped += async (sender, e) => 
 			{
+				await manage.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await manage.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.setContentView(1);
+				unselectAll();
+				manage.Foreground = App.HowlOut;
 			};
-			search.GestureRecognizers.Add(exploreImage);  
+			manage.GestureRecognizers.Add(manageImage);  
 
-			events.Clicked += (sender, e) => 
+			explore.Clicked += async (sender, e) => 
 			{
+				await exploreImg.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await exploreImg.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.setContentView (2);
+				unselectAll();
+				exploreBG.BackgroundColor = App.HowlOut;
 			};
 
 			var friendsImage = new TapGestureRecognizer();
 			friendsImage.Tapped += async (sender, e) =>
 			{
+				await howls.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await howls.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.setContentView(3);
+				unselectAll();
+				howls.Foreground = App.HowlOut;
 			};
-			friends.GestureRecognizers.Add(friendsImage);
+			howls.GestureRecognizers.Add(friendsImage);
 
 			var socialImage = new TapGestureRecognizer();
 			socialImage.Tapped += async (sender, e) =>
 			{
+				await me.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await me.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.setContentView(4);
+				unselectAll();
+				me.Foreground = App.HowlOut;
 			};
 			me.GestureRecognizers.Add(socialImage);
+		}
+
+		void unselectAll()
+		{
+			create.Foreground = App.HowlOutFade;
+			manage.Foreground = App.HowlOutFade;
+			exploreBG.BackgroundColor = App.HowlOutFade;
+			howls.Foreground = App.HowlOutFade;
+			me.Foreground = App.HowlOutFade;
 		}
 	}
 }

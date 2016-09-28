@@ -21,16 +21,28 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 			BindingContext = new EventForLists (eve);
+			attendingInfo.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
 			_dataManager = new DataManager();
 			setInfo (eve);
+
+			//System.Diagnostics.Debug.WriteLine("Eve id:D " + eve.EventId);
 
 			if (!_dataManager.IsEventJoined(eve)) { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
 			else  { searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
 
 			detailsButton.Clicked += (sender, e) => 
 			{
-				if(detailedInfo.IsVisible == false) { detailedInfo.IsVisible = true; quickInfo.IsVisible = false;} 
-				else { detailedInfo.IsVisible = false; quickInfo.IsVisible = true;}
+				
+				if(detailedInfo.IsVisible == false) { 
+					detailedInfo.IsVisible = true; 
+					quickInfo.IsVisible = false;
+					detailsButton.Text = "    Show Less Details";
+				} 
+				else { 
+					detailedInfo.IsVisible = false; 
+					quickInfo.IsVisible = true;
+					detailsButton.Text = "    Show More Details";
+				}
 
 				if(mapInitialized != true) { 
 					mapInitialized = true;

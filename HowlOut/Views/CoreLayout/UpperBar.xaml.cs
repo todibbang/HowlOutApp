@@ -45,32 +45,11 @@ namespace HowlOut
 
 		}
 
-		public SearchBar getSearchBar()
-		{
-			return searchBar;
-		}
-
-		public Button[] getOptionButtons()
-		{
-			return new Button [] {optionOne, optionTwo};
-		}
-
 		public void hideAll()
 		{
-			showSearchBar(false);
 			showCreateNewGroupButton(false);
 			showFilterSearchButton(false);
 			showBackButton(false);
-			showOptionGrid(false, "", "");
-
-			howlOut.IsVisible = true;
-		}
-
-		public void showSearchBar(bool show)
-		{
-			searchBar.IsVisible = show;
-			howlOut.IsVisible = !show;
-			searchBar.Text = "";
 		}
 
 		public void showCreateNewGroupButton(bool show)
@@ -85,20 +64,12 @@ namespace HowlOut
 
 		public void setNavigationLabel(string label)
 		{
-			//navigationLabel.Text = label;
+			navigationLabel.Text = label;
 		}
 
 		public void showBackButton(bool active)
 		{
 			backBtn.IsVisible = active;
-		}
-
-		public void showOptionGrid(bool show, string optionOneText, string optionTwoText)
-		{
-			optionGrid.IsVisible = show;
-			optionGridBackground.IsVisible = show;
-			optionOne.Text = optionOneText;
-			optionTwo.Text = optionTwoText;
 		}
 	}
 }

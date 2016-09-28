@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.EventView"
-			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.YourNotifications">
 	<ContentView.Content>
-		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
+		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,5,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
@@ -13,9 +11,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-
-
-			<Grid Grid.Row="0" Padding="10,5,10,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="{DynamicResource HowlOutFade}" >
+			<Grid Grid.Row="0" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" IsVisible="false"> 
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="1"/>
@@ -27,14 +23,15 @@
 				<Button Grid.Column="2"  Text="Tracked" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
 			</Grid>
 			
-			<StackLayout Grid.Row="1" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0,0,0,0" >
+			<StackLayout Grid.Row="1" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0,5,0,0" >
 				<ScrollView x:Name="HorizontalScrollView">
-					<StackLayout x:Name="searchList" Spacing="0" >
+					<StackLayout x:Name="notificationList" Spacing="0" >
 					</StackLayout>
 				</ScrollView>
 			</StackLayout>
 
 			<ActivityIndicator Grid.Row="1" Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading"/>
+			
 		</Grid>
 	</ContentView.Content>
 </ContentView>

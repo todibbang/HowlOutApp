@@ -13,9 +13,9 @@
 
 			<Color x:Key="HowlOutGreen">#ff00e6dd</Color>
 
-			<Color x:Key="HowlOut">#ff87CEBD</Color>
+			<Color x:Key="HowlOut">#ff4a7aaa</Color>
 
-			<Color x:Key="HowlOutFade">#7087CEBD</Color>
+			<Color x:Key="HowlOutFade">#504a7aaa</Color>
 			<!-- <Color x:Key="HowlOut">#fffdaa00</Color>  -->
 
 			<Color x:Key="HowlOutBackground">#ffeeeeee</Color>
@@ -71,14 +71,14 @@
 			</Style>
 
 			<Style x:Key="SmallTypeButtonStyle" TargetType="Button">
-				<Setter Property="TextColor" Value="{DynamicResource HowlOut}"/>
+				<Setter Property="TextColor" Value="White"/>
 				<Setter Property="BorderRadius" Value="18"/>
 				<Setter Property="BorderWidth" Value="1"/>
 				<Setter Property="HeightRequest" Value="36"/>
 				<Setter Property="WidthRequest" Value="36"/>
-				<Setter Property="BorderColor" Value="{DynamicResource HowlOutBackground}"/>
-				<Setter Property="BackgroundColor" Value="#ffeeeeee" />
-				<Setter Property="FontSize" Value="10"/>
+				<Setter Property="BorderColor" Value="{DynamicResource HowlOut}"/>
+				<Setter Property="BackgroundColor" Value="{DynamicResource HowlOut}" />
+				<Setter Property="FontSize" Value="8"/>
 				<Setter Property="FontAttributes" Value="Bold"/>
 			</Style>
 

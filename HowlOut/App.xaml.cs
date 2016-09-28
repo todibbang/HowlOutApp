@@ -19,6 +19,9 @@ namespace HowlOut
 		public static Position lastKnownPosition = new Position(55.5, 12.6);
 		private DataManager _dataManager;
 
+		public static Color HowlOut = Color.FromHex("#ff4a7aaa");
+		public static Color HowlOutFade = Color.FromHex("#504a7aaa");
+
         public interface ISaveAndLoad
         {
             //Needed to pull and save tokens
@@ -155,6 +158,19 @@ namespace HowlOut
 			coreView.startCoreView ();
 			//coreView.setContentView (new EventView(), "Event");
 
+		}
+
+		public static void selectButton(Button[] buttons, Button selected)
+		{
+			foreach (Button b in buttons)
+			{
+				b.FontAttributes = FontAttributes.None;
+				b.FontSize = 16;
+				b.TextColor = App.HowlOutFade;
+			}
+			selected.FontAttributes = FontAttributes.Bold;
+			selected.FontSize = 18;
+			selected.TextColor = App.HowlOut;
 		}
 
         protected override void OnStart ()

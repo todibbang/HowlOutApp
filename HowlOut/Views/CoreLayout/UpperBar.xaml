@@ -15,29 +15,16 @@
 
 					<Image Grid.Column="0" x:Name="backBtn" Source="ic_back.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"></Image>
 
-					<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" IsVisible="false"></Label>
+					<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" IsVisible="true"></Label>
 
-					<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/>
+					<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 
-					<SearchBar Grid.Column="0" Grid.ColumnSpan="2" x:Name="searchBar" HeightRequest="40" BackgroundColor="Transparent" IsVisible="false"/>
 
-					<!--<StackLayout Grid.Column="1" Padding="10,0,10,10"> -->
-					<Button Grid.Column="1" BackgroundColor="Transparent" BorderColor="White" BorderWidth="1" BorderRadius="15" x:Name="optionGridBackground" />
-					<!-- </StackLayout> -->
-					<Grid Grid.Column="1" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="1"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Button Grid.Column="0" Text="Friends" x:Name="optionOne" HorizontalOptions="CenterAndExpand" TextColor="White"></Button>
-						<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="White" />
-						<Button Grid.Column="2"  Text="Wall" x:Name="optionTwo" HorizontalOptions="CenterAndExpand" TextColor="White"></Button>
-					</Grid>
 
-					<Image Grid.Column="2" x:Name="createNewGroupBtn" Source="ic_group_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"></Image>
 
-					<Image Grid.Column="2" x:Name="filterSearchBtn" Source="ic_search.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"></Image>
+					<Image Grid.Column="2" x:Name="createNewGroupBtn" Source="ic_group_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="35" IsVisible="true"></Image>
+
+					<Image Grid.Column="2" x:Name="filterSearchBtn" Source="ic_settings.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"></Image>
 				</Grid>
 	</ContentView.Content>
 </ContentView>

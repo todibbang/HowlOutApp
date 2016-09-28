@@ -34,7 +34,7 @@ namespace HowlOut
 				profilesToFind = App.userProfile.Friends;
 				profilesNotToFind = groupObject.Members;
 				ListType = ListsAndButtons.ListType.InviteToGroup;
-				buttonsLayout.IsVisible = false;
+				optionGrid.IsVisible = false;
 			}
 
 			for (int i = 0; i < profilesNotToFind.Count; i++) {
@@ -52,11 +52,13 @@ namespace HowlOut
 
 
 
-			friendsButton.Clicked += (sender, e) => {
+			optionOne.Clicked += (sender, e) => {
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 			};
-			groupsButton.Clicked += (sender, e) => {
+			optionTwo.Clicked += (sender, e) => {
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 			};

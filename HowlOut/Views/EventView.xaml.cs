@@ -21,6 +21,16 @@ namespace HowlOut
 			_dataManager = new DataManager();
 			EventViewType = viewType;
 
+			if (EventViewType == 1)
+			{
+				optionOne.Text = "Explore";
+				optionTwo.Text = "Friends";
+				setViewDesign(0, searchList);
+			}
+			else {
+				setViewDesign(1, searchList);
+			}
+
 
 			/*
 			SearchButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Search",0));
@@ -28,26 +38,31 @@ namespace HowlOut
 			FollowButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Following",0));
 			InviteButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Invited",0));
 			*/
-			setViewDesign(viewType, searchList);
 
-			App.coreView.topBar.getOptionButtons()[0].Clicked += (sender, e) =>
+
+			optionOne.Clicked += (sender, e) =>
 			{
-				if (EventViewType == 1)
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
+
+				if (EventViewType == 0)
 				{
 					setViewDesign(1, searchList);
-				} else if (EventViewType == 2)
-				{
-					setViewDesign(2, searchList);
+				}
+				else {
+					setViewDesign(0, searchList);
 				}
 			};
-			App.coreView.topBar.getOptionButtons()[1].Clicked += (sender, e) =>
+			optionTwo.Clicked += (sender, e) =>
 			{
-				if (EventViewType == 1)
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionTwo);
+
+				if (EventViewType == 0)
 				{
 					setViewDesign(3, searchList);
-				}else if (EventViewType == 2)
+				}
+				else
 				{
-					setViewDesign(2, searchList);
+					setViewDesign(0, searchList);
 				}
 			};
 
@@ -150,7 +165,7 @@ namespace HowlOut
 						new Label () {
 						Text = ("  " + orderedList [i].StartDate.ToString ("MMMM")),
 						//BackgroundColor = Color.FromHex ("cccccc"),
-						TextColor = Color.FromHex("df7a7a"),
+						TextColor = App.HowlOut,
 						FontSize = 25,
 						HeightRequest = 40,
 						VerticalTextAlignment = TextAlignment.Center
@@ -161,7 +176,6 @@ namespace HowlOut
 				if (listToUpdate == 0) { list.Children.Add (new SearchEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 1) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 3) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
-				} else if (listToUpdate == 4) { list.Children.Add (new NewsMessageView (orderedList [i],NewsMessageView.MessageType.Invite));
 				}
 			}
 			list.Children.Add (new BoxView(){HeightRequest=120});

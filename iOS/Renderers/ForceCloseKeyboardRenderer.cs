@@ -1,0 +1,2 @@
+﻿using System; using UIKit; using Xamarin.Forms; using HowlOut.iOS;  [assembly: Dependency(typeof(ForceCloseKeyboardRenderer))]  namespace HowlOut.iOS { 	public class ForceCloseKeyboardRenderer : ForceCloseKeyboard 	{ 		public void CloseKeyboard()
+		{ 			bool dismissalResult = UIApplication.SharedApplication.KeyWindow.EndEditing(true); 		} 	} }

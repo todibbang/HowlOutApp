@@ -22,34 +22,39 @@ namespace HowlOut
 		Button FindNewFriendsButton = new Button {BackgroundColor= Color.Transparent,};
 		Button FindNewGroupsButton = new Button {BackgroundColor= Color.Transparent,};
 
+		bool optionTwoGroups = true;
+
 		public InspectController (Profile userProfile, Group userGroup, Event eventObject)
 		{
 			InitializeComponent ();
 			setInfo ( userProfile,  userGroup,  eventObject);
+			if (!optionTwoGroups)
+			{
+				
+			}
 
-			friendsButton.Clicked  += (sender, e) => {
+
+			App.selectButton(new Button[] {optionOne , optionTwo }, optionOne);
+
+			optionOne.Clicked  += (sender, e) => {
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 				wall.IsVisible = false;
 			};
-			friendsTwoButton.Clicked += (sender, e) =>
+			optionTwo.Clicked += (sender, e) =>
 			{
-				profileGrid.IsVisible = true;
-				groupGrid.IsVisible = false;
-				wall.IsVisible = false;
-			};
-
-			groupsButton.Clicked += (sender, e) =>
-			{
-				profileGrid.IsVisible = false;
-				groupGrid.IsVisible = true;
-				wall.IsVisible = false;
-			};
-
-			wallButton.Clicked += (sender, e) =>  {
+				App.selectButton(new Button[] { optionOne, optionTwo}, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = false;
-				wall.IsVisible = true;
+				wall.IsVisible = false;
+				if (optionTwoGroups)
+				{
+					groupGrid.IsVisible = true;
+				}
+				else {
+					wall.IsVisible = true;
+				}
 			};
 
 
@@ -127,14 +132,14 @@ namespace HowlOut
 						//groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
 						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
 					}
-					friendsGroupsGrid.IsVisible = true;
+					optionTwoGroups = true;
 					//friendsButton.IsVisible = true;
 					//groupsButton.IsVisible = true;
 				} else {
 					userProfile = await _dataManager.ProfileApiManager.GetProfile (userProfile.ProfileId);
 				}
 				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.Design.WithOptions, false);
-
+				App.coreView.topBar.setNavigationLabel(userProfile.Name);
 			} else if(userGroup != null) {
 				userGroup = await _dataManager.GroupApiManager.GetGroupById (userGroup.GroupId);
 				profileList.Add (userGroup.Owner);
@@ -144,11 +149,12 @@ namespace HowlOut
 					}
 				}
 				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
-				friendsButton.Text = "Members";
+				optionOne.Text = "Members";
 				givenCommentList = userGroup.Comments;
-				friendsWallGrid.IsVisible = true;
-				infoView.Content = new GroupDesignView (userGroup,null,200, GroupDesignView.Design.WithOptions);
-
+				optionTwoGroups = false;
+				optionTwo.Text = "Wall";
+				infoView.Content = new GroupDesignView (userGroup,null,200, GroupDesignView.Design.WithOptions, false);
+				App.coreView.topBar.setNavigationLabel("Wolf pack "+ userGroup.Name);
 			} else if(eventObject != null) {
 				eventObject = await _dataManager.EventApiManager.GetEventById (eventObject.EventId);
 				profileList.Add (eventObject.Owner);
@@ -159,9 +165,10 @@ namespace HowlOut
 				}
 				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
 				profileGrid.IsVisible = true;
-				friendsButton.Text = "Attendees";
+				optionOne.Text = "Attendees";
 				givenCommentList = eventObject.Comments;
-				friendsWallGrid.IsVisible = true;
+				optionTwoGroups = false;
+				optionTwo.Text = "Wall";
 
 				bool eventNotJoined = true;
 				for (int i = 0; i < eventObject.Attendees.Count; i++) {
@@ -170,6 +177,8 @@ namespace HowlOut
 					}
 				}
 				infoView.Content = new InspectEvent (eventObject, eventNotJoined);
+
+				App.coreView.topBar.setNavigationLabel(eventObject.Owner.Name+"'s Event");
 			}
 
 			createWall(givenCommentList);

@@ -1,7 +1,49 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.GroupDesignView"
 	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
+		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+			<Grid x:Name="profileGrid" RowSpacing="0">
+				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="10*"/>
+						<ColumnDefinition Width="150*"/>
+						<ColumnDefinition Width="10*"/>
+					</Grid.ColumnDefinitions>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="10*"/>
+						<RowDefinition Height="150*"/>
+						<RowDefinition Height="10*"/>
+					</Grid.RowDefinitions>
+
+					<controls:CircleImage Grid.Column="1" Grid.Row="1" x:Name="ProfileImage" IsVisible="true"/>
+
+					<Button Grid.Column="1" Grid.Row="1"
+						x:Name="MainButton" IsVisible="true" BorderColor="{DynamicResource HowlOut}" BackgroundColor="#40000000" TextColor="White" FontAttributes="Bold"/>
+
+					<Button Grid.Column="1" Grid.Row="1" x:Name="SubjectButton" BackgroundColor="Transparent" />
+
+				</Grid>
+
+				<StackLayout Grid.Row="1"  x:Name="infoLayout" VerticalOptions="CenterAndExpand" >
+					<Label  x:Name="infoLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" Text="Tobias"/>
+				</StackLayout>
+
+				<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="CenterAndExpand" x:Name="buttonLayout">
+					<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptButton" Text="   accept   " BorderRadius="10"/>
+					<Button Style="{DynamicResource ButtonStyle}" x:Name="declineButton" Text="   decline   " BorderRadius="10"/>
+				</StackLayout>
+			</Grid>
+		</Grid>
+	</ContentView.Content>
+</ContentView>
+
+
+
+
+
+		<!--
 		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 			<Grid x:Name="profileGrid">
 				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0">
@@ -43,3 +85,4 @@
 		</Grid>
 	</ContentView.Content>
 </ContentView>
+-->

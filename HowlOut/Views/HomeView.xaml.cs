@@ -23,9 +23,9 @@ namespace HowlOut
 			profileContent.Content = new InspectController (App.userProfile, null, null);
 			createGroupContent.Content = new CreateGroup (null);
 
-			App.coreView.topBar.getSearchBar().TextChanged += (sender, e) =>
+			searchBar.TextChanged += (sender, e) =>
 			{
-				if (String.IsNullOrWhiteSpace(App.coreView.topBar.getSearchBar().Text))
+				if (String.IsNullOrWhiteSpace(searchBar.Text))
 				{
 					if (currentView != 0)
 					{
@@ -39,14 +39,14 @@ namespace HowlOut
 					{
 						setViewDesign(1);
 					}
-					updateAutoCompleteProfileList(App.coreView.topBar.getSearchBar().Text);
-					updateAutoCompleteGroupList(App.coreView.topBar.getSearchBar().Text);
+					updateAutoCompleteProfileList(searchBar.Text);
+					updateAutoCompleteGroupList(searchBar.Text);
 				}
 			};
 
-			App.coreView.topBar.getSearchBar().Focused += (sender, e) =>
+			searchBar.Focused += (sender, e) =>
 			{
-				if (String.IsNullOrWhiteSpace(App.coreView.topBar.getSearchBar().Text))
+				if (String.IsNullOrWhiteSpace(searchBar.Text))
 				{
 					setViewDesign(0);
 				}
@@ -55,11 +55,15 @@ namespace HowlOut
 				}
 			};
 
-			friendsButton.Clicked += (sender, e) => {
+			App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
+			optionOne.Clicked += (sender, e) =>
+			{
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 			};
-			groupsButton.Clicked += (sender, e) => {
+			optionTwo.Clicked += (sender, e) => {
+				App.selectButton(new Button[] { optionOne, optionTwo }, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 			};

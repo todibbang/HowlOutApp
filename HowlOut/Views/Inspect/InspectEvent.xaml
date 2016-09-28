@@ -28,16 +28,16 @@
 				<StackLayout Grid.Row="0" VerticalOptions="Start" >
 					<StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="Fill" >
 
-						<StackLayout HorizontalOptions="StartAndExpand" >
-							<Label Text="{Binding BigTime}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="60">
+							<Label Text="{Binding BigTime}" FontSize="14" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
 						
-						<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="White"/>
 
-						<StackLayout HorizontalOptions="EndAndExpand" >
-							<Label Text="{Binding Distance}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="60">
+							<Label Text="{Binding Distance}" FontSize="14" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
@@ -49,13 +49,12 @@
 					
 					<controls:CircleImage Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
 
-					<Label Text="14 deltagere" FontSize="16" VerticalOptions="End" HorizontalOptions="StartAndExpand"/>
-
-					<StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
+					<StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
 					</StackLayout>
+					<Button HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo"/>
 				</StackLayout>
 
 				<!-- Eventets Beskrivelse -->
@@ -69,7 +68,7 @@
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="{Binding InspectBannerHeight}"/>
-						<RowDefinition Height="53"/>
+						<RowDefinition Height="54"/>
 					</Grid.RowDefinitions>
 					<StackLayout Grid.Row="0" x:Name="mapLayout"></StackLayout>
 					<StackLayout Grid.Row="0"> 
@@ -79,8 +78,8 @@
 					<StackLayout Grid.Row="1" Padding="10,10,10,10" Orientation="Horizontal" HorizontalOptions="Fill" >
 						<StackLayout x:Name="addressLayout" Spacing="0"></StackLayout>
 						<StackLayout HorizontalOptions="EndAndExpand">
-							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="StartTime" Text="17:00" FontSize="12" HorizontalOptions="EndAndExpand"/>	
-							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="EndTime" Text="17:00" FontSize="12" HorizontalOptions="EndAndExpand"/>	
+							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="StartTime" FontSize="12" HorizontalOptions="EndAndExpand"/>	
+							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="EndTime" FontSize="12" HorizontalOptions="EndAndExpand"/>	
 						</StackLayout>
 					</StackLayout>
 				</Grid>
@@ -88,7 +87,7 @@
 
 			<!-- Knappen som gør man kan kan få mere / mindre info -->
 			<StackLayout Grid.Row="1" VerticalOptions="EndAndExpand">
-				<Button TextColor="{DynamicResource TextColor}" x:Name="detailsButton" Text="    More Information" FontAttributes="Bold" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+				<Button TextColor="{DynamicResource TextColor}" x:Name="detailsButton" Text="    Show More Details" FontAttributes="Bold" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
 			</StackLayout>
 
 			<!-- Knapper der giver mulighed for at deltage, followe, invite og leave afhængigt af om man er med i event eller ej -->
@@ -99,7 +98,7 @@
 
 			<StackLayout Grid.Row="2" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
 				<Button Text="Join"   x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-				<Button Text="Follow" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button Text="Track" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
 
 

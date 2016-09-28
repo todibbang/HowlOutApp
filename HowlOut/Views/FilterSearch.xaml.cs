@@ -18,12 +18,12 @@ namespace HowlOut
 			_dataManager = new DataManager ();
 
 			distance.Minimum = 0;
-			distance.Maximum = 22000;
+			distance.Maximum = 1000;
 			distance.Value = newSearchSettings.Distance;
-			distanceLabel.Text = "Distance, " + distance.Value + " km";
+			distanceLabel.Text = "Distance " + distance.Value + " km";
 
 			distance.ValueChanged += (sender, e) => {
-				distanceLabel.Text = "Distance, " + ((int) distance.Value + " km");
+				distanceLabel.Text = "Distance " + ((int) distance.Value + " km");
 				newSearchSettings.Distance = distance.Value;
 			};
 
@@ -54,19 +54,19 @@ namespace HowlOut
 		{
 			await _dataManager.ProfileApiManager.SetSearchSettings (App.userProfile.ProfileId, newSearchSettings);
 			App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile (App.StoredUserFacebookId);
-			App.coreView.setContentView (1);
+			App.coreView.returnToPreviousView();
 		}
 
 		//TODO cleaned up this part, changed to enum
 		private Button typeButtonPressed(Button typeButton, EventType eventType)
 		{
 			if (typeButton.BackgroundColor == Color.White) {
-				typeButton.BackgroundColor = Color.FromHex ("00e1c4");
+				typeButton.BackgroundColor = App.HowlOut;
 				typeButton.TextColor = Color.White;
 				newSearchSettings.EventTypes.Add (eventType);
 			} else {
 				typeButton.BackgroundColor = Color.White;
-				typeButton.TextColor = Color.FromHex ("00e1c4");
+				typeButton.TextColor = App.HowlOut;
 				newSearchSettings.EventTypes.Remove (eventType);
 			}
 			return typeButton;
@@ -74,9 +74,7 @@ namespace HowlOut
 
 		private Button PreSetButton(Button typeButton, EventType eventType)
 		{
-			System.Diagnostics.Debug.WriteLine ("1234567890");
-
-			typeButton.BackgroundColor = Color.FromHex ("00e1c4");
+			typeButton.BackgroundColor = App.HowlOut;
 			typeButton.TextColor = Color.White;
 
 			return typeButton;

@@ -125,12 +125,6 @@
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\Components\NewsMessageView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Components\NewsMessageView.xaml.cs">
-      <DependentUpon>NewsMessageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\NewsMessage.cs" />
     <EmbeddedResource Include="Views\SelectBannerView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -174,6 +168,21 @@
     <Compile Include="Renderers\CustomEditor.cs" />
     <Compile Include="Renderers\CustomDatePicker.cs" />
     <Compile Include="Renderers\CustomTimePicker.cs" />
+    <Compile Include="Renderers\ForceCloseKeyboard.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <EmbeddedResource Include="Views\Components\NotificationView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\Components\NotificationView.xaml.cs">
+      <DependentUpon>NotificationView.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\YourNotifications.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\YourNotifications.xaml.cs">
+      <DependentUpon>YourNotifications.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\CustomPicker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />

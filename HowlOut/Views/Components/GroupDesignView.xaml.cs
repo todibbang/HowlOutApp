@@ -7,15 +7,18 @@ namespace HowlOut
 	public partial class GroupDesignView : ContentView
 	{
 		DataManager _dataManager;
-		public GroupDesignView (Group group, Event eventInvitedTo, int dimentions, Design design)
+		public GroupDesignView (Group group, Event eventInvitedTo, int dimentions, Design design, bool clickable)
 		{
 			_dataManager = new DataManager ();
 			InitializeComponent ();
+			setTypeSpecificDesign(group, dimentions, design);
 			ScaleLayout (group, dimentions, design);
-			setTypeSpecificDesign (group, dimentions, design);
 
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue(new InspectController(null,group,null),"");
+				if (clickable)
+				{
+					App.coreView.setContentViewWithQueue(new InspectController(null, group, null), "");
+				}
 			};
 
 			acceptButton.Clicked += (sender, e) => {
@@ -63,26 +66,31 @@ namespace HowlOut
 			}
 
 
-			infoLabel.FontSize = (int) (0.1 * dimentions);
-			acceptButton.FontSize = (int) (0.1 * dimentions);
-			declineButton.FontSize = (int) (0.1 * dimentions);
-			Likes.BorderRadius = (int) (0.175 * dimentions);
-			Loyalty.BorderRadius = (int)(0.175 * dimentions);
-			Likes.BorderWidth = (int) (0.025 * dimentions);
-			Loyalty.BorderWidth = (int)(0.025 * dimentions);
+			infoLabel.FontSize = (int)(0.1 * dimentions);
+			buttonLayout.HeightRequest = (int)(0.16 * dimentions);
+			acceptButton.BorderRadius = (int)(0.08 * dimentions);
+			declineButton.BorderRadius = (int)(0.08 * dimentions);
+			acceptButton.BorderWidth = (0.003 * dimentions);
+			declineButton.BorderWidth = (0.003 * dimentions);
 
-			Likes.Text = "";
-			Loyalty.Text = "";
+
+			acceptButton.WidthRequest = (acceptButton.Text.Length * .06 * dimentions);
+			declineButton.WidthRequest = (acceptButton.Text.Length * .06 * dimentions);
+
+
+			acceptButton.FontSize = (int)(0.115 * dimentions);
+			declineButton.FontSize = (int)(0.115 * dimentions);
 
 			MainButton.IsVisible = true;
-			MainButton.BorderRadius = (int) (0.375 * dimentions);
+			MainButton.BorderRadius = (int) (0.440 * dimentions);
 			MainButton.BorderWidth = (int) (0.04 * dimentions);
-			MainButton.FontSize = (int) (0.15 * dimentions);
+			MainButton.FontSize = (int) (0.2 * dimentions);
 			MainButton.Text = group.NumberOfMembers + "";
 			if (group.NumberOfMembers == 0) {
 				MainButton.Text = group.Members.Count + 1 + "";
 			}
 			infoLabel.Text = group.Name;
+			ProfileImage.Source = "https://graph.facebook.com/v2.5/" + group.Owner.ProfileId + "/picture?height=" + dimentions + "&width=" + dimentions;
 		}
 
 		private void setTypeSpecificDesign(Group group, int dimentions, Design design) {
@@ -115,7 +123,7 @@ namespace HowlOut
 					}
 				}
 
-				Loyalty.IsVisible = false;
+				//Loyalty.IsVisible = false;
 			}
 
 			if (design.Equals (Design.InviteGroupToEvent)) {
@@ -130,7 +138,7 @@ namespace HowlOut
 			for(int i = 0; i < group.Members.Count; i++) {
 				await _dataManager.sendProfileInviteToEvent(eve, group.Members[i]);
 			}
-			acceptButton.Text = " Invite Sent ";
+			acceptButton.Text = " Invited ";
 			acceptButton.IsEnabled = false;
 		}
 

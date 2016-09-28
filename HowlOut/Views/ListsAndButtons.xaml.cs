@@ -85,11 +85,11 @@ namespace HowlOut
 						}
 					} else if (groups != null) {
 						if (listType.Equals (ListType.InviteToEvent)) {
-							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.InviteGroupToEvent), 0, 0); 
+							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.InviteGroupToEvent, true), 0, 0); 
 						} else if (listType.Equals(ListType.FriendAndGroupRequests)) {
-							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithOptions), 0, 0);
+							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithOptions, true), 0, 0);
 						} else {
-							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithDescription), 0, 0); 
+							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithDescription, true), 0, 0); 
 						}//cell = groupCellCreator (groups [subjectNr]);
 					}
 					grid.Children.Add (cell, column, row);

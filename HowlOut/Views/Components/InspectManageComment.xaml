@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectManageComment"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
@@ -24,7 +24,7 @@
 				</Grid.RowDefinitions>
 
 				<controls:CircleImage Grid.Row="1" Grid.Column="1" Source="{Binding ProfileImageUri}"/> 
-				<Label Grid.Column="1" Grid.Row="2" Text="{Binding DateAndTime}" FontSize="12" TextColor="{DynamicResource NormalTextColor}"/>
+				<Label Grid.Column="1" Grid.Row="2" Text="{Binding DateAndTime}" FontSize="10" TextColor="{DynamicResource NormalTextColor}"/>
 				<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 					<Label Style="{DynamicResource CommentStyle}" VerticalOptions="Start" HorizontalOptions ="Start"/>
 				</StackLayout>
