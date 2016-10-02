@@ -28,7 +28,9 @@ namespace HowlOut
 			PersonallyInvitedToEvent,
 			YourGroupInvitedToEvent,
 			EventHolderWhosEventPreviouslyAttendedHasCreatedEvent,
-			FriendRequest
+			FriendRequest,
+			SomeoneJoinedYourEvent
+			             
 		}
 	}
 }

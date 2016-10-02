@@ -11,6 +11,8 @@ namespace HowlOut
 		public string Title {get; set;}
 		public string Description {get; set;}
 		public Profile Owner {get; set;}
+		public Group OrganisationOwner { get; set;}
+
 		public string BannerName {get; set;}
 		public int NumberOfAttendees {get; set;}
 
@@ -24,6 +26,9 @@ namespace HowlOut
 		public List <Profile> Followers {get; set;}			//People following the event
 		public List <Profile> InvitedProfiles {get; set;}	//People invited to the event
 		public List <Group> InvitedGroups {get; set;}		//Groups invited to the event
+
+		//TODO implement system where some events requirire the owner to accept people before joining
+		public List <Profile> RequestingToJoin { get; set;}
         
 		public DateTime StartDate {get; set;}
 		public DateTime EndDate {get; set;}
@@ -34,12 +39,20 @@ namespace HowlOut
 		public int MinSize {get; set;}
 		public int MaxSize {get; set;}
 
+		public Visibility visibility { get; set; }
+
 		public List <Comment> Comments {get; set;}
 
-		public bool Public {get; set;}
-
-		public Uri ProfileImageUri { get { return new Uri ("https://graph.facebook.com/v2.5/"+Owner.ProfileId+"/picture?height=150&width=150"); }
-			set{ this.ProfileImageUri = value; }
+		public Uri ProfileImageUri { 
+			get {
+				if (OrganisationOwner != null)
+				{
+					return new Uri("");
+				}
+				return new Uri ("https://graph.facebook.com/v2.5/"+Owner.ProfileId+"/picture?height=150&width=150"); 
+			} set{ 
+				this.ProfileImageUri = value; 
+			}
 		}
 
 		public SearchSettings ProfileSearchSettings { get; set; }
@@ -52,6 +65,14 @@ namespace HowlOut
 			InvitedProfiles = new List<Profile> ();
 			InvitedGroups = new List<Group> ();
 			Comments = new List<Comment> ();
+			RequestingToJoin = new List<Profile>();
+		}
+
+		public enum Visibility
+		{
+			Open,
+			Closed,
+			Secret,
 		}
 	}
 }

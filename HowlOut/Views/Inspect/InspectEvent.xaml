@@ -4,7 +4,8 @@
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
-			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+			 xmlns:controlsTwo="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,0,0,10">
 			
@@ -25,20 +26,20 @@
 				<Image Grid.Row="0" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
-				<StackLayout Grid.Row="0" VerticalOptions="Start" >
-					<StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="Fill" >
+				<StackLayout Grid.Row="0" VerticalOptions="Start" x:Name="titleInfo">
+					<StackLayout Padding="2,10,2,0" Orientation="Horizontal" HorizontalOptions="Fill" >
 
-						<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="60">
-							<Label Text="{Binding BigTime}" FontSize="14" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
+							<Label Text="{Binding BigTime}" x:Name="topTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding SmallTime}" x:Name="bottomTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
 						
 						<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="White"/>
 
-						<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="60">
-							<Label Text="{Binding Distance}" FontSize="14" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
+							<Label Text="{Binding Distance}" x:Name="topDist" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="Km" FontSize="12"  x:Name="bottomDist" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
 					</StackLayout>
@@ -54,8 +55,11 @@
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
 					</StackLayout>
+					
 					<Button HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo"/>
 				</StackLayout>
+				
+
 
 				<!-- Eventets Beskrivelse -->
 				<StackLayout Grid.Row="1" Padding="10, 10, 10, 0" VerticalOptions="Start" HeightRequest="200" TranslationY="30">
@@ -76,18 +80,19 @@
 					</StackLayout>
 
 					<StackLayout Grid.Row="1" Padding="10,10,10,10" Orientation="Horizontal" HorizontalOptions="Fill" >
-						<StackLayout x:Name="addressLayout" Spacing="0"></StackLayout>
-						<StackLayout HorizontalOptions="EndAndExpand">
-							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="StartTime" FontSize="12" HorizontalOptions="EndAndExpand"/>	
-							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="EndTime" FontSize="12" HorizontalOptions="EndAndExpand"/>	
+						<StackLayout x:Name="addressLayout" Spacing="0" VerticalOptions="StartAndExpand"></StackLayout>
+						<StackLayout HorizontalOptions="EndAndExpand" Spacing="0" VerticalOptions="StartAndExpand">
+							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="StartTime" FontSize="14" HorizontalOptions="EndAndExpand"/>	
+							<Label TextColor="{DynamicResource NormalTextColor}" x:Name="EndTime" FontSize="14" HorizontalOptions="EndAndExpand"/>	
 						</StackLayout>
 					</StackLayout>
 				</Grid>
 			</StackLayout>
 
 			<!-- Knappen som gør man kan kan få mere / mindre info -->
-			<StackLayout Grid.Row="1" VerticalOptions="EndAndExpand">
-				<Button TextColor="{DynamicResource TextColor}" x:Name="detailsButton" Text="    Show More Details" FontAttributes="Bold" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+			<StackLayout Grid.Row="1" VerticalOptions="EndAndExpand" HorizontalOptions="Start" Orientation="Horizontal" HeightRequest="20">
+				<controlsTwo:IconView Source="ic_map" Foreground="{DynamicResource HowlOut}" HeightRequest="20" HorizontalOptions="Start" TranslationX="-30"/>
+				<Button TextColor="{DynamicResource TextColor}" x:Name="detailsButton" Text="Show Map" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" WidthRequest="200" TranslationX="-120"/>
 			</StackLayout>
 
 			<!-- Knapper der giver mulighed for at deltage, followe, invite og leave afhængigt af om man er med i event eller ej -->

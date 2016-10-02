@@ -16,12 +16,16 @@ namespace HowlOut
 		bool mapInitialized = false;
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
 		DataManager _dataManager = new DataManager();
+		EventForLists efl;
 
-		public InspectEvent (Event eve, bool inspectType)
+		public InspectEvent (Event eve, bool inspectType, ScrollView scrollView)
 		{
 			InitializeComponent ();
-			BindingContext = new EventForLists (eve);
+			efl = new EventForLists(eve);
+			BindingContext = efl;
 			attendingInfo.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
+
+
 			_dataManager = new DataManager();
 			setInfo (eve);
 
@@ -36,12 +40,14 @@ namespace HowlOut
 				if(detailedInfo.IsVisible == false) { 
 					detailedInfo.IsVisible = true; 
 					quickInfo.IsVisible = false;
-					detailsButton.Text = "    Show Less Details";
+					detailsButton.Text = "Hide Map";
+					App.scrollTo(100);
 				} 
 				else { 
 					detailedInfo.IsVisible = false; 
 					quickInfo.IsVisible = true;
-					detailsButton.Text = "    Show More Details";
+					detailsButton.Text = "Show Map";
+					App.scrollTo(200);
 				}
 
 				if(mapInitialized != true) { 
@@ -50,17 +56,26 @@ namespace HowlOut
 					_dataManager.UtilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
 				}
 			};
+
+			scrollView.Scrolled += (sender, e) =>
+			{
+				if (scrollView.ScrollY < 100 && scrollView.ScrollY > 0)
+				{
+					titleInfo.TranslationY = scrollView.ScrollY;
+				}
+			};
 				
 			mapButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue(new MapsView(eve), "MapsView");
+				App.coreView.setContentViewWithQueue(new MapsView(eve), "MapsView", null);
 			};
 
-			if (eve.Owner.ProfileId == App.StoredUserFacebookId) {
+			if (_dataManager.IsEventYours(eve)) {
 				editLeaveButton.Text = "Edit";
 			}
+
 			editLeaveButton.Clicked += (sender, e) => {
-				if (eve.Owner.ProfileId == App.StoredUserFacebookId) {
-					App.coreView.setContentViewWithQueue (new CreateEvent (eve, false), "CreateEvent");
+				if (_dataManager.IsEventYours(eve)) {
+					App.coreView.setContentViewWithQueue (new CreateEvent (eve, false), "CreateEvent", null);
 				} else {
 					_dataManager.leaveEvent (eve);
 				}
@@ -75,7 +90,7 @@ namespace HowlOut
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue (new InviteView (null, eve, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView");
+				App.coreView.setContentViewWithQueue (new InviteView (null, eve, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView", null);
 			};
 		}
 
@@ -83,6 +98,12 @@ namespace HowlOut
 		{
 			quickInfo.IsVisible = true;
 			detailedInfo.IsVisible = false;
+
+			topTime.Text = eve.StartDate.ToString("ddd dd MMM");
+			bottomTime.Text = eve.StartDate.ToString("HH:mm") + "-" + eve.EndDate.ToString("HH:mm");
+
+			topDist.Text = efl.Distance + " km";
+
 
 			//ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain, true);
 			//GroupContent.Content = new EventDesignView (eve, 130, EventDesignView.Design.Plain);
@@ -103,8 +124,15 @@ namespace HowlOut
 			for (int i = 0; i < addressList.Length; i++) { 
 				Label label = new Label () {TextColor = Color.FromHex("646464")}; 
 				label.Text = addressList [i];
-				label.FontSize = 12;
+				label.FontSize = 14;
 				addressLayout.Children.Add(label);
+			}
+			if (addressList.Length == 2)
+			{
+				bottomDist.Text = addressList[0].Substring(5).Trim();
+			}
+			else {
+				bottomDist.Text = addressList[1].Substring(5).Trim();
 			}
 		}
 	}

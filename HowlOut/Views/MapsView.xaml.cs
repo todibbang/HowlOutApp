@@ -16,7 +16,7 @@ namespace HowlOut
 		DataManager dataManager = new DataManager ();
 
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
-		Button selectButton = new Button ();
+		Button selectButton = new Button() { TextColor= App.HowlOut, BorderColor=App.HowlOutFade, BorderWidth=1, BorderRadius=10, HeightRequest=40 };
 
 		public bool mapTapped = false;
 

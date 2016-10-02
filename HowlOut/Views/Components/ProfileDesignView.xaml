@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ProfileDesignView"
-			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controlsTwo="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-			<Grid x:Name="profileGrid" RowSpacing="0">
-				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0">
+		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			
+			<!-- <Grid x:Name="profileGrid" RowSpacing="0" HorizontalOptions="FillAndExpand"> -->
+			<Grid x:Name="pictureGrid" HorizontalOptions="CenterAndExpand">
+				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" >
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="10*"/>
 						<ColumnDefinition Width="150*"/>
@@ -16,21 +25,79 @@
 						<RowDefinition Height="150*"/>
 						<RowDefinition Height="10*"/>
 					</Grid.RowDefinitions>
+				
 					<controls:CircleImage Grid.Column="1" Grid.Row="1"
-						Source="{Binding ProfileImageSource}" x:Name="ProfileImage" IsVisible="false"/>
+						Source="{Binding ProfileImageSource}" x:Name="ProfileImage"/>
+
+					<Button Grid.Column="1" Grid.Row="1"
+						x:Name="MainButton" IsVisible="false" BorderColor="{DynamicResource HowlOut}" BackgroundColor="#40000000" TextColor="White" FontAttributes="Bold"/>
+
 					<Button Grid.Column="1" Grid.Row="1" x:Name="SubjectButton" BackgroundColor="Transparent" />
 
 				</Grid>
-
-				<StackLayout Grid.Row="1"  x:Name="infoLayout" VerticalOptions="CenterAndExpand" >
-					<Label  x:Name="infoLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" Text="Tobias"/>
-				</StackLayout>
-
-				<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="StartAndExpand" x:Name="buttonLayout">
-					<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptButton" Text="   accept   " BorderRadius="10"/>
-					<Button Style="{DynamicResource ButtonStyle}" x:Name="declineButton" Text="   decline   " BorderRadius="10"/>
-				</StackLayout>
 			</Grid>
+
+
+			<StackLayout Grid.Row="1"  x:Name="infoLayout" VerticalOptions="CenterAndExpand" >
+				<Label  x:Name="infoLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" Text="Tobias"/>
+			</StackLayout>
+
+			<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="StartAndExpand" x:Name="buttonLayout">
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="sendFriendRequestButton" Text="add" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptFriendRequestButton" Text="accept" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="declineFriendRequestButton" Text="decline" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeFriendButton" Text="remove" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="edit" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="inviteButton" Text="invite" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptJoinRequestButton" Text="accept" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="declineJoinRequestButton" Text="decline" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="inviteProfilesToGroupButton" Text="Invite" BorderRadius="10" IsVisible="false"/>
+			</StackLayout>
+			
+			<StackLayout Grid.Row="3" IsVisible="false" x:Name="editProfile" BackgroundColor="White">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="90"/>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+
+					<StackLayout Grid.Row="1" Grid.RowSpan="3" x:Name="SelectedBannerLayout"/>
+											
+					<Grid Grid.Row="0" Grid.RowSpan="2" RowSpacing="0" BackgroundColor="White">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="10"/>
+							<ColumnDefinition Width="20"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="10"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="1"/>
+							<RowDefinition Height="80"/>
+							<RowDefinition Height="1"/>
+						</Grid.RowDefinitions>
+
+						<!-- ICONS -->
+						<local:Line Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"/>
+						<controlsTwo:IconView Grid.Row="1" Grid.Column="1" Source="ic_description" Foreground="{DynamicResource HowlOut}" />
+						<local:CustomEditor Grid.Row="1" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..." FontSize="14"></local:CustomEditor>
+
+					</Grid>
+					<StackLayout Grid.Row="1" >
+						<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
+					</StackLayout>
+
+					<Button Grid.Row="1" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_camera.png" WidthRequest="80"/>
+					
+
+					<StackLayout Grid.Row="2" Padding="20">
+						<Button Text="Update" x:Name="updateProfileButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+						<Button Text="Log out" x:Name="logOutButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+					</StackLayout>
+
+				</Grid>
+			</StackLayout>
+			<!-- </Grid> -->
 		</Grid>
 	</ContentView.Content>
 </ContentView>

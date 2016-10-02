@@ -20,6 +20,7 @@ namespace HowlOut
 				cancelButton.IsVisible = true;
 			} else {
 				newGroup = new Group ();
+				cancelButton.IsVisible = false;
 			}
 
 			title.TextChanged += (sender, e) => { newGroup.Name = title.Text; };
@@ -47,7 +48,8 @@ namespace HowlOut
 			var groupCreated = await _dataManager.GroupApiManager.CreateGroup(newGroupAsDBO);
 
 			if (groupCreated != null) {
-				App.coreView.setContentViewWithQueue (new InspectController (null, groupCreated, null), "UserProfile");
+				InspectController inspect = new InspectController(null, groupCreated, null);
+				App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 			}
@@ -58,7 +60,8 @@ namespace HowlOut
 			bool groupUpdated = await _dataManager.GroupApiManager.UpdateGroup(groupToUpdate);
 
 			if (groupUpdated) {
-				App.coreView.setContentViewWithQueue (new InspectController (null, groupToUpdate, null), "Group");
+				InspectController inspect = new InspectController(null, groupToUpdate, null);
+				App.coreView.setContentViewWithQueue(inspect, "Group", inspect.getScrollView());
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Group not updated, try again", "Ok");
 			}

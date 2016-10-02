@@ -29,11 +29,11 @@ namespace HowlOut
 				profilesToFind = App.userProfile.Friends;
 				profilesNotToFind = eventObject.Attendees;
 				groupsToFind = App.userProfile.Groups;
-				ListType = ListsAndButtons.ListType.InviteToEvent;
+				ListType = ListsAndButtons.ListType.Invite;
 			} else if (whatToShow.Equals (WhatToShow.PeopleToInviteToGroup)) {
 				profilesToFind = App.userProfile.Friends;
 				profilesNotToFind = groupObject.Members;
-				ListType = ListsAndButtons.ListType.InviteToGroup;
+				ListType = ListsAndButtons.ListType.Invite;
 				optionGrid.IsVisible = false;
 			}
 
@@ -47,18 +47,18 @@ namespace HowlOut
 				}
 			}
 
-			if(profilesToFind.Count > 0) listMaker.createList (profileGrid, profilesToFind, null, null, ListType, eventObject, groupObject);
-			if(groupsToFind.Count > 0) listMaker.createList (groupGrid, null, groupsToFind, null, ListType, eventObject, groupObject);
+			if(profilesToFind.Count > 0) listMaker.createList (profileGrid, profilesToFind, null, ListType, eventObject, groupObject);
+			if(groupsToFind.Count > 0) listMaker.createList (groupGrid, null, groupsToFind, ListType, eventObject, groupObject);
 
 
 
 			optionOne.Clicked += (sender, e) => {
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
+				App.selectButton(new List<Button> { optionOne, optionTwo }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 			};
 			optionTwo.Clicked += (sender, e) => {
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionTwo);
+				App.selectButton(new List<Button> { optionOne, optionTwo }, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 			};

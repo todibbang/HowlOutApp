@@ -74,5 +74,10 @@ namespace HowlOut
 			list.Children.Add(new BoxView() { HeightRequest = 120 });
 			loading.IsVisible = false;
 		}
+
+		public ScrollView getScrollView()
+		{
+			return scrollView;
+		}
 	}
 }

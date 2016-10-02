@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Xamarin.Forms;
 
 namespace HowlOut
 {
@@ -16,11 +17,24 @@ namespace HowlOut
 		public List <Profile> InvitedProfiles {get; set;}	//People which has been invited to join the groups
 		public List <Comment> Comments {get; set;}			//List of comments within the group
 
+
+		public GroupType Type { get; set; }
+		public string ImageSource { get; set; }
+		public string Description { get; set; }
+
 		public Group ()
 		{
 			Members = new List<Profile> ();
 			InvitedProfiles = new List<Profile> ();
 			Comments = new List<Comment> ();
+		}
+
+		public enum GroupType
+		{
+			Open,
+			Closed,
+			Secret,
+			Organisation
 		}
 	}
 }

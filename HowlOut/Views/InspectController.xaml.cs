@@ -5,6 +5,7 @@ using ImageCircle.Forms.Plugin.Abstractions;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using ModernHttpClient;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -12,177 +13,183 @@ namespace HowlOut
 	{
 		ListsAndButtons listMaker = new ListsAndButtons();
 
-		private DataManager _dataManager = new DataManager ();
+		private DataManager _dataManager = new DataManager();
 
 
 		public CreateEvent createEventView;
 
-		List<Comment> givenCommentList = new List<Comment> ();
-		List<Profile> profileList = new List<Profile> ();
-		Button FindNewFriendsButton = new Button {BackgroundColor= Color.Transparent,};
-		Button FindNewGroupsButton = new Button {BackgroundColor= Color.Transparent,};
+		List<Comment> givenCommentList = new List<Comment>();
+		List<Profile> profileList = new List<Profile>();
 
-		bool optionTwoGroups = true;
+		Button profilesButton = new Button {Text= "Friends", BackgroundColor= Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor=App.HowlOut, FontSize = 16};
+		Button groupsButton = new Button { Text = "WolfPacks", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
+		Button eventsButton = new Button { Text = "Events", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
+		Button wallButton = new Button { Text = "Wall", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
 
-		public InspectController (Profile userProfile, Group userGroup, Event eventObject)
+		public InspectController(Profile userProfile, Group userGroup, Event eventObject)
 		{
-			InitializeComponent ();
-			setInfo ( userProfile,  userGroup,  eventObject);
-			if (!optionTwoGroups)
+			InitializeComponent();
+			setInfo(userProfile, userGroup, eventObject);
+
+			eventsButton.Clicked += (sender, e) =>
 			{
-				
-			}
-
-
-			App.selectButton(new Button[] {optionOne , optionTwo }, optionOne);
-
-			optionOne.Clicked  += (sender, e) => {
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
-				profileGrid.IsVisible = true;
-				groupGrid.IsVisible = false;
-				wall.IsVisible = false;
+				eventsGrid.Children.Add(new EventView(10));
 			};
-			optionTwo.Clicked += (sender, e) =>
+
+
+			postCommentButton.Clicked += (sender, e) =>
 			{
-				App.selectButton(new Button[] { optionOne, optionTwo}, optionTwo);
-				profileGrid.IsVisible = false;
-				groupGrid.IsVisible = false;
-				wall.IsVisible = false;
-				if (optionTwoGroups)
-				{
-					groupGrid.IsVisible = true;
-				}
-				else {
-					wall.IsVisible = true;
-				}
-			};
-
-
-			FindNewFriendsButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue (new FriendAndGroupRequestsView(true), "");
-			};
-
-			FindNewGroupsButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue (new FriendAndGroupRequestsView(false), "");
-			};
-
-			postCommentButton.Clicked += (sender, e) => {
 				PostNewComment(userGroup, eventObject, commentEntry.Text);
 			};
 		}
 
 		private async void PostNewComment(Group group, Event eve, string comment)
 		{
-			if(!string.IsNullOrWhiteSpace(comment))
+			if (!string.IsNullOrWhiteSpace(comment))
 			{
 				//TODO changed this to recieve comment object instead of event
-				var commentObj = new Comment {
-					Content = comment, 
-					SenderID = App.StoredUserFacebookId, 
-					DateAndTime = DateTime.Now.ToLocalTime ()
+				var commentObj = new Comment
+				{
+					Content = comment,
+					SenderID = App.StoredUserFacebookId,
+					DateAndTime = DateTime.Now.ToLocalTime()
 				};
 
 				List<Comment> updatedComments = null;
-				if(group != null) {
+				if (group != null)
+				{
 					updatedComments = await _dataManager.GroupApiManager.AddCommentToGroup(group.GroupId, commentObj);
-				} else if(eve != null) {
+				}
+				else if (eve != null)
+				{
 					updatedComments = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, commentObj);
 				}
 
 
-				if (updatedComments != null) {
+				if (updatedComments != null)
+				{
 					createWall(updatedComments);
 					commentEntry.Text = "";
-				} else {
-					await App.coreView.displayAlertMessage ("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
+				}
+				else {
+					await App.coreView.displayAlertMessage("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
 				}
 			}
 		}
 
-		private void createWall(List<Comment> comments){
-			if (comments != null) {
-				while(WallList.Children.Count != 0) {
+		private void createWall(List<Comment> comments)
+		{
+			if (comments != null)
+			{
+				while (WallList.Children.Count != 0)
+				{
 					WallList.Children.RemoveAt(0);
 				}
-				for (int i = comments.Count - 1; i > -1; i--) {
-					WallList.Children.Add (new InspectManageComment(comments [i]));
+				for (int i = comments.Count - 1; i > -1; i--)
+				{
+					WallList.Children.Add(new InspectManageComment(comments[i]));
 				}
-				//WallList.ItemsSource = displayedList;
 			}
 		}
 
-		private async void setInfo (Profile userProfile, Group userGroup, Event eventObject){
+		private async void setInfo(Profile userProfile, Group userGroup, Event eventObject)
+		{
+			
+
 			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
-			if (userProfile != null) {
-				if (userProfile.ProfileId == App.userProfile.ProfileId) {
+			if (userProfile != null)
+			{
+				if (userProfile.ProfileId == App.userProfile.ProfileId)
+				{
+					App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, groupsButton }, new List<VisualElement>{profileGrid, groupGrid});
 					App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
 					userProfile = App.userProfile;
-					if (userProfile.RecievedFriendRequests.Count > 0) {
-						listMaker.createList (profileGrid, userProfile.Friends, null, FindNewFriendsButton, ListsAndButtons.ListType.Normal, null, null);
-					} else {
-						listMaker.createList (profileGrid, userProfile.Friends, null, null, ListsAndButtons.ListType.Normal, null, null);
-					}
-
-
-					if (userProfile.GroupsInviteTo.Count > 0) {
-						listMaker.createList (groupGrid, null, userProfile.Groups, FindNewGroupsButton, ListsAndButtons.ListType.Normal, null, null);
-					} else {
-						//TODO following three lines are dummy data
-						//var groups = new List<Group> ();
-						//groups.Add (new Group(){Name = "PlaceHolderGroup", Owner=App.userProfile, Public = true, Members = new List<Profile>()});
-						listMaker.createList (groupGrid, null, userProfile.Groups, null, ListsAndButtons.ListType.Normal, null, null);
-					}
-					optionTwoGroups = true;
-					//friendsButton.IsVisible = true;
-					//groupsButton.IsVisible = true;
-				} else {
-					userProfile = await _dataManager.ProfileApiManager.GetProfile (userProfile.ProfileId);
 				}
-				infoView.Content = new ProfileDesignView (userProfile, null, null, 200, ProfileDesignView.Design.WithOptions, false);
-				App.coreView.topBar.setNavigationLabel(userProfile.Name);
-			} else if(userGroup != null) {
-				userGroup = await _dataManager.GroupApiManager.GetGroupById (userGroup.GroupId);
-				profileList.Add (userGroup.Owner);
-				if (userGroup.Members != null) {
-					for (int i = 0; i < userGroup.Members.Count; i++) {
-						profileList.Add (userGroup.Members[i]);
+				else {
+					userProfile = await _dataManager.ProfileApiManager.GetProfile(userProfile.ProfileId);
+					if (_dataManager.IsProfileFriend(userProfile))
+					{
+						App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, groupsButton, eventsButton}, new List<VisualElement> { profileGrid, groupGrid, eventsGrid});
 					}
 				}
-				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
-				optionOne.Text = "Members";
-				givenCommentList = userGroup.Comments;
-				optionTwoGroups = false;
-				optionTwo.Text = "Wall";
-				infoView.Content = new GroupDesignView (userGroup,null,200, GroupDesignView.Design.WithOptions, false);
-				App.coreView.topBar.setNavigationLabel("Wolf pack "+ userGroup.Name);
-			} else if(eventObject != null) {
-				eventObject = await _dataManager.EventApiManager.GetEventById (eventObject.EventId);
-				profileList.Add (eventObject.Owner);
-				if (eventObject.Attendees != null) {
-					for (int i = 0; i < eventObject.Attendees.Count; i++) {
-						profileList.Add (eventObject.Attendees[i]);
-					}
-				}
-				listMaker.createList (profileGrid, profileList, null, null, ListsAndButtons.ListType.Normal, null, null);
-				profileGrid.IsVisible = true;
-				optionOne.Text = "Attendees";
-				givenCommentList = eventObject.Comments;
-				optionTwoGroups = false;
-				optionTwo.Text = "Wall";
+				listMaker.createList(profileGrid, userProfile.Friends, null, ListsAndButtons.ListType.Normal, null, null);
+				listMaker.createList(groupGrid, null, userProfile.Groups, ListsAndButtons.ListType.Normal, null, null);
 
-				bool eventNotJoined = true;
-				for (int i = 0; i < eventObject.Attendees.Count; i++) {
-					if (App.userProfile.ProfileId == eventObject.Attendees[i].ProfileId) {
-						eventNotJoined = false;
-					}
-				}
-				infoView.Content = new InspectEvent (eventObject, eventNotJoined);
-
-				App.coreView.topBar.setNavigationLabel(eventObject.Owner.Name+"'s Event");
+				infoView.Content = new ProfileDesignView(userProfile, null, null, 200, ProfileDesignView.Design.Inspect, ProfileDesignView.Show.Profile, false);
+				App.coreView.topBar.setNavigationLabel(userProfile.Name, scrollView);
 			}
+			else if (userGroup != null)
+			{
+				userGroup = await _dataManager.GroupApiManager.GetGroupById(userGroup.GroupId);
+				profileList.Add(userGroup.Owner);
+				if (userGroup.Members != null)
+				{
+					for (int i = 0; i < userGroup.Members.Count; i++)
+					{
+						profileList.Add(userGroup.Members[i]);
+					}
+				}
+				listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.Normal, null, null);
+				App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, wallButton, eventsButton }, new List<VisualElement> { profileGrid, wallGrid, eventsGrid });
+				profilesButton.Text = "Members";
+				givenCommentList = userGroup.Comments;
+				infoView.Content = new ProfileDesignView(null, userGroup, null, 200, ProfileDesignView.Design.Inspect, ProfileDesignView.Show.Group, false);
+				App.coreView.topBar.setNavigationLabel("Wolf pack " + userGroup.Name, scrollView);
+			}
+			else if (eventObject != null)
+			{
 
+				profilesButton.Text = "Attendees";
+
+				eventObject = await _dataManager.EventApiManager.GetEventById(eventObject.EventId);
+				if (!_dataManager.IsEventJoined(eventObject))
+				{
+					App.setOptionsGrid(optionGrid, new List<Button> { profilesButton }, new List<VisualElement> { profileGrid });
+				}
+				else {
+					App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, wallButton }, new List<VisualElement> { profileGrid, wallGrid });
+				}
+
+				if (eventObject.Attendees != null)
+				{
+					foreach (Profile p in eventObject.RequestingToJoin)
+					{
+						profileList.Add(p);
+					}
+					for (int i = 0; i < eventObject.Attendees.Count; i++)
+					{
+						profileList.Add(eventObject.Attendees[i]);
+					}
+				}
+				if (_dataManager.IsEventYours(eventObject))
+				{
+					listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.EventAttendeesSeenAsOwner, null, null);
+				}
+				else {
+					listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.Normal, null, null);
+				}
+
+				infoView.Content = new InspectEvent(eventObject, _dataManager.IsEventJoined(eventObject), scrollView);
+
+				if (eventObject.Owner != null)
+				{
+					App.coreView.topBar.setNavigationLabel(eventObject.Owner.Name + "'s Event", scrollView);
+				}
+				else if (eventObject.OrganisationOwner != null)
+				{
+					App.coreView.topBar.setNavigationLabel(eventObject.OrganisationOwner.Name + "'s Event", scrollView);
+				}
+			}
 			createWall(givenCommentList);
+		}
 
+
+
+
+
+		public ScrollView getScrollView()
+		{
+			return scrollView;
 		}
 	}
 }

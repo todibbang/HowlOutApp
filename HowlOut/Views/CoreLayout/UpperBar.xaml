@@ -10,12 +10,12 @@
 
 					<Grid.RowDefinitions>
 						<RowDefinition Height="30"/>
-						<RowDefinition Height="3"/>
+						<RowDefinition Height="5"/>
 					</Grid.RowDefinitions>
 
 					<Image Grid.Column="0" x:Name="backBtn" Source="ic_back.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"></Image>
 
-					<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" IsVisible="true"></Label>
+					<Button Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" IsVisible="true" BackgroundColor="Transparent" BorderColor="Transparent"/>
 
 					<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 

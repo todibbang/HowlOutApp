@@ -30,9 +30,9 @@
 
 			<controls:IconView Grid.Column="1" Grid.Row="1" x:Name="create" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="60" Foreground="{DynamicResource HowlOutFade}"/>
 
-			<controls:IconView Grid.Column="3" Grid.Row="1" x:Name="manage" Source="ic_manage.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="32" Foreground="{DynamicResource HowlOut}"/>
+			<controls:IconView Grid.Column="3" Grid.Row="1" x:Name="manage" Source="ic_manage.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="32" Foreground="{DynamicResource HowlOutFade}"/>
 
-			<Button Grid.Column="5" Grid.Row="1" x:Name="exploreBG" BackgroundColor="{DynamicResource HowlOutFade}" BorderRadius="22" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+			<Button Grid.Column="5" Grid.Row="1" x:Name="exploreBG" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="22" VerticalOptions="Fill" HorizontalOptions="Fill"/>
 			<Image Grid.Column="5" Grid.Row="1" x:Name="exploreImg" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="26"/>
 			<StackLayout Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" x:Name="EventButtonLayout" WidthRequest="55" HorizontalOptions="CenterAndExpand"/>
 			<Button Grid.Column="5" Grid.Row="0" Grid.RowSpan="3" x:Name="explore" BackgroundColor="Transparent"/>

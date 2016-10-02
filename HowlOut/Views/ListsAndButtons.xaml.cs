@@ -16,24 +16,19 @@ namespace HowlOut
 		}
 
 		public void createList(Grid grid, List<Profile> profiles, List<Group> groups, 
-			Button addNewButton, ListType listType, Event eventInvitingTo, Group groupInvitingTo)
+			ListType listType, Event eventInvitingTo, Group groupInvitingTo)
 		{
 			int column = 0;
 			int row = 0;
 			int count = 0;
 			int subjectNr = 0;
-			bool addNew = false;
 
 			if (profiles != null) {
 				count = profiles.Count;
-			} else {
+			} else if (groups != null) {
 				count = groups.Count;
 			}
 
-			if (addNewButton != null) {
-					count ++;
-					addNew = true;
-			}
 			/*
 
 			Grid newGrid = new Grid {
@@ -63,6 +58,7 @@ namespace HowlOut
 				}
 				Grid cell = new Grid ();
 
+				/*
 				if (addNew) {
 					if (profiles != null) {
 						cell = AddNewGrid (App.userProfile.RecievedFriendRequests.Count);
@@ -72,25 +68,31 @@ namespace HowlOut
 					grid.Children.Add (cell, column, row);
 					grid.Children.Add (addNewButton, column, row);
 					addNew = false;
-				} else {
+				} else 
+				*/
+				{
 					if (profiles != null) {
-						if (listType.Equals(ListType.InviteToEvent)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, eventInvitingTo, 100, ProfileDesignView.Design.InviteProfileToEvent, true), 0, 0);
-						} else if (listType.Equals(ListType.InviteToGroup)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.InviteProfileToGroup, true), 0, 0);
-						} else if (listType.Equals(ListType.FriendAndGroupRequests)) {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], groupInvitingTo, null, 100, ProfileDesignView.Design.WithOptions, true), 0, 0);
+						if (listType.Equals(ListType.Invite))
+						{
+							cell.Children.Add(new ProfileDesignView(profiles[subjectNr], groupInvitingTo, eventInvitingTo, 100, ProfileDesignView.Design.Invite, ProfileDesignView.Show.Profile, true), 0, 0);
 						} else {
-							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.Design.WithDescription, true), 0, 0);
+							cell.Children.Add (new ProfileDesignView (profiles [subjectNr], null, null, 100, ProfileDesignView.Design.ListSimple, ProfileDesignView.Show.Profile, true), 0, 0);
 						}
 					} else if (groups != null) {
-						if (listType.Equals (ListType.InviteToEvent)) {
+						if (listType.Equals (ListType.Invite)) {
+							cell.Children.Add(new ProfileDesignView(null, groups[subjectNr], eventInvitingTo, 100, ProfileDesignView.Design.Invite, ProfileDesignView.Show.Group, true), 0, 0);
+						}
+						else {
+							cell.Children.Add(new ProfileDesignView(null, groups[subjectNr], eventInvitingTo, 100, ProfileDesignView.Design.ListSimple, ProfileDesignView.Show.Group, true), 0, 0);
+						}
+						/*
 							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.InviteGroupToEvent, true), 0, 0); 
 						} else if (listType.Equals(ListType.FriendAndGroupRequests)) {
 							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithOptions, true), 0, 0);
 						} else {
 							cell.Children.Add (new GroupDesignView (groups [subjectNr], eventInvitingTo, 100, GroupDesignView.Design.WithDescription, true), 0, 0); 
 						}//cell = groupCellCreator (groups [subjectNr]);
+					*/
 					}
 					grid.Children.Add (cell, column, row);
 					subjectNr++;
@@ -103,6 +105,7 @@ namespace HowlOut
 			//grid = newGrid;
 		}
 
+		/*
 		private Grid AddNewGrid(int i)
 		{
 			Grid cellGrid = new Grid {
@@ -155,12 +158,13 @@ namespace HowlOut
 
 			return cellGrid;
 		}
+		*/
 
 		public enum ListType {
 			Normal,
-			InviteToEvent,
-			InviteToGroup,
-			FriendAndGroupRequests
+			Invite,
+			FriendAndGroupRequests,
+			EventAttendeesSeenAsOwner
 		}
 	}
 }

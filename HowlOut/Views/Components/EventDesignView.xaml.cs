@@ -6,6 +6,7 @@ namespace HowlOut
 {
 	public partial class EventDesignView : ContentView
 	{
+		/*
 		DataManager _dataManager;
 		public EventDesignView (Event eve, int dimentions, Design design)
 		{
@@ -75,6 +76,7 @@ namespace HowlOut
 			Plain,
 			WithName,
 		}
+		*/
 	}
 }
 

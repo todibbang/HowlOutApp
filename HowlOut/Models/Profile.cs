@@ -10,6 +10,7 @@ namespace HowlOut
 		public int LoyaltyRating {get; set;}
 		public int Likes {get; set;}
 		public string Name {get; set;}
+		public string Description { get; set; }
 		public int Age {get; set;}
 
         //public List <string> UserIDsFollowed {get; set;}
@@ -22,6 +23,7 @@ namespace HowlOut
 
 		public List<Group> Groups { get; set; }						//Groups you are in
 		public List<Group> GroupsInviteTo { get; set; }				//List of groups you have been invited to
+		public List<Group> Organisations { get; set; }
 
         public List<Event> JoinedEvents { get; set; } 				//Events you currently have joined
 		public List<Event> EventsInviteTo { get; set; } 			//Events you have been invited to
@@ -31,6 +33,8 @@ namespace HowlOut
 		public List <Comment> Comments {get; set;}					//Comments for the users wall
         //public List <string> FriendIDs {get; set;}
 		public SearchSettings SearchReference { get; set; }
+
+		public List<Event> EventsRequringAttendensConfirmation { get; set; }
 
 		public Profile ()
 		{

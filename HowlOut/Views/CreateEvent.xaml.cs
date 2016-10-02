@@ -21,24 +21,25 @@ namespace HowlOut
 
 		private bool Launching = false;
 
-		public CreateEvent (Event givenEvent, bool isCreate)
+		public CreateEvent(Event givenEvent, bool isCreate)
 		{
-			_dataManager = new DataManager ();
+			_dataManager = new DataManager();
 			newEvent = givenEvent;
-			InitializeComponent ();
+			InitializeComponent();
 
-			mapView = new MapsView (App.lastKnownPosition);
+			mapView = new MapsView(App.lastKnownPosition);
 
-			for (int i = 18; i < 100; i++) agePicker.Add ("" + i, i);
-			foreach (string age in agePicker.Keys) { minAge.Items.Add(age); maxAge.Items.Add(age);}
+			for (int i = 18; i < 100; i++) agePicker.Add("" + i, i);
+			foreach (string age in agePicker.Keys) { minAge.Items.Add(age); maxAge.Items.Add(age); }
 
 			int sizeNumber = 5;
-			for (int i = 0; i < 20; i++) { sizePicker.Add ("" + sizeNumber, sizeNumber); sizeNumber += 5;}
-			foreach (string size in sizePicker.Keys) { minSize.Items.Add(size); maxSize.Items.Add(size);}
+			for (int i = 0; i < 20; i++) { sizePicker.Add("" + sizeNumber, sizeNumber); sizeNumber += 5; }
+			foreach (string size in sizePicker.Keys) { minSize.Items.Add(size); maxSize.Items.Add(size); }
 
 			/// set title and description
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
-			description.TextChanged += (sender, e) => { 
+			description.TextChanged += (sender, e) =>
+			{
 				newEvent.Description = description.Text;
 				System.Diagnostics.Debug.WriteLine("Called again: " + newEvent.Description);
 			};
@@ -54,20 +55,24 @@ namespace HowlOut
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
 
 			/// set time and date
-			startDate.PropertyChanged += (sender, e) => { 
-				newEvent.StartDate = startDate.Date.Add(startTime.Time); 
-				var newTimeSpan = newEvent.StartDate + new TimeSpan(1,0,0);
-				if(newEvent.EndDate.Ticks < newTimeSpan.Ticks) {
-					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2,0,0);
+			startDate.PropertyChanged += (sender, e) =>
+			{
+				newEvent.StartDate = startDate.Date.Add(startTime.Time);
+				var newTimeSpan = newEvent.StartDate + new TimeSpan(1, 0, 0);
+				if (newEvent.EndDate.Ticks < newTimeSpan.Ticks)
+				{
+					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2, 0, 0);
 					endTime.Time = newEvent.EndDate.TimeOfDay;
 					endDate.Date = newEvent.EndDate;
 				}
 			};
-			startTime.PropertyChanged += (sender, e) => { 
+			startTime.PropertyChanged += (sender, e) =>
+			{
 				newEvent.StartDate = startDate.Date.Add(startTime.Time);
-				var newTimeSpan = newEvent.StartDate + new TimeSpan(1,0,0);
-				if(newEvent.EndDate.Ticks < newTimeSpan.Ticks) {
-					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2,0,0);
+				var newTimeSpan = newEvent.StartDate + new TimeSpan(1, 0, 0);
+				if (newEvent.EndDate.Ticks < newTimeSpan.Ticks)
+				{
+					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2, 0, 0);
 					endTime.Time = newEvent.EndDate.TimeOfDay;
 					endDate.Date = newEvent.EndDate;
 				}
@@ -76,10 +81,8 @@ namespace HowlOut
 			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 
 			/// set location
-			locationEntry.Focused += (sender, e) =>
+			locationButton.Clicked += (sender, e) =>
 			{
-				this.Focus();
-
 				if (newEvent.Latitude == 0 && newEvent.Longitude == 0)
 				{
 					mapView = new MapsView(App.lastKnownPosition);
@@ -88,31 +91,34 @@ namespace HowlOut
 					mapView = new MapsView(new Position(newEvent.Latitude, newEvent.Longitude));
 				}
 				mapView.createEventView = this;
-				App.coreView.setContentViewWithQueue(mapView, "MapsView");
+				App.coreView.setContentViewWithQueue(mapView, "MapsView", null);
 			};
-			/*
-			locationButton.Clicked += (sender, e) => {
-				if (newEvent.Latitude == 0 && newEvent.Longitude == 0){
-					mapView = new MapsView (App.lastKnownPosition);
-				}
-				else {
-					mapView = new MapsView (new Position(newEvent.Latitude, newEvent.Longitude));
-				}
-				mapView.createEventView = this;
-				App.coreView.setContentViewWithQueue (mapView, "MapsView");
+
+			NumberAttendendeesEntry.TextChanged += (sender, e) =>
+			{
+				newEvent.MaxSize = int.Parse(NumberAttendendeesEntry.Text);
 			};
-			*/
+
+			visibilityPicker.SelectedIndexChanged += (sender, e) =>
+			{
+				
+
+			};
 
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
-				App.coreView.setContentViewWithQueue(selectBannerView, "");
+				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
 			};
+
+
 
 			takePictureButton.Clicked += (sender, e) =>
 			{
 
 			};
+
+
 
 			/// set age and size limits
 			minAge.SelectedIndexChanged += (sender, args) => {
@@ -130,10 +136,14 @@ namespace HowlOut
 				setEditEvent ();
 			}
 
-			launchButton.Clicked += (sender, e) => {
+			launchButton.Clicked += async (sender, e) => {
 				if(isCreate && !Launching) {
-					LaunchEvent(newEvent);
-					Launching = true;
+					bool continueCreating = await SenderOfEvent();
+					if (continueCreating)
+					{
+						LaunchEvent(newEvent);
+						Launching = true;
+					}
 				} else if(!isCreate && !Launching) {
 					UpdateEvent(newEvent);
 				}
@@ -257,6 +267,7 @@ namespace HowlOut
 			}else {
 				EventDBO newEventAsDBO = new EventDBO{
 					Owner = eventToCreate.Owner, 
+					OrganisationOwner = eventToCreate.OrganisationOwner,
 					Title = eventToCreate.Title, 
 					Description = eventToCreate.Description,
 					StartDate = eventToCreate.StartDate, 
@@ -277,7 +288,9 @@ namespace HowlOut
 				if (eventCreated != null) {
 					eventCreated.Attendees = new List<Profile> ();
 					eventCreated.Followers = new List<Profile> ();
-					App.coreView.setContentViewWithQueue (new InspectController (null, null, eventCreated), "UserProfile");
+					InspectController inspect = new InspectController(null, null, eventCreated);
+					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+					App.coreView.createEventView = new CreateEvent(new Event(), true);
 				} else {
 					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 				}
@@ -290,7 +303,10 @@ namespace HowlOut
 			bool eventUpdated = await _dataManager.EventApiManager.UpdateEvent (eventToUpdate);
 
 			if (eventUpdated) {
-				App.coreView.setContentViewWithQueue (new InspectController (null, null, eventToUpdate), "UserProfile");
+
+				InspectController inspect = new InspectController(null, null, eventToUpdate);
+				App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
 			}
@@ -337,6 +353,100 @@ namespace HowlOut
 			typeButton.TextColor = Color.White;
 
 			return typeButton;
+		}
+
+		public async Task<bool> SenderOfEvent()
+		{
+			bool continueCreating = false;
+			App.userProfile.Organisations = new List<Group>();
+
+			// Dummy Data Start
+			App.userProfile.Organisations.Add(
+				new Group()
+				{
+				Type = Group.GroupType.Organisation,
+				Name = "ITU",
+				}
+			);
+			App.userProfile.Organisations.Add(
+				new Group()
+				{
+					Type = Group.GroupType.Organisation,
+					Name = "Københavns Erhvervs Akademi",
+				}
+			);
+			// Dummy Data End
+
+			if (App.userProfile.Organisations != null && App.userProfile.Organisations.Count > 0)
+			{
+				SelectEventSenderLayout.Children.Clear();
+				SelectEventSenderLayout.Children.Add(new Label()
+				{
+					Text = "Who is the sender of this event?",
+					TextColor = Color.White,
+					FontSize = 16,
+					FontAttributes = FontAttributes.Bold,
+					HorizontalOptions = LayoutOptions.CenterAndExpand,
+				});
+
+				List<Button> buttons = new List<Button>();
+				organisationButton(App.userProfile.Name, buttons);
+
+				foreach (Group o in App.userProfile.Organisations)
+				{
+					organisationButton(o.Name, buttons);
+				}
+				organisationButton("Cancel", buttons);
+
+				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+				SelectEventSenderLayout.IsVisible = true;
+				foreach (Button b in buttons)
+				{
+					b.Clicked += (sender, e) =>
+					{
+						
+
+						if (b == buttons[0])
+						{
+							System.Diagnostics.Debug.WriteLine("You are the sender of the event");
+							continueCreating = true;
+						}
+						else if (b == buttons[buttons.Count - 1])
+						{
+							System.Diagnostics.Debug.WriteLine("Cancel creating event");
+							continueCreating = false;
+						}
+						else {
+							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Organisations[buttons.IndexOf(b)-1].Name);
+							continueCreating = true;
+						}
+						tcs.TrySetResult(true);
+					};
+				}
+
+				await tcs.Task;
+				SelectEventSenderLayout.IsVisible = false;
+			}
+
+			return continueCreating;
+		}
+
+		void organisationButton(String name, List<Button> buttons)
+		{
+			Button oB = new Button()
+			{
+				Text = name,
+				HeightRequest = 30,
+				WidthRequest = 100,
+				FontSize = 14,
+				TextColor = App.HowlOut,
+				BorderColor = App.HowlOut,
+				BorderWidth = 1,
+				BorderRadius = 10,
+				BackgroundColor = Color.White,
+			};
+			buttons.Add(oB);
+			SelectEventSenderLayout.Children.Add(oB);
 		}
 	}
 }

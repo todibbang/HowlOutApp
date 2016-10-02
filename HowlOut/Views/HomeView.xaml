@@ -54,21 +54,19 @@
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 
-					<Grid Grid.Row="0" Padding="10,0,10,0" >
-						<Button BackgroundColor="White" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="15" x:Name="optionGridBackground" HeightRequest="30" />
-					</Grid>
-					<Grid Grid.Row="0" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30">
+					<Grid Grid.Row="0" Padding="5,5,5,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="Transparent" >
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="1"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<Button Grid.Column="0" Text="Joined" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="18" FontAttributes="Bold"></Button>
-						<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
-						<Button Grid.Column="2"  Text="Tracked" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
+						<Button Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" BorderColor="{DynamicResource HowlOutFade}" BorderWidth="1" BorderRadius="10" HeightRequest="30" />
+						<Button Grid.Column="0" Text="People" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="18" FontAttributes="Bold"></Button>
+						<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOutFade}" />
+						<Button Grid.Column="2"  Text="WolfPacks" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
 					</Grid>
 
-					<ScrollView Grid.Row="1" VerticalOptions="FillAndExpand">
+					<ScrollView Grid.Row="1" VerticalOptions="FillAndExpand" x:Name="scrollView">
 						<Grid RowSpacing="0"> 
 							<Grid.RowDefinitions>
 								<RowDefinition Height="*"/>

@@ -456,6 +456,14 @@ namespace HowlOut
 			}
 			return false;
 		}
+
+
+
+		public async Task<bool> AcceptJoinRequest(string profileId, bool accept)
+		{
+			
+			return true;
+		}
 	}
 }
 

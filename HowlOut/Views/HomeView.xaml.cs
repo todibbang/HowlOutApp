@@ -9,6 +9,8 @@ namespace HowlOut
 		DataManager _dataManager = new DataManager ();
 		ListsAndButtons listMaker = new ListsAndButtons();
 
+		InspectController inspect;
+
 		int currentView = 0;
 
 		public HomeView ()
@@ -19,8 +21,8 @@ namespace HowlOut
 			App.coreView.topBar.showSearchBar(true);
 			App.coreView.topBar.showCreateNewButton(true);
 			*/
-
-			profileContent.Content = new InspectController (App.userProfile, null, null);
+			inspect = new InspectController(App.userProfile, null, null);
+			profileContent.Content = inspect;
 			createGroupContent.Content = new CreateGroup (null);
 
 			searchBar.TextChanged += (sender, e) =>
@@ -55,15 +57,15 @@ namespace HowlOut
 				}
 			};
 
-			App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
+			App.selectButton(new List<Button> { optionOne, optionTwo }, optionOne);
 			optionOne.Clicked += (sender, e) =>
 			{
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
+				App.selectButton(new List<Button> { optionOne, optionTwo }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 			};
 			optionTwo.Clicked += (sender, e) => {
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionTwo);
+				App.selectButton(new List<Button> { optionOne, optionTwo }, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 			};
@@ -73,14 +75,14 @@ namespace HowlOut
 		{
 			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
 			profileGrid.Children.Clear ();
-			listMaker.createList (profileGrid, profileSearchResult, null, null, ListsAndButtons.ListType.Normal, null, null);
+			listMaker.createList (profileGrid, profileSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
 		}
 
 		public async void updateAutoCompleteGroupList(string input)
 		{
 			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
 			groupGrid.Children.Clear ();
-			listMaker.createList (groupGrid, null, groupSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
+			listMaker.createList (groupGrid, null, groupSearchResult, ListsAndButtons.ListType.Normal, null, null);
 		}
 
 		private void setViewDesign(int number){
@@ -97,6 +99,11 @@ namespace HowlOut
 				createGroupContent.IsVisible = true;
 			}
 
+		}
+
+		public ScrollView getScrollView()
+		{
+			return inspect.getScrollView();
 		}
 	}
 }

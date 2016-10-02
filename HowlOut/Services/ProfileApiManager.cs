@@ -304,6 +304,11 @@ namespace HowlOut
 
 			return notifications;
 		}
+
+		public async Task<bool> UpdateProfile( Profile updatedProfile)
+		{
+			return true;
+		}
 	}
 }
 

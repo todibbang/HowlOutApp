@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using System.Text.RegularExpressions;
 
 namespace HowlOut
 {
@@ -17,19 +18,38 @@ namespace HowlOut
 		public SearchEventTemplate (Event eve)
 		{
 			InitializeComponent ();
-			BindingContext = new EventForLists(eve);
+			EventForLists efl = new EventForLists(eve);
+			BindingContext = efl;
 
-			attendingInfo.Text = (eve.NumberOfAttendees + 1) + "/" + eve.MaxSize;
+			attendingInfo.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
 
-			//ProfilView1.SetBinding (Content, "ProfileLayout");
-			//ProfilView0.Children.Add (new ContentView(){Content = "{}"});
+			topTime.Text = eve.StartDate.ToString("ddd dd MMM");
+			bottomTime.Text = eve.StartDate.ToString("HH:mm") + "-" + eve.EndDate.ToString("HH:mm");
 
-			//ProfilView.Content = new ProfileDesignView (eve.Owner, null, null, 80, ProfileDesignView.Design.Plain, false);
-			//EventView.Content = new EventDesignView (eve, 80, EventDesignView.Design.Plain);
+			topDist.Text = efl.Distance + " km";
 
+			string[] addressList = new string[3];
+			addressList = Regex.Split(eve.AddressName, ",");
+			for (int i = 0; i < addressList.Length; i++)
+			{
+				Label label = new Label() { TextColor = Color.FromHex("646464") };
+				label.Text = addressList[i];
+				label.FontSize = 14;
+			}
+			if (addressList.Length == 2)
+			{
+				bottomDist.Text = addressList[0].Substring(5).Trim();
+			}
+			else {
+				bottomDist.Text = addressList[1].Substring(5).Trim();
+			}
+
+			/*
 			SubjectButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue(new InspectController(null,null,eve),"");
+				InspectController inspect = new InspectController(null, null, eve);
+				App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
 			};
+			*/
 		}
 	}
 }

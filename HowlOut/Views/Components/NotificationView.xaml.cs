@@ -15,7 +15,13 @@ namespace HowlOut
 			if (notification.HeaderProfiles[0] != null){
 				image.Source = "https://graph.facebook.com/v2.5/" + notification.HeaderProfiles[0].ProfileId + "/picture?height=80&width=80";
 			} else if(notification.ContentEvent != null) {
-				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentEvent.Owner.ProfileId + "/picture?height=80&width=80";
+				if (notification.ContentEvent.Owner != null) {
+					image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentEvent.Owner.ProfileId + "/picture?height=80&width=80";
+				}
+				else {
+					image.Source = notification.ContentEvent.OrganisationOwner.ImageSource;
+				}
+
 			} else if(notification.ContentGroup != null) {
 				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentGroup.Owner.ProfileId + "/picture?height=80&width=80";
 			}
@@ -37,7 +43,8 @@ namespace HowlOut
 				else if (notification.TypeOfMessage == Notification.NotificationType.FacebookFriendHasCreatedProfile ||
 						 notification.TypeOfMessage == Notification.NotificationType.FriendRequest)
 				{
-					App.coreView.setContentViewWithQueue(new InspectController(notification.HeaderProfiles[0], null, null), "");
+					InspectController inspect = new InspectController(notification.HeaderProfiles[0], null, null);
+					App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
 				}
 				else if (notification.TypeOfMessage == Notification.NotificationType.FriendJoinedGroup || 
 				         notification.TypeOfMessage == Notification.NotificationType.GroupRequest)
@@ -110,11 +117,15 @@ namespace HowlOut
 
 			if (notification.TypeOfMessage == Notification.NotificationType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent)
 			{
-				Title.Text = "New Evetn";
+				Title.Text = "New Event";
 				Message.Text = notification.HeaderProfiles[0].Name + " hows event you've previously have attended has created a new event!";
 			}
 
-
+			if (notification.TypeOfMessage == Notification.NotificationType.SomeoneJoinedYourEvent)
+			{
+				Title.Text = "New Attendee";
+				Message.Text = notification.HeaderProfiles[0].Name + " has joined your event " + notification.ContentEvent.Title + ".";
+			}
 
 
 		}

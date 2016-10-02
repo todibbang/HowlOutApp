@@ -153,7 +153,8 @@ namespace HowlOut
 		private async Task loadUpdatedProfile(Profile profile)
 		{
 			App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
-			App.coreView.setContentViewWithQueue (new InspectController (profile, null, null), "UserProfile");
+			InspectController inspect = new InspectController(profile, null, null);
+			App.coreView.setContentViewWithQueue (inspect, "UserProfile", inspect.getScrollView());
 		}
 
 		public async Task<bool> sendProfileInviteToEvent(Event eve, Profile profile)
@@ -206,7 +207,8 @@ namespace HowlOut
 				if (hasJoined) {
 					Event eventWhenJoined = await EventApiManager.GetEventById (eve.EventId);
 					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
-					App.coreView.setContentViewWithQueue (new InspectController (null, null, eventWhenJoined), "UserProfile");
+					InspectController inspect = new InspectController(null, null, eventWhenJoined);
+					App.coreView.setContentViewWithQueue (inspect, "UserProfile", inspect.getScrollView());
 				} else {
 					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
 				}
@@ -282,7 +284,8 @@ namespace HowlOut
 		public bool IsEventYours(Event eve)
 		{
 			bool yours = false;
-			if (eve.Owner.ProfileId == App.userProfile.ProfileId) {
+			if ((eve.Owner != null && eve.Owner.ProfileId == App.StoredUserFacebookId) || (eve.OrganisationOwner != null && App.userProfile.Organisations.Exists(o => o.GroupId == eve.OrganisationOwner.GroupId)))
+			{
 				yours = true;
 			}
 			return yours;

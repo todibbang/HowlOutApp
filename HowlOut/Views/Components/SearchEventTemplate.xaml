@@ -23,19 +23,19 @@
 
 			<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
 			<StackLayout Grid.Row="0" VerticalOptions="Start" >
-				<StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="Fill" >
+				<StackLayout Padding="2,10,2,0" Orientation="Horizontal" HorizontalOptions="Fill" >
 
-					<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="60">
-						<Label Text="{Binding BigTime}" FontSize="14" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-						<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+					<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
+						<Label Text="{Binding topTime}" x:Name="topTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<Label Text="{Binding bottomTime}" x:Name="bottomTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 					</StackLayout>
 
 					
 					<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="White"/>
 
-					<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="60">
-						<Label Text="{Binding Distance}" FontSize="14" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-						<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+					<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
+						<Label Text="{Binding topDist}" x:Name="topDist" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+						<Label Text="{Binding bottomDist}" FontSize="12"  x:Name="bottomDist" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 					</StackLayout>
 
 				</StackLayout>
@@ -51,10 +51,10 @@
 					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
 					<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
 				</StackLayout>
-				<Button HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo"/>
+				<Button HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo" Text="{Binding attendingInfo}"/>
 			</StackLayout>
 
-			<Button Grid.Row="0" Grid.RowSpan="2" x:Name="SubjectButton" BackgroundColor="Transparent" />
+			<!-- <Button Grid.Row="0" Grid.RowSpan="2" x:Name="SubjectButton" BackgroundColor="Transparent" /> -->
 		</Grid>
 
 

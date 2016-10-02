@@ -14,12 +14,12 @@ namespace HowlOut
 			InitializeComponent ();
 
 			if(profiles) {
-				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
+				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 				friendsButton.FontAttributes = FontAttributes.Bold;
 			} else { 
-				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
+				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 				groupsButton.FontAttributes = FontAttributes.Bold;

@@ -19,8 +19,8 @@ namespace HowlOut
 		public static Position lastKnownPosition = new Position(55.5, 12.6);
 		private DataManager _dataManager;
 
-		public static Color HowlOut = Color.FromHex("#ff4a7aaa");
-		public static Color HowlOutFade = Color.FromHex("#504a7aaa");
+		public static Color HowlOut = Color.FromHex("#ff2ab2cd");
+		public static Color HowlOutFade = Color.FromHex("#502ab2cd");
 
         public interface ISaveAndLoad
         {
@@ -160,7 +160,7 @@ namespace HowlOut
 
 		}
 
-		public static void selectButton(Button[] buttons, Button selected)
+		public static void selectButton(List<Button> buttons, Button selected)
 		{
 			foreach (Button b in buttons)
 			{
@@ -171,6 +171,80 @@ namespace HowlOut
 			selected.FontAttributes = FontAttributes.Bold;
 			selected.FontSize = 18;
 			selected.TextColor = App.HowlOut;
+		}
+
+		public static void setOptionsGrid(Grid buttonGrid, List<Button> buttons, List<VisualElement> grids)
+		{
+			grids[0].IsVisible = true;
+			selectButton(buttons, buttons[0]);
+
+			int bNumber = 0;
+
+			for (int i = 0; i < (buttons.Count * 2 - 1); i++)
+			{
+				if (i % 2 == 0)
+				{
+					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+				}
+				else {
+					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 1 });
+				}
+
+				if (i == (buttons.Count * 2 - 1) - 1)
+				{
+					buttonGrid.Children.Add(new Button() { BorderColor = HowlOut, BorderWidth = 1, BorderRadius = 10 }, 0, i + 1, 0, 1);
+				}
+			}
+
+			for (int i = 0; i < (buttons.Count * 2 - 1); i++)
+			{
+				if (i % 2 == 0)
+				{
+					buttonGrid.Children.Add(buttons[bNumber], i, 0);
+					bNumber++;
+				}
+				else {
+					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = HowlOut }, i, 0);
+				}
+			}
+
+
+			foreach (Button b in buttons)
+			{
+				b.Clicked += (sender, e) =>
+				{
+					selectButton(buttons, b);
+					foreach (VisualElement g in grids)
+					{
+						g.IsVisible = false;
+					}
+					grids[buttons.IndexOf(b)].IsVisible = true;
+					scrollTo(b);
+				};
+			}
+
+		}
+
+		public static async Task scrollTo(VisualElement a)
+		{
+			await Task.Delay(40);
+			var y = a.Y;
+			var parent = a.ParentView;
+			while (parent != null)
+			{
+				y += parent.Y;
+				parent = parent.ParentView;
+			}
+
+			coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
+
+			//s.ScrollToAsync(s.X, (y - 100), true);
+		}
+
+		public static async Task scrollTo(double y)
+		{
+			await Task.Delay(40);
+			coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
 		}
 
         protected override void OnStart ()

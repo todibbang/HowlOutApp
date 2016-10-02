@@ -1,17 +1,82 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateGroup"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0">
-			<Grid.Padding>
-				<OnPlatform x:TypeArguments="Thickness"
-                	iOS="0, 0, 0, 0" />
-			</Grid.Padding>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
+
+			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
+				<StackLayout BackgroundColor="White">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="50"/>
+							<RowDefinition Height="50"/>
+							<RowDefinition Height="50"/>
+							<RowDefinition Height="auto"/>
+						</Grid.RowDefinitions>
+
+						<StackLayout Grid.Row="1" Grid.RowSpan="3" x:Name="SelectedBannerLayout"/>
+												
+						<Grid Grid.Row="0" Grid.RowSpan="2" RowSpacing="0" BackgroundColor="White">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="10"/>
+								<ColumnDefinition Width="20"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="10"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="40"/>
+								<RowDefinition Height="1"/>
+								<RowDefinition Height="40"/>
+								<RowDefinition Height="1"/>
+								<RowDefinition Height="40"/>
+							</Grid.RowDefinitions>
+
+							<!-- ICONS -->
+							<controls:IconView Grid.Row="0" Grid.Column="1" Source="ic_title" Foreground="{DynamicResource HowlOut}" />
+							<controls:IconView Grid.Row="2" Grid.Column="1" Source="ic_description" Foreground="{DynamicResource HowlOut}" />
+							<controls:IconView Grid.Row="4" Grid.Column="1" Source="ic_eye" Foreground="{DynamicResource HowlOut}" />
+							
+							<local:CustomEntry Grid.Row="0" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" Placeholder="WolfPack's name..." PlaceholderColor="{DynamicResource LightGray}" x:Name="title" FontSize="14"></local:CustomEntry>
+							<local:Line Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+							<local:CustomEditor Grid.Row="2" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..." FontSize="14"></local:CustomEditor>
+							<local:Line Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+							<StackLayout Grid.Row="4" Grid.Column="2" Padding="9,6,0,6" VerticalOptions="Fill">
+								<local:CustomPicker Title="Open" HasBorder="false" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="CenterAndExpand" >
+							        <local:CustomPicker.Items>
+							            <x:String>Open</x:String> 
+										<x:String>Closed</x:String>
+							            <x:String>Secret</x:String>
+										<x:String>Organisation</x:String>
+							        </local:CustomPicker.Items>
+							    </local:CustomPicker> 
+							</StackLayout>
+
+						</Grid>
+
+						<StackLayout Grid.Row="2" >
+							<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
+						</StackLayout>
+
+						<Button Grid.Row="2" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_camera.png" WidthRequest="80"/>
+						
+
+						<StackLayout Grid.Row="5" Padding="20">
+							<Button Text="Create WolfPack" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+							<Button Text="Disband WolfPack" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+						</StackLayout>
+
+					</Grid>
+				</StackLayout>
+			</ScrollView>
+
+			<!--
 			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
 				<StackLayout>
 					<StackLayout BackgroundColor="White" >
@@ -82,6 +147,9 @@
 
 				</StackLayout>	
 			</ScrollView>
+
+
+			-->
 
 		</Grid>
 	</ContentView.Content>

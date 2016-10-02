@@ -1,6 +1,8 @@
 ﻿using System;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms;
+using System.Text.RegularExpressions;
+
 
 namespace HowlOut
 {
@@ -11,8 +13,18 @@ namespace HowlOut
 
 		public string Title  {get; set;}
 		public string Distance  {get; set;}
-		public string BigTime  {get; set;}
-		public string SmallTime  {get; set;}
+		public string topTime  {get; set;}
+		public string bottomTime  {get; set;}
+		public string allTime { get; set; }
+
+		public string topProfileTime { get; set; }
+		public string bottomProfileTime { get; set; }
+
+		public string topDist { get; set; }
+		public string bottomDist { get; set; }
+		public string allDist { get; set; }
+
+		public string attendingInfo { get; set; }
 
 		public string EventAverageLoyalty  {get; set;}
 		public string EventHolderLikes  {get; set;}
@@ -27,6 +39,7 @@ namespace HowlOut
 		public string Banner { get; set;}
 		public double BannerHeight { get; set;}
 		public double InspectBannerHeight { get; set;}
+		public double InspectHalfBannerHeight { get; set; }
 
 		public string ProfileImageSource { get; set;}
 
@@ -37,19 +50,63 @@ namespace HowlOut
 
 			Banner = eve.BannerName;
 
-			ProfileImageSource = "https://graph.facebook.com/v2.5/" + eve.Owner.ProfileId + "/picture?height=80&width=80";
+			if (eve.Owner != null)
+			{
+				ProfileImageSource = "https://graph.facebook.com/v2.5/" + eve.Owner.ProfileId + "/picture?height=80&width=80";
+			}
+			else {
+				ProfileImageSource = eve.OrganisationOwner.ImageSource;
+			}
 
 			//BannerHeight = (0.524 * App.coreView.Width) - 60;
 			BannerHeight = (0.56 * App.coreView.Width) - 30;
 			InspectBannerHeight = (0.56 * App.coreView.Width);
+			InspectHalfBannerHeight = InspectBannerHeight / 2;
+
+
 			Title = eve.Title;
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
 			var Times = util.setTime (eve.StartDate);
-			BigTime = Times [0];
-			SmallTime = Times [1];
-			EventAverageLoyalty = eve.Owner.LoyaltyRating + "";
-			EventHolderLikes = eve.Owner.Likes + "";
+			//BigTime = Times [0];
+			//SmallTime = Times [1];
+			//EventAverageLoyalty = eve.Owner.LoyaltyRating + "";
+			//EventHolderLikes = eve.Owner.Likes + "";
+
+
+			attendingInfo = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
+
+			topTime = eve.StartDate.ToString("ddd dd MMM");
+			bottomTime = eve.StartDate.ToString("HH:mm") + "-" + eve.EndDate.ToString("HH:mm");
+
+			topProfileTime = eve.StartDate.ToString("dd");
+			bottomProfileTime = eve.StartDate.ToString("MMM");
+
+			topDist = Distance + " km";
+
+			allTime = bottomTime + " " + topTime;
+			allDist = bottomDist + " " + topDist + " away";
+
+			string[] addressList = new string[3];
+			addressList = Regex.Split(eve.AddressName, ",");
+			for (int i = 0; i < addressList.Length; i++)
+			{
+				Label label = new Label() { TextColor = Color.FromHex("646464") };
+				label.Text = addressList[i];
+				label.FontSize = 14;
+			}
+			if (addressList.Length == 2)
+			{
+				bottomDist = addressList[0].Substring(5).Trim();
+			}
+			else {
+				bottomDist = addressList[1].Substring(5).Trim();
+			}
+
+
+
+
+
 
 			if (eve.EventTypes.Count != 0) {
 				EventType1 = eve.EventTypes [0] + "";

@@ -13,9 +13,9 @@
 
 			<Color x:Key="HowlOutGreen">#ff00e6dd</Color>
 
-			<Color x:Key="HowlOut">#ff4a7aaa</Color>
+			<Color x:Key="HowlOut">#ff2ab2cd</Color>
 
-			<Color x:Key="HowlOutFade">#504a7aaa</Color>
+			<Color x:Key="HowlOutFade">#502ab2cd</Color>
 			<!-- <Color x:Key="HowlOut">#fffdaa00</Color>  -->
 
 			<Color x:Key="HowlOutBackground">#ffeeeeee</Color>

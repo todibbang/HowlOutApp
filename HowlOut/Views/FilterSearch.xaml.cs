@@ -19,8 +19,8 @@ namespace HowlOut
 
 			distance.Minimum = 0;
 			distance.Maximum = 1000;
-			distance.Value = newSearchSettings.Distance;
-			distanceLabel.Text = "Distance " + distance.Value + " km";
+			distance.Value = (int) newSearchSettings.Distance;
+			distanceLabel.Text = "Distance " + ((int) distance.Value) + " km";
 
 			distance.ValueChanged += (sender, e) => {
 				distanceLabel.Text = "Distance " + ((int) distance.Value + " km");

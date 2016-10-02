@@ -9,6 +9,7 @@ namespace HowlOut
 	public partial class CoreView : ContentPage
 	{
 		public List <ContentView> contentViews = new List<ContentView> ();
+		public List <ScrollView> scrollViews = new List<ScrollView>();
 		public List <string> contentViewTypes = new List<string> ();
 
 		public UpperBar topBar;
@@ -37,20 +38,19 @@ namespace HowlOut
 
 		}
 
-		public void startCoreView()
+		public async void startCoreView()
 		{
 			createEventView = new CreateEvent(new Event(), true);
 			manageEventView = new EventView(0);
-			exploreEventView = new EventView(1);
 			howlsEventView = new YourNotifications();
 			homeView = new HomeView();
-
-			_dataManager.update ();
-
-			contentViews.Add (manageEventView);
+			exploreEventView = new EventView(1);
+			contentViews.Add (exploreEventView);
+			scrollViews.Add (null);
 			contentViewTypes.Add ("Event");
-			topBar.setNavigationLabel("Event");
-			mainView.Content = manageEventView;
+			topBar.setNavigationLabel("Event", null);
+			mainView.Content = exploreEventView;
+			await _dataManager.update();
 			loading.IsVisible = false;
 		}
 
@@ -61,31 +61,38 @@ namespace HowlOut
 			var first = DateTime.Now;
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			ContentView view = null;
+			ScrollView scroll = null;
 
 			//System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
 			if (type == 0)
 			{
 				view = createEventView;
 				topBar.showCreateNewGroupButton(true);
-				topBar.setNavigationLabel("Create Event");
+				topBar.setNavigationLabel("Create Event", null);
 			} else if (type == 1)
 			{
 				view = manageEventView;
-				topBar.setNavigationLabel("Your Events");
+				scroll = null;
+				topBar.setNavigationLabel("Your Events", scroll);
+
 			} else if (type == 2)
 			{
 				view = exploreEventView;
+				scroll = null;
 				topBar.showFilterSearchButton(true);
-				topBar.setNavigationLabel("Find Events");
+				topBar.setNavigationLabel("Find Events", scroll);
+
 			} else if (type == 3)
 			{
 				view = howlsEventView;
-				topBar.setNavigationLabel("Howls");
+				scroll = howlsEventView.getScrollView();
+				topBar.setNavigationLabel("Howls", scroll);
+
 			} else if (type == 4)
 			{
 				view = homeView;
-
-				topBar.setNavigationLabel("Me");
+				scroll = homeView.getScrollView();
+				topBar.setNavigationLabel("Me", scroll);
 			}
 
 			lastCoreView = type;
@@ -97,11 +104,11 @@ namespace HowlOut
 				view = new HomeView();
 			}
 			*/
-
+			scrollViews.Clear();
 			contentViews.Clear ();
 			contentViewTypes.Clear ();
 			contentViews.Add (view);
-
+			scrollViews.Add(scroll);
 
 			//await ViewExtensions.ScaleTo(view, 0, 0);
 			mainView.Content = view;
@@ -112,7 +119,7 @@ namespace HowlOut
 
 		}
 
-		public async void setContentViewWithQueue (ContentView view, string type)
+		public async void setContentViewWithQueue (ContentView view, string type, ScrollView s)
 		{
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			topBar.hideAll();
@@ -121,11 +128,12 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
 
 			contentViews.Add (view);
+			scrollViews.Add(s);
 			contentViewTypes.Add (type);
 
 			topBar.showBackButton (true);
 
-			topBar.setNavigationLabel(type);
+			topBar.setNavigationLabel(type, s);
 
 			//await ViewExtensions.ScaleTo(view, 0, 0);
 			mainView.Content = view;
@@ -140,16 +148,18 @@ namespace HowlOut
 
 				contentViews.RemoveAt (contentViews.Count - 1);
 				contentViewTypes.RemoveAt (contentViewTypes.Count - 1);
+				scrollViews.RemoveAt(scrollViews.Count - 1);
 
 				ContentView oldView = contentViews [contentViews.Count - 1];
-
+				ScrollView oldScroll = scrollViews[scrollViews.Count - 1];
 
 				if (count > 2) {
 				
-					App.coreView.setContentViewWithQueue (oldView, "");
+					App.coreView.setContentViewWithQueue (oldView, "", oldScroll);
 
 					contentViews.RemoveAt (contentViews.Count - 1);
 					contentViewTypes.RemoveAt (contentViewTypes.Count - 1);
+					scrollViews.RemoveAt(scrollViews.Count - 1);
 
 				} else if (count == 2) {
 					App.coreView.setContentView(lastCoreView);
@@ -177,13 +187,15 @@ namespace HowlOut
 		public async void GoToSelectedEvent(string eveID)
 		{
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
-			setContentViewWithQueue(new InspectController(null, null, eve), "UserProfile");
+			InspectController inspect = new InspectController(null, null, eve);
+			setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 		}
 
 		public async void GoToSelectedGroup(string groupID)
 		{
 			Group grp = await _dataManager.GroupApiManager.GetGroupById(groupID);
-			setContentViewWithQueue(new InspectController(null, grp, null), "Group");
+			InspectController inspect = new InspectController(null, grp, null);
+			setContentViewWithQueue(inspect, "Group", inspect.getScrollView());
 		}
 
 		public async Task displayAlertMessage (string title, string message, string buttonText)
@@ -220,9 +232,7 @@ namespace HowlOut
 
 		async Task<bool> DisplayAlert()
 		{
-			System.Diagnostics.Debug.WriteLine("1");
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			System.Diagnostics.Debug.WriteLine("2");
 			bool answer = false;
 			WarningLayout.IsVisible = true;
 
@@ -232,29 +242,26 @@ namespace HowlOut
 			{
 				answer = false;
 				tcs.TrySetResult(true);
-				System.Diagnostics.Debug.WriteLine("Press1");
 			};
 			optionTwo.Clicked += (sender, e) =>
 			{
 				answer = true;
-				System.Diagnostics.Debug.WriteLine("Press2.1");
 				tcs.TrySetResult(true);
-				System.Diagnostics.Debug.WriteLine("Press2.2");
 			};
 			optionOK.Clicked += (sender, e) =>
 			{
 				answer = true;
 				tcs.TrySetResult(true);
-				System.Diagnostics.Debug.WriteLine("Press3");
 			};
 
 
 			await tcs.Task;
-			//tcs.SetCanceled();
-			System.Diagnostics.Debug.WriteLine("3");
 			WarningLayout.IsVisible = false;
 			return answer;
 		}
+
+
+
 	}
 }
 

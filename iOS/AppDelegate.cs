@@ -26,7 +26,8 @@ namespace HowlOut.iOS
 
 			ImageCircleRenderer.Init ();
 
-			LoadApplication (new App ());
+			//LoadApplication (new App ());
+			LoadApplication(new App());
 
 			return base.FinishedLaunching (app, options);
 		}

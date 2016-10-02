@@ -13,6 +13,12 @@ namespace HowlOut
 		bool beingRepositioned = false;
 		int currentView = 0;
 
+		Button exploreButton = new Button { Text = "Explore", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
+		Button friendsButton = new Button { Text = "Friends", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
+		Button joinedButton = new Button { Text = "Joined", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
+		Button trackedButton = new Button { Text = "Tracked", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
+
+
 		int EventViewType;
 
 		public EventView (int viewType)
@@ -23,15 +29,20 @@ namespace HowlOut
 
 			if (EventViewType == 1)
 			{
-				optionOne.Text = "Explore";
-				optionTwo.Text = "Friends";
-				setViewDesign(0, searchList);
+				App.setOptionsGrid(optionGrid, new List<Button> { exploreButton, friendsButton }, new List<VisualElement> { searchEventList, searchEventList });
+				setViewDesign(0);
+			}
+			else if (EventViewType != 10)
+			{
+				App.setOptionsGrid(optionGrid, new List<Button> { joinedButton, trackedButton }, new List<VisualElement> { manageEventList, manageEventList });
+				setViewDesign(1);
 			}
 			else {
-				setViewDesign(1, searchList);
+				setViewDesign(1);
 			}
 
-
+			manageEventList.ItemSelected += OnItemSelected;
+			searchEventList.ItemSelected += OnItemSelected;
 			/*
 			SearchButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Search",0));
 			ManageButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Attending",0));
@@ -40,32 +51,32 @@ namespace HowlOut
 			*/
 
 
-			optionOne.Clicked += (sender, e) =>
+			exploreButton.Clicked += (sender, e) => { setViewDesign(0); };
+			friendsButton.Clicked += (sender, e) => { setViewDesign(0); };
+			joinedButton.Clicked += (sender, e) => { setViewDesign(1); };
+			trackedButton.Clicked += (sender, e) => { setViewDesign(3); };
+		}
+
+		public async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			ListView list = null;
+			if (manageEventList.SelectedItem != null)
 			{
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionOne);
-
-				if (EventViewType == 0)
-				{
-					setViewDesign(1, searchList);
-				}
-				else {
-					setViewDesign(0, searchList);
-				}
-			};
-			optionTwo.Clicked += (sender, e) =>
+				list = manageEventList;
+			}
+			else if (searchEventList.SelectedItem != null)
 			{
-				App.selectButton(new Button[] { optionOne, optionTwo }, optionTwo);
+				list = searchEventList;
+			}
+			else return;
 
-				if (EventViewType == 0)
-				{
-					setViewDesign(3, searchList);
-				}
-				else
-				{
-					setViewDesign(0, searchList);
-				}
-			};
+			var selectedEvent = list.SelectedItem as EventForLists;
 
+			InspectController inspect = new InspectController(null, null, selectedEvent.eve);
+			App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+			list.SelectedItem = null;
+
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 		}
 
 		void OnPanUpdated (object sender, PanUpdatedEventArgs e)
@@ -75,12 +86,15 @@ namespace HowlOut
 			
 		private async void GoToSelectedEvent(string eveID) {
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
-			App.coreView.setContentViewWithQueue (new InspectController (null, null, eve), "UserProfile");
+
+			InspectController inspect = new InspectController(null, null, eve);
+			App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+
 		}
 
-		private void setViewDesign(int number, StackLayout list){
+		private void setViewDesign(int number){
 			loading.IsVisible = true;
-			UpdateManageList(number, list);
+			UpdateManageList(number);
 			/*
 			SearchButton.FontAttributes = FontAttributes.None;
 			ManageButton.FontAttributes = FontAttributes.None;
@@ -107,11 +121,7 @@ namespace HowlOut
 			*/
 		}
 
-		public async void UpdateManageList(int listToUpdate, StackLayout list){
-
-			while(list.Children.Count != 0) {
-				list.Children.RemoveAt(0);
-			}
+		public async void UpdateManageList(int listToUpdate){
 			ObservableCollection<Event> evelist = new ObservableCollection<Event>();
 			currentView = listToUpdate;
 			var first = DateTime.Now;
@@ -161,6 +171,7 @@ namespace HowlOut
 			int month = dateTimeMonth.Month;
 			for (int i = 0; i < orderedList.Count; i++) {
 				if (month != orderedList [i].StartDate.Month) {
+					/*
 					list.Children.Add (
 						new Label () {
 						Text = ("  " + orderedList [i].StartDate.ToString ("MMMM")),
@@ -170,19 +181,84 @@ namespace HowlOut
 						HeightRequest = 40,
 						VerticalTextAlignment = TextAlignment.Center
 					});
-					month = orderedList [i].StartDate.Month;
-
+					month = orderedList [i].StartDate.Month;*/
 				}
+				/*
 				if (listToUpdate == 0) { list.Children.Add (new SearchEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 1) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
 				} else if (listToUpdate == 3) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
 				}
+				*/
 			}
-			list.Children.Add (new BoxView(){HeightRequest=120});
+			//list.Children.Add (new BoxView(){HeightRequest=120});
+
+
+			//list.IsVisible = false;
+			//DataTemplate st = new DataTemplate(typeof(SearchEventTemplate));
+			//DataTemplate mt = new DataTemplate(typeof(ManageEventTemplate));
+
+			var mt = new DataTemplate(() =>
+			{
+				return new ViewCell { View = new ManageEventTemplate() };
+			});
+			var st = new DataTemplate(() =>
+			{
+				return new ViewCell { View = new SearchEventTemplate() };
+			});
+
+
+
+			searchEventList = new ListView()
+			{
+				HasUnevenRows = true,
+				SeparatorVisibility = SeparatorVisibility.None,
+				BackgroundColor = Color.White,
+				IsVisible = true,
+				ItemTemplate = st,
+			};
+
+			manageEventList = new ListView()
+			{
+				HasUnevenRows = true,
+				SeparatorVisibility = SeparatorVisibility.None,
+				BackgroundColor = Color.White,
+				IsVisible = true,
+				ItemTemplate = mt,
+			};
+
+			contentTest.Children.Add(searchEventList, 0, 1);
+			contentTest.Children.Add(manageEventList, 0, 1);
+
+			List<EventForLists> eveFL = new List<EventForLists>();
+			foreach (Event eve in orderedList)
+			{
+				eveFL.Add(new EventForLists(eve));
+			}
+			searchEventList.ItemsSource = null;
+			manageEventList.ItemsSource = null;
+			if (listToUpdate == 0)
+			{
+				searchEventList.ItemsSource = eveFL;
+				searchEventList.IsVisible = true;
+				manageEventList.IsVisible = false;
+			}
+			else {
+				manageEventList.ItemsSource = eveFL;
+				manageEventList.IsVisible = true;
+				searchEventList.IsVisible = false;
+			}
+
+
 			loading.IsVisible = false;
 		}
 
+			/*
+		public ScrollView getScrollView()
+		{
+			return scrollView;
+		}
 
+*/
 	}
 }
 

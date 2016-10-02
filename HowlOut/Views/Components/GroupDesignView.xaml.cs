@@ -6,6 +6,7 @@ namespace HowlOut
 {
 	public partial class GroupDesignView : ContentView
 	{
+		/*
 		DataManager _dataManager;
 		public GroupDesignView (Group group, Event eventInvitedTo, int dimentions, Design design, bool clickable)
 		{
@@ -17,7 +18,8 @@ namespace HowlOut
 			SubjectButton.Clicked += (sender, e) => {
 				if (clickable)
 				{
-					App.coreView.setContentViewWithQueue(new InspectController(null, group, null), "");
+					InspectController inspect = new InspectController(null, group, null);
+					App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
 				}
 			};
 
@@ -26,7 +28,7 @@ namespace HowlOut
 					if(design.Equals (Design.InviteGroupToEvent)) {
 						sendEventInviteToGroup (group, eventInvitedTo);
 					} else if (_dataManager.AreYouGroupOwner (group) || _dataManager.AreYouGroupMember (group)) {
-						App.coreView.setContentViewWithQueue (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView");
+						App.coreView.setContentViewWithQueue (new InviteView (group, null, InviteView.WhatToShow.PeopleToInviteToGroup), "InviteView", null);
 					} else if (_dataManager.AreYouInvitedToGroup(group)) {
 						acceptGroupInvite(group);
 					} 
@@ -36,7 +38,7 @@ namespace HowlOut
 			declineButton.Clicked += (sender, e) => {
 				if (group != null) {
 					if (_dataManager.AreYouGroupOwner (group)) {
-						App.coreView.setContentViewWithQueue (new CreateGroup (group), "");
+						App.coreView.setContentViewWithQueue (new CreateGroup (group), "", null);
 					} else if (_dataManager.AreYouGroupMember (group)) {
 						_dataManager.GroupApiManager.LeaveGroup(group.GroupId,App.userProfile.ProfileId);
 					} else if (_dataManager.AreYouInvitedToGroup(group)) {
@@ -157,6 +159,8 @@ namespace HowlOut
 			WithOptions,
 			InviteGroupToEvent
 		}
+		*/
 	}
 }
+
 
