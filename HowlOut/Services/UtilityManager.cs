@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using ModernHttpClient;
 using System.Collections.Generic;
+using Plugin.Media;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
 
 namespace HowlOut
 {
@@ -131,6 +135,89 @@ namespace HowlOut
 		}
 
 
+		public async Task<Plugin.Media.Abstractions.MediaFile>  TakePicture()
+		{
+			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+			{
+				return null;
+			}
+
+			var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+			{
+
+				Directory = "Sample",
+				Name = "test.jpg",
+				CompressionQuality = 60,
+				PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium
+			});
+
+			if (file == null)
+				return null;
+
+			//s = file.GetStream();
+
+			return file;
+
+			//DisplayAlert("File Location", file.Path, "OK");
+			//return ImageSource.FromStream(file.GetStream);
+			/*
+			return image.Source = ImageSource.FromStream(() =>
+			{
+				var stream = file.GetStream();
+				file.Dispose();
+				return stream;
+			});
+			*/
+		}
+
+		public async Task<Plugin.Media.Abstractions.MediaFile> PictureFromAlbum()
+		{
+			if (!CrossMedia.Current.IsPickPhotoSupported)
+			{
+				//DisplayAlert("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+				return null;
+			}
+			var file = await CrossMedia.Current.PickPhotoAsync();
+
+
+			if (file == null)
+				return null;
+
+			return file;
+			//s = file.GetStream();
+			/*
+			image.Source = ImageSource.FromStream(() =>
+			{
+				var stream = file.GetStream();
+				file.Dispose();
+				return stream;
+			});
+			*/
+		}
+
+		public async Task<String> UploadImageToStorage(Stream imageStream, string imageName)
+		{
+			// Retrieve storage account from connection string.
+			CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=howloutstorage;AccountKey=gY2mb3lGUcOWPEHVpNBJhqXNrJYxgOemQKoJUD4lD17czV5RSDfV6b0ot/lwj/2fVmoYEWXx5W711iWmk7BiNg==");
+
+			// Create the blob client.
+			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+			// Retrieve reference to a previously created container.
+			CloudBlobContainer container = blobClient.GetContainerReference("howlout");
+
+			// Create the container if it doesn't already exist.
+			await container.CreateIfNotExistsAsync();
+
+			// Retrieve reference to a blob named "myblob".
+			CloudBlockBlob blockBlob = container.GetBlockBlobReference(imageName);
+
+			// Set type of blob time image
+			blockBlob.Properties.ContentType = "image/jpg";
+			await blockBlob.UploadFromStreamAsync(imageStream);
+			// Return blob uri
+			return blockBlob.Uri.ToString();
+		}
 	}
 }
 

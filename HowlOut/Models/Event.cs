@@ -10,6 +10,7 @@ namespace HowlOut
 
 		public string Title {get; set;}
 		public string Description {get; set;}
+
 		public Profile Owner {get; set;}
 		public Group OrganisationOwner { get; set;}
 
@@ -27,9 +28,6 @@ namespace HowlOut
 		public List <Profile> InvitedProfiles {get; set;}	//People invited to the event
 		public List <Group> InvitedGroups {get; set;}		//Groups invited to the event
 
-		//TODO implement system where some events requirire the owner to accept people before joining
-		public List <Profile> RequestingToJoin { get; set;}
-        
 		public DateTime StartDate {get; set;}
 		public DateTime EndDate {get; set;}
 
@@ -39,7 +37,7 @@ namespace HowlOut
 		public int MinSize {get; set;}
 		public int MaxSize {get; set;}
 
-		public Visibility visibility { get; set; }
+		public Visibility Visibility { get; set; }
 
 		public List <Comment> Comments {get; set;}
 
@@ -57,23 +55,11 @@ namespace HowlOut
 
 		public SearchSettings ProfileSearchSettings { get; set; }
 
-		public Event ()
+		public Event()
 		{
-			EventTypes = new List<EventType> ();
-			Attendees = new List<Profile> ();
-			Followers = new List<Profile> ();
-			InvitedProfiles = new List<Profile> ();
-			InvitedGroups = new List<Group> ();
-			Comments = new List<Comment> ();
-			RequestingToJoin = new List<Profile>();
+			EventTypes = new List<EventType>();
 		}
 
-		public enum Visibility
-		{
-			Open,
-			Closed,
-			Secret,
-		}
 	}
 }
 

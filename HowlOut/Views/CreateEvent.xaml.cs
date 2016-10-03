@@ -7,6 +7,7 @@ using Xamarin.Forms.Maps;
 using System.Net.Http;
 using ModernHttpClient;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace HowlOut
 {
@@ -20,6 +21,9 @@ namespace HowlOut
 		Dictionary<string, int> sizePicker = new Dictionary<string, int> { };
 
 		private bool Launching = false;
+
+		Plugin.Media.Abstractions.MediaFile mediaFile;
+		Image banner = new Image();
 
 		public CreateEvent(Event givenEvent, bool isCreate)
 		{
@@ -99,6 +103,26 @@ namespace HowlOut
 				newEvent.MaxSize = int.Parse(NumberAttendendeesEntry.Text);
 			};
 
+			takePictureButton.Clicked += async (sender, e) =>
+			{
+				selectBannerButton.BackgroundColor = Color.Transparent;
+				SelectedBannerLayout.Children.Clear();
+
+				mediaFile = await _dataManager.UtilityManager.TakePicture();
+				banner.Source = ImageSource.FromStream(mediaFile.GetStream);
+				SelectedBannerLayout.Children.Add(banner);
+			};
+
+			albumPictureButton.Clicked += async (SenderOfEvent, e) =>
+			{
+				selectBannerButton.BackgroundColor = Color.Transparent;
+				SelectedBannerLayout.Children.Clear();
+
+				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
+				banner.Source = ImageSource.FromStream(mediaFile.GetStream);
+				SelectedBannerLayout.Children.Add(banner);
+			};
+
 			visibilityPicker.SelectedIndexChanged += (sender, e) =>
 			{
 				
@@ -109,13 +133,6 @@ namespace HowlOut
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
 				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
-			};
-
-
-
-			takePictureButton.Clicked += (sender, e) =>
-			{
-
 			};
 
 
@@ -254,6 +271,9 @@ namespace HowlOut
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
+			
+			eventToCreate.BannerName = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), "Test");
+
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
 				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
@@ -364,14 +384,14 @@ namespace HowlOut
 			App.userProfile.Organisations.Add(
 				new Group()
 				{
-				Type = Group.GroupType.Organisation,
+				Visibility = Visibility.Organization,
 				Name = "ITU",
 				}
 			);
 			App.userProfile.Organisations.Add(
 				new Group()
 				{
-					Type = Group.GroupType.Organisation,
+					Visibility = Visibility.Organization,
 					Name = "Københavns Erhvervs Akademi",
 				}
 			);

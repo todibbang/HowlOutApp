@@ -63,7 +63,6 @@ namespace HowlOut
 			InspectBannerHeight = (0.56 * App.coreView.Width);
 			InspectHalfBannerHeight = InspectBannerHeight / 2;
 
-
 			Title = eve.Title;
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
@@ -73,8 +72,13 @@ namespace HowlOut
 			//EventAverageLoyalty = eve.Owner.LoyaltyRating + "";
 			//EventHolderLikes = eve.Owner.Likes + "";
 
+			int attendees = 0;
+			if (eve.Attendees != null)
+			{
+				attendees = eve.Attendees.Count + 1;
+			}
 
-			attendingInfo = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
+			attendingInfo = attendees + "/" + eve.MaxSize;
 
 			topTime = eve.StartDate.ToString("ddd dd MMM");
 			bottomTime = eve.StartDate.ToString("HH:mm") + "-" + eve.EndDate.ToString("HH:mm");

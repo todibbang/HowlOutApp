@@ -41,10 +41,10 @@ namespace HowlOut
 		public async void startCoreView()
 		{
 			createEventView = new CreateEvent(new Event(), true);
-			manageEventView = new EventView(0);
+			manageEventView = new EventView(0, App.StoredUserFacebookId);
 			howlsEventView = new YourNotifications();
 			homeView = new HomeView();
-			exploreEventView = new EventView(1);
+			exploreEventView = new EventView(1, App.StoredUserFacebookId);
 			contentViews.Add (exploreEventView);
 			scrollViews.Add (null);
 			contentViewTypes.Add ("Event");

@@ -279,7 +279,7 @@ namespace HowlOut
 					SendTime = DateTime.Now.AddMonths(random.Next(8)*-1).AddHours(random.Next(200)),
 					ContentEvent = testeve,
 					ContentGroup = testGroup,
-					HeaderProfiles = new List<Profile>() {testpro},
+					ContentProfiles = new List<Profile>() {testpro},
 				});
 			}
 

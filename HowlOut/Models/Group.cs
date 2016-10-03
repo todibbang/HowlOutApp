@@ -16,25 +16,21 @@ namespace HowlOut
 		public List <Profile> Members {get; set;}			//People in the event
 		public List <Profile> InvitedProfiles {get; set;}	//People which has been invited to join the groups
 		public List <Comment> Comments {get; set;}			//List of comments within the group
+		public List<Profile> RequestingToJoin { get; set; }
 
 
-		public GroupType Type { get; set; }
+		public Visibility Visibility { get; set; }
 		public string ImageSource { get; set; }
 		public string Description { get; set; }
+
+		public List<Profile> ProfilesRequestingToJoin { get; set; }
 
 		public Group ()
 		{
 			Members = new List<Profile> ();
 			InvitedProfiles = new List<Profile> ();
 			Comments = new List<Comment> ();
-		}
-
-		public enum GroupType
-		{
-			Open,
-			Closed,
-			Secret,
-			Organisation
+			RequestingToJoin = new List<Profile>();
 		}
 	}
 }

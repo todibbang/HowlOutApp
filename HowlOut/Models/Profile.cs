@@ -10,7 +10,7 @@ namespace HowlOut
 		public int LoyaltyRating {get; set;}
 		public int Likes {get; set;}
 		public string Name {get; set;}
-		public string Description { get; set; }
+
 		public int Age {get; set;}
 
         //public List <string> UserIDsFollowed {get; set;}
@@ -34,7 +34,12 @@ namespace HowlOut
         //public List <string> FriendIDs {get; set;}
 		public SearchSettings SearchReference { get; set; }
 
-		public List<Event> EventsRequringAttendensConfirmation { get; set; }
+
+
+		//New
+		public string Description { get; set; }
+		//public List<Event> EventsRequringAttendensConfirmation { get; set; }
+		public List<Notification> InAppNotifications { get; set; }
 
 		public Profile ()
 		{

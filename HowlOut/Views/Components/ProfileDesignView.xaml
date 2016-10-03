@@ -42,7 +42,7 @@
 				<Label  x:Name="infoLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" Text="Tobias"/>
 			</StackLayout>
 
-			<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="StartAndExpand" x:Name="buttonLayout">
+			<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout">
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="sendFriendRequestButton" Text="add" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptFriendRequestButton" Text="accept" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="declineFriendRequestButton" Text="decline" BorderRadius="10" IsVisible="false"/>

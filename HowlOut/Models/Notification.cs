@@ -6,7 +6,7 @@ namespace HowlOut
 	public class Notification
 	{
 		public NotificationType TypeOfMessage { get; set; }
-		public List<Profile> HeaderProfiles { get; set; }
+		public List<Profile> ContentProfiles { get; set; }
 		public Event ContentEvent { get; set; }
 		public Group ContentGroup { get; set; }
 		public DateTime SendTime { get; set; }
@@ -29,8 +29,9 @@ namespace HowlOut
 			YourGroupInvitedToEvent,
 			EventHolderWhosEventPreviouslyAttendedHasCreatedEvent,
 			FriendRequest,
-			SomeoneJoinedYourEvent
-			             
+			SomeoneJoinedYourEvent,
+			EventYoureAttendedStartingTomorrow,
+			EventYoureAttendingStartingInThreeHours,
 		}
 	}
 }

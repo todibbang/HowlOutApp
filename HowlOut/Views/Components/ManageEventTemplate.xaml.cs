@@ -28,7 +28,7 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine("Number of attenInt: " + eve.NumberOfAttendees + ", and number of AttendList: " + eve.Attendees.Count);
 			if (_dataManager.IsEventYours(eve))
 			{
-				System.Diagnostics.Debug.WriteLine("Number of attenInt: " + eve.NumberOfAttendees + "("+eve.RequestingToJoin.Count+")" + ", and number of AttendList: " + eve.Attendees.Count);
+				System.Diagnostics.Debug.WriteLine("Number of attenInt: " + eve.NumberOfAttendees + ", and number of AttendList: " + eve.Attendees.Count);
 			}
 
 			//address.Text = "At " + eve.eve.AddressName;

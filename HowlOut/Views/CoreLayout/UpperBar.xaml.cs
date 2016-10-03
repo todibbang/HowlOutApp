@@ -30,7 +30,7 @@ namespace HowlOut
 				await createNewGroupBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await createNewGroupBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue (new CreateGroup(new Group()), "Create WolfPack", null);
+				App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
 			};				
 			createNewGroupBtn.GestureRecognizers.Add(updateImage);
 

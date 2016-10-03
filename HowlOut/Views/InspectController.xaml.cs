@@ -33,7 +33,7 @@ namespace HowlOut
 
 			eventsButton.Clicked += (sender, e) =>
 			{
-				eventsGrid.Children.Add(new EventView(10));
+				eventsGrid.Children.Add(new EventView(10, userProfile.ProfileId));
 			};
 
 
@@ -152,10 +152,6 @@ namespace HowlOut
 
 				if (eventObject.Attendees != null)
 				{
-					foreach (Profile p in eventObject.RequestingToJoin)
-					{
-						profileList.Add(p);
-					}
 					for (int i = 0; i < eventObject.Attendees.Count; i++)
 					{
 						profileList.Add(eventObject.Attendees[i]);

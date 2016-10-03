@@ -210,6 +210,9 @@ namespace HowlOut
 			}
 			else if (design == Design.ListAsOwner)
 			{
+
+
+				/*
 				if (eve != null)
 				{
 					if (eve.RequestingToJoin.Exists(p => p.ProfileId == profile.ProfileId))
@@ -218,6 +221,8 @@ namespace HowlOut
 						declineJoinRequestButton.IsVisible = true;
 					}
 				}
+				*/
+
 
 			}
 

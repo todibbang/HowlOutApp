@@ -13,6 +13,8 @@ namespace HowlOut
 		bool beingRepositioned = false;
 		int currentView = 0;
 
+		string ID;
+
 		Button exploreButton = new Button { Text = "Explore", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
 		Button friendsButton = new Button { Text = "Friends", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
 		Button joinedButton = new Button { Text = "Joined", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
@@ -21,9 +23,10 @@ namespace HowlOut
 
 		int EventViewType;
 
-		public EventView (int viewType)
+		public EventView (int viewType, string id)
 		{
 			InitializeComponent ();
+			ID = id;
 			_dataManager = new DataManager();
 			EventViewType = viewType;
 
@@ -41,8 +44,7 @@ namespace HowlOut
 				setViewDesign(1);
 			}
 
-			manageEventList.ItemSelected += OnItemSelected;
-			searchEventList.ItemSelected += OnItemSelected;
+
 			/*
 			SearchButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Search",0));
 			ManageButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Attending",0));
@@ -129,14 +131,14 @@ namespace HowlOut
 				evelist = await _dataManager.EventApiManager.SearchEvents ();
 
 			} else if (listToUpdate == 1) {
-				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
+				evelist = await _dataManager.EventApiManager.GetEventsWithOwnerId (ID);
 
 			} else if (listToUpdate == 3) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsFollowed ();
 
 			} else if (listToUpdate == 2) {
 				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo ();
-				var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId ();
+				var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId (ID);
 				for (int i = evelist.Count -1; i > -1; i--) {
 					for (int m = 0; m < evesAttended.Count; m++) {
 						if (evelist [i].EventId == evesAttended[m].EventId) {
@@ -248,6 +250,8 @@ namespace HowlOut
 				searchEventList.IsVisible = false;
 			}
 
+			manageEventList.ItemSelected += OnItemSelected;
+			searchEventList.ItemSelected += OnItemSelected;
 
 			loading.IsVisible = false;
 		}

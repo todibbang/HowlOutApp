@@ -43,11 +43,11 @@ namespace HowlOut
 			return events;
 		}
 
-		public async Task<ObservableCollection<Event>> GetEventsWithOwnerId()
+		public async Task<ObservableCollection<Event>> GetEventsWithOwnerId(String id)
 		{
 			ObservableCollection<Event> events = new ObservableCollection<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + App.StoredUserFacebookId+"?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + id + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
 
 			try
 			{
