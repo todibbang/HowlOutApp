@@ -20,6 +20,8 @@ namespace HowlOut
 		Dictionary<string, int> agePicker = new Dictionary<string, int> { };
 		Dictionary<string, int> sizePicker = new Dictionary<string, int> { };
 
+		List<Button> typeButtons = new List<Button>();
+
 		private bool Launching = false;
 
 		Plugin.Media.Abstractions.MediaFile mediaFile;
@@ -33,30 +35,57 @@ namespace HowlOut
 
 			mapView = new MapsView(App.lastKnownPosition);
 
+			/*
 			for (int i = 18; i < 100; i++) agePicker.Add("" + i, i);
 			foreach (string age in agePicker.Keys) { minAge.Items.Add(age); maxAge.Items.Add(age); }
 
 			int sizeNumber = 5;
 			for (int i = 0; i < 20; i++) { sizePicker.Add("" + sizeNumber, sizeNumber); sizeNumber += 5; }
 			foreach (string size in sizePicker.Keys) { minSize.Items.Add(size); maxSize.Items.Add(size); }
-
+			*/
 			/// set title and description
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
-			description.TextChanged += (sender, e) =>
-			{
-				newEvent.Description = description.Text;
-				System.Diagnostics.Debug.WriteLine("Called again: " + newEvent.Description);
-			};
+			description.TextChanged += (sender, e) => { newEvent.Description = description.Text; };
 
-			/// set event type
-			fest.Clicked += (sender, e) => { fest = typeButtonPressed(fest, EventType.Party); };
-			sport.Clicked += (sender, e) => { sport = typeButtonPressed(sport, EventType.Sport); };
-			kultur.Clicked += (sender, e) => { kultur = typeButtonPressed(kultur, EventType.Culture); };
-			film.Clicked += (sender, e) => { film = typeButtonPressed(film, EventType.Movie); };
-			musik.Clicked += (sender, e) => { musik = typeButtonPressed(musik, EventType.Music); };
-			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe, EventType.Cafe); };
-			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad, EventType.Food); };
-			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
+
+			int row = 0;
+			int column = 1;
+			eventTypeGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto });
+			foreach (EventType en in Enum.GetValues(typeof(EventType)))
+			{
+				if (column == 9)
+				{
+					eventTypeGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+					column = 1;
+					row++;
+				}
+
+				Button b = new Button()
+				{
+					TextColor = App.HowlOut,
+					BorderRadius = 25,
+					BorderWidth = 1,
+					HeightRequest = 50,
+					WidthRequest = 50,
+					BorderColor = App.HowlOutFade,
+					BackgroundColor = Color.White,
+					FontSize = 12,
+					Text = en.ToString(),
+				};
+				typeButtons.Add(b);
+				eventTypeGrid.Children.Add(b,column,row);
+				b.Clicked += (sender, e) =>
+				{
+					typeButtonPressed(b, en);
+				};
+
+				if (newEvent.EventTypes.Contains(en))
+				{
+					b.BackgroundColor = App.HowlOut;
+					b.TextColor = Color.White;
+				}
+				column += 2;
+			}
 
 			/// set time and date
 			startDate.PropertyChanged += (sender, e) =>
@@ -98,35 +127,54 @@ namespace HowlOut
 				App.coreView.setContentViewWithQueue(mapView, "MapsView", null);
 			};
 
-			NumberAttendendeesEntry.TextChanged += (sender, e) =>
+			visibilityPicker.SelectedIndexChanged += async (sender, e) =>
 			{
-				newEvent.MaxSize = int.Parse(NumberAttendendeesEntry.Text);
+				visibilityPicker.Items[1] = "Group";
+				newEvent.GroupSpecific = null;
+				System.Diagnostics.Debug.WriteLine(visibilityPicker.SelectedIndex);
+				if (visibilityPicker.SelectedIndex == 0)
+				{
+					newEvent.Visibility = Visibility.Open;
+				}
+				if (visibilityPicker.SelectedIndex == 1)
+				{
+					bool success = await GroupEventIsFor();
+					if (success)
+					{
+						newEvent.Visibility = Visibility.Closed;
+						await Task.Delay(50);
+						visibilityPicker.Items[1] = "Group: " + newEvent.GroupSpecific.Name;
+					}
+					else {
+						visibilityPicker.SelectedIndex = 0;
+					}
+				}
+				if (visibilityPicker.SelectedIndex == 2)
+				{
+					newEvent.Visibility = Visibility.Secret;
+				}
 			};
+
+			NumberAttendendeesEntry.TextChanged += (sender, e) => { newEvent.MaxSize = int.Parse(NumberAttendendeesEntry.Text); };
 
 			takePictureButton.Clicked += async (sender, e) =>
 			{
-				selectBannerButton.BackgroundColor = Color.Transparent;
-				SelectedBannerLayout.Children.Clear();
-
 				mediaFile = await _dataManager.UtilityManager.TakePicture();
-				banner.Source = ImageSource.FromStream(mediaFile.GetStream);
-				SelectedBannerLayout.Children.Add(banner);
+				if (mediaFile != null)
+				{
+					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					selectBannerButton.BackgroundColor = Color.Transparent;
+				}
 			};
 
 			albumPictureButton.Clicked += async (SenderOfEvent, e) =>
 			{
-				selectBannerButton.BackgroundColor = Color.Transparent;
-				SelectedBannerLayout.Children.Clear();
-
 				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
-				banner.Source = ImageSource.FromStream(mediaFile.GetStream);
-				SelectedBannerLayout.Children.Add(banner);
-			};
-
-			visibilityPicker.SelectedIndexChanged += (sender, e) =>
-			{
-				
-
+				if (mediaFile != null)
+				{
+					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					selectBannerButton.BackgroundColor = Color.Transparent;
+				}
 			};
 
 			selectBannerButton.Clicked += (sender, e) => {
@@ -136,7 +184,7 @@ namespace HowlOut
 			};
 
 
-
+			/*
 			/// set age and size limits
 			minAge.SelectedIndexChanged += (sender, args) => {
 				if (minAge.SelectedIndex != -1) { string age = minAge.Items[minAge.SelectedIndex]; newEvent.MinAge = agePicker[age]; } };
@@ -146,7 +194,7 @@ namespace HowlOut
 				if (minSize.SelectedIndex != -1) { string size = minSize.Items[minSize.SelectedIndex]; newEvent.MinSize = sizePicker[size]; } };
 			maxSize.SelectedIndexChanged += (sender, args) => {
 				if (maxSize.SelectedIndex != -1) { string size = maxSize.Items[maxSize.SelectedIndex]; newEvent.MaxSize = sizePicker[size]; } };
-
+			*/
 			if (isCreate) {
 				setNewEvent ();
 			} else {
@@ -171,11 +219,9 @@ namespace HowlOut
 
 		public void setBanner(string banner) {
 			selectBannerButton.BackgroundColor = Color.Transparent;
-			//selectBannerButton.Image = banner;
-			SelectedBannerLayout.Children.Clear();
-			SelectedBannerLayout.Children.Add(new Image() {Source = banner });
-			//selectBannerButton.WidthRequest = App.coreView.Width;
-			//selectBannerButton.HeightRequest = App.coreView.Width / 2;
+			SelectedBannerImage.Source = banner;
+			newEvent.BannerSource = banner;
+			mediaFile = null;
 		}
 
 		private void setNewEvent()
@@ -190,9 +236,8 @@ namespace HowlOut
 			bool didTrySucceed = false;
 			try 
 			{
-				startTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 3, 0, 0));
-				endTime.Time = (new TimeSpan (DateTime.Now.TimeOfDay.Hours + 5, 0, 0));
-
+				startTime.Time = (new TimeSpan(DateTime.Now.Hour + 3, 0, 0));
+				endTime.Time = (new TimeSpan(DateTime.Now.Hour + 5, 0, 0));
 				didTrySucceed = true;
 			} 
 			catch (Exception ex)
@@ -208,16 +253,17 @@ namespace HowlOut
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EndDate = endDate.Date.Add(endTime.Time);
 
-			minAge.SelectedIndex = 0;
-			maxAge.SelectedIndex = agePicker.Count;
+			//minAge.SelectedIndex = 0;
+			//maxAge.SelectedIndex = agePicker.Count;
 
-			newEvent.MinAge = agePicker [minAge.Items[minAge.SelectedIndex]];
-			newEvent.MaxAge = agePicker [maxAge.Items[maxAge.SelectedIndex]];
+			//newEvent.MinAge = agePicker [minAge.Items[minAge.SelectedIndex]];
+			//newEvent.MaxAge = agePicker [maxAge.Items[maxAge.SelectedIndex]];
 
-			minSize.SelectedIndex = 0;
-			maxSize.SelectedIndex = sizePicker.Count;
-			newEvent.MinSize = sizePicker [minSize.Items[minSize.SelectedIndex]];
-			newEvent.MaxSize = sizePicker [maxSize.Items[maxSize.SelectedIndex]];
+			//minSize.SelectedIndex = 0;
+			//maxSize.SelectedIndex = sizePicker.Count;
+			//newEvent.MinSize = sizePicker [minSize.Items[minSize.SelectedIndex]];
+			//newEvent.MaxSize = sizePicker [maxSize.Items[maxSize.SelectedIndex]];
+			//newEvent.MaxSize = -1;
 		}
 
 		private void setEditEvent()
@@ -259,6 +305,22 @@ namespace HowlOut
 			minSize.SelectedIndex = minvalue;
 			maxSize.SelectedIndex = maxvalue;
 
+
+			/*
+			int t = 0;
+
+			foreach (EventType en in Enum.GetValues(typeof(EventType)))
+			{
+				if (newEvent.EventTypes.Contains(en))
+				{
+					typeButtons[t].BackgroundColor = App.HowlOut;
+					typeButtons[t].TextColor = Color.White;
+				}
+				t++;
+			}
+			*/
+
+			/*
 			if(newEvent.EventTypes.Contains(EventType.Party)) { fest = PreSetButton(fest, EventType.Party); };
 			if(newEvent.EventTypes.Contains(EventType.Sport)) { sport = PreSetButton(sport, EventType.Sport); };
 			if(newEvent.EventTypes.Contains(EventType.Culture)) { kultur = PreSetButton(kultur, EventType.Culture); };
@@ -267,22 +329,26 @@ namespace HowlOut
 			if(newEvent.EventTypes.Contains(EventType.Cafe)) { cafe = PreSetButton(cafe, EventType.Cafe); };
 			if(newEvent.EventTypes.Contains(EventType.Food)) { mad = PreSetButton(mad, EventType.Food); };
 			if(newEvent.EventTypes.Contains(EventType.Hobby)) { hobby = PreSetButton(hobby, EventType.Hobby); };
+			*/
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
-			
-			eventToCreate.BannerName = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), "Test");
-
+			if (mediaFile != null)
+			{
+				eventToCreate.BannerSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
+			}
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
 				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
 				await App.coreView.displayAlertMessage ("Description Missing", "Description is missing", "Ok");
+			} else if ((eventToCreate.MaxSize == -1)) {
+				await App.coreView.displayAlertMessage("Attendendees Needed Missing", "", "Ok");
 			} else if (eventToCreate.EventTypes.Count == 0) {
 				await App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
 				await App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
-			} else if (String.IsNullOrWhiteSpace (eventToCreate.BannerName)) {
+			} else if (String.IsNullOrWhiteSpace (eventToCreate.BannerSource)) {
 				await App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
 			}else {
 				EventDBO newEventAsDBO = new EventDBO{
@@ -296,12 +362,14 @@ namespace HowlOut
 					MaxAge = eventToCreate.MaxAge, 
 					MinSize = eventToCreate.MinSize, 
 					MaxSize = eventToCreate.MaxSize, 
-					Public = true, 
+					Visibility = eventToCreate.Visibility, 
 					Latitude = eventToCreate.Latitude,
 					Longitude = eventToCreate.Longitude, 
 					AddressName = eventToCreate.AddressName, 
 					EventTypes = eventToCreate.EventTypes,
-					BannerName = eventToCreate.BannerName};
+					BannerName = eventToCreate.BannerSource,
+					GroupSpecific = eventToCreate.GroupSpecific
+				};
 
 				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
 
@@ -375,20 +443,74 @@ namespace HowlOut
 			return typeButton;
 		}
 
+		public async Task<bool> GroupEventIsFor()
+		{
+			bool continueCreating = false;
+
+			// Dummy Data End
+
+			if (App.userProfile.Groups != null && App.userProfile.Groups.Count > 0)
+			{
+				SelectEventSenderLayout.Children.Clear();
+				SelectEventSenderLayout.Children.Add(new Label()
+				{
+					Text = "Who is the sender of this event?",
+					TextColor = Color.White,
+					FontSize = 16,
+					FontAttributes = FontAttributes.Bold,
+					HorizontalOptions = LayoutOptions.CenterAndExpand,
+				});
+
+				List<Button> buttons = new List<Button>();
+
+				foreach (Group o in App.userProfile.Groups)
+				{
+					organisationButton(o.Name, buttons);
+				}
+				organisationButton("Cancel", buttons);
+
+				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+				SelectEventSenderLayout.IsVisible = true;
+				foreach (Button b in buttons)
+				{
+					b.Clicked += (sender, e) =>
+					{
+						
+						if (b == buttons[buttons.Count - 1])
+						{
+							System.Diagnostics.Debug.WriteLine("Cancel creating event");
+							continueCreating = false;
+						}
+						else {
+							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Groups[buttons.IndexOf(b)].Name);
+							newEvent.GroupSpecific = App.userProfile.Groups[buttons.IndexOf(b)];
+							continueCreating = true;
+						}
+						tcs.TrySetResult(true);
+					};
+				}
+
+				await tcs.Task;
+				SelectEventSenderLayout.IsVisible = false;
+			}
+
+			return continueCreating;
+		}
+
 		public async Task<bool> SenderOfEvent()
 		{
 			bool continueCreating = false;
-			App.userProfile.Organisations = new List<Group>();
+			App.userProfile.Organizations = new List<Group>();
 
 			// Dummy Data Start
-			App.userProfile.Organisations.Add(
+			App.userProfile.Organizations.Add(
 				new Group()
 				{
 				Visibility = Visibility.Organization,
 				Name = "ITU",
 				}
 			);
-			App.userProfile.Organisations.Add(
+			App.userProfile.Organizations.Add(
 				new Group()
 				{
 					Visibility = Visibility.Organization,
@@ -397,7 +519,7 @@ namespace HowlOut
 			);
 			// Dummy Data End
 
-			if (App.userProfile.Organisations != null && App.userProfile.Organisations.Count > 0)
+			if (App.userProfile.Organizations != null && App.userProfile.Organizations.Count > 0)
 			{
 				SelectEventSenderLayout.Children.Clear();
 				SelectEventSenderLayout.Children.Add(new Label()
@@ -412,7 +534,7 @@ namespace HowlOut
 				List<Button> buttons = new List<Button>();
 				organisationButton(App.userProfile.Name, buttons);
 
-				foreach (Group o in App.userProfile.Organisations)
+				foreach (Group o in App.userProfile.Organizations)
 				{
 					organisationButton(o.Name, buttons);
 				}
@@ -437,7 +559,7 @@ namespace HowlOut
 							continueCreating = false;
 						}
 						else {
-							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Organisations[buttons.IndexOf(b)-1].Name);
+							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Organizations[buttons.IndexOf(b)-1].Name);
 							continueCreating = true;
 						}
 						tcs.TrySetResult(true);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectController"
-		 	 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
+		 	 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">	
 	<ContentView.Content>
@@ -26,7 +26,7 @@
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 
-				<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView"></ContentView>
+				<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView" BackgroundColor="White"></ContentView>
 
 				<Grid Grid.Row="2" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" />
 				<!--

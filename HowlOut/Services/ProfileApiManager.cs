@@ -267,19 +267,19 @@ namespace HowlOut
 		{
 			ObservableCollection<Notification> notifications = new ObservableCollection<Notification>();
 
-			Array values = Enum.GetValues(typeof(Notification.NotificationType));
+			Array values = Enum.GetValues(typeof(Notification.MessageType));
 			Random random = new Random();
-			Notification.NotificationType randomBar = (Notification.NotificationType)values.GetValue(random.Next(values.Length));
+			Notification.MessageType randomBar = (Notification.MessageType)values.GetValue(random.Next(values.Length));
 
 			for (int i = 0; i < 40; i++)
 			{
 				notifications.Add(new Notification()
 				{
-					TypeOfMessage = (Notification.NotificationType)values.GetValue(random.Next(values.Length)),
+					Type = (Notification.MessageType)values.GetValue(random.Next(values.Length)),
 					SendTime = DateTime.Now.AddMonths(random.Next(8)*-1).AddHours(random.Next(200)),
 					ContentEvent = testeve,
 					ContentGroup = testGroup,
-					ContentProfiles = new List<Profile>() {testpro},
+					ContentProfile = testpro,
 				});
 			}
 

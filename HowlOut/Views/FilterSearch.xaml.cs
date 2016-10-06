@@ -10,6 +10,7 @@ namespace HowlOut
 	{	
 		SearchSettings newSearchSettings;
 		DataManager _dataManager;
+		List<Button> typeButtons = new List<Button>();
 
 		public FilterSearch (SearchSettings userSearchSettings)
 		{
@@ -26,6 +27,48 @@ namespace HowlOut
 				distanceLabel.Text = "Distance " + ((int) distance.Value + " km");
 				newSearchSettings.Distance = distance.Value;
 			};
+
+			int row = 0;
+			int column = 1;
+			eventTypeGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+			foreach (EventType en in Enum.GetValues(typeof(EventType)))
+			{
+				if (column == 9)
+				{
+					eventTypeGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+					column = 1;
+					row++;
+				}
+
+				Button b = new Button()
+				{
+					TextColor = App.HowlOut,
+					BorderRadius = 25,
+					BorderWidth = 1,
+					HeightRequest = 50,
+					WidthRequest = 50,
+					BorderColor = App.HowlOutFade,
+					BackgroundColor = Color.White,
+					FontSize = 12,
+					Text = en.ToString(),
+				};
+				typeButtons.Add(b);
+				eventTypeGrid.Children.Add(b, column, row);
+				b.Clicked += (sender, e) =>
+				{
+					typeButtonPressed(b, en);
+				};
+
+				if (newSearchSettings.EventTypes.Contains(en))
+				{
+					b.BackgroundColor = App.HowlOut;
+					b.TextColor = Color.White;
+				}
+				column += 2;
+			}
+
+			/*
+
 
 			if(newSearchSettings.EventTypes.Contains(EventType.Party)) { fest = PreSetButton(fest, EventType.Party); };
 			if(newSearchSettings.EventTypes.Contains(EventType.Sport)) { sport = PreSetButton(sport, EventType.Sport); };
@@ -44,7 +87,7 @@ namespace HowlOut
 			cafe.Clicked += (sender, e) => { cafe = typeButtonPressed(cafe, EventType.Cafe); };
 			mad.Clicked += (sender, e) => { mad = typeButtonPressed(mad, EventType.Food); };
 			hobby.Clicked += (sender, e) => { hobby = typeButtonPressed(hobby, EventType.Hobby); };
-
+			*/
 			updateButton.Clicked += (sender, e) => {
 				UpdateSearch();
 			};
@@ -72,13 +115,6 @@ namespace HowlOut
 			return typeButton;
 		}
 
-		private Button PreSetButton(Button typeButton, EventType eventType)
-		{
-			typeButton.BackgroundColor = App.HowlOut;
-			typeButton.TextColor = Color.White;
-
-			return typeButton;
-		}
 	}
 }
 

@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -17,6 +18,9 @@ namespace HowlOut
 
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
 		Button selectButton = new Button() { TextColor= App.HowlOut, BorderColor=App.HowlOutFade, BorderWidth=1, BorderRadius=10, HeightRequest=40 };
+
+		bool searching = false;
+		bool searchingQQ = false;
 
 		public bool mapTapped = false;
 
@@ -50,7 +54,9 @@ namespace HowlOut
 					searchList.HeightRequest=0;
 					searchList.IsVisible = false;
 				} else {
+					System.Diagnostics.Debug.WriteLine("Before1");
 					updateAutocompleteList();
+					System.Diagnostics.Debug.WriteLine("After1");
 					searchList.HeightRequest=300;
 					searchList.IsVisible = true;
 				}
@@ -87,8 +93,21 @@ namespace HowlOut
 
 		public async void updateAutocompleteList()
 		{
-			var addresses = await dataManager.AutoCompletionPlace(searchBar.Text);
-			searchList.ItemsSource = addresses;
+			if (!searching)
+			{
+				searching = true;
+				System.Diagnostics.Debug.WriteLine("Before2");
+				var addresses = await dataManager.AutoCompletionPlace(searchBar.Text);
+				searchList.ItemsSource = addresses;
+				System.Diagnostics.Debug.WriteLine("After2");
+				searching = false;
+			}
+			else if (!searchingQQ){
+				searchingQQ = true;
+				await Task.Delay(100); 
+				updateAutocompleteList();
+				searchingQQ = false;
+			}
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

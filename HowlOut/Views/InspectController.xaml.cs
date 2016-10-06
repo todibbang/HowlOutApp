@@ -95,7 +95,6 @@ namespace HowlOut
 		private async void setInfo(Profile userProfile, Group userGroup, Event eventObject)
 		{
 			
-
 			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
 			if (userProfile != null)
 			{
@@ -130,7 +129,7 @@ namespace HowlOut
 					}
 				}
 				listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.Normal, null, null);
-				App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, wallButton, eventsButton }, new List<VisualElement> { profileGrid, wallGrid, eventsGrid });
+				App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, wallButton }, new List<VisualElement> { profileGrid, wallGrid });
 				profilesButton.Text = "Members";
 				givenCommentList = userGroup.Comments;
 				infoView.Content = new ProfileDesignView(null, userGroup, null, 200, ProfileDesignView.Design.Inspect, ProfileDesignView.Show.Group, false);

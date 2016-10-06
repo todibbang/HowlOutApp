@@ -22,6 +22,8 @@ namespace HowlOut.iOS
 	{
 		private bool _isDisposed;
 
+		public UIImage uIImage = new UIImage();
+
 		protected override void Dispose(bool disposing)
 		{
 			if (_isDisposed)
@@ -32,7 +34,7 @@ namespace HowlOut.iOS
 			if (disposing && base.Control != null)
 			{
 				UIImage image = base.Control.Image;
-				UIImage uIImage = image;
+				uIImage = image;
 				if (image != null)
 				{
 					uIImage.Dispose();
@@ -58,7 +60,7 @@ namespace HowlOut.iOS
 			}
 			if (e.NewElement != null)
 			{
-				SetImage(e.OldElement);
+				SetImage(base.Control.Image, e.OldElement);
 			}
 		}
 
@@ -75,7 +77,7 @@ namespace HowlOut.iOS
 			}
 		}
 
-		private async void SetImage(CropImage previous = null)
+		private async void SetImage(UIImage image, CropImage previous = null)
 		{
 			try
 			{
@@ -140,7 +142,8 @@ namespace HowlOut.iOS
 					double originalWidth = Element.Width;
 					double originalHeight = Element.Height;
 
-					var uiImage = new UIImage();
+					/*
+					var uiImage = new UIImage(;
 					if (Element.Source.Contains("https"))
 					{
 						uiImage = await this.LoadImage(Element.Source);
@@ -148,6 +151,9 @@ namespace HowlOut.iOS
 					else {
 						new UIImage(Element.Source);
 					}
+					*/
+
+					var uiImage = image;
 
 
 					/*

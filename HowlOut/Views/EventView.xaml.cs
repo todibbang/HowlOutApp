@@ -33,40 +33,27 @@ namespace HowlOut
 			if (EventViewType == 1)
 			{
 				App.setOptionsGrid(optionGrid, new List<Button> { exploreButton, friendsButton }, new List<VisualElement> { searchEventList, searchEventList });
-				setViewDesign(0);
+				UpdateManageList(0);
 			}
 			else if (EventViewType != 10)
 			{
-				App.setOptionsGrid(optionGrid, new List<Button> { joinedButton, trackedButton }, new List<VisualElement> { manageEventList, manageEventList });
-				setViewDesign(1);
+				App.setOptionsGrid(optionGrid, new List<Button> { joinedButton, trackedButton }, new List<VisualElement> { searchEventList, searchEventList });
+				UpdateManageList(1);
 			}
 			else {
-				setViewDesign(1);
+				UpdateManageList(1);
 			}
 
-
-			/*
-			SearchButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Search",0));
-			ManageButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Attending",0));
-			FollowButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Following",0));
-			InviteButtonLayout.Children.Add(standardButton.StandardButtonGrid (StandardButton.StandardButtonType.Plain, "Invited",0));
-			*/
-
-
-			exploreButton.Clicked += (sender, e) => { setViewDesign(0); };
-			friendsButton.Clicked += (sender, e) => { setViewDesign(0); };
-			joinedButton.Clicked += (sender, e) => { setViewDesign(1); };
-			trackedButton.Clicked += (sender, e) => { setViewDesign(3); };
+			exploreButton.Clicked += (sender, e) => { UpdateManageList(0); };
+			friendsButton.Clicked += (sender, e) => { UpdateManageList(0); };
+			joinedButton.Clicked += (sender, e) => { UpdateManageList(1); };
+			trackedButton.Clicked += (sender, e) => { UpdateManageList(3); };
 		}
 
 		public async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			ListView list = null;
-			if (manageEventList.SelectedItem != null)
-			{
-				list = manageEventList;
-			}
-			else if (searchEventList.SelectedItem != null)
+			if (searchEventList.SelectedItem != null)
 			{
 				list = searchEventList;
 			}
@@ -94,36 +81,8 @@ namespace HowlOut
 
 		}
 
-		private void setViewDesign(int number){
-			loading.IsVisible = true;
-			UpdateManageList(number);
-			/*
-			SearchButton.FontAttributes = FontAttributes.None;
-			ManageButton.FontAttributes = FontAttributes.None;
-			InviteButton.FontAttributes = FontAttributes.None;
-			FollowedButton.FontAttributes = FontAttributes.None;
-			searchLine.IsVisible = true;
-			manageLine.IsVisible = true;
-			inviteLine.IsVisible = true;
-			followLine.IsVisible = true;
-
-			if (number == 0) {
-				SearchButton.FontAttributes = FontAttributes.Bold;
-				searchLine.IsVisible = false;
-			} else if (number == 1) {
-				ManageButton.FontAttributes = FontAttributes.Bold;
-				manageLine.IsVisible = false;
-			} else if (number == 3) {
-				FollowedButton.FontAttributes = FontAttributes.Bold;
-				followLine.IsVisible = false;
-			} else if (number == 4) {
-				InviteButton.FontAttributes = FontAttributes.Bold;
-				inviteLine.IsVisible = false;
-			}
-			*/
-		}
-
 		public async void UpdateManageList(int listToUpdate){
+			loading.IsVisible = true;
 			ObservableCollection<Event> evelist = new ObservableCollection<Event>();
 			currentView = listToUpdate;
 			var first = DateTime.Now;
@@ -153,6 +112,7 @@ namespace HowlOut
 			System.Diagnostics.Debug.WriteLine ("Time to load: " + (time.Milliseconds) + " ms");
 
 			var orderedList = new ObservableCollection<Event>();
+
 			Event itemToAdd = new Event();
 			while(evelist.Count != 0){
 				DateTime Time = evelist [0].StartDate;
@@ -168,101 +128,56 @@ namespace HowlOut
 				evelist.Remove (itemToAdd);
 			}
 
-
-			var dateTimeMonth = DateTime.Now + new TimeSpan (-32, 0, 0, 0);
-			int month = dateTimeMonth.Month;
-			for (int i = 0; i < orderedList.Count; i++) {
-				if (month != orderedList [i].StartDate.Month) {
-					/*
-					list.Children.Add (
-						new Label () {
-						Text = ("  " + orderedList [i].StartDate.ToString ("MMMM")),
-						//BackgroundColor = Color.FromHex ("cccccc"),
-						TextColor = App.HowlOut,
-						FontSize = 25,
-						HeightRequest = 40,
-						VerticalTextAlignment = TextAlignment.Center
-					});
-					month = orderedList [i].StartDate.Month;*/
-				}
-				/*
-				if (listToUpdate == 0) { list.Children.Add (new SearchEventTemplate (orderedList [i]));
-				} else if (listToUpdate == 1) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
-				} else if (listToUpdate == 3) { list.Children.Add (new ManageEventTemplate (orderedList [i]));
-				}
-				*/
-			}
-			//list.Children.Add (new BoxView(){HeightRequest=120});
-
-
-			//list.IsVisible = false;
-			//DataTemplate st = new DataTemplate(typeof(SearchEventTemplate));
-			//DataTemplate mt = new DataTemplate(typeof(ManageEventTemplate));
-
-			var mt = new DataTemplate(() =>
-			{
-				return new ViewCell { View = new ManageEventTemplate() };
-			});
-			var st = new DataTemplate(() =>
-			{
-				return new ViewCell { View = new SearchEventTemplate() };
-			});
-
-
-
-			searchEventList = new ListView()
-			{
-				HasUnevenRows = true,
-				SeparatorVisibility = SeparatorVisibility.None,
-				BackgroundColor = Color.White,
-				IsVisible = true,
-				ItemTemplate = st,
-			};
-
-			manageEventList = new ListView()
-			{
-				HasUnevenRows = true,
-				SeparatorVisibility = SeparatorVisibility.None,
-				BackgroundColor = Color.White,
-				IsVisible = true,
-				ItemTemplate = mt,
-			};
-
-			contentTest.Children.Add(searchEventList, 0, 1);
-			contentTest.Children.Add(manageEventList, 0, 1);
-
 			List<EventForLists> eveFL = new List<EventForLists>();
 			foreach (Event eve in orderedList)
 			{
 				eveFL.Add(new EventForLists(eve));
 			}
-			searchEventList.ItemsSource = null;
-			manageEventList.ItemsSource = null;
-			if (listToUpdate == 0)
+
+			ObservableCollection<GroupedEvents> groupedEvents = new ObservableCollection<GroupedEvents>();
+			if (eveFL.Count > 0)
 			{
-				searchEventList.ItemsSource = eveFL;
-				searchEventList.IsVisible = true;
-				manageEventList.IsVisible = false;
-			}
-			else {
-				manageEventList.ItemsSource = eveFL;
-				manageEventList.IsVisible = true;
-				searchEventList.IsVisible = false;
-			}
+				GroupedEvents monthGroup = null;
+				int month = eveFL[0].eve.StartDate.Month;
 
-			manageEventList.ItemSelected += OnItemSelected;
+				for (int d = 0; d < eveFL.Count; d++)
+				{
+					if (d == 0)
+					{
+						monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
+					}
+					if (month != eveFL[d].eve.StartDate.Month)
+					{
+						month = eveFL[d].eve.StartDate.Month;
+						groupedEvents.Add(monthGroup);
+						monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
+					}
+					monthGroup.Add(eveFL[d]);
+					if (d == eveFL.Count - 1)
+					{
+						groupedEvents.Add(monthGroup);
+					}
+				}
+			}
+			searchEventList.IsGroupingEnabled = true;
+			searchEventList.ItemsSource = null;
+			searchEventList.IsVisible = true;
+			DataTemplate mt = null;
+			if (listToUpdate == 0) { mt = new DataTemplate(() => { return new ViewCell { View = new SearchEventTemplate() }; }); }
+			else { mt = new DataTemplate(() => { return new ViewCell { View = new ManageEventTemplate() }; }); }
+			searchEventList.ItemTemplate = mt;
+			searchEventList.ItemsSource = groupedEvents;
+			searchEventList.IsRefreshing = false;
 			searchEventList.ItemSelected += OnItemSelected;
-
+			searchEventList.IsPullToRefreshEnabled = true;
+			searchEventList.Refreshing += (sender, e) => { UpdateList(); };
 			loading.IsVisible = false;
 		}
 
-			/*
-		public ScrollView getScrollView()
+		public void UpdateList()
 		{
-			return scrollView;
+			UpdateManageList(currentView);
 		}
-
-*/
 	}
 }
 

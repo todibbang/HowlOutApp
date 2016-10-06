@@ -12,8 +12,8 @@ namespace HowlOut
 
 			time.Text = notification.SendTime.ToString("dddd HH:mm - dd MMMMM yyyy");
 
-			if (notification.ContentProfiles[0] != null){
-				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentProfiles[0].ProfileId + "/picture?height=80&width=80";
+			if (notification.ContentProfile != null){
+				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentProfile.ProfileId + "/picture?height=80&width=80";
 			} else if(notification.ContentEvent != null) {
 				if (notification.ContentEvent.Owner != null) {
 					image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentEvent.Owner.ProfileId + "/picture?height=80&width=80";
@@ -28,26 +28,26 @@ namespace HowlOut
 
 			SubjectButton.Clicked += (sender, e) =>
 			{
-				System.Diagnostics.Debug.WriteLine(notification.TypeOfMessage);
+				System.Diagnostics.Debug.WriteLine(notification.Type);
 
-				if (notification.TypeOfMessage == Notification.NotificationType.PersonallyInvitedToEvent ||
-					notification.TypeOfMessage == Notification.NotificationType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent ||
-					notification.TypeOfMessage == Notification.NotificationType.FollowedProfileHasCreatedEvent ||
-				   	notification.TypeOfMessage == Notification.NotificationType.FriendCreatedEvent ||
-					notification.TypeOfMessage == Notification.NotificationType.FriendJoinedEvent ||
-					notification.TypeOfMessage == Notification.NotificationType.PicturesAddedToEvent ||
-					notification.TypeOfMessage == Notification.NotificationType.YourGroupInvitedToEvent)
+				if (notification.Type == Notification.MessageType.PersonallyInvitedToEvent ||
+					notification.Type == Notification.MessageType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent ||
+					notification.Type == Notification.MessageType.FollowedProfileHasCreatedEvent ||
+				   	notification.Type == Notification.MessageType.FriendCreatedEvent ||
+					notification.Type == Notification.MessageType.FriendJoinedEvent ||
+					notification.Type == Notification.MessageType.PicturesAddedToEvent ||
+					notification.Type == Notification.MessageType.YourGroupInvitedToEvent)
 				{
 					App.coreView.GoToSelectedEvent(notification.ContentEvent.EventId);
 				}
-				else if (notification.TypeOfMessage == Notification.NotificationType.FacebookFriendHasCreatedProfile ||
-						 notification.TypeOfMessage == Notification.NotificationType.FriendRequest)
+				else if (notification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile ||
+						 notification.Type == Notification.MessageType.FriendRequest)
 				{
-					InspectController inspect = new InspectController(notification.ContentProfiles[0], null, null);
+					InspectController inspect = new InspectController(notification.ContentProfile, null, null);
 					App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
 				}
-				else if (notification.TypeOfMessage == Notification.NotificationType.FriendJoinedGroup || 
-				         notification.TypeOfMessage == Notification.NotificationType.GroupRequest)
+				else if (notification.Type == Notification.MessageType.FriendJoinedGroup || 
+				         notification.Type == Notification.MessageType.GroupRequest)
 				{
 					App.coreView.GoToSelectedGroup(notification.ContentGroup.GroupId);
 				}
@@ -55,76 +55,76 @@ namespace HowlOut
 
 
 
-			if (notification.TypeOfMessage == Notification.NotificationType.FacebookFriendHasCreatedProfile)
+			if (notification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile)
 			{
 				Title.Text = "New Friend On HowlOut.";
-				Message.Text = notification.ContentProfiles[0].Name + " has joined HowlOut.";
+				Message.Text = notification.ContentProfile.Name + " has joined HowlOut.";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.FollowedProfileHasCreatedEvent)
+			if (notification.Type == Notification.MessageType.FollowedProfileHasCreatedEvent)
 			{
 				Title.Text = "New Event";
-				Message.Text = notification.ContentProfiles[0].Name + " who you've been tracking has created a new event, check it out!";
+				Message.Text = notification.ContentProfile.Name + " who you've been tracking has created a new event, check it out!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.FriendCreatedEvent)
+			if (notification.Type == Notification.MessageType.FriendCreatedEvent)
 			{
 				Title.Text = "New Event";
-				Message.Text = notification.ContentProfiles[0].Name + " has created a new event, check it out!";
+				Message.Text = notification.ContentProfile.Name + " has created a new event, check it out!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.FriendJoinedEvent)
+			if (notification.Type == Notification.MessageType.FriendJoinedEvent)
 			{
 				Title.Text = "Friend Joined Event";
-				Message.Text = notification.ContentProfiles[0].Name + " has joined an event!";
+				Message.Text = notification.ContentProfile.Name + " has joined an event!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.FriendJoinedGroup)
+			if (notification.Type == Notification.MessageType.FriendJoinedGroup)
 			{
 				Title.Text = "Friend Joined Wolf Pack";
-				Message.Text = notification.ContentProfiles[0].Name + " has joined a Wolf Pack, maybe you should join too!";
+				Message.Text = notification.ContentProfile.Name + " has joined a Wolf Pack, maybe you should join too!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.FriendRequest)
+			if (notification.Type == Notification.MessageType.FriendRequest)
 			{
 				Title.Text = "Friend Request";
-				Message.Text = notification.ContentProfiles[0].Name + " wants to be your friend!";
+				Message.Text = notification.ContentProfile.Name + " wants to be your friend!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.GroupRequest)
+			if (notification.Type == Notification.MessageType.GroupRequest)
 			{
 				Title.Text = "Wolf Pack Invite";
-				Message.Text = notification.ContentProfiles[0].Name + " has invited you to join his Wolf Pack!";
+				Message.Text = notification.ContentProfile.Name + " has invited you to join his Wolf Pack!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.PersonallyInvitedToEvent)
+			if (notification.Type == Notification.MessageType.PersonallyInvitedToEvent)
 			{
 				Title.Text = "Event Invite";
-				Message.Text = notification.ContentProfiles[0].Name + " has invited you to an event.";
+				Message.Text = notification.ContentProfile.Name + " has invited you to an event.";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.PicturesAddedToEvent)
+			if (notification.Type == Notification.MessageType.PicturesAddedToEvent)
 			{
 				Title.Text = "New Pictures";
 				Message.Text = "Some pictures has been added to an event you've attended, have a look!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.YourGroupInvitedToEvent)
+			if (notification.Type == Notification.MessageType.YourGroupInvitedToEvent)
 			{
 				Title.Text = "Event Invite";
 				Message.Text = "Your WolfPack has been invited to an event.";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent)
+			if (notification.Type == Notification.MessageType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent)
 			{
 				Title.Text = "New Event";
-				Message.Text = notification.ContentProfiles[0].Name + " hows event you've previously have attended has created a new event!";
+				Message.Text = notification.ContentProfile.Name + " hows event you've previously have attended has created a new event!";
 			}
 
-			if (notification.TypeOfMessage == Notification.NotificationType.SomeoneJoinedYourEvent)
+			if (notification.Type == Notification.MessageType.SomeoneJoinedYourEvent)
 			{
 				Title.Text = "New Attendee";
-				Message.Text = notification.ContentProfiles[0].Name + " has joined your event " + notification.ContentEvent.Title + ".";
+				Message.Text = notification.ContentProfile.Name + " has joined your event " + notification.ContentEvent.Title + ".";
 			}
 
 

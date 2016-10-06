@@ -5,31 +5,39 @@ namespace HowlOut
 {
 	public class Notification
 	{
-		public NotificationType TypeOfMessage { get; set; }
-		public List<Profile> ContentProfiles { get; set; }
+		public MessageType Type { get; set; }
+		public Profile ContentProfile { get; set; }
 		public Event ContentEvent { get; set; }
 		public Group ContentGroup { get; set; }
 		public DateTime SendTime { get; set; }
+		public bool Read { get; set; }
 
 		public Notification()
 		{
 			List<Profile> HeaderProfiles = new List<Profile>();
 		}
 
-		public enum NotificationType
+		public enum MessageType
 		{
+			FriendJoined, 
+			FriendCreatedEvent, 
+			GroupRequest, 
+			ProfileInvitedToEvent, 
+			GroupInvitedToEvent, 
+			FriendRequest, 
+			SomeoneJoinedYourEvent,
+
+
+
+
 			FriendJoinedEvent,
 			FriendJoinedGroup,
-			FriendCreatedEvent,
 			FollowedProfileHasCreatedEvent,
 			PicturesAddedToEvent,
 			FacebookFriendHasCreatedProfile,
-			GroupRequest,
 			PersonallyInvitedToEvent,
 			YourGroupInvitedToEvent,
 			EventHolderWhosEventPreviouslyAttendedHasCreatedEvent,
-			FriendRequest,
-			SomeoneJoinedYourEvent,
 			EventYoureAttendedStartingTomorrow,
 			EventYoureAttendingStartingInThreeHours,
 		}

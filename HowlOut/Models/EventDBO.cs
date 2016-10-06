@@ -12,6 +12,8 @@ namespace HowlOut
         public string Description { get; set; }
 		public Profile Owner { get; set; }
 		public Group OrganisationOwner { get; set; }
+		public Group GroupSpecific { get; set; }
+
 		public string BannerName {get; set;}
 
 		public List<EventType> EventTypes { get; set; }
@@ -27,6 +29,8 @@ namespace HowlOut
 
 		public DateTime StartDate {get; set;}
 		public DateTime EndDate {get; set;}
+
+		public Visibility Visibility { get; set; }
 
 		public int MinAge {get; set;}
 		public int MaxAge {get; set;}

@@ -23,7 +23,7 @@ namespace HowlOut
 			InitializeComponent ();
 			efl = new EventForLists(eve);
 			BindingContext = efl;
-			attendingInfo.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
+			//attendingInfo.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
 
 
 			_dataManager = new DataManager();

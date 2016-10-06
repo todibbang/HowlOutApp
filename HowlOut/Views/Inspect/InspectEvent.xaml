@@ -17,12 +17,12 @@
 
 			<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" x:Name="quickInfo" >
 				<Grid.RowDefinitions>
-					<RowDefinition Height="{Binding InspectBannerHeight}"/>
+					<RowDefinition Height="{Binding InspectBannerHeight}" x:Name="bannerRow"/>
 					<RowDefinition Height="60"/>
 				</Grid.RowDefinitions>
 
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
-				<Image Grid.Row="0" Source="{Binding Banner}"></Image>
+				<Image Grid.Row="0" Source="{Binding Banner}" Aspect="AspectFill"></Image>
 				<Image Grid.Row="0" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
@@ -46,18 +46,23 @@
 				</StackLayout>
 
 				<!-- Her vises eventholders billede, antal deltagere og de kategorier som eventet høre under  -->
-				<StackLayout Grid.Row="1" TranslationY="-30" Orientation="Horizontal" Padding="10,0,10,0" HorizontalOptions="Fill" Spacing="0" >
-					
-					<controls:CircleImage Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
+				<Grid Grid.Row="1" TranslationY="-30" Padding="10,0,10,0" RowSpacing="0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="20"/>
+					</Grid.RowDefinitions>
 
-					<StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
+					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
+					<StackLayout Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
 					</StackLayout>
-					
-					<Button HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo"/>
-				</StackLayout>
+					<Button Grid.Row="0" Grid.RowSpan="2" HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo" Text="{Binding attendingInfo}"/>
+					<StackLayout Grid.Row="1" Padding="60,0,0,0">
+						<Label Text="{Binding EventHolder}" FontSize="12" VerticalTextAlignment="End" VerticalOptions="EndAndExpand"/>
+					</StackLayout>
+				</Grid>
 				
 
 

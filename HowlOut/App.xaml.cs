@@ -19,8 +19,8 @@ namespace HowlOut
 		public static Position lastKnownPosition = new Position(55.5, 12.6);
 		private DataManager _dataManager;
 
-		public static Color HowlOut = Color.FromHex("#ff2ab2cd");
-		public static Color HowlOutFade = Color.FromHex("#502ab2cd");
+		public static Color HowlOut = Color.FromHex("#ff4bc6b4");
+		public static Color HowlOutFade = Color.FromHex("#504bc6b4");
 
         public interface ISaveAndLoad
         {
@@ -192,7 +192,7 @@ namespace HowlOut
 
 				if (i == (buttons.Count * 2 - 1) - 1)
 				{
-					buttonGrid.Children.Add(new Button() { BorderColor = HowlOut, BorderWidth = 1, BorderRadius = 10 }, 0, i + 1, 0, 1);
+					buttonGrid.Children.Add(new Button() { BorderColor = HowlOut, BorderWidth = 0.5, BorderRadius = 10 }, 0, i + 1, 0, 1);
 				}
 			}
 

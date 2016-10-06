@@ -44,6 +44,7 @@ namespace HowlOut
 
 		public async Task<ObservableCollection<Address>> AutoCompletionPlace (string input)
 		{
+			System.Diagnostics.Debug.WriteLine("Before3");
 			string path = "https://dawa.aws.dk/autocomplete?q=" + input;
 			ObservableCollection<Address> addresses = new ObservableCollection<Address> ();
 
@@ -61,7 +62,7 @@ namespace HowlOut
 				System.Diagnostics.Debug.WriteLine ("COULD NOT RECIEVE DATA!!!!!");
 				System.Diagnostics.Debug.WriteLine (@"				ERROR {0}", ex.Message);
 			}
-
+			System.Diagnostics.Debug.WriteLine("After3");
 			return addresses;
 
 		}
@@ -284,7 +285,7 @@ namespace HowlOut
 		public bool IsEventYours(Event eve)
 		{
 			bool yours = false;
-			if ((eve.Owner != null && eve.Owner.ProfileId == App.StoredUserFacebookId) || (eve.OrganisationOwner != null && App.userProfile.Organisations.Exists(o => o.GroupId == eve.OrganisationOwner.GroupId)))
+			if ((eve.Owner != null && eve.Owner.ProfileId == App.StoredUserFacebookId) || (eve.OrganisationOwner != null && App.userProfile.Groups.Exists(o => o.GroupId == eve.OrganisationOwner.GroupId)))
 			{
 				yours = true;
 			}

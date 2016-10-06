@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.EventView"
-			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="White"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+		>
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
-
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
+			<StackLayout Grid.Row="0" BackgroundColor="{DynamicResource Shadow}" Padding="0,0,0,1">
+				<Grid Padding="5,5,5,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="White"/>
+			</StackLayout>
 
 
-
-			<Grid Grid.Row="0" Padding="5,5,5,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="Transparent" />
-
-			<ListView Grid.Row="1" x:Name="manageEventList"
-			  			HasUnevenRows="true"
-						SeparatorVisibility="None"
-						BackgroundColor="Transparent"
-						IsVisible="true">
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<ViewCell>
-							<local:ManageEventTemplate/>
-						</ViewCell>
-					</DataTemplate>
-				</ListView.ItemTemplate>	
-			</ListView>
-
-			<ListView Grid.Row="1" x:Name="searchEventList"
-			  			HasUnevenRows="true"
-						SeparatorVisibility="None"
-						BackgroundColor="Transparent"
-						IsVisible="true">
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<ViewCell>
-							<local:SearchEventTemplate/>
-						</ViewCell>
-					</DataTemplate>
-				</ListView.ItemTemplate>	
-			</ListView>
+			<Grid Grid.Row="1" Padding="15,0,15,0">
+				<ListView x:Name="searchEventList"
+				HasUnevenRows="true"
+				InputTransparent="false"
+				SeparatorVisibility="None"
+				CachingStrategy="RecycleElement"
+				BackgroundColor="Transparent">
+                    <ListView.ItemTemplate>
+                     	 <DataTemplate>
+                      		<ViewCell>
+	                      		<local:SearchEventTemplate />
+	                  		</ViewCell>
+                      	</DataTemplate>
+                    </ListView.ItemTemplate>
+					
+                    <ListView.GroupHeaderTemplate>
+                    	<DataTemplate>
+	                      <ViewCell Height="20">
+		                        <StackLayout Padding="0,0,0,1" BackgroundColor="{DynamicResource Shadow}">
+					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" BackgroundColor="{DynamicResource HowlOutBackground}"/>
+					    		</StackLayout>
+		              		</ViewCell>
+                      </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                </ListView>
+			</Grid>
 			<ActivityIndicator Grid.Row="1" Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading"/>
 		</Grid>
 	</ContentView.Content>

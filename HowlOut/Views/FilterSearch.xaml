@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.FilterSearch"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
@@ -40,11 +40,11 @@
 						<Grid RowSpacing="0">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="130"/>
+								<RowDefinition Height="227"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 
-							<Grid Grid.Row="1">
+							<Grid Grid.Row="1" BackgroundColor="White" x:Name="eventTypeGrid">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="Auto"/>
@@ -56,28 +56,12 @@
 									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-								</Grid.RowDefinitions>
-
-								<Button Grid.Column="1" Grid.Row="1" Text="Fest" Style="{DynamicResource TypeButtonStyle}" x:Name="fest"></Button>
-								<Button Grid.Column="3" Grid.Row="1" Text="Sport" Style="{DynamicResource TypeButtonStyle}" x:Name="sport"></Button>
-								<Button Grid.Column="5" Grid.Row="1" Text="Kultur" Style="{DynamicResource TypeButtonStyle}" x:Name="kultur"></Button>
-								<Button Grid.Column="7" Grid.Row="1" Text="Film" Style="{DynamicResource TypeButtonStyle}" x:Name="film"></Button>
-								<Button Grid.Column="1" Grid.Row="3" Text="Musik" Style="{DynamicResource TypeButtonStyle}" x:Name="musik"></Button>
-								<Button Grid.Column="3" Grid.Row="3" Text="Cafe" Style="{DynamicResource TypeButtonStyle}" x:Name="cafe"></Button>
-								<Button Grid.Column="5" Grid.Row="3" Text="Mad" Style="{DynamicResource TypeButtonStyle}" x:Name="mad"></Button>
-								<Button Grid.Column="7" Grid.Row="3" Text="Hobby" Style="{DynamicResource TypeButtonStyle}" x:Name="hobby"></Button>
 							</Grid>
 							<local:Line Grid.Row="2"/>
 						</Grid>
 					</StackLayout>
 
-					<BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView>
+					<!-- <BoxView HeightRequest="30" BackgroundColor="#00000000"></BoxView> -->
 
 					<StackLayout BackgroundColor="White">
 						<Grid RowSpacing="0">

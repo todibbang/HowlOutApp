@@ -13,12 +13,13 @@
 
 			<Color x:Key="HowlOutGreen">#ff00e6dd</Color>
 
-			<Color x:Key="HowlOut">#ff2ab2cd</Color>
+			<Color x:Key="HowlOut">#ff4bc6b4</Color>
 
-			<Color x:Key="HowlOutFade">#502ab2cd</Color>
+			<Color x:Key="HowlOutFade">#504bc6b4</Color>
 			<!-- <Color x:Key="HowlOut">#fffdaa00</Color>  -->
 
 			<Color x:Key="HowlOutBackground">#ffeeeeee</Color>
+			<Color x:Key="Shadow">#50eeeeee</Color>
 			<!-- <Color x:Key="HowlOutBackground">#ffb9f5e4</Color> -->
 
 			<Color x:Key="ListBackgroundColor">White</Color>

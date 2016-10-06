@@ -12,7 +12,14 @@ namespace HowlOut
 		Politics,
 		Cafe,
 		Food,
-		Hobby
+		Hobby,
+		Animals,
+		Study,
+		Games, 
+		Fitness,
+		Charity,
+		Work,
+		Other
 	}
 }
 

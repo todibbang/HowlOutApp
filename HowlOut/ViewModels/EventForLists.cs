@@ -43,12 +43,19 @@ namespace HowlOut
 
 		public string ProfileImageSource { get; set;}
 
+		public string EventHolder { get; set; }
+
+		public bool ForSpecificGroup { get; set; }
+		public string SpecificGroupText { get; set; }
+
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
-			Banner = eve.BannerName;
+			Banner = eve.BannerSource;
 
-			Banner = eve.BannerName;
+			Banner = eve.BannerSource;
+
+			EventHolder = eve.Owner.Name;
 
 			if (eve.Owner != null)
 			{
@@ -58,7 +65,12 @@ namespace HowlOut
 				ProfileImageSource = eve.OrganisationOwner.ImageSource;
 			}
 
-			//BannerHeight = (0.524 * App.coreView.Width) - 60;
+			if (eve.GroupSpecific != null)
+			{
+				ForSpecificGroup = true;
+				SpecificGroupText = "This is an event for " + eve.GroupSpecific.Name + ".";
+			}
+
 			BannerHeight = (0.56 * App.coreView.Width) - 30;
 			InspectBannerHeight = (0.56 * App.coreView.Width);
 			InspectHalfBannerHeight = InspectBannerHeight / 2;
@@ -67,16 +79,16 @@ namespace HowlOut
 			Position position = App.lastKnownPosition;
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
 			var Times = util.setTime (eve.StartDate);
-			//BigTime = Times [0];
-			//SmallTime = Times [1];
-			//EventAverageLoyalty = eve.Owner.LoyaltyRating + "";
-			//EventHolderLikes = eve.Owner.Likes + "";
 
 			int attendees = 0;
 			if (eve.Attendees != null)
 			{
 				attendees = eve.Attendees.Count + 1;
 			}
+			else {
+				attendees = eve.NumberOfAttendees;
+			}
+
 
 			attendingInfo = attendees + "/" + eve.MaxSize;
 
@@ -106,11 +118,6 @@ namespace HowlOut
 			else {
 				bottomDist = addressList[1].Substring(5).Trim();
 			}
-
-
-
-
-
 
 			if (eve.EventTypes.Count != 0) {
 				EventType1 = eve.EventTypes [0] + "";
