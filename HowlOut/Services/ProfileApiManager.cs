@@ -263,9 +263,9 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<ObservableCollection<Notification>> GetNotifications(Event testeve, Profile testpro, Group testGroup)
+		public async Task<List<Notification>> GetNotifications(Event testeve, Profile testpro, Group testGroup)
 		{
-			ObservableCollection<Notification> notifications = new ObservableCollection<Notification>();
+			List<Notification> notifications = new List<Notification>();
 
 			Array values = Enum.GetValues(typeof(Notification.MessageType));
 			Random random = new Random();
@@ -276,34 +276,75 @@ namespace HowlOut
 				notifications.Add(new Notification()
 				{
 					Type = (Notification.MessageType)values.GetValue(random.Next(values.Length)),
-					SendTime = DateTime.Now.AddMonths(random.Next(8)*-1).AddHours(random.Next(200)),
+					SendTime = DateTime.Now.AddMonths(random.Next(8)*-1).AddHours(random.Next(200)*-1),
 					ContentEvent = testeve,
 					ContentGroup = testGroup,
 					ContentProfile = testpro,
 				});
 			}
-
-
-			/*
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetFromName/" + name);
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					profiles = JsonConvert.DeserializeObject<List<Profile>>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			*/
-
 			return notifications;
 		}
+
+
+		public async Task<List<Conversation>> GetConversations()
+		{
+			List<Conversation> conversations = new List<Conversation>();
+
+			Array values = Enum.GetValues(typeof(Notification.MessageType));
+			Random random = new Random();
+			Notification.MessageType randomBar = (Notification.MessageType)values.GetValue(random.Next(values.Length));
+
+			for (int i = 0; i < 40; i++)
+			{
+				conversations.Add(new Conversation()
+				{
+					ConversationID = i + 10 + "",
+					Profiles = new List<Profile>()
+					{
+						new Profile() {
+							Name = "William Jensen",
+							ProfileId = "1234",
+						},
+						new Profile() {
+							Name = "August Laustsen",
+							ProfileId = "1234",
+						},
+						new Profile() {
+							Name = "Joachim Bach",
+							ProfileId = "1234",
+						},
+						App.userProfile,
+					},
+
+					Comments = new List<Comment>()
+					{
+						new Comment() {
+							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
+							SenderID = "1234",
+							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
+						},
+						new Comment() {
+							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
+							SenderID = "1234",
+							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
+						},
+						new Comment() {
+							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
+							SenderID = "1234",
+							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
+						},
+						new Comment() {
+							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
+							SenderID = "1234",
+							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
+						}
+					}
+				});
+			}
+			return conversations;
+		}
+
+
 
 		public async Task<bool> UpdateProfile( Profile updatedProfile)
 		{

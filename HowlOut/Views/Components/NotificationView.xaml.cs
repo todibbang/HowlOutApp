@@ -6,6 +6,12 @@ namespace HowlOut
 {
 	public partial class NotificationView : ContentView
 	{
+		public NotificationView()
+		{
+			InitializeComponent();
+		}
+
+
 		public NotificationView(Notification notification)
 		{
 			InitializeComponent();
@@ -26,6 +32,7 @@ namespace HowlOut
 				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentGroup.Owner.ProfileId + "/picture?height=80&width=80";
 			}
 
+			/*
 			SubjectButton.Clicked += (sender, e) =>
 			{
 				System.Diagnostics.Debug.WriteLine(notification.Type);
@@ -53,7 +60,7 @@ namespace HowlOut
 				}
 			};
 
-
+*/
 
 			if (notification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile)
 			{

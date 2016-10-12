@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using WindowsAzure.Messaging;
-
+using Facebook.CoreKit;
+using Facebook.LoginKit;
 using Foundation;
 using UIKit;
 using ImageCircle.Forms.Plugin.iOS;
@@ -16,6 +17,9 @@ namespace HowlOut.iOS
 
 		public const string ConnectionString = "Endpoint=sb://howlout.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=S56W4coW1bGmVTdirY59X7poLwlxZjWkEcYOMmyAezI=";
 		public const string NotificationHubPath = "HowloutNotificationHub";
+
+		string appId = "651141215029165";
+		string appName = "HowlOut";
 
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
@@ -36,10 +40,16 @@ namespace HowlOut.iOS
 			}
 
 
+			Facebook.CoreKit.Profile.EnableUpdatesOnAccessTokenChange(true);
+			Settings.AppID = appId;
+			Settings.DisplayName = appName;
+
 
 			ImageCircleRenderer.Init ();
 			LoadApplication(new App());
+
 			return base.FinishedLaunching (app, options);
+			//return ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
 		}
 
 
@@ -106,6 +116,10 @@ namespace HowlOut.iOS
 			}
 		}
 
+		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+		{
+			return ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
+		}
 	}
 }
 

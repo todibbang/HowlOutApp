@@ -4,8 +4,7 @@
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,5,0,5">
 	<ContentView.Content>
-
-		<StackLayout Padding="1,0,1,1" Spacing="0" BackgroundColor="{DynamicResource Shadow}">
+		<StackLayout Padding="0,0,2,2" Spacing="0" BackgroundColor="{DynamicResource Shadow}">
 			<Grid RowSpacing="0" BackgroundColor="White" Padding="2">
 				<Grid.RowDefinitions >
 					<RowDefinition Height="auto"/>
@@ -13,45 +12,35 @@
 					<RowDefinition Height="30"/>
 					<RowDefinition Height="30"/>
 				</Grid.RowDefinitions>
-
+				
 				<StackLayout Grid.Row="0" HeightRequest="30" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" BackgroundColor="{DynamicResource HowlOutFade}" Padding="10,0,0,0">
 					<Label Text="{Binding SpecificGroupText}" VerticalOptions="EndAndExpand" TextColor="{DynamicResource NormalTextColor}"/>
 				</StackLayout>
+
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
-
-				<!-- <StackLayout Grid.Row="2" TranslationY="-20" Orientation="Horizontal" HorizontalOptions="Fill" Spacing="0" BackgroundColor="White"/> -->
-
-				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image>
+				<!-- <Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image> -->
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="default_icon.png" Aspect="AspectFill"></Image>
 				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
 				<StackLayout Grid.Row="1" VerticalOptions="Start" >
 					<StackLayout Padding="2,10,2,0" Orientation="Horizontal" HorizontalOptions="Fill" >
-
 						<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
 							<Label Text="{Binding topTime}" x:Name="topTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="{Binding bottomTime}" x:Name="bottomTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
-
 						<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="White"/>
-
 						<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
 							<Label Text="{Binding topDist}" x:Name="topDist" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label Text="{Binding bottomDist}" FontSize="12"  x:Name="bottomDist" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding bottomDist}" FontSize="12" x:Name="bottomDist" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
-
 					</StackLayout>
 				</StackLayout>
-
-				<!-- Her vises eventholders billede, antal deltagere og de kategorier som eventet høre under  -->
-
-
 				<Grid Grid.Row="2" Grid.RowSpan="2" Padding="10,0,10,0" RowSpacing="0">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="20"/>
 					</Grid.RowDefinitions>
-
 					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
 					<StackLayout Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>

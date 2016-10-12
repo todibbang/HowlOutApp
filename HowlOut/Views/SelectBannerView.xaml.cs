@@ -8,6 +8,7 @@ namespace HowlOut
 	public partial class SelectBannerView : ContentView
 	{
 		public CreateEvent createEventView;
+		public CreateGroup createGroupView;
 
 		ObservableCollection<Button> bannerButtons = new ObservableCollection<Button>();
 
@@ -64,7 +65,8 @@ namespace HowlOut
 				button.Clicked += (sender, e) => {
 					System.Diagnostics.Debug.WriteLine(button.Text + " ");
 					//createEventView.newEvent.BannerName = button.Text;
-					createEventView.setBanner(button.Text);
+					if (createEventView != null) { createEventView.setBanner(button.Text); }
+					else if (createGroupView != null) { createGroupView.setBanner(button.Text); }
 					//App.coreView.setContentView (createEventView, "CreateEvent");
 					App.coreView.returnToPreviousView();
 				};

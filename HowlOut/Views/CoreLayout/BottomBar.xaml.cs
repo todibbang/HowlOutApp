@@ -22,10 +22,10 @@ namespace HowlOut
 			var createImage = new TapGestureRecognizer();
 			createImage.Tapped += async (sender, e) =>
 			{
+				App.coreView.setContentView(0);
 				await create.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await create.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(0);
 				unselectAll();
 				create.Foreground = App.HowlOut;
 			};
@@ -34,10 +34,10 @@ namespace HowlOut
 			var manageImage = new TapGestureRecognizer();
 			manageImage.Tapped += async (sender, e) => 
 			{
+				App.coreView.setContentView(1);
 				await manage.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await manage.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(1);
 				unselectAll();
 				manage.Foreground = App.HowlOut;
 			};
@@ -45,10 +45,10 @@ namespace HowlOut
 
 			explore.Clicked += async (sender, e) => 
 			{
+				App.coreView.setContentView(2);
 				await exploreImg.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await exploreImg.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView (2);
 				unselectAll();
 				exploreBG.BackgroundColor = App.HowlOut;
 			};
@@ -56,10 +56,10 @@ namespace HowlOut
 			var friendsImage = new TapGestureRecognizer();
 			friendsImage.Tapped += async (sender, e) =>
 			{
+				App.coreView.setContentView(3);
 				await howls.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await howls.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(3);
 				unselectAll();
 				howls.Foreground = App.HowlOut;
 			};
@@ -68,10 +68,10 @@ namespace HowlOut
 			var socialImage = new TapGestureRecognizer();
 			socialImage.Tapped += async (sender, e) =>
 			{
+				App.coreView.setContentView(4);
 				await me.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await me.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentView(4);
 				unselectAll();
 				me.Foreground = App.HowlOut;
 			};

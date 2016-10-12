@@ -21,86 +21,19 @@ namespace HowlOut
 		List<Comment> givenCommentList = new List<Comment>();
 		List<Profile> profileList = new List<Profile>();
 
-		Button profilesButton = new Button {Text= "Friends", BackgroundColor= Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor=App.HowlOut, FontSize = 16};
-		Button groupsButton = new Button { Text = "WolfPacks", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-		Button eventsButton = new Button { Text = "Events", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-		Button wallButton = new Button { Text = "Wall", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-
 		public InspectController(Profile userProfile, Group userGroup, Event eventObject)
 		{
 			InitializeComponent();
 			setInfo(userProfile, userGroup, eventObject);
-
-			eventsButton.Clicked += (sender, e) =>
-			{
-				eventsGrid.Children.Add(new EventView(10, userProfile.ProfileId));
-			};
-
-
-			postCommentButton.Clicked += (sender, e) =>
-			{
-				PostNewComment(userGroup, eventObject, commentEntry.Text);
-			};
-		}
-
-		private async void PostNewComment(Group group, Event eve, string comment)
-		{
-			if (!string.IsNullOrWhiteSpace(comment))
-			{
-				//TODO changed this to recieve comment object instead of event
-				var commentObj = new Comment
-				{
-					Content = comment,
-					SenderID = App.StoredUserFacebookId,
-					DateAndTime = DateTime.Now.ToLocalTime()
-				};
-
-				List<Comment> updatedComments = null;
-				if (group != null)
-				{
-					updatedComments = await _dataManager.GroupApiManager.AddCommentToGroup(group.GroupId, commentObj);
-				}
-				else if (eve != null)
-				{
-					updatedComments = await _dataManager.EventApiManager.AddCommentToEvent(eve.EventId, commentObj);
-				}
-
-
-				if (updatedComments != null)
-				{
-					createWall(updatedComments);
-					commentEntry.Text = "";
-				}
-				else {
-					await App.coreView.displayAlertMessage("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
-				}
-			}
-		}
-
-		private void createWall(List<Comment> comments)
-		{
-			if (comments != null)
-			{
-				while (WallList.Children.Count != 0)
-				{
-					WallList.Children.RemoveAt(0);
-				}
-				for (int i = comments.Count - 1; i > -1; i--)
-				{
-					WallList.Children.Add(new InspectManageComment(comments[i]));
-				}
-			}
 		}
 
 		private async void setInfo(Profile userProfile, Group userGroup, Event eventObject)
 		{
-			
-			usersPhoto.Source = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=150&width=150";
 			if (userProfile != null)
 			{
 				if (userProfile.ProfileId == App.userProfile.ProfileId)
 				{
-					App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, groupsButton }, new List<VisualElement>{profileGrid, groupGrid});
+					App.setOptionsGrid(optionGrid, new List<string> { "Friends", "Wolfpacks" }, new List<VisualElement>{profileGrid, groupGrid}, new List<Action> { null, null });
 					App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
 					userProfile = App.userProfile;
 				}
@@ -108,7 +41,7 @@ namespace HowlOut
 					userProfile = await _dataManager.ProfileApiManager.GetProfile(userProfile.ProfileId);
 					if (_dataManager.IsProfileFriend(userProfile))
 					{
-						App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, groupsButton, eventsButton}, new List<VisualElement> { profileGrid, groupGrid, eventsGrid});
+						App.setOptionsGrid(optionGrid, new List<string> { "Friends", "Wolfpacks", "Events" }, new List<VisualElement> { profileGrid, groupGrid, eventsGrid }, new List<Action> {null, null, ()=> addEvents(userProfile.ProfileId)});
 					}
 				}
 				listMaker.createList(profileGrid, userProfile.Friends, null, ListsAndButtons.ListType.Normal, null, null);
@@ -129,24 +62,20 @@ namespace HowlOut
 					}
 				}
 				listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.Normal, null, null);
-				App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, wallButton }, new List<VisualElement> { profileGrid, wallGrid });
-				profilesButton.Text = "Members";
+				App.setOptionsGrid(optionGrid, new List<string> { "Members", "Wall" }, new List<VisualElement> { profileGrid, wallGrid }, new List<Action> { null, null});
 				givenCommentList = userGroup.Comments;
 				infoView.Content = new ProfileDesignView(null, userGroup, null, 200, ProfileDesignView.Design.Inspect, ProfileDesignView.Show.Group, false);
-				App.coreView.topBar.setNavigationLabel("Wolf pack " + userGroup.Name, scrollView);
+				App.coreView.topBar.setNavigationLabel("Wolfpack " + userGroup.Name, scrollView);
 			}
 			else if (eventObject != null)
 			{
-
-				profilesButton.Text = "Attendees";
-
 				eventObject = await _dataManager.EventApiManager.GetEventById(eventObject.EventId);
 				if (!_dataManager.IsEventJoined(eventObject))
 				{
-					App.setOptionsGrid(optionGrid, new List<Button> { profilesButton }, new List<VisualElement> { profileGrid });
+					App.setOptionsGrid(optionGrid, new List<string> { "Attendees" }, new List<VisualElement> { profileGrid }, new List<Action> { null });
 				}
 				else {
-					App.setOptionsGrid(optionGrid, new List<Button> { profilesButton, wallButton }, new List<VisualElement> { profileGrid, wallGrid });
+					App.setOptionsGrid(optionGrid, new List<string> { "Attendees", "Wall" }, new List<VisualElement> { profileGrid, wallGrid }, new List<Action> { null, null });
 				}
 
 				if (eventObject.Attendees != null)
@@ -175,12 +104,28 @@ namespace HowlOut
 					App.coreView.topBar.setNavigationLabel(eventObject.OrganisationOwner.Name + "'s Event", scrollView);
 				}
 			}
-			createWall(givenCommentList);
+			Conversation conv = new Conversation()
+			{
+				Comments = givenCommentList,
+				ConversationID = "123467",
+			};
+
+
+
+			createWall(conv);
 		}
 
+		private void addEvents(string id)
+		{
+			eventsGrid.Children.Clear();
+			eventsGrid.Children.Add(new EventView(10, id));
+		}
 
-
-
+		private void createWall(Conversation conv)
+		{
+			wallGrid.Children.Clear();
+			wallGrid.Children.Add(new ConversationView(conv, true));
+		}
 
 		public ScrollView getScrollView()
 		{

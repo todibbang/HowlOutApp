@@ -24,7 +24,7 @@
 				</Grid.RowDefinitions>
 
 				<controls:CircleImage Grid.Row="1" Grid.Column="1" Source="{Binding ProfileImageUri}"/> 
-				<Label Grid.Column="1" Grid.Row="2" Text="{Binding DateAndTime}" FontSize="10" TextColor="{DynamicResource NormalTextColor}"/>
+				<Label Grid.Column="1" Grid.Row="2" Text="{Binding Time}" FontSize="6" TextColor="{DynamicResource NormalTextColor}"/>
 				<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 					<Label Style="{DynamicResource CommentStyle}" VerticalOptions="Start" HorizontalOptions ="Start"/>
 				</StackLayout>

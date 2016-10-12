@@ -3,81 +3,201 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace HowlOut
 {
 	public partial class YourNotifications : ContentView
 	{
 		private DataManager _dataManager;
+		int listType = 0;
 
 		public YourNotifications()
 		{
 			InitializeComponent();
 			_dataManager = new DataManager();
-			UpdateManageList(notificationList);
+			App.setOptionsGrid(optionGrid, new List<string> { "Notifications", "Conversations" }, new List<VisualElement> { updateList, updateList }, new List<Action> { () => UpdateNotifications(), () => UpdateConversations() });
+
+			updateList.ItemSelected += OnListItemSelected;
+			updateList.Refreshing += async (sender, e) => { await UpdateLists(); };
 		}
 
-		public async void UpdateManageList(StackLayout list)
+		async Task UpdateLists()
 		{
+			if (listType == 0) { await UpdateNotifications(); }
+			else { await UpdateConversations(); }
+		}
 
-			while (list.Children.Count != 0)
+		public async Task UpdateNotifications()
+		{
+			loading.IsVisible = true;
+			//TODO add correct servercall
+			List<Notification> notiList = await _dataManager.ProfileApiManager.GetNotifications(await _dataManager.EventApiManager.GetEventById("50"), await _dataManager.ProfileApiManager.GetProfile("191571161232364"), await _dataManager.GroupApiManager.GetGroupById("8"));
+			notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
+			ObservableCollection<GroupedNotifications> groupedNotifications = new ObservableCollection<GroupedNotifications>();
+			if (notiList.Count > 0)
 			{
-				list.Children.RemoveAt(0);
-			}
-			ObservableCollection<Notification> notiList = new ObservableCollection<Notification>();
-			notiList = await _dataManager.ProfileApiManager.GetNotifications( await _dataManager.EventApiManager.GetEventById("50"), await _dataManager.ProfileApiManager.GetProfile("191571161232364"), await _dataManager.GroupApiManager.GetGroupById("8"));
-
-
-			var orderedList = new ObservableCollection<Notification>();
-			Notification itemToAdd = new Notification();
-			while (notiList.Count != 0)
-			{
-				DateTime Time = notiList[0].SendTime;
-				itemToAdd = notiList[0];
-
-				for (int i = 0; i < notiList.Count; i++)
+				GroupedNotifications monthGroup = null;
+				int month = notiList[0].SendTime.Month;
+				for (int d = 0; d < notiList.Count; d++)
 				{
-					if (notiList[i].SendTime > Time)
+					if (d == 0) { monthGroup = new GroupedNotifications() { Date = (notiList[d].SendTime.ToString("MMMMM")) }; }
+					if (month != notiList[d].SendTime.Month)
 					{
-						itemToAdd = notiList[i];
-						Time = itemToAdd.SendTime;
+						month = notiList[d].SendTime.Month;
+						groupedNotifications.Add(monthGroup);
+						monthGroup = new GroupedNotifications() { Date = (notiList[d].SendTime.ToString("MMMMM")) };
 					}
+					monthGroup.Add(notiList[d]);
+					if (d == notiList.Count - 1) { groupedNotifications.Add(monthGroup); }
 				}
-				orderedList.Add(itemToAdd);
-				notiList.Remove(itemToAdd);
 			}
+			updateList.ItemsSource = groupedNotifications;
+			updateList.IsRefreshing = false;
+			loading.IsVisible = false;
+			listType = 0;
+		}
 
-
-			var dateTimeMonth = DateTime.Now + new TimeSpan(-32, 0, 0, 0);
-			int month = dateTimeMonth.Month;
-			for (int i = 0; i < orderedList.Count; i++)
+		public async Task UpdateConversations()
+		{
+			loading.IsVisible = true;
+			//TODO add correct servercall
+			List<Conversation> conList = await _dataManager.ProfileApiManager.GetConversations();
+			conList = conList.OrderByDescending(c => c.LastUpdated).ToList();
+			ObservableCollection<GroupedConversations> groupedConversations = new ObservableCollection<GroupedConversations>();
+			if (conList.Count > 0)
 			{
-				if (month != orderedList[i].SendTime.Month)
+				GroupedConversations monthGroup = null;
+				int month = conList[0].LastUpdated.Month;
+				for (int d = 0; d < conList.Count; d++)
 				{
-					list.Children.Add(
-						new Label()
-						{
-							Text = ("  " + orderedList[i].SendTime.ToString("MMMM")),
-							//BackgroundColor = Color.FromHex ("cccccc"),
-							TextColor = App.HowlOut,
-							FontSize = 25,
-							HeightRequest = 40,
-							VerticalTextAlignment = TextAlignment.Center
-						});
-					month = orderedList[i].SendTime.Month;
-
+					if (d == 0) { monthGroup = new GroupedConversations() { Date = (conList[d].LastUpdated.ToString("MMMMM")) }; }
+					if (month != conList[d].LastUpdated.Month)
+					{
+						month = conList[d].LastUpdated.Month;
+						groupedConversations.Add(monthGroup);
+						monthGroup = new GroupedConversations() { Date = (conList[d].LastUpdated.ToString("MMMMM")) };
+					}
+					monthGroup.Add(conList[d]);
+					if (d == conList.Count - 1) { groupedConversations.Add(monthGroup); }
 				}
-
-				list.Children.Add(new NotificationView(orderedList[i]));
-
 			}
-			list.Children.Add(new BoxView() { HeightRequest = 120 });
+			updateList.ItemsSource = groupedConversations;
+			updateList.IsRefreshing = false;
+			loading.IsVisible = false;
+			listType = 1;
+		}
+
+		public void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (updateList.SelectedItem == null) { return; }
+			if (listType == 0) {
+				var selectedNotification = updateList.SelectedItem as Notification;
+
+				if (selectedNotification.Type == Notification.MessageType.PersonallyInvitedToEvent ||
+						selectedNotification.Type == Notification.MessageType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent ||
+						selectedNotification.Type == Notification.MessageType.FollowedProfileHasCreatedEvent ||
+						   selectedNotification.Type == Notification.MessageType.FriendCreatedEvent ||
+						selectedNotification.Type == Notification.MessageType.FriendJoinedEvent ||
+						selectedNotification.Type == Notification.MessageType.PicturesAddedToEvent ||
+						selectedNotification.Type == Notification.MessageType.YourGroupInvitedToEvent)
+				{
+					App.coreView.GoToSelectedEvent(selectedNotification.ContentEvent.EventId);
+				}
+				else if (selectedNotification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile ||
+						 selectedNotification.Type == Notification.MessageType.FriendRequest)
+				{
+					InspectController inspect = new InspectController(selectedNotification.ContentProfile, null, null);
+					App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
+				}
+				else if (selectedNotification.Type == Notification.MessageType.FriendJoinedGroup ||
+						 selectedNotification.Type == Notification.MessageType.GroupRequest)
+				{
+					App.coreView.GoToSelectedGroup(selectedNotification.ContentGroup.GroupId);
+				}
+			} else if (listType == 1) {
+				var selectedConversation = updateList.SelectedItem as Conversation;
+				App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation, false), "Conversation", null);
+			}
+			updateList.SelectedItem = null;
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+		}
+
+
+		/*
+
+		public void OnNotificationItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (notificationList.SelectedItem == null) { return; }
+			var selectedNotification = notificationList.SelectedItem as Notification;
+
+			if (selectedNotification.Type == Notification.MessageType.PersonallyInvitedToEvent ||
+					selectedNotification.Type == Notification.MessageType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent ||
+					selectedNotification.Type == Notification.MessageType.FollowedProfileHasCreatedEvent ||
+				   	selectedNotification.Type == Notification.MessageType.FriendCreatedEvent ||
+					selectedNotification.Type == Notification.MessageType.FriendJoinedEvent ||
+					selectedNotification.Type == Notification.MessageType.PicturesAddedToEvent ||
+					selectedNotification.Type == Notification.MessageType.YourGroupInvitedToEvent)
+			{
+				App.coreView.GoToSelectedEvent(selectedNotification.ContentEvent.EventId);
+			}
+			else if (selectedNotification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile ||
+					 selectedNotification.Type == Notification.MessageType.FriendRequest)
+			{
+				InspectController inspect = new InspectController(selectedNotification.ContentProfile, null, null);
+				App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
+			}
+			else if (selectedNotification.Type == Notification.MessageType.FriendJoinedGroup ||
+					 selectedNotification.Type == Notification.MessageType.GroupRequest)
+			{
+				App.coreView.GoToSelectedGroup(selectedNotification.ContentGroup.GroupId);
+			}
+			notificationList.SelectedItem = null;
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+		}
+
+
+
+
+
+		// Updates Conversation list //
+		public async Task UpdateConversations()
+		{
+			loading.IsVisible = true;
+			//TODO add correct servercall
+			List<Conversation> conList = await _dataManager.ProfileApiManager.GetConversations();
+			conList = conList.OrderByDescending(c => c.LastUpdated).ToList();
+			ObservableCollection<GroupedConversations> groupedConversations = new ObservableCollection<GroupedConversations>();
+			if (conList.Count > 0)
+			{
+				GroupedConversations monthGroup = null;
+				int month = conList[0].LastUpdated.Month;
+				for (int d = 0; d < conList.Count; d++) {
+					if (d == 0) { monthGroup = new GroupedConversations() { Date = (conList[d].LastUpdated.ToString("MMMMM")) }; }
+					if (month != conList[d].LastUpdated.Month)
+					{
+						month = conList[d].LastUpdated.Month;
+						groupedConversations.Add(monthGroup);
+						monthGroup = new GroupedConversations() { Date = (conList[d].LastUpdated.ToString("MMMMM")) };
+					}
+					monthGroup.Add(conList[d]);
+					if (d == conList.Count - 1) { groupedConversations.Add(monthGroup); }
+				}
+			}
+			conversationList.ItemsSource = groupedConversations;
+			conversationList.IsRefreshing = false;
 			loading.IsVisible = false;
 		}
 
-		public ScrollView getScrollView()
+		public void OnConversationItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
-			return scrollView;
+			if (conversationList.SelectedItem == null) { return; }
+			var selectedConversation = conversationList.SelectedItem as Conversation;
+			App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation, false), "Conversation", null);
+			conversationList.SelectedItem = null;
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 		}
+*/
+		public ScrollView getScrollView() { return null; }
 	}
 }

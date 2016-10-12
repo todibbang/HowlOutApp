@@ -17,6 +17,18 @@ namespace HowlOut
 			}
 		}
 
+		public string Time
+		{
+			get
+			{
+				return DateAndTime.ToString("dddd HH:mm - dd MMMMM yyyy");
+			}
+			set
+			{
+				this.Time = value;
+			}
+		}
+
 		public Comment ()
 		{
 			

@@ -6,6 +6,18 @@ using Xamarin.Forms.Platform.iOS;
 using System.IO;
 using HowlOut;
 using Newtonsoft.Json;
+using Facebook.LoginKit;
+using Facebook.CoreKit;
+using System.Collections.Generic;
+using System.ComponentModel;
+using UIKit;
+using HowlOut.iOS;
+using CoreGraphics;
+using System.Drawing;
+using System.Threading.Tasks;
+using Foundation;
+using System.Net.Http;
+using ModernHttpClient;
 
 [assembly: ExportRenderer(typeof(LoginPage), typeof(LoginPageRenderer))]
 [assembly: Dependency(typeof(HowlOut.iOS.Renderers.LoginPageRenderer.SaveAndLoad))]
@@ -16,7 +28,83 @@ namespace HowlOut.iOS.Renderers
     {
         bool IsShown;
 
-        public override void ViewDidAppear(bool animated)
+		List<string> readPermissions = new List<string> { "public_profile" };
+
+		LoginButton loginView;
+		ProfilePictureView pictureView;
+		UILabel nameLabel;
+
+        public override void ViewDidLoad()
+		{
+			base.ViewDidLoad();
+
+			// If was send true to Profile.EnableUpdatesOnAccessTokenChange method
+			// this notification will be called after the user is logged in and
+			// after the AccessToken is gotten
+			Facebook.CoreKit.Profile.Notifications.ObserveDidChange((sender, e) =>
+			{
+
+				if (e.NewProfile == null)
+					return;
+
+				nameLabel.Text = e.NewProfile.Name;
+			});
+
+			// Set the Read and Publish permissions you want to get
+			loginView = new LoginButton(new CGRect(51, 0, 218, 46))
+			{
+				LoginBehavior = LoginBehavior.Native,
+				ReadPermissions = readPermissions.ToArray()
+			};
+
+			// Handle actions once the user is logged in
+			loginView.Completed += (sender, e) =>
+			{
+				if (e.Error != null)
+				{
+					// Handle if there was an error
+					HowlOut.LoginPage.LoginCancel();
+				}
+
+				if (e.Result.IsCancelled)
+				{
+					// Handle if the user cancelled the login request
+					HowlOut.LoginPage.LoginCancel();
+				}
+
+				App.SetToken(e.Result.Token.TokenString);
+				App.SetUserFacebookId(e.Result.Token.UserID);
+
+
+
+				// Handle your successful login
+				HowlOut.LoginPage.LoginSuccess();
+			};
+
+			// Handle actions once the user is logged out
+			loginView.LoggedOut += (sender, e) =>
+			{
+				// Handle your logout
+			};
+
+			// The user image profile is set automatically once is logged in
+			pictureView = new ProfilePictureView(new CGRect(50, 50, 220, 220));
+
+			// Create the label that will hold user's facebook name
+			nameLabel = new UILabel(new RectangleF(20, 319, 280, 21))
+			{
+				TextAlignment = UITextAlignment.Center,
+				BackgroundColor = UIColor.Clear
+			};
+
+			// Add views to main view
+			View.AddSubview(loginView);
+			View.AddSubview(pictureView);
+			View.AddSubview(nameLabel);
+		}
+
+		/*
+		public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
 
@@ -57,6 +145,7 @@ namespace HowlOut.iOS.Renderers
                 PresentViewController(auth.GetUI(), true, null);
             }
         }
+		*/
 
         public class SaveAndLoad : HowlOut.App.ISaveAndLoad
         {

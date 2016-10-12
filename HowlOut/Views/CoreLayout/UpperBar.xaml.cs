@@ -24,15 +24,13 @@ namespace HowlOut
 			};				
 			backBtn.GestureRecognizers.Add(backImage); 
 
-			var updateImage = new TapGestureRecognizer();
-			updateImage.Tapped += async (sender, e) =>
+			createNew.Clicked += async (sender, e) =>
 			{
-				await createNewGroupBtn.ScaleTo(0.7, 50, Easing.Linear);
+				await createNew.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
-				await createNewGroupBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
+				await createNew.ScaleTo(1, 50, Easing.Linear);
+				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
 			};				
-			createNewGroupBtn.GestureRecognizers.Add(updateImage);
 
 			var createImage = new TapGestureRecognizer();
 			createImage.Tapped += async (sender, e) =>
@@ -69,7 +67,7 @@ namespace HowlOut
 
 		public void showCreateNewGroupButton(bool show)
 		{
-			createNewGroupBtn.IsVisible = show;
+			createNew.IsVisible = show;
 		}
 
 		public void showFilterSearchButton(bool show)

@@ -23,7 +23,6 @@ namespace HowlOut
 			*/
 			inspect = new InspectController(App.userProfile, null, null);
 			profileContent.Content = inspect;
-			createGroupContent.Content = new CreateGroup (null);
 
 			searchBar.TextChanged += (sender, e) =>
 			{
@@ -88,16 +87,13 @@ namespace HowlOut
 		private void setViewDesign(int number){
 			profileContent.IsVisible = false;
 			findContent.IsVisible = false;
-			createGroupContent.IsVisible = false;
 			currentView = number;
 
 			if (number == 0) {
 				profileContent.IsVisible = true;
 			} else if (number == 1) {
 				findContent.IsVisible = true;
-			} else if (number == 2) {
-				createGroupContent.IsVisible = true;
-			}
+			} 
 
 		}
 

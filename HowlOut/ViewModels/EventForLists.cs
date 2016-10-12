@@ -51,9 +51,9 @@ namespace HowlOut
 		public EventForLists (Event theGivenEvent)
 		{
 			eve = theGivenEvent;
-			Banner = eve.BannerSource;
+			Banner = eve.ImageSource;
 
-			Banner = eve.BannerSource;
+			Banner = eve.ImageSource;
 
 			EventHolder = eve.Owner.Name;
 

@@ -285,7 +285,7 @@ namespace HowlOut
 		public bool IsEventYours(Event eve)
 		{
 			bool yours = false;
-			if ((eve.Owner != null && eve.Owner.ProfileId == App.StoredUserFacebookId) || (eve.OrganisationOwner != null && App.userProfile.Groups.Exists(o => o.GroupId == eve.OrganisationOwner.GroupId)))
+			if ((eve.Owner != null && eve.Owner.ProfileId == App.StoredUserFacebookId) || (eve.OrganisationOwner != null && App.userProfile.Groups.Exists(o => o.GroupId == eve.OrganisationOwner.OrganizationID)))
 			{
 				yours = true;
 			}

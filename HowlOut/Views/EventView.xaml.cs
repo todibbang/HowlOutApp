@@ -14,13 +14,6 @@ namespace HowlOut
 		int currentView = 0;
 
 		string ID;
-
-		Button exploreButton = new Button { Text = "Explore", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-		Button friendsButton = new Button { Text = "Friends", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-		Button joinedButton = new Button { Text = "Joined", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-		Button trackedButton = new Button { Text = "Tracked", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 };
-
-
 		int EventViewType;
 
 		public EventView (int viewType, string id)
@@ -30,24 +23,16 @@ namespace HowlOut
 			_dataManager = new DataManager();
 			EventViewType = viewType;
 
-			if (EventViewType == 1)
-			{
-				App.setOptionsGrid(optionGrid, new List<Button> { exploreButton, friendsButton }, new List<VisualElement> { searchEventList, searchEventList });
-				UpdateManageList(0);
-			}
-			else if (EventViewType != 10)
-			{
-				App.setOptionsGrid(optionGrid, new List<Button> { joinedButton, trackedButton }, new List<VisualElement> { searchEventList, searchEventList });
+			if (EventViewType == 1) { 
+				App.setOptionsGrid(optionGrid, new List<string> { "Explore", "Friends" }, new List<VisualElement> { searchEventList, searchEventList }, new List<Action> {()=>UpdateManageList(0), () => UpdateManageList(0) });
+			} else if (EventViewType != 10) {
+				App.setOptionsGrid(optionGrid, new List<string> { "Join", "Track" }, new List<VisualElement> { searchEventList, searchEventList }, new List<Action> { () => UpdateManageList(1), () => UpdateManageList(3) });
+			} else {
 				UpdateManageList(1);
 			}
-			else {
-				UpdateManageList(1);
-			}
-
-			exploreButton.Clicked += (sender, e) => { UpdateManageList(0); };
-			friendsButton.Clicked += (sender, e) => { UpdateManageList(0); };
-			joinedButton.Clicked += (sender, e) => { UpdateManageList(1); };
-			trackedButton.Clicked += (sender, e) => { UpdateManageList(3); };
+			searchEventList.ItemSelected += OnItemSelected;
+			searchEventList.IsPullToRefreshEnabled = true;
+			searchEventList.Refreshing += (sender, e) => { UpdateList(); };
 		}
 
 		public async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -159,8 +144,6 @@ namespace HowlOut
 					}
 				}
 			}
-			searchEventList.IsGroupingEnabled = true;
-			searchEventList.ItemsSource = null;
 			searchEventList.IsVisible = true;
 			DataTemplate mt = null;
 			if (listToUpdate == 0) { mt = new DataTemplate(() => { return new ViewCell { View = new SearchEventTemplate() }; }); }
@@ -168,9 +151,6 @@ namespace HowlOut
 			searchEventList.ItemTemplate = mt;
 			searchEventList.ItemsSource = groupedEvents;
 			searchEventList.IsRefreshing = false;
-			searchEventList.ItemSelected += OnItemSelected;
-			searchEventList.IsPullToRefreshEnabled = true;
-			searchEventList.Refreshing += (sender, e) => { UpdateList(); };
 			loading.IsVisible = false;
 		}
 

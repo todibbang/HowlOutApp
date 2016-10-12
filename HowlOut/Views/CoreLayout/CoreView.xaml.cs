@@ -15,8 +15,8 @@ namespace HowlOut
 		public UpperBar topBar;
 		DataManager _dataManager;
 
-
-		public CreateEvent createEventView;
+		//public CreateEvent createEventView;
+		public CreateView createView;
 		public EventView manageEventView;
 		public EventView exploreEventView;
 		public YourNotifications howlsEventView;
@@ -31,16 +31,12 @@ namespace HowlOut
 			topBar = new UpperBar();
 			topBarLayout.Children.Add (topBar);
 			topBar.hideAll();
-
-
-
-
-
 		}
 
 		public async void startCoreView()
 		{
-			createEventView = new CreateEvent(new Event(), true);
+			//createEventView = new CreateEvent(new Event(), true);
+			createView = new CreateView();
 			manageEventView = new EventView(0, App.StoredUserFacebookId);
 			howlsEventView = new YourNotifications();
 			homeView = new HomeView();
@@ -67,9 +63,9 @@ namespace HowlOut
 			//System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
 			if (type == 0)
 			{
-				view = createEventView;
-				topBar.showCreateNewGroupButton(true);
-				topBar.setNavigationLabel("Create Event", null);
+				view = createView;
+				//topBar.showCreateNewGroupButton(true);
+				topBar.setNavigationLabel("Create", null);
 			} else if (type == 1)
 			{
 				view = manageEventView;
@@ -185,14 +181,14 @@ namespace HowlOut
 		}
 
 
-		public async void GoToSelectedEvent(string eveID)
+		public async Task GoToSelectedEvent(string eveID)
 		{
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
 			InspectController inspect = new InspectController(null, null, eve);
 			setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 		}
 
-		public async void GoToSelectedGroup(string groupID)
+		public async Task GoToSelectedGroup(string groupID)
 		{
 			Group grp = await _dataManager.GroupApiManager.GetGroupById(groupID);
 			InspectController inspect = new InspectController(null, grp, null);

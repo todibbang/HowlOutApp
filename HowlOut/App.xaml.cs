@@ -22,7 +22,9 @@ namespace HowlOut
 		public static Color HowlOut = Color.FromHex("#ff4bc6b4");
 		public static Color HowlOutFade = Color.FromHex("#504bc6b4");
 
-        public interface ISaveAndLoad
+		public static Action<string> PostSuccessFacebookAction { get; set; }
+
+		public interface ISaveAndLoad
         {
             //Needed to pull and save tokens
             void SaveText(string filename, string text);
@@ -60,10 +62,13 @@ namespace HowlOut
 
             if (!App.IsLoggedIn)
             {
+				System.Diagnostics.Debug.WriteLine("Blytka 2");
 				MainPage = new SignIn();
+				System.Diagnostics.Debug.WriteLine("Blytka 3");
             }
             else
             {
+				System.Diagnostics.Debug.WriteLine("Blytka 4");
 				CrossLocalNotifications.Current.Show ("Notifications works!!", "Nice",99,DateTime.Now.AddSeconds(30));
 				coreView = new CoreView();
 				MainPage = coreView;
@@ -130,8 +135,9 @@ namespace HowlOut
 
         private void LoginPage_LoginCancelled(object sender, EventArgs e)
         {
-            //if login cancelled, user will be redirected back to the sign-in page
+            System.Diagnostics.Debug.WriteLine("Blytka 5");
             MainPage = new SignIn();
+			System.Diagnostics.Debug.WriteLine("Blytka 6");
         }
 
 		private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
@@ -173,9 +179,15 @@ namespace HowlOut
 			selected.TextColor = App.HowlOut;
 		}
 
-		public static void setOptionsGrid(Grid buttonGrid, List<Button> buttons, List<VisualElement> grids)
+		public static void setOptionsGrid(Grid buttonGrid, List<String> buttonText, List<VisualElement> grids, List<Action> actions)
 		{
+			List<Button> buttons = new List<Button>();
+			foreach (String s in buttonText) {
+				buttons.Add( new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 } );
+			}
+
 			grids[0].IsVisible = true;
+			if (actions[0] != null) { actions[0].Invoke(); }
 			selectButton(buttons, buttons[0]);
 
 			int bNumber = 0;
@@ -192,7 +204,7 @@ namespace HowlOut
 
 				if (i == (buttons.Count * 2 - 1) - 1)
 				{
-					buttonGrid.Children.Add(new Button() { BorderColor = HowlOut, BorderWidth = 0.5, BorderRadius = 10 }, 0, i + 1, 0, 1);
+					buttonGrid.Children.Add(new Button() { BorderColor = HowlOut, BorderWidth = 0.5, BorderRadius = 10, BackgroundColor=Color.White }, 0, i + 1, 0, 1);
 				}
 			}
 
@@ -219,6 +231,7 @@ namespace HowlOut
 						g.IsVisible = false;
 					}
 					grids[buttons.IndexOf(b)].IsVisible = true;
+					if (actions[buttons.IndexOf(b)] != null) { actions[buttons.IndexOf(b)].Invoke(); }
 					scrollTo(b);
 				};
 			}
@@ -239,6 +252,154 @@ namespace HowlOut
 			coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
 
 			//s.ScrollToAsync(s.X, (y - 100), true);
+		}
+
+		public static async Task<bool> SenderOfEvent(StackLayout SelectEventSenderLayout)
+		{
+			bool continueCreating = false;
+			App.userProfile.Organizations = new List<Group>();
+
+			// Dummy Data Start
+			App.userProfile.Organizations.Add(
+				new Group()
+				{
+					Visibility = Visibility.Organization,
+					Name = "ITU",
+				}
+			);
+			App.userProfile.Organizations.Add(
+				new Group()
+				{
+					Visibility = Visibility.Organization,
+					Name = "Københavns Erhvervs Akademi",
+				}
+			);
+			// Dummy Data End
+
+			if (App.userProfile.Organizations != null && App.userProfile.Organizations.Count > 0)
+			{
+				SelectEventSenderLayout.Children.Clear();
+				SelectEventSenderLayout.Children.Add(new Label()
+				{
+					Text = "Who is the sender of this event?",
+					TextColor = Color.White,
+					FontSize = 16,
+					FontAttributes = FontAttributes.Bold,
+					HorizontalOptions = LayoutOptions.CenterAndExpand,
+				});
+
+				List<Button> buttons = new List<Button>();
+				organisationButton(App.userProfile.Name, buttons, SelectEventSenderLayout);
+
+				foreach (Group o in App.userProfile.Organizations)
+				{
+					organisationButton(o.Name, buttons, SelectEventSenderLayout);
+				}
+				organisationButton("Cancel", buttons, SelectEventSenderLayout);
+
+				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+				SelectEventSenderLayout.IsVisible = true;
+				foreach (Button b in buttons)
+				{
+					b.Clicked += (sender, e) =>
+					{
+
+
+						if (b == buttons[0])
+						{
+							System.Diagnostics.Debug.WriteLine("You are the sender of the event");
+							continueCreating = true;
+						}
+						else if (b == buttons[buttons.Count - 1])
+						{
+							System.Diagnostics.Debug.WriteLine("Cancel creating event");
+							continueCreating = false;
+						}
+						else {
+							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Organizations[buttons.IndexOf(b) - 1].Name);
+							continueCreating = true;
+						}
+						tcs.TrySetResult(true);
+					};
+				}
+
+				await tcs.Task;
+				SelectEventSenderLayout.IsVisible = false;
+			}
+
+			return continueCreating;
+		}
+
+		public static async Task<bool> GroupEventIsFor(StackLayout SelectEventSenderLayout, Event newEvent)
+		{
+			bool continueCreating = false;
+
+			// Dummy Data End
+
+			if (App.userProfile.Groups != null && App.userProfile.Groups.Count > 0)
+			{
+				SelectEventSenderLayout.Children.Clear();
+				SelectEventSenderLayout.Children.Add(new Label()
+				{
+					Text = "Who is the sender of this event?",
+					TextColor = Color.White,
+					FontSize = 16,
+					FontAttributes = FontAttributes.Bold,
+					HorizontalOptions = LayoutOptions.CenterAndExpand,
+				});
+
+				List<Button> buttons = new List<Button>();
+
+				foreach (Group o in App.userProfile.Groups)
+				{
+					organisationButton(o.Name, buttons, SelectEventSenderLayout);
+				}
+				organisationButton("Cancel", buttons, SelectEventSenderLayout);
+
+				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+				SelectEventSenderLayout.IsVisible = true;
+				foreach (Button b in buttons)
+				{
+					b.Clicked += (sender, e) =>
+					{
+
+						if (b == buttons[buttons.Count - 1])
+						{
+							System.Diagnostics.Debug.WriteLine("Cancel creating event");
+							continueCreating = false;
+						}
+						else {
+							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Groups[buttons.IndexOf(b)].Name);
+							newEvent.GroupSpecific = App.userProfile.Groups[buttons.IndexOf(b)];
+							continueCreating = true;
+						}
+						tcs.TrySetResult(true);
+					};
+				}
+
+				await tcs.Task;
+				SelectEventSenderLayout.IsVisible = false;
+			}
+
+			return continueCreating;
+		}
+
+		static void organisationButton(String name, List<Button> buttons, StackLayout SelectEventSenderLayout)
+		{
+			Button oB = new Button()
+			{
+				Text = name,
+				HeightRequest = 30,
+				WidthRequest = 100,
+				FontSize = 14,
+				TextColor = App.HowlOut,
+				BorderColor = App.HowlOut,
+				BorderWidth = 1,
+				BorderRadius = 10,
+				BackgroundColor = Color.White,
+			};
+			buttons.Add(oB);
+			SelectEventSenderLayout.Children.Add(oB);
 		}
 
 		public static async Task scrollTo(double y)

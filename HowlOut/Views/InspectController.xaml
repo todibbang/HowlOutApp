@@ -20,79 +20,21 @@
 					<RowDefinition Height="30"/>
 					<RowDefinition Height="10"/>
 					<RowDefinition Height="auto"/>
-					<RowDefinition Height="500"/>
+					<RowDefinition Height="100"/>
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 
-				<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView" BackgroundColor="White"></ContentView>
+				<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0" x:Name="infoView" BackgroundColor="Transparent"></ContentView>
 
 				<Grid Grid.Row="2" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" />
-				<!--
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="1"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="1"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<Button Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="White" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="10" HeightRequest="30" />
-					<Button Grid.Column="0" Text="Friends" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="18" FontAttributes="Bold"></Button>
-					<StackLayout Grid.Column="1" WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
-					<Button Grid.Column="2"  Text="WolfPacks" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
-					<StackLayout Grid.Column="3" WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
-					<Button Grid.Column="4"  Text="Events" x:Name="optionThree" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
-				</Grid> -->
 
 				<Grid Grid.Row="4" x:Name="profileGrid" IsVisible="false"></Grid>
 				<Grid Grid.Row="4" x:Name="groupGrid" IsVisible="false"></Grid>
 				<StackLayout Grid.Row="4" x:Name="eventsGrid" IsVisible="false"/>
-				<StackLayout Grid.Row="4" Spacing="0" Padding="0" x:Name="wallGrid" IsVisible="false">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="5"/>
-							<ColumnDefinition Width="65"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="5"/>
-						</Grid.ColumnDefinitions>
-
-						<Grid.RowDefinitions>
-							<RowDefinition Height="5"/>
-							<RowDefinition Height="65"/>
-							<RowDefinition Height="20"/>
-							<RowDefinition Height="*"/>
-						</Grid.RowDefinitions>
-
-						<controls:CircleImage Grid.Row="1" Grid.Column="1" x:Name="usersPhoto"/> 
-						<Button Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Text="Post" x:Name="postCommentButton" Style="{DynamicResource ButtonStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="30" FontSize="14"/>
-						<Button Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" BackgroundColor="White" BorderRadius="5" BorderWidth="1" BorderColor="{DynamicResource HowlOut}"/>
-						<StackLayout Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-							<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntry" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent"/>
-						</StackLayout>
-
-					</Grid>
-					<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="0,10,0,0"> <local:Line/> </StackLayout> 
-					<StackLayout Grid.Column="0" Grid.ColumnSpan="3" x:Name="WallList"></StackLayout>
-
-					<!--
-						<ListView x:Name="WallList"
-						  			HasUnevenRows="false"
-									RowHeight="120"
-									SeparatorVisibility="None"
-									BackgroundColor="Transparent">
-							<ListView.ItemTemplate>
-								<DataTemplate>
-									<ViewCell>
-										<local:InspectManageComment  />
-									</ViewCell>
-								</DataTemplate>
-							</ListView.ItemTemplate>	
-						</ListView>
-						-->
-					</StackLayout>
-				</Grid>
-			</ScrollView>
-		<!-- </Grid> -->
+				<StackLayout Grid.Row="4" Spacing="0" Padding="0" x:Name="wallGrid" IsVisible="false"/>
+			</Grid>
+		</ScrollView>
 	</ContentView.Content>
 </ContentView>

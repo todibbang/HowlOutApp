@@ -22,7 +22,7 @@
 
 
 
-					<Image Grid.Column="2" x:Name="createNewGroupBtn" Source="ic_group_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="35" IsVisible="true"></Image>
+					<Button Grid.Column="2" x:Name="createNew" Text="Create" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"/>
 
 					<Image Grid.Column="2" x:Name="filterSearchBtn" Source="ic_settings.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"></Image>
 				</Grid>

@@ -45,7 +45,6 @@
 
 			<StackLayout Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
 				<ContentView x:Name="profileContent"/>
-				<ContentView x:Name="createGroupContent" IsVisible="false"/>
 
 				<Grid x:Name="findContent" IsVisible="false"> 
 					<Grid.RowDefinitions>
