@@ -12,17 +12,7 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<Grid Grid.Row="0" Padding="10,5,10,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="{DynamicResource HowlOutFade}" >
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="1"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<Button Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="15" HeightRequest="30" />
-					<Button Grid.Column="0" Text="Friends" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="18" FontAttributes="Bold"></Button>
-					<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" />
-					<Button Grid.Column="2"  Text="Groups" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
-				</Grid>
+				<Grid Grid.Row="0" Padding="10,5,10,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="{DynamicResource HowlOutFade}" />
 
 				<Grid Grid.Row="1" x:Name="groupGrid" IsVisible="false"></Grid>
 				<Grid Grid.Row="1" x:Name="profileGrid"></Grid>

@@ -31,11 +31,18 @@ namespace HowlOut
 		public async void updateLastKnownPosition()
 		{
 			if (CrossGeolocator.Current.IsGeolocationEnabled && CrossGeolocator.Current.IsGeolocationAvailable) {
-				var locator = CrossGeolocator.Current;
-				locator.DesiredAccuracy = 50;
-				var position = await locator.GetPositionAsync (timeoutMilliseconds: 10000);
-				App.lastKnownPosition = new Position (position.Latitude, position.Longitude);
-				System.Diagnostics.Debug.WriteLine ("Last Known Position: " + App.lastKnownPosition.Latitude + "" + App.lastKnownPosition.Longitude);
+				try
+				{
+					var locator = CrossGeolocator.Current;
+					locator.DesiredAccuracy = 50;
+					var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
+					App.lastKnownPosition = new Position(position.Latitude, position.Longitude);
+					System.Diagnostics.Debug.WriteLine("Last Known Position: " + App.lastKnownPosition.Latitude + "" + App.lastKnownPosition.Longitude);
+				}
+				catch (Exception ex)
+				{
+
+				}
 			}
 		}
 

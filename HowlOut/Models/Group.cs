@@ -14,7 +14,7 @@ namespace HowlOut
 
 		public Visibility Visibility { get; set; }
 
-		public Profile Owner { get; set; }
+		public Profile ProfileOwner { get; set; }
 		public Organization OrganizationOwner { get; set; }
 
 		public int NumberOfMembers { get; set; }

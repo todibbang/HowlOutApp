@@ -13,7 +13,7 @@
 				Placeholder = element.Placeholder;
 
 				if (Control.Text == "" || Control.Text == Placeholder)
-				{ 					Control.TextColor = Color.FromRgba(200, 200, 200, 255).ToUIColor();
+				{ 					Control.TextColor = Color.FromRgba(230, 230, 230, 255).ToUIColor();
 					Control.Text = Placeholder; 				}
 				else { 					Control.TextColor = Color.FromRgba(0, 0, 0, 255).ToUIColor(); 				}
 				Control.Layer.BorderColor = Color.White.ToCGColor();
@@ -35,7 +35,7 @@
 					if (textView.Text == "")
 					{
 						textView.Text = Placeholder;
-						textView.TextColor = Color.FromRgba(200, 200, 200, 255).ToUIColor(); // Placeholder Color
+						textView.TextColor = Color.FromRgba(230, 230, 230, 255).ToUIColor(); // Placeholder Color
 					}
 
 					return true;

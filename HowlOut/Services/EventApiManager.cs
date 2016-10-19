@@ -21,75 +21,225 @@ namespace HowlOut
 			this.httpClient = httpClient;
 		}
 
-		public async Task<ObservableCollection<Event>> GetAllEvents()
+		public async Task<List<Event>> SearchEvents()
 		{
-			ObservableCollection<Event> events = new ObservableCollection<Event>(); 
+			string profileId = App.userProfile.ProfileId;
+			double userLat = App.lastKnownPosition.Latitude;
+			double userLong = App.lastKnownPosition.Longitude;
+			List<Event> events = new List<Event>();
 
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/WithoutOwner/" + App.StoredUserFacebookId);
+			var lat = userLat.ToString();
+			var lon = userLong.ToString();
+			string newLat = "";
+			string newLon = "";
 
-			try { 
-				var response = await httpClient.GetAsync(uri);
-				if(response.IsSuccessStatusCode)
-				{
-					System.Diagnostics.Debug.WriteLine("RECIEVED DATA!!!!!");
-					var content = await response.Content.ReadAsStringAsync();
-					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
-				}
-			} catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine("COULD NOT RECIEVE DATA!!!!!");
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			for (int i = 0; i < lat.Length; i++) {
+				if (lat[i].Equals("\\,")) { newLat += "\\."; }
+				else { newLat += lat[i]; }
 			}
+
+			for (int i = 0; i < lon.Length; i++) {
+				if (lon[i].Equals("\\,")) { newLon += "\\."; }
+				else { newLon += lon[i]; }
+			}
+
+			var uri = "/search?profileId=" + profileId +
+				"&userLat=" + newLat + "&userLong=" + newLon + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+
+			if (lat.Contains(",")) {
+				var newLatSplit = Regex.Split(newLat, "\\,");
+				var newLonSplit = Regex.Split(newLon, "\\,");
+				uri = "/search?profileId=" + profileId +
+					"&userLat=" + newLatSplit[0] + "." + newLatSplit[1] + "&userLong=" +
+					newLonSplit[0] + "." + newLonSplit[1] + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+			}
+			events = await GetEventsServerCall(uri);
 			return events;
 		}
 
-		public async Task<ObservableCollection<Event>> GetEventsWithOwnerId(String id)
+		public async Task<List<Event>> GetEventsAttending()
 		{
-			ObservableCollection<Event> events = new ObservableCollection<Event>();
-
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + id + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return events;
+			var uri ="/owner/" + App.StoredUserFacebookId + "?currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+			return await GetEventsServerCall(uri);
 		}
 
 		public async Task<Event> GetEventById(string eventId)
 		{
-			Event eventToRetrieve = new Event();
+			var uri = "/" + eventId;
+			List<Event> events = await GetEventsServerCall(uri);
+			return events[0];
+		}
 
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/" + eventId);
+		public async Task<List<Event>> GetEventsProfilesAttending(bool joinedOrFollowing, List<Profile> profiles)
+		{
+			var uri = "/eventsFromProfileIds?joined=" + joinedOrFollowing + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+			for (int i = 0; i < profiles.Count; i++) {
+				uri += "&profileIds=" + profiles[i].ProfileId;
+			}
+			return await GetEventsServerCall(uri);
+		}
 
+		public async Task<List<Event>> GetEventsForGroups(List<Group> groups)
+		{
+			var uri = "/eventsFromGroupIds?";
+			for (int i = 0; i < groups.Count; i++) {
+				uri += "&groupIds=" + groups[i].GroupId;
+			}
+			return await GetEventsServerCall(uri);
+		}
+
+		public async Task<Event> CreateEditEvent(Event eventToCreate)
+		{
+			var uri = "";
+			var content = JsonConvert.SerializeObject(eventToCreate);
+			List<Event> events = await PostEventServerCall(uri, content);
+			if (events != null && events.Count > 0)
+			{
+				if (events[0].StartDate > DateTime.Now.AddHours(2).AddMinutes(1))
+				{
+					CrossLocalNotifications.Current.Show("Event: " + events[0].Title, events[0].Title + " is starting in 2 hours!", int.Parse(events[0].EventId), events[0].StartDate.ToLocalTime().AddHours(-2));
+				}
+				if (events[0].StartDate > DateTime.Now.AddDays(1).AddMinutes(1))
+				{
+					CrossLocalNotifications.Current.Show("Event: " + events[0].Title, events[0].Title + " is starting in 1 day!", int.Parse(events[0].EventId + 1), events[0].StartDate.ToLocalTime().AddDays(-1));
+				}
+				return events[0];
+			}
+			return null;
+		}
+
+		public async Task<bool> DeleteEvent(string eventId)
+		{
+			var uri = new Uri(App.serverUri + "event/" + eventId);
+			try {
+				var response = await httpClient.DeleteAsync(uri);
+				if (response.IsSuccessStatusCode) 
+				{ 
+					return true; 
+				}
+				else { 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+				}
+			} catch (Exception ex) 
+			{ 
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return false;
+		}
+
+		public async Task<bool> AttendOrTrackEvent(string eventId, bool attendOrTrack, bool joinOrLeave)
+		{
+			var uri = "/joinOrTrack/"+eventId+"/"+ App.StoredUserFacebookId + "?attend="+attendOrTrack + "&join="+joinOrLeave;
+			return await PutEventServerCall(uri);
+		}
+
+		public async Task<bool> InviteProfilesToEvent(string eventId, List<Profile> profiles)
+		{
+			var uri = "/invite/"+eventId+"?profileIds=" + profiles[0].ProfileId;
+			for (int i = 1; i < profiles.Count; i++) {
+				uri += "&profileIds=" + profiles[i].ProfileId;
+			}
+			return await PutEventServerCall(uri);
+		}
+
+		public async Task<List<Event>> GetEventsServerCall(string uri)
+		{
+			List<Event> events = new List<Event>();
+			var recievedContent = "";
 			try
 			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					eventToRetrieve = JsonConvert.DeserializeObject<Event>(content);
+				var response = await httpClient.GetAsync(new Uri(App.serverUri + "event" + uri));
+				if (response.IsSuccessStatusCode) { 
+					recievedContent = await response.Content.ReadAsStringAsync();
+					try
+					{
+						events = JsonConvert.DeserializeObject<List<Event>>(recievedContent);
+					}
+					catch (Exception ex)
+					{
+						Event eve = JsonConvert.DeserializeObject<Event>(recievedContent);
+						events.Add(eve);
+					}
+				}
+				else 
+				{ 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
 				}
 			}
 			catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
-			return eventToRetrieve;
+			return events;
 		}
 
-		public async Task<ObservableCollection<Comment>> GetEventComments(string eventId)
+		public async Task<bool> PutEventServerCall(string uri)
 		{
-			ObservableCollection<Comment> comments = new ObservableCollection<Comment>(); 
+			try
+			{
+				var response = await httpClient.PutAsync(new Uri(App.serverUri + "event" + uri), new StringContent(""));
+				if (response.IsSuccessStatusCode) 
+				{ 
+					return true; 
+				} 
+				else 
+				{ 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+				}
+			}
+			catch (Exception ex) 
+			{ 
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); 
+			}
+			return false;
+		}
+
+		public async Task<List<Event>> PostEventServerCall(string uri, string content)
+		{
+			List<Event> events = new List<Event>();
+			var recievedContent = "";
+			try
+			{
+				var response = await httpClient.PostAsync(new Uri(App.serverUri + "event" + uri), new StringContent(content, Encoding.UTF8, "application/json"));
+				if (response.IsSuccessStatusCode)
+				{
+					recievedContent = await response.Content.ReadAsStringAsync();
+					try
+					{
+						events = JsonConvert.DeserializeObject<List<Event>>(recievedContent);
+					}
+					catch (Exception ex)
+					{
+						Event eve = JsonConvert.DeserializeObject<Event>(recievedContent);
+						events.Add(eve);
+					}
+				}
+				else 
+				{ 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return events;
+		}
+
+
+
+		/*
+		public async Task<bool> GetEventsWithOwnerId(String id)
+		{
+			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Owner/" + id + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
+			return await GetEventServerCall(uri);
+		}
+
+
+
+		public async Task<List<Comment>> GetEventComments(string eventId)
+		{
+			List<Comment> comments = new List<Comment>(); 
 
 			var uri = new Uri("https://www.howlout.net/api/EventsAPI/Comments/" + eventId);
 
@@ -98,7 +248,7 @@ namespace HowlOut
 				if(response.IsSuccessStatusCode)
 				{
 					var content = await response.Content.ReadAsStringAsync();
-					comments = JsonConvert.DeserializeObject<ObservableCollection<Comment>>(content);
+					comments = JsonConvert.DeserializeObject<List<Comment>>(content);
 				}
 			} catch (Exception ex)
 			{
@@ -197,74 +347,7 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<ObservableCollection<Event>> SearchEvents()
-		{
-			string profileId = App.userProfile.ProfileId;
-			double userLat = App.lastKnownPosition.Latitude;
-			double userLong = App.lastKnownPosition.Longitude;
 
-
-			ObservableCollection<Event> events = new ObservableCollection<Event>();
-
-			var lat = userLat.ToString();
-			var lon = userLong.ToString();
-
-			string newLat = "";
-			string newLon = "";
-
-			//Regex.Replace(lat, "\\,", "\\.");
-			//Regex.Replace(lon, "\\,", "\\.");
-
-			//lat.Replace ("\\,", "\\.");
-			//lon.Replace ("\\,", "\\.");
-
-			for (int i = 0; i < lat.Length; i++) {
-				if (lat [i].Equals ("\\,")) {
-					newLat += "\\.";
-				} else {
-					newLat += lat [i];
-				}
-			}
-
-			for (int i = 0; i < lon.Length; i++) {
-				if (lon [i].Equals ("\\,")) {
-					newLon += "\\.";
-				} else {
-					newLon += lon [i];
-				}
-			}
-
-			var uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
-				"&userLat="+newLat + "&userLong=" + newLon + "&currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
-
-
-			if (lat.Contains (",")) {
-				var newLatSplit = Regex.Split (newLat, "\\,");
-				var newLonSplit = Regex.Split (newLon, "\\,");
-
-				uri = new Uri("https://www.howlout.net/api/EventsAPI/SearchEvent?profileId=" + profileId + 
-					"&userLat="+ newLatSplit[0] + "." + newLatSplit[1] + "&userLong=" + 
-					newLonSplit[0] + "." + newLonSplit[1] + "&currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
-			} 
-				
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-
-			return events;
-		}
 
 		public async Task<bool> FollowEvent(string eventId, string profileId)
 		{
@@ -477,6 +560,10 @@ namespace HowlOut
 			
 			return true;
 		}
+		*/
+
+
+
 	}
 }
 

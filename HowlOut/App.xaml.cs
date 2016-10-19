@@ -17,12 +17,17 @@ namespace HowlOut
 		public static CoreView coreView;
 		public static Profile userProfile;
 		public static Position lastKnownPosition = new Position(55.5, 12.6);
-		private DataManager _dataManager;
+		DataManager _dataManager;
 
 		public static Color HowlOut = Color.FromHex("#ff4bc6b4");
 		public static Color HowlOutFade = Color.FromHex("#504bc6b4");
+		public static Color LineColor = Color.FromHex("#ffb8b8b8");
+		public static Color PlaceHolderColor = Color.FromHex("#ffe6e6e6");
+		public static Color NormalTextColor = Color.FromHex("#ff808080");
 
 		public static Action<string> PostSuccessFacebookAction { get; set; }
+
+		public static string serverUri = "https://www.howlout.net/api/";
 
 		public interface ISaveAndLoad
         {
@@ -33,10 +38,8 @@ namespace HowlOut
         }
 
         public static string StoredToken;
-        static string _Token;
 		public static string StoredUserFacebookId;
-		static string _UserFacebookId;
-        static string _userFacebookName;
+        static string StoredUserFacebookName;
 
         public App ()
 		{
@@ -62,13 +65,10 @@ namespace HowlOut
 
             if (!App.IsLoggedIn)
             {
-				System.Diagnostics.Debug.WriteLine("Blytka 2");
 				MainPage = new SignIn();
-				System.Diagnostics.Debug.WriteLine("Blytka 3");
             }
             else
             {
-				System.Diagnostics.Debug.WriteLine("Blytka 4");
 				CrossLocalNotifications.Current.Show ("Notifications works!!", "Nice",99,DateTime.Now.AddSeconds(30));
 				coreView = new CoreView();
 				MainPage = coreView;
@@ -77,31 +77,19 @@ namespace HowlOut
 
 		}
 
-		public async Task storeToken()
+		public static async Task storeToken(string token, string id, string name)
         {
             //Writes a New Token upon authentication in the directory
-            DependencyService.Get<ISaveAndLoad>().SaveText("token", Token);
-			DependencyService.Get<ISaveAndLoad> ().SaveText ("userFacebookId", UserFacebookId);
+            DependencyService.Get<ISaveAndLoad>().SaveText("token", token);
+			DependencyService.Get<ISaveAndLoad> ().SaveText ("userFacebookId", id);
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad> ().LoadText ("userFacebookId");
+			StoredUserFacebookName = name;
         }
 			
-
-        public static string Token
-        {
-            get { return _Token; }
-        }
-
-		public static string UserFacebookId
-		{
-			get { return _UserFacebookId; }
-		}
-
-        public static bool IsLoggedIn
-        {
-            get
-            {
-				//returns Boolean for Login
+		public static bool IsLoggedIn {
+            get 
+			{
 				if (!string.IsNullOrWhiteSpace (StoredToken) && !string.IsNullOrWhiteSpace (StoredUserFacebookId)) {
 					return true;
 				} 
@@ -112,26 +100,12 @@ namespace HowlOut
             }
         }
 
-        public static void SetToken(string token)
-        {
-            //gets Actual Token, fired from the LoginPageRenderer
-            _Token = token;
-
-        }
-
 		public static void SetUserFacebookId(string userFacebookId)
 		{
 			//gets Actual Token, fired from the LoginPageRenderer
-			_UserFacebookId = userFacebookId;
+			StoredUserFacebookId = userFacebookId;
 
 		}
-
-        public static void SetUserFacebookName(string userFacebookName)
-        {
-            //gets Actual Token, fired from the LoginPageRenderer
-            _userFacebookName = userFacebookName;
-
-        }
 
         private void LoginPage_LoginCancelled(object sender, EventArgs e)
         {
@@ -143,11 +117,16 @@ namespace HowlOut
 		private async void LoginPage_LoginSucceeded(object sender, EventArgs e)
         {
 
-            await storeToken();
-            
-			Profile profile = new Profile (){ ProfileId = UserFacebookId, Name = _userFacebookName, Age = 0 };
-			await _dataManager.ProfileApiManager.CreateProfile(profile);
+           // await storeToken();
 
+			var success = false;
+
+			while (!success)
+			{
+
+				Profile profile = new Profile() { ProfileId = StoredUserFacebookId, Name = StoredUserFacebookName, Age = 0, ImageSource = "https://graph.facebook.com/v2.5/" + StoredUserFacebookId + "/picture?height=200&width=200" };
+				success = await _dataManager.ProfileApiManager.CreateUpdateProfile(profile, true);
+			}
 			coreView = new CoreView();
 			MainPage = coreView;
 			startProgram(coreView);
@@ -160,7 +139,7 @@ namespace HowlOut
 
 		private async Task startProgram(CoreView coreView)
 		{
-			userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile (StoredUserFacebookId);
+			userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile ();
 			coreView.startCoreView ();
 			//coreView.setContentView (new EventView(), "Event");
 
@@ -172,21 +151,24 @@ namespace HowlOut
 			{
 				b.FontAttributes = FontAttributes.None;
 				b.FontSize = 16;
-				b.TextColor = App.HowlOutFade;
+				b.TextColor = App.PlaceHolderColor;
 			}
 			selected.FontAttributes = FontAttributes.Bold;
 			selected.FontSize = 18;
-			selected.TextColor = App.HowlOut;
+			selected.TextColor = App.NormalTextColor;
 		}
 
-		public static void setOptionsGrid(Grid buttonGrid, List<String> buttonText, List<VisualElement> grids, List<Action> actions)
+		public static void setOptionsGrid(Grid buttonGrid, List<String> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)
 		{
 			List<Button> buttons = new List<Button>();
+			List<Action> clickButtonAction = new List<Action>();
 			foreach (String s in buttonText) {
-				buttons.Add( new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.HowlOut, FontSize = 16 } );
+				Button b = new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = PlaceHolderColor, FontSize = 16 };
+				buttons.Add(b);
+				clickButtonAction.Add(()=>selectButton(buttons, b));
 			}
 
-			grids[0].IsVisible = true;
+			if(grids[0] != null) grids[0].IsVisible = true;
 			if (actions[0] != null) { actions[0].Invoke(); }
 			selectButton(buttons, buttons[0]);
 
@@ -204,7 +186,7 @@ namespace HowlOut
 
 				if (i == (buttons.Count * 2 - 1) - 1)
 				{
-					buttonGrid.Children.Add(new Button() { BorderColor = HowlOut, BorderWidth = 0.5, BorderRadius = 10, BackgroundColor=Color.White }, 0, i + 1, 0, 1);
+					buttonGrid.Children.Add(new Button() { BorderColor = LineColor, BorderWidth = 0.5, BorderRadius = 10, BackgroundColor=Color.White }, 0, i + 1, 0, 1);
 				}
 			}
 
@@ -216,21 +198,29 @@ namespace HowlOut
 					bNumber++;
 				}
 				else {
-					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = HowlOut }, i, 0);
+					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = LineColor }, i, 0);
 				}
 			}
 
+			if (carousel != null)
+			{
+				carousel.PositionSelected += (sender, e) =>
+				{
+					if (clickButtonAction[carousel.Position] != null) { clickButtonAction[carousel.Position].Invoke(); }
+				};
+			}
 
 			foreach (Button b in buttons)
 			{
 				b.Clicked += (sender, e) =>
 				{
-					selectButton(buttons, b);
+					//selectButton(buttons, b);
 					foreach (VisualElement g in grids)
 					{
-						g.IsVisible = false;
+						if (g != null) { g.IsVisible = false; }
 					}
-					grids[buttons.IndexOf(b)].IsVisible = true;
+					if (clickButtonAction[buttons.IndexOf(b)] != null) { clickButtonAction[buttons.IndexOf(b)].Invoke(); }
+					if (grids[buttons.IndexOf(b)] != null) { grids[buttons.IndexOf(b)].IsVisible = true; }
 					if (actions[buttons.IndexOf(b)] != null) { actions[buttons.IndexOf(b)].Invoke(); }
 					scrollTo(b);
 				};
@@ -240,6 +230,7 @@ namespace HowlOut
 
 		public static async Task scrollTo(VisualElement a)
 		{
+			
 			await Task.Delay(40);
 			var y = a.Y;
 			var parent = a.ParentView;
@@ -248,33 +239,16 @@ namespace HowlOut
 				y += parent.Y;
 				parent = parent.ParentView;
 			}
-
-			coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
-
+			if (coreView.scrollViews[coreView.scrollViews.Count - 1] != null)
+			{
+				coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
+			}
 			//s.ScrollToAsync(s.X, (y - 100), true);
 		}
 
-		public static async Task<bool> SenderOfEvent(StackLayout SelectEventSenderLayout)
+		public static async Task<bool> SenderOfEvent(StackLayout SelectEventSenderLayout, Event eve, Group grp)
 		{
-			bool continueCreating = false;
-			App.userProfile.Organizations = new List<Group>();
-
-			// Dummy Data Start
-			App.userProfile.Organizations.Add(
-				new Group()
-				{
-					Visibility = Visibility.Organization,
-					Name = "ITU",
-				}
-			);
-			App.userProfile.Organizations.Add(
-				new Group()
-				{
-					Visibility = Visibility.Organization,
-					Name = "Københavns Erhvervs Akademi",
-				}
-			);
-			// Dummy Data End
+			bool continueCreating = true;
 
 			if (App.userProfile.Organizations != null && App.userProfile.Organizations.Count > 0)
 			{
@@ -291,7 +265,7 @@ namespace HowlOut
 				List<Button> buttons = new List<Button>();
 				organisationButton(App.userProfile.Name, buttons, SelectEventSenderLayout);
 
-				foreach (Group o in App.userProfile.Organizations)
+				foreach (Organization o in App.userProfile.Organizations)
 				{
 					organisationButton(o.Name, buttons, SelectEventSenderLayout);
 				}
@@ -308,7 +282,6 @@ namespace HowlOut
 						if (b == buttons[0])
 						{
 							System.Diagnostics.Debug.WriteLine("You are the sender of the event");
-							continueCreating = true;
 						}
 						else if (b == buttons[buttons.Count - 1])
 						{
@@ -317,7 +290,8 @@ namespace HowlOut
 						}
 						else {
 							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Organizations[buttons.IndexOf(b) - 1].Name);
-							continueCreating = true;
+							if (eve != null) eve.OrganizationOwner = App.userProfile.Organizations[buttons.IndexOf(b) - 1];
+							if (grp != null) grp.OrganizationOwner = App.userProfile.Organizations[buttons.IndexOf(b) - 1];
 						}
 						tcs.TrySetResult(true);
 					};
@@ -341,7 +315,7 @@ namespace HowlOut
 				SelectEventSenderLayout.Children.Clear();
 				SelectEventSenderLayout.Children.Add(new Label()
 				{
-					Text = "Who is the sender of this event?",
+					Text = "What Group is this event for?",
 					TextColor = Color.White,
 					FontSize = 16,
 					FontAttributes = FontAttributes.Bold,
@@ -405,7 +379,10 @@ namespace HowlOut
 		public static async Task scrollTo(double y)
 		{
 			await Task.Delay(40);
-			coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
+			if (coreView.scrollViews[coreView.scrollViews.Count - 1] != null)
+			{
+				coreView.scrollViews[coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
+			}
 		}
 
         protected override void OnStart ()

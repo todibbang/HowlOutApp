@@ -17,279 +17,144 @@ namespace HowlOut
 			this.httpClient = httpClient;
 		}
 
-		public async Task<List<Group>> GetAllGroups()
+		public async Task<Group> GetGroup(string id)
 		{
-			List<Group> groups = new List<Group>(); 
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/GetGroups");
-
-			try { 
-				var response = await httpClient.GetAsync(uri);
-				if(response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					groups = JsonConvert.DeserializeObject<List<Group>>(content);
-				}
-			} catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return groups;
+			var uri = "/"+id;
+			List<Group> groups = await GetGroupServerCall(uri);
+			return groups[0];
 		}
 
 		public async Task<List<Group>> GetGroupsFromName(string name)
 		{
-			List<Group> groups = new List<Group>(); 
+			var uri = "/groupsFromName/" + name;
+			return await GetGroupServerCall(uri);
+		}
 
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/GetFromName/"+name);
 
-			try { 
-				var response = await httpClient.GetAsync(uri);
-				if(response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					groups = JsonConvert.DeserializeObject<List<Group>>(content);
+		public async Task<Group> CreateEditGroup(Group grp)
+		{
+			var uri = "";
+			var content = JsonConvert.SerializeObject(grp);
+			List<Group> groups = await PostGroupServerCall(uri, content);
+			return groups[0];
+		}
+
+		public async Task<bool> DeleteGroup(string eventId)
+		{
+			var uri = new Uri(App.serverUri + "group/" + eventId);
+			try
+			{
+				var response = await httpClient.DeleteAsync(uri);
+				if (response.IsSuccessStatusCode) 
+				{ 
+					return true; 
 				}
-			} catch (Exception ex)
+				else { 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return false;
+		}
+
+		public async Task<bool> InviteAcceptDeclineLeaveGroup(string id, List<Profile> profiles, GroupHandlingType handlingType)
+		{
+			var uri = "/inviteAcceptDeclineLeaveGroup?groupId=" + id;
+			for (int i = 0; i < profiles.Count; i++)
+			{
+				uri += "&profileIds=" + profiles[i].ProfileId;
+			}
+			uri += "&handlingType="+handlingType;
+			return await PutGroupServerCall(uri);
+		}
+
+		public async Task<List<Group>> GetGroupServerCall(string uri)
+		{
+			List<Group> groups = new List<Group>();
+			var recievedContent = "";
+			try
+			{
+				var response = await httpClient.GetAsync(new Uri(App.serverUri + "group" + uri));
+				if (response.IsSuccessStatusCode)
+				{
+					recievedContent = await response.Content.ReadAsStringAsync();
+					try
+					{
+						groups = JsonConvert.DeserializeObject<List<Group>>(recievedContent);
+					}
+					catch (Exception ex)
+					{
+						Group grp = JsonConvert.DeserializeObject<Group>(recievedContent);
+						groups.Add(grp);
+					}
+				}
+				else {
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				}
+			}
+			catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
 			return groups;
 		}
 
-		public async Task<List<Comment>> GetGroupComments(string groupId)
+		public async Task<bool> PutGroupServerCall(string uri)
 		{
-			List<Comment> comments = new List<Comment>(); 
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/Comment/"+groupId);
-
-			try { 
-				var response = await httpClient.GetAsync(uri);
-				if(response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					comments = JsonConvert.DeserializeObject<List<Comment>>(content);
-				}
-			} catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return comments;
-		}
-
-		public async Task<List<Comment>> AddCommentToGroup(string groupId, Comment comment)
-		{
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/Comment/"+groupId);
-
 			try
 			{
-				var json = JsonConvert.SerializeObject(comment);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-				var response = await httpClient.PostAsync(uri, content);
-
-				if (response.IsSuccessStatusCode)
-				{
-					var recievedContent = await response.Content.ReadAsStringAsync();
-					var retrievedEvent = JsonConvert.DeserializeObject<List<Comment>>(recievedContent);
-					return retrievedEvent;
+				var response = await httpClient.PutAsync(new Uri(App.serverUri + "group" + uri), new StringContent(""));
+				if (response.IsSuccessStatusCode) 
+				{ 
+					return true; 
+				}
+				else { 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
 				}
 			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			catch (Exception ex) 
+			{ 
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); 
 			}
-
-			return null;
+			return false;
 		}
 
-		public async Task<Group> GetGroupById(string groupId)
+		public async Task<List<Group>> PostGroupServerCall(string uri, string content)
 		{
-			Group groupToRetrieve = new Group();
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/" + groupId);
-
+			List<Group> groups = new List<Group>();
+			var recievedContent = "";
 			try
 			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					groupToRetrieve = JsonConvert.DeserializeObject<Group>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return groupToRetrieve;
-		}
-
-		public async Task<bool> UpdateGroup(Group groupToUpdate)
-		{
-			if(groupToUpdate.GroupId != null && groupToUpdate.GroupId != "")
-			{
-				var uri = new Uri("https://www.howlout.net/api/GroupApi/"+groupToUpdate.GroupId);
-
-				try
-				{
-					var json = JsonConvert.SerializeObject(groupToUpdate);
-					var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-					var response = await httpClient.PutAsync(uri, content);
-
-					if (response.IsSuccessStatusCode)
+				var response = await httpClient.PostAsync(new Uri(App.serverUri + "group" + uri), new StringContent(content, Encoding.UTF8, "application/json"));
+				if (response.IsSuccessStatusCode) {
+					recievedContent = await response.Content.ReadAsStringAsync();
+					try
 					{
-						return true;
+						groups = JsonConvert.DeserializeObject<List<Group>>(recievedContent);
+					} 
+					catch (Exception ex)
+					{
+						Group grp = JsonConvert.DeserializeObject<Group>(recievedContent);
+						groups.Add(grp);
 					}
 				}
-				catch (Exception ex)
-				{
-					System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-				}
-			}
-
-			return false;
-		}
-
-		public async Task<Group> CreateGroup(GroupDBO groupToCreate)
-		{
-			Group groupReturned = new Group ();
-			var uri = new Uri("https://www.howlout.net/api/GroupApi");
-
-			try
-			{
-				var json = JsonConvert.SerializeObject(groupToCreate);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-				var response = await httpClient.PostAsync(uri, content);
-
-				if (response.IsSuccessStatusCode)
-				{
-					var recievedContent = await response.Content.ReadAsStringAsync();
-					groupReturned = JsonConvert.DeserializeObject<Group>(recievedContent);
-					return groupReturned;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine("Failing");
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-
-			return null;
-		}
-
-		public async Task<bool> DeleteGroup(string groupId)
-		{
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/"+groupId);
-
-			try
-			{
-				var response = await httpClient.DeleteAsync(uri);
-
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
+				else { 
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
 				}
 			}
 			catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
 			}
-
-			return false;
+			return groups;
 		}
 
-		public async Task<bool> InviteToGroup(string groupId, List<string> profileIds)
+		public enum GroupHandlingType
 		{
-			var profileIdsAsString = "";
-
-
-			for (int i = 0; i < profileIds.Count; i++) 
-			{
-				profileIdsAsString += "&profileIds=" + profileIds[i];
-			}
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/InviteToGroup?groupId="+groupId+profileIdsAsString);
-
-			try
-			{
-				var json = JsonConvert.SerializeObject("");
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
-		}
-
-		public async Task<bool> JoinGroup(string groupId)
-		{
-			string profileId = App.userProfile.ProfileId;
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/JoinGroup?groupId="+groupId+"&profileId="+profileId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
-		}
-
-		public async Task<bool> DeclineGroupInvite(string groupId, string profileId)
-		{
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/DeclineGroupInvite?groupId="+groupId+"&profileId="+profileId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
-		}
-
-		public async Task<bool> LeaveGroup(string groupId, string profileId)
-		{
-
-			var uri = new Uri("https://www.howlout.net/api/GroupApi/LeaveGroup?groupId="+groupId+"&profileId="+profileId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
+			Invite, Decline, Accept, Leave, Request
 		}
 	}
 }

@@ -8,11 +8,11 @@ namespace HowlOut
 	{
 		public string ConversationID { get; set; }
 		public List <Profile> Profiles { get; set; }
-		public List <Comment> Comments { get; set; }
+		public List <Comment> Messages { get; set; }
 
 		public DateTime LastUpdated {  get {
-				if (Comments != null && Comments.Count > 0) { return Comments.OrderByDescending(c => c.DateAndTime).ToList()[0].DateAndTime; }
-				return DateTime.Now;
+				if (Messages != null && Messages.Count > 0) { return Messages.OrderByDescending(c => c.DateAndTime).ToList()[0].DateAndTime; }
+				return new DateTime();
 			} set { this.LastUpdated = value; }
 		}
 
@@ -20,20 +20,27 @@ namespace HowlOut
 				string text = "";
 				char[] splitString = {' ', ','};
 				if (Profiles != null) {
-					if (Profiles.Count > 2) {
-						foreach (Profile p in Profiles) {
-							if(p.ProfileId != App.userProfile.ProfileId) {
+					if (Profiles.Count > 2)
+					{
+						foreach (Profile p in Profiles)
+						{
+							if (p.ProfileId != App.userProfile.ProfileId)
+							{
 								text += p.Name.Split(splitString)[0] + ", ";
 							}
 						}
 					}
-					else { text += Profiles.Find(p => p.ProfileId != App.userProfile.ProfileId).Name; } } 
+					else if (Profiles.Count == 2) {
+						text = Profiles.Find(p => p.ProfileId != App.userProfile.ProfileId).Name;
+					}
+					else { text = Profiles[0].Name; } 
+				} 
 				return text;
 			} set { this.Header = value; }
 		}
 
 		public string Content { get {
-				if (Comments != null && Comments.Count - 1 >= 0 && Comments[Comments.Count - 1] != null) { return Comments[Comments.Count - 1].Content; } 
+				if (Messages != null && Messages.Count - 1 >= 0 && Messages[Messages.Count - 1] != null) { return Messages[Messages.Count - 1].Content; } 
 				return "";
 			} set { this.Content = value; }
 		}

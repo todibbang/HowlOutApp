@@ -8,6 +8,8 @@ namespace HowlOut
 {
 	public partial class EventView : ContentView
 	{
+		List<VisualElement> eventViews = new List<VisualElement>();
+
 		private DataManager _dataManager;
 		private StandardButton standardButton = new StandardButton();
 		bool beingRepositioned = false;
@@ -16,25 +18,56 @@ namespace HowlOut
 		string ID;
 		int EventViewType;
 
-		public EventView (int viewType, string id)
+		public int lastCarouselView = 0;
+
+
+		public EventView (int viewType)
 		{
 			InitializeComponent ();
-			ID = id;
 			_dataManager = new DataManager();
 			EventViewType = viewType;
 
-			if (EventViewType == 1) { 
-				App.setOptionsGrid(optionGrid, new List<string> { "Explore", "Friends" }, new List<VisualElement> { searchEventList, searchEventList }, new List<Action> {()=>UpdateManageList(0), () => UpdateManageList(0) });
+			if (EventViewType == 1) {
+				eventViews.Add(new EventListView(0));
+				eventViews.Add(new EventListView(1));
+				App.setOptionsGrid(optionGrid, new List<string> { "Explore", "Friends" }, new List<VisualElement> { null, null }, new List<Action> {() => { eventCarousel.Position = 0; }, () => { eventCarousel.Position = 1; } }, eventCarousel);
 			} else if (EventViewType != 10) {
-				App.setOptionsGrid(optionGrid, new List<string> { "Join", "Track" }, new List<VisualElement> { searchEventList, searchEventList }, new List<Action> { () => UpdateManageList(1), () => UpdateManageList(3) });
-			} else {
-				UpdateManageList(1);
+				eventViews.Add(new EventListView(2));
+				eventViews.Add(new EventListView(3));
+				App.setOptionsGrid(optionGrid, new List<string> { "Join", "Track" }, new List<VisualElement> { null, null }, new List<Action> { () => { eventCarousel.Position = 0; }, () => { eventCarousel.Position = 1; } }, eventCarousel);
 			}
+
+			eventCarousel.ItemsSource = eventViews;
+
+			eventCarousel.PositionSelected += (sender, e) =>
+			{
+				lastCarouselView = eventCarousel.Position;
+			};
+
+			/*
 			searchEventList.ItemSelected += OnItemSelected;
 			searchEventList.IsPullToRefreshEnabled = true;
 			searchEventList.Refreshing += (sender, e) => { UpdateList(); };
+			*/
+			getFacebookEvents();
 		}
 
+		public async Task setLastCarousel()
+		{
+			eventCarousel.Position = 0;
+			await Task.Delay(20);
+			eventCarousel.Position = lastCarouselView;
+		}
+
+		public async Task getFacebookEvents()
+		{
+			//TODO fix facebook server call
+			//ObservableCollection<FaceBookEvent> facebookEvents = await _dataManager.EventApiManager.getFacebookEvents();
+			//facebookEvents = await _dataManager.EventApiManager.getFacebookEvents();
+			System.Diagnostics.Debug.WriteLine("bæ");
+		}
+
+		/*
 		public async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			ListView list = null;
@@ -158,6 +191,7 @@ namespace HowlOut
 		{
 			UpdateManageList(currentView);
 		}
+		*/
 	}
 }
 

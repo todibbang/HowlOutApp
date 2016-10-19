@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ProfileDesignView"
-			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controlsTwo="clr-namespace:HowlOut;assembly=HowlOut">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.GenericDesignView"
+		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controlsTwo="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
 			<Grid.RowDefinitions>
@@ -26,7 +26,7 @@
 						<RowDefinition Height="10*"/>
 					</Grid.RowDefinitions>
 				
-					<controls:CircleImage Grid.Column="1" Grid.Row="1"
+					<controls:CircleImage Grid.Column="1" Grid.Row="1" Aspect="AspectFill"
 						Source="{Binding ProfileImageSource}" x:Name="ProfileImage"/>
 
 					<Button Grid.Column="1" Grid.Row="1"
@@ -38,20 +38,14 @@
 			</Grid>
 
 
-			<StackLayout Grid.Row="1"  x:Name="infoLayout" VerticalOptions="CenterAndExpand" >
-				<Label  x:Name="infoLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" Text="Tobias"/>
+			<StackLayout Grid.Row="1" x:Name="infoLayout" VerticalOptions="CenterAndExpand" >
+				<Label  x:Name="infoLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center"/>
 			</StackLayout>
 
 			<StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout">
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="sendFriendRequestButton" Text="add" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptFriendRequestButton" Text="accept" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="declineFriendRequestButton" Text="decline" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeFriendButton" Text="remove" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="edit" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="inviteButton" Text="invite" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="acceptJoinRequestButton" Text="accept" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="declineJoinRequestButton" Text="decline" BorderRadius="10" IsVisible="false"/>
-				<Button Style="{DynamicResource ButtonStyle}" x:Name="inviteProfilesToGroupButton" Text="Invite" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="addButton" Text="add" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeButton" Text="remove" BorderRadius="10" IsVisible="false"/>
+				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="decline" BorderRadius="10" IsVisible="false"/>
 			</StackLayout>
 			
 			<StackLayout Grid.Row="3" IsVisible="false" x:Name="editProfile" BackgroundColor="White">
@@ -83,12 +77,13 @@
 						<local:CustomEditor Grid.Row="1" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..." FontSize="14"></local:CustomEditor>
 
 					</Grid>
-					<StackLayout Grid.Row="1" >
-						<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
-					</StackLayout>
-
-					<Button Grid.Row="1" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_camera.png" WidthRequest="80"/>
 					
+					<Image Grid.Row="1" x:Name="SelectedBannerImage" Aspect="AspectFill"/>
+					<StackLayout Grid.Row="1" >
+						<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0.5" BorderColor="{DynamicResource LineColor}" BackgroundColor="Transparent" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold" FontSize="18"/>
+					</StackLayout>   
+					<local:IconView Grid.Row="1" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" Source="ic_camera.png" WidthRequest="40" TranslationX="20"/>
+					<local:IconView Grid.Row="1" x:Name="albumPictureButton" HorizontalOptions="EndAndExpand" HeightRequest="50" Source="ic_album.png" WidthRequest="40" TranslationX="-20"/> 
 
 					<StackLayout Grid.Row="2" Padding="20">
 						<Button Text="Update" x:Name="updateProfileButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateOrganization"
+		 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+
+			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
+				<StackLayout BackgroundColor="White">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="50"/>
+							<RowDefinition Height="50"/>
+							<RowDefinition Height="50"/>
+							<RowDefinition Height="auto"/>
+						</Grid.RowDefinitions>
+
+						<StackLayout Grid.Row="1" Grid.RowSpan="3" x:Name="SelectedBannerLayout"/>
+												
+						<Grid Grid.Row="0" Grid.RowSpan="2" RowSpacing="0" BackgroundColor="White">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="10"/>
+								<ColumnDefinition Width="20"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="10"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="40"/>
+								<RowDefinition Height="1"/>
+								<RowDefinition Height="40"/>
+							</Grid.RowDefinitions>
+
+							<!-- ICONS -->
+							<controls:IconView Grid.Row="0" Grid.Column="1" Source="ic_title" Foreground="{DynamicResource HowlOut}" />
+							<controls:IconView Grid.Row="2" Grid.Column="1" Source="ic_description" Foreground="{DynamicResource HowlOut}" />
+
+							<local:CustomEntry Grid.Row="0" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" Placeholder="WolfPack's name..." PlaceholderColor="{DynamicResource LightGray}" x:Name="title" FontSize="14"></local:CustomEntry>
+							<local:Line Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+							<local:CustomEditor Grid.Row="2" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..." FontSize="14"></local:CustomEditor>
+
+						</Grid>
+
+						<Image Grid.Row="2" x:Name="SelectedBannerImage" Aspect="AspectFill" />
+						<StackLayout Grid.Row="2" >
+							<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
+						</StackLayout>   
+						<Button Grid.Row="2" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_camera.png" WidthRequest="40"/>
+						<Button Grid.Row="2" x:Name="albumPictureButton" HorizontalOptions="EndAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_album.png" WidthRequest="40"/> 
+
+						 
+						<StackLayout Grid.Row="5" Padding="20">
+							<Button Text="Create WolfPack" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+							<Button Text="Disband WolfPack" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+						</StackLayout>
+
+					</Grid>
+				</StackLayout>
+			</ScrollView>
+			<StackLayout Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="SelectSenderLayout" BackgroundColor="#70000000" IsVisible="false" Padding="20,100,20,0"/>
+
+		</Grid>
+	</ContentView.Content>
+</ContentView>

@@ -21,15 +21,15 @@ namespace HowlOut
 			if (notification.ContentProfile != null){
 				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentProfile.ProfileId + "/picture?height=80&width=80";
 			} else if(notification.ContentEvent != null) {
-				if (notification.ContentEvent.Owner != null) {
-					image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentEvent.Owner.ProfileId + "/picture?height=80&width=80";
+				if (notification.ContentEvent.ProfileOwner != null) {
+					image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentEvent.ProfileOwner.ProfileId + "/picture?height=80&width=80";
 				}
 				else {
-					image.Source = notification.ContentEvent.OrganisationOwner.ImageSource;
+					image.Source = notification.ContentEvent.OrganizationOwner.ImageSource;
 				}
 
 			} else if(notification.ContentGroup != null) {
-				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentGroup.Owner.ProfileId + "/picture?height=80&width=80";
+				image.Source = "https://graph.facebook.com/v2.5/" + notification.ContentGroup.ProfileOwner.ProfileId + "/picture?height=80&width=80";
 			}
 
 			/*

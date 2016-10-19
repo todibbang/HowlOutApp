@@ -52,7 +52,7 @@
 						<RowDefinition Height="20"/>
 					</Grid.RowDefinitions>
 
-					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
+					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand" Aspect="AspectFill"/>
 					<StackLayout Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>

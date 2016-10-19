@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.EventListView"
+		 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" >
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
+			<Label Text="Error Loading Events" x:Name="ErrorLoading" IsVisible="false"/>
+			<ListView x:Name="searchEventList"
+				HasUnevenRows="true"
+				InputTransparent="false"
+				SeparatorVisibility="None"
+				CachingStrategy="RecycleElement"
+				BackgroundColor="Transparent"
+				IsGroupingEnabled="true">
+                    <ListView.ItemTemplate>
+                     	 <DataTemplate>
+                      		<ViewCell>
+	                      		<local:SearchEventTemplate/>
+	                  		</ViewCell>
+                      	</DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupHeaderTemplate>
+                    	<DataTemplate>
+	                      <ViewCell Height="20">
+		                        <StackLayout Padding="0" BackgroundColor="Transparent">
+					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" BackgroundColor="{DynamicResource HowlOutBackground}"/>
+					    		</StackLayout>
+		              		</ViewCell>
+                      </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                </ListView>
+			<ActivityIndicator Grid.Row="0" Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading" BackgroundColor="Transparent"/>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

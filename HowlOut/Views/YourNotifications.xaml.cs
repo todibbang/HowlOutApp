@@ -10,16 +10,31 @@ namespace HowlOut
 	public partial class YourNotifications : ContentView
 	{
 		private DataManager _dataManager;
-		int listType = 0;
+		int listType = 1;
+
+		List<Profile> profilesAdded;
 
 		public YourNotifications()
 		{
 			InitializeComponent();
 			_dataManager = new DataManager();
-			App.setOptionsGrid(optionGrid, new List<string> { "Notifications", "Conversations" }, new List<VisualElement> { updateList, updateList }, new List<Action> { () => UpdateNotifications(), () => UpdateConversations() });
+			App.setOptionsGrid(optionGrid, new List<string> { "Notifications", "Conversations" }, new List<VisualElement> { updateList, updateList }, new List<Action> { ()=> UpdateNotifications(), () => UpdateConversations() }, null);
 
 			updateList.ItemSelected += OnListItemSelected;
 			updateList.Refreshing += async (sender, e) => { await UpdateLists(); };
+
+			peopleToAddConversationList.ItemSelected += OnPeopleToAddListItemSelected;
+			addedToConversationList.ItemSelected += OnAddedPeopleListItemSelected;
+
+			cancelCreateConversation.Clicked += (sender, e) => { CreateNewConversation.IsVisible = false; };
+			createConversation.Clicked += async (sender, e) => {
+				profilesAdded.Add(App.userProfile);
+				Conversation conv = await _dataManager.MessageApiManager.CreateConversations(profilesAdded);
+				if (conv != null) {
+					App.coreView.setContentViewWithQueue(new ConversationView(conv), "", null);
+					CreateNewConversation.IsVisible = false;
+				}
+			};
 		}
 
 		async Task UpdateLists()
@@ -32,7 +47,7 @@ namespace HowlOut
 		{
 			loading.IsVisible = true;
 			//TODO add correct servercall
-			List<Notification> notiList = await _dataManager.ProfileApiManager.GetNotifications(await _dataManager.EventApiManager.GetEventById("50"), await _dataManager.ProfileApiManager.GetProfile("191571161232364"), await _dataManager.GroupApiManager.GetGroupById("8"));
+			List<Notification> notiList = new List<Notification>(); //await _dataManager.ProfileApiManager.GetNotifications(await _dataManager.EventApiManager.GetEventById("50"), await _dataManager.ProfileApiManager.GetProfile("191571161232364"), await _dataManager.GroupApiManager.GetGroupById("8"));
 			notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
 			ObservableCollection<GroupedNotifications> groupedNotifications = new ObservableCollection<GroupedNotifications>();
 			if (notiList.Count > 0)
@@ -62,7 +77,7 @@ namespace HowlOut
 		{
 			loading.IsVisible = true;
 			//TODO add correct servercall
-			List<Conversation> conList = await _dataManager.ProfileApiManager.GetConversations();
+			List<Conversation> conList = await _dataManager.MessageApiManager.GetConversations();
 			conList = conList.OrderByDescending(c => c.LastUpdated).ToList();
 			ObservableCollection<GroupedConversations> groupedConversations = new ObservableCollection<GroupedConversations>();
 			if (conList.Count > 0)
@@ -107,7 +122,7 @@ namespace HowlOut
 				else if (selectedNotification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile ||
 						 selectedNotification.Type == Notification.MessageType.FriendRequest)
 				{
-					InspectController inspect = new InspectController(selectedNotification.ContentProfile, null, null);
+					InspectController inspect = new InspectController(selectedNotification.ContentProfile);
 					App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
 				}
 				else if (selectedNotification.Type == Notification.MessageType.FriendJoinedGroup ||
@@ -117,10 +132,44 @@ namespace HowlOut
 				}
 			} else if (listType == 1) {
 				var selectedConversation = updateList.SelectedItem as Conversation;
-				App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation, false), "Conversation", null);
+				App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation), "Conversation", null);
 			}
 			updateList.SelectedItem = null;
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+		}
+
+		public void ShowNewConversation()
+		{
+			profilesAdded = new List<Profile>();
+			CreateNewConversation.IsVisible = true;
+			peopleToAddConversationList.ItemsSource = App.userProfile.Friends;
+			addedToConversationList.ItemsSource = null;
+
+		}
+
+		public void OnPeopleToAddListItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (peopleToAddConversationList.SelectedItem == null) { return; }
+			var selectedProfile = peopleToAddConversationList.SelectedItem as Profile;
+			if (!profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
+			{
+				profilesAdded.Add(selectedProfile);
+				addedToConversationList.ItemsSource = null;
+				addedToConversationList.ItemsSource = profilesAdded;
+			}
+			peopleToAddConversationList.SelectedItem = null;
+		}
+		public void OnAddedPeopleListItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (addedToConversationList.SelectedItem == null) { return; }
+			var selectedProfile = addedToConversationList.SelectedItem as Profile;
+			if (profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
+			{
+				profilesAdded.Remove(profilesAdded.Find(p => p.ProfileId == selectedProfile.ProfileId));
+				addedToConversationList.ItemsSource = null;
+				addedToConversationList.ItemsSource = profilesAdded;
+			}
+			addedToConversationList.SelectedItem = null;
 		}
 
 

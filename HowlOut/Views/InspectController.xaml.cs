@@ -12,124 +12,141 @@ namespace HowlOut
 	public partial class InspectController : ContentView
 	{
 		ListsAndButtons listMaker = new ListsAndButtons();
-
 		private DataManager _dataManager = new DataManager();
-
-
 		public CreateEvent createEventView;
-
 		List<Comment> givenCommentList = new List<Comment>();
 		List<Profile> profileList = new List<Profile>();
 
-		public InspectController(Profile userProfile, Group userGroup, Event eventObject)
+		public InspectController(Profile userProfile)
 		{
 			InitializeComponent();
-			setInfo(userProfile, userGroup, eventObject);
+			SetProfileInspect(userProfile);
 		}
 
-		private async void setInfo(Profile userProfile, Group userGroup, Event eventObject)
+		async void SetProfileInspect(Profile userProfile)
 		{
-			if (userProfile != null)
+			if (userProfile.ProfileId == App.userProfile.ProfileId)
 			{
-				if (userProfile.ProfileId == App.userProfile.ProfileId)
-				{
-					App.setOptionsGrid(optionGrid, new List<string> { "Friends", "Wolfpacks" }, new List<VisualElement>{profileGrid, groupGrid}, new List<Action> { null, null });
-					App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile(App.userProfile.ProfileId);
-					userProfile = App.userProfile;
-				}
-				else {
-					userProfile = await _dataManager.ProfileApiManager.GetProfile(userProfile.ProfileId);
-					if (_dataManager.IsProfileFriend(userProfile))
-					{
-						App.setOptionsGrid(optionGrid, new List<string> { "Friends", "Wolfpacks", "Events" }, new List<VisualElement> { profileGrid, groupGrid, eventsGrid }, new List<Action> {null, null, ()=> addEvents(userProfile.ProfileId)});
-					}
-				}
-				listMaker.createList(profileGrid, userProfile.Friends, null, ListsAndButtons.ListType.Normal, null, null);
-				listMaker.createList(groupGrid, null, userProfile.Groups, ListsAndButtons.ListType.Normal, null, null);
-
-				infoView.Content = new ProfileDesignView(userProfile, null, null, 200, ProfileDesignView.Design.Inspect, ProfileDesignView.Show.Profile, false);
+				App.setOptionsGrid(optionGrid, new List<string> { "Friends", "Groups", "Organizations" }, new List<VisualElement> { profileGrid, groupGrid, orgGrid }, new List<Action> { 
+					()=> {listMaker.createList(profileGrid, App.userProfile.Friends, null, null, null, null, null); },
+					()=> {listMaker.createList(groupGrid, null, App.userProfile.Groups, null, null, null, null);} , 
+					()=> {listMaker.createList(orgGrid, null, null, App.userProfile.Organizations, null, null, null);} }, null);
+				App.coreView.GetLoggedInProfile();
+				infoView.Content = new ProfileDesignView(userProfile, 200, false);
 				App.coreView.topBar.setNavigationLabel(userProfile.Name, scrollView);
 			}
-			else if (userGroup != null)
-			{
-				userGroup = await _dataManager.GroupApiManager.GetGroupById(userGroup.GroupId);
-				profileList.Add(userGroup.Owner);
-				if (userGroup.Members != null)
+			else {
+				userProfile = await _dataManager.ProfileApiManager.GetProfile(userProfile.ProfileId);
+				infoView.Content = new ProfileDesignView(userProfile, 200, false);
+				if (_dataManager.IsProfileFriend(userProfile))
 				{
-					for (int i = 0; i < userGroup.Members.Count; i++)
-					{
-						profileList.Add(userGroup.Members[i]);
-					}
-				}
-				listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.Normal, null, null);
-				App.setOptionsGrid(optionGrid, new List<string> { "Members", "Wall" }, new List<VisualElement> { profileGrid, wallGrid }, new List<Action> { null, null});
-				givenCommentList = userGroup.Comments;
-				infoView.Content = new ProfileDesignView(null, userGroup, null, 200, ProfileDesignView.Design.Inspect, ProfileDesignView.Show.Group, false);
-				App.coreView.topBar.setNavigationLabel("Wolfpack " + userGroup.Name, scrollView);
-			}
-			else if (eventObject != null)
-			{
-				eventObject = await _dataManager.EventApiManager.GetEventById(eventObject.EventId);
-				if (!_dataManager.IsEventJoined(eventObject))
-				{
-					App.setOptionsGrid(optionGrid, new List<string> { "Attendees" }, new List<VisualElement> { profileGrid }, new List<Action> { null });
-				}
-				else {
-					App.setOptionsGrid(optionGrid, new List<string> { "Attendees", "Wall" }, new List<VisualElement> { profileGrid, wallGrid }, new List<Action> { null, null });
-				}
-
-				if (eventObject.Attendees != null)
-				{
-					for (int i = 0; i < eventObject.Attendees.Count; i++)
-					{
-						profileList.Add(eventObject.Attendees[i]);
-					}
-				}
-				if (_dataManager.IsEventYours(eventObject))
-				{
-					listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.EventAttendeesSeenAsOwner, null, null);
-				}
-				else {
-					listMaker.createList(profileGrid, profileList, null, ListsAndButtons.ListType.Normal, null, null);
-				}
-
-				infoView.Content = new InspectEvent(eventObject, _dataManager.IsEventJoined(eventObject), scrollView);
-
-				if (eventObject.Owner != null)
-				{
-					App.coreView.topBar.setNavigationLabel(eventObject.Owner.Name + "'s Event", scrollView);
-				}
-				else if (eventObject.OrganisationOwner != null)
-				{
-					App.coreView.topBar.setNavigationLabel(eventObject.OrganisationOwner.Name + "'s Event", scrollView);
+					App.setOptionsGrid(optionGrid, new List<string> { "Friends", "Groups", "Events" }, new List<VisualElement> { profileGrid, groupGrid, eventsGrid }, new List<Action> { null, null, () => addEvents(userProfile) }, null);
 				}
 			}
-			Conversation conv = new Conversation()
-			{
-				Comments = givenCommentList,
-				ConversationID = "123467",
-			};
-
-
-
-			createWall(conv);
 		}
 
-		private void addEvents(string id)
+
+		public InspectController(Group userGroup)
+		{
+			InitializeComponent();
+			SetGroupInspect(userGroup);
+		}
+
+		async void SetGroupInspect(Group userGroup)
+		{
+			userGroup = await _dataManager.GroupApiManager.GetGroup(userGroup.GroupId);
+			profileList.Add(userGroup.ProfileOwner);
+			if (userGroup.Members != null)
+			{
+				for (int i = 0; i < userGroup.Members.Count; i++)
+				{
+					profileList.Add(userGroup.Members[i]);
+				}
+			}
+			listMaker.createList(profileGrid, profileList , null, null, null, null, null);
+			App.setOptionsGrid(optionGrid, new List<string> { "Members", "Wall" }, new List<VisualElement> { profileGrid, wallGrid }, new List<Action> { null, null }, null);
+			givenCommentList = userGroup.Comments;
+			infoView.Content = new GroupDesignView(userGroup, 200);
+			App.coreView.topBar.setNavigationLabel("Wolfpack " + userGroup.Name, scrollView);
+		}
+
+
+		public InspectController(Organization organization)
+		{
+			InitializeComponent();
+			SetOrganizationInspect(organization);
+		}
+
+		async void SetOrganizationInspect(Organization organization)
+		{
+			listMaker.createList(profileGrid, organization.Members, null, null, null, null, null);
+			infoView.Content = new OrganizationDesignView(organization, 200);
+			App.coreView.topBar.setNavigationLabel("Wolfpack " + organization.Name, scrollView);
+			//App.setOptionsGrid(optionGrid, new List<string> { "Events" }, new List<VisualElement> { eventsGrid }, new List<Action> { () => addEvents(userProfile.ProfileId) }, null);
+		}
+
+		public InspectController(Event eve)
+		{
+			InitializeComponent();
+			SetEventInspect(eve);
+		}
+
+		async void SetEventInspect(Event eve)
+		{
+			eve = await _dataManager.EventApiManager.GetEventById(eve.EventId);
+			if (!_dataManager.IsEventJoined(eve))
+			{
+				App.setOptionsGrid(optionGrid, new List<string> { "Attendees" }, new List<VisualElement> { profileGrid }, new List<Action> { null }, null);
+			}
+			else {
+				App.setOptionsGrid(optionGrid, new List<string> { "Attendees", "Wall" }, new List<VisualElement> { profileGrid, wallGrid }, new List<Action> { null, null }, null);
+				createWall(eve.Comments, MessageApiManager.CommentType.EventComment, eve.EventId);
+			}
+
+			if (eve.Attendees != null)
+			{
+				for (int i = 0; i < eve.Attendees.Count; i++)
+				{
+					profileList.Add(eve.Attendees[i]);
+				}
+			}
+			if (_dataManager.IsEventYours(eve))
+			{
+				listMaker.createList(profileGrid, profileList, null, null, null, null, null);
+			}
+			else {
+				listMaker.createList(profileGrid, profileList, null, null, null, null, null);
+			}
+
+			infoView.Content = new InspectEvent(eve, _dataManager.IsEventJoined(eve), scrollView);
+
+			if (eve.ProfileOwner != null)
+			{
+				App.coreView.topBar.setNavigationLabel(eve.ProfileOwner.Name + "'s Event", scrollView);
+			}
+			else if (eve.OrganizationOwner != null)
+			{
+				App.coreView.topBar.setNavigationLabel(eve.OrganizationOwner.Name + "'s Event", scrollView);
+			}
+		}
+
+
+
+		private void addEvents(Profile pro)
 		{
 			eventsGrid.Children.Clear();
-			eventsGrid.Children.Add(new EventView(10, id));
+			eventsGrid.Children.Add(new EventListView(pro));
 		}
 
-		private void createWall(Conversation conv)
+		private void createWall(List<Comment> comments, MessageApiManager.CommentType type, string id)
 		{
 			wallGrid.Children.Clear();
-			wallGrid.Children.Add(new ConversationView(conv, true));
+			wallGrid.Children.Add(new ConversationView(comments, type, id, wallGrid));
 		}
 
 		public ScrollView getScrollView()
 		{
-			return scrollView;
+			return null;
 		}
 	}
 }

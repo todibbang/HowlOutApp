@@ -21,7 +21,7 @@ namespace HowlOut
 			App.coreView.topBar.showSearchBar(true);
 			App.coreView.topBar.showCreateNewButton(true);
 			*/
-			inspect = new InspectController(App.userProfile, null, null);
+			inspect = new InspectController(App.userProfile);
 			profileContent.Content = inspect;
 
 			searchBar.TextChanged += (sender, e) =>
@@ -33,6 +33,7 @@ namespace HowlOut
 						setViewDesign(0);
 						profileGrid.Children.Clear();
 						groupGrid.Children.Clear();
+						organizationGrid.Children.Clear();
 					}
 				}
 				else {
@@ -56,32 +57,63 @@ namespace HowlOut
 				}
 			};
 
-			App.selectButton(new List<Button> { optionOne, optionTwo }, optionOne);
+			App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionOne);
 			optionOne.Clicked += (sender, e) =>
 			{
-				App.selectButton(new List<Button> { optionOne, optionTwo }, optionOne);
+				App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
+				organizationGrid.IsVisible = false;
 			};
 			optionTwo.Clicked += (sender, e) => {
-				App.selectButton(new List<Button> { optionOne, optionTwo }, optionTwo);
+				App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
+				organizationGrid.IsVisible = false;
 			};
+			optionThree.Clicked += (sender, e) => {
+				App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionThree);
+				organizationGrid.IsVisible = true;
+				profileGrid.IsVisible = false;
+				groupGrid.IsVisible = false;
+			};
+
+			/*
+			ListsAndButtons listMaker = new ListsAndButtons();
+			listMaker.createList(profileGrid, App.userProfile.Friends, null, null, null, null, null);
+			listMaker.createList(groupGrid, null, App.userProfile.Groups, null, null, null, null);
+			listMaker.createList(organizationGrid, null, null, App.userProfile.Organizations, null, null, null);
+			*/
 		}
+		/*
+		public async void updateLists()
+		{
+			App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile();
+			listMaker.createList(profileGrid, App.userProfile.Friends, null, null, null, null, null);
+			listMaker.createList(groupGrid, null, App.userProfile.Groups, null, null, null, null);
+			listMaker.createList(organizationGrid, null, null, App.userProfile.Organizations, null, null, null);
+		}
+		*/
 
 		public async void updateAutoCompleteProfileList(string input)
 		{
 			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
 			profileGrid.Children.Clear ();
-			listMaker.createList (profileGrid, profileSearchResult, null, ListsAndButtons.ListType.Normal, null, null);
+			listMaker.createList (profileGrid, profileSearchResult, null, null, null, null, null);
 		}
 
 		public async void updateAutoCompleteGroupList(string input)
 		{
 			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
 			groupGrid.Children.Clear ();
-			listMaker.createList (groupGrid, null, groupSearchResult, ListsAndButtons.ListType.Normal, null, null);
+			listMaker.createList (groupGrid, null, groupSearchResult, null, null, null, null);
+		}
+
+		public async void updateAutoCompleteOrganizationsList(string input)
+		{
+			var orgsSearchResult = await _dataManager.OrganizationApiManager.GetOrganizationsFromName(input);
+			organizationGrid.Children.Clear();
+			listMaker.createList(groupGrid, null, null, orgsSearchResult, null, null, null);
 		}
 
 		private void setViewDesign(int number){

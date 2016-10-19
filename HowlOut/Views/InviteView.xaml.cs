@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using ModernHttpClient;
 using ImageCircle.Forms.Plugin.Abstractions;
+using System.Linq;
 
 namespace HowlOut
 {
@@ -19,22 +20,27 @@ namespace HowlOut
 		private List<Group> groupsToFind = new List<Group>();
 		private List<Profile> profilesNotToFind = new List<Profile>();
 
-		public InviteView (Group groupObject, Event eventObject, WhatToShow whatToShow)
+		public InviteView (Group groupObject, Event eventObject, Organization orgObject, WhatToShow whatToShow)
 		{
 			InitializeComponent ();
 
 			Dictionary<Profile, string> profilesNotToInvite = new Dictionary<Profile, string> { };
 
-			if (whatToShow.Equals (WhatToShow.PeopleToInviteToEvent)) {
-				profilesToFind = App.userProfile.Friends;
+			profilesToFind = App.userProfile.Friends;
+			ListType = ListsAndButtons.ListType.Invite;
+
+			if (whatToShow.Equals(WhatToShow.PeopleToInviteToEvent)) {
 				profilesNotToFind = eventObject.Attendees;
+				foreach (Profile p in eventObject.InvitedProfiles) {
+					if (!profilesNotToFind.Exists(pro => pro.ProfileId == p.ProfileId)) { profilesNotToFind.Add(p); }
+				}
 				groupsToFind = App.userProfile.Groups;
-				ListType = ListsAndButtons.ListType.Invite;
-			} else if (whatToShow.Equals (WhatToShow.PeopleToInviteToGroup)) {
-				profilesToFind = App.userProfile.Friends;
+			}
+			else if (whatToShow.Equals(WhatToShow.PeopleToInviteToGroup)) {
 				profilesNotToFind = groupObject.Members;
-				ListType = ListsAndButtons.ListType.Invite;
-				optionGrid.IsVisible = false;
+			}
+			else if (whatToShow.Equals(WhatToShow.PeopleToInviteToOrganization)) {
+				profilesNotToFind = orgObject.Members;
 			}
 
 			for (int i = 0; i < profilesNotToFind.Count; i++) {
@@ -47,26 +53,16 @@ namespace HowlOut
 				}
 			}
 
-			if(profilesToFind.Count > 0) listMaker.createList (profileGrid, profilesToFind, null, ListType, eventObject, groupObject);
-			if(groupsToFind.Count > 0) listMaker.createList (groupGrid, null, groupsToFind, ListType, eventObject, groupObject);
+			if(profilesToFind.Count > 0) listMaker.createList (profileGrid, profilesToFind, null, null, eventObject, groupObject, orgObject);
 
 
-
-			optionOne.Clicked += (sender, e) => {
-				App.selectButton(new List<Button> { optionOne, optionTwo }, optionOne);
-				profileGrid.IsVisible = true;
-				groupGrid.IsVisible = false;
-			};
-			optionTwo.Clicked += (sender, e) => {
-				App.selectButton(new List<Button> { optionOne, optionTwo }, optionTwo);
-				profileGrid.IsVisible = false;
-				groupGrid.IsVisible = true;
-			};
+			App.setOptionsGrid(optionGrid, new List<string> { "Profiles", "Groups" }, new List<VisualElement> { profileGrid, groupGrid }, null, null);
 		}
 
 		public enum WhatToShow {
 			PeopleToInviteToEvent,
 			PeopleToInviteToGroup,
+			PeopleToInviteToOrganization,
 		}
 	}
 }

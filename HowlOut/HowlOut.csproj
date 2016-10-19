@@ -79,9 +79,6 @@
     </EmbeddedResource>
     <Compile Include="Models\SearchSettings.cs" />
     <Compile Include="Models\EventType.cs" />
-    <Compile Include="Views\Components\ProfileDesignView.xaml.cs">
-      <DependentUpon>ProfileDesignView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
@@ -125,18 +122,6 @@
     </EmbeddedResource>
     <Compile Include="Views\SelectBannerView.xaml.cs">
       <DependentUpon>SelectBannerView.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\Components\GroupDesignView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Components\GroupDesignView.xaml.cs">
-      <DependentUpon>GroupDesignView.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\Components\EventDesignView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Components\EventDesignView.xaml.cs">
-      <DependentUpon>EventDesignView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Components\StandardButton.cs" />
     <EmbeddedResource Include="Views\Campfinder\MapTest.xaml">
@@ -209,6 +194,33 @@
     <Compile Include="Views\CreateViews\CreateView.xaml.cs">
       <DependentUpon>CreateView.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\EventListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\EventListView.xaml.cs">
+      <DependentUpon>EventListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FaceBookEvent.cs" />
+    <Compile Include="Models\FacebookPlace.cs" />
+    <Compile Include="Models\FacebookLocation.cs" />
+    <Compile Include="Views\DesignViews\OrganizationDesignView.cs" />
+    <EmbeddedResource Include="Views\DesignViews\GenericDesignView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\DesignViews\GenericDesignView.xaml.cs">
+      <DependentUpon>GenericDesignView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DesignViews\ProfileDesignView.cs" />
+    <Compile Include="Views\DesignViews\GroupDesignView.cs" />
+    <Compile Include="Services\OrganizationApiManager.cs" />
+    <Compile Include="Models\OrganizationDTO.cs" />
+    <Compile Include="Services\MessageApiManager.cs" />
+    <EmbeddedResource Include="Views\CreateViews\CreateOrganization.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\CreateViews\CreateOrganization.xaml.cs">
+      <DependentUpon>CreateOrganization.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />
@@ -276,6 +288,9 @@
     <Reference Include="Microsoft.WindowsAzure.Storage">
       <HintPath>..\packages\WindowsAzure.Storage.7.1.3-preview\lib\portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Forms.CarouselView">
+      <HintPath>..\packages\Xamarin.Forms.CarouselView.2.3.0-pre2\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.CarouselView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -286,6 +301,7 @@
     <Folder Include="TestViews\" />
     <Folder Include="Models\Grouped\" />
     <Folder Include="Views\CreateViews\" />
+    <Folder Include="Views\DesignViews\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">
@@ -313,9 +329,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InviteView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Components\ProfileDesignView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Inspect\InspectEvent.xaml">

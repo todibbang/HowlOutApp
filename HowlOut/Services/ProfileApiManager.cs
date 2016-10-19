@@ -18,70 +18,88 @@ namespace HowlOut
 			this.httpClient = httpClient;
 		}
 
-		public async Task<bool> CreateProfile(Profile profile)
+		public async Task<Profile> GetProfile(string id)
 		{
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI");
-
-			try
-			{
-				System.Diagnostics.Debug.WriteLine("Trying");
-				var json = JsonConvert.SerializeObject(profile);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-				var response = await httpClient.PostAsync(uri, content);
-
-				if (response.IsSuccessStatusCode)
-				{
-					System.Diagnostics.Debug.WriteLine("Success");
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine("Failing");
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-
-			return false;
+			var uri = "/"+id;
+			List<Profile> profiles = await GetProfilesServerCall(uri);
+			return profiles[0];
 		}
 
-
-		public async Task<bool> SetSearchSettings(string profileId, SearchSettings searchSettings)
+		public async Task<Profile> GetLoggedInProfile()
 		{
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/SearchReference/"+profileId);
-
-			try
-			{
-				var json = JsonConvert.SerializeObject(searchSettings);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-				var response = await httpClient.PostAsync(uri, content);
-
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine("Failing");
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-
-			return false;
+			var uri = "/me?profileId=" + App.StoredUserFacebookId;
+			List<Profile> profiles = await GetProfilesServerCall(uri);
+			return profiles[0];
 		}
 
 		public async Task<List<Profile>> GetProfilesFromName(string name)
 		{
-			List<Profile> profiles = new List<Profile>(); 
+			var uri = "/profilesFromName/" + name;
+			return await GetProfilesServerCall(uri);
+		}
 
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetFromName/" + name);
 
+		public async Task<bool> CreateUpdateProfile(Profile pro, bool create)
+		{
+			var uri = "?create="+create;
+			Profile newPro = new Profile() { Name = pro.Name, Description = pro.Description, ProfileId = pro.ProfileId, ImageSource = pro.ImageSource };
+			var content = JsonConvert.SerializeObject(newPro);
+			var recievedContent = "";
 			try
 			{
-				var response = await httpClient.GetAsync(uri);
+				var response = await httpClient.PostAsync(new Uri(App.serverUri + "profile" + uri), new StringContent(content, Encoding.UTF8, "application/json"));
 				if (response.IsSuccessStatusCode)
 				{
-					var content = await response.Content.ReadAsStringAsync();
-					profiles = JsonConvert.DeserializeObject<List<Profile>>(content);
+					return true;
+				}
+				else
+				{
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return false;
+		}
+
+		public async Task<bool> updateSearchSettings(SearchSettings settings)
+		{
+			var uri = "/searchPreference/" + App.StoredUserFacebookId;
+			var content = JsonConvert.SerializeObject(settings);
+			List<Profile> profiles = await PostProfileServerCall(uri, content);
+			return true;
+		}
+
+		public async Task<bool> RequestDeclineAcceptUnfriend(string profileFriendId, bool acceptOrDecline)
+		{
+			var uri = "/requestDeclineAcceptUnfriend?profileSignedInId=" + App.StoredUserFacebookId + "&profileFriendId=" + profileFriendId + "&acceptOrRequest=" + acceptOrDecline;
+			return await PutProfileServerCall(uri);
+		}
+
+		public async Task<List<Profile>> GetProfilesServerCall(string uri)
+		{
+			List<Profile> profiles = new List<Profile>();
+			var recievedContent = "";
+			try {
+				var response = await httpClient.GetAsync(new Uri(App.serverUri + "profile" + uri));
+				if (response.IsSuccessStatusCode)
+				{
+					recievedContent = await response.Content.ReadAsStringAsync();
+					try
+					{
+						return profiles = JsonConvert.DeserializeObject<List<Profile>>(recievedContent);
+					}
+					catch (Exception ex)
+					{
+						Profile pro = JsonConvert.DeserializeObject<Profile>(recievedContent);
+						profiles.Add(pro);
+					}
+				}
+				else
+				{
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)
@@ -91,264 +109,55 @@ namespace HowlOut
 			return profiles;
 		}
 
-		public async Task<Profile> GetProfile(string profileId)
+		public async Task<bool> PutProfileServerCall(string uri)
 		{
-			Profile profile = new Profile();
-
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/" + profileId);
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
+			try {
+				var response = await httpClient.PutAsync(new Uri(App.serverUri + "profile" + uri), new StringContent(""));
+				if (response.IsSuccessStatusCode) 
+				{ 
+					return true; 
+				}
+				else
 				{
-					var content = await response.Content.ReadAsStringAsync();
-					profile = JsonConvert.DeserializeObject<Profile>(content);
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return profile;
-		}
-
-		public async Task<ObservableCollection<Event>> GetEventsInvitedTo()
-		{
-			string profileId = App.userProfile.ProfileId;
-			ObservableCollection<Event> events = new ObservableCollection<Event>();
-
-			//4/10/2016 7:12:43 PM - virker !! 
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsInvitedTo/" + profileId + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return events;
-		}
-
-		public async Task<ObservableCollection<Event>> GetEventsFollowed()
-		{
-			string profileId = App.userProfile.ProfileId;
-
-			ObservableCollection<Event> events = new ObservableCollection<Event>();
-
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/GetEventsFollowed/" + profileId + "?currentTime="+DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US")));
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					events = JsonConvert.DeserializeObject<ObservableCollection<Event>>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return events;
-		}
-
-		public async Task<Profile> GetLoggedInProfile(string profileId)
-		{
-			Profile profile = new Profile();
-
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/Me?profileId=" + profileId);
-
-			try
-			{
-				var response = await httpClient.GetAsync(uri);
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsStringAsync();
-					profile = JsonConvert.DeserializeObject<Profile>(content);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return profile;
-		}
-
-		public async Task<bool> RequestFriend(string profileRequestToId, string profileRequestFromId)
-		{
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/RequestFriend?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			catch (Exception ex) 
+			{ 
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); 
 			}
 			return false;
 		}
 
-		public async Task<bool> AcceptFriend(string profileAcceptedId, string profileRequestedId)
+		public async Task<List<Profile>> PostProfileServerCall(string uri, string content)
 		{
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/AcceptFriend?profileAcceptedId="+profileAcceptedId+"&profileRequestedId="+profileRequestedId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
-		}
-
-		public async Task<bool> DeclineFriendRequest(string profileRequestToId, string profileRequestFromId)
-		{
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/DeclineFriendRequest?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
-		}
-
-		public async Task<bool> RemoveFriend(string profileRequestToId, string profileRequestFromId)
-		{
-			var uri = new Uri("https://www.howlout.net/api/ProfilesAPI/RemoveFriend?profileRequestToId="+profileRequestToId+"&profileRequestFromId="+profileRequestFromId);
-
-			try
-			{
-				var content = new StringContent("");
-				var response = await httpClient.PutAsync(uri, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-			}
-			return false;
-		}
-
-		public async Task<List<Notification>> GetNotifications(Event testeve, Profile testpro, Group testGroup)
-		{
-			List<Notification> notifications = new List<Notification>();
-
-			Array values = Enum.GetValues(typeof(Notification.MessageType));
-			Random random = new Random();
-			Notification.MessageType randomBar = (Notification.MessageType)values.GetValue(random.Next(values.Length));
-
-			for (int i = 0; i < 40; i++)
-			{
-				notifications.Add(new Notification()
-				{
-					Type = (Notification.MessageType)values.GetValue(random.Next(values.Length)),
-					SendTime = DateTime.Now.AddMonths(random.Next(8)*-1).AddHours(random.Next(200)*-1),
-					ContentEvent = testeve,
-					ContentGroup = testGroup,
-					ContentProfile = testpro,
-				});
-			}
-			return notifications;
-		}
-
-
-		public async Task<List<Conversation>> GetConversations()
-		{
-			List<Conversation> conversations = new List<Conversation>();
-
-			Array values = Enum.GetValues(typeof(Notification.MessageType));
-			Random random = new Random();
-			Notification.MessageType randomBar = (Notification.MessageType)values.GetValue(random.Next(values.Length));
-
-			for (int i = 0; i < 40; i++)
-			{
-				conversations.Add(new Conversation()
-				{
-					ConversationID = i + 10 + "",
-					Profiles = new List<Profile>()
+			List<Profile> profiles = new List<Profile>();
+			var recievedContent = "";
+			try {
+				var response = await httpClient.PostAsync(new Uri(App.serverUri + "profile" + uri), new StringContent(content, Encoding.UTF8, "application/json"));
+				if (response.IsSuccessStatusCode) 
+				{ 
+					recievedContent = await response.Content.ReadAsStringAsync();
+					try
 					{
-						new Profile() {
-							Name = "William Jensen",
-							ProfileId = "1234",
-						},
-						new Profile() {
-							Name = "August Laustsen",
-							ProfileId = "1234",
-						},
-						new Profile() {
-							Name = "Joachim Bach",
-							ProfileId = "1234",
-						},
-						App.userProfile,
-					},
-
-					Comments = new List<Comment>()
-					{
-						new Comment() {
-							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
-							SenderID = "1234",
-							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
-						},
-						new Comment() {
-							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
-							SenderID = "1234",
-							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
-						},
-						new Comment() {
-							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
-							SenderID = "1234",
-							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
-						},
-						new Comment() {
-							Content = "bla bla bla bsadfl asldf aflsalsdfl lasdlf lasldfl alsdfl ",
-							SenderID = "1234",
-							DateAndTime = DateTime.Now.AddMonths(random.Next(8) * -1).AddHours(random.Next(200) * -1),
-						}
+						return profiles = JsonConvert.DeserializeObject<List<Profile>>(recievedContent);
 					}
-				});
+					catch (Exception ex)
+					{
+						Profile pro = JsonConvert.DeserializeObject<Profile>(recievedContent);
+						profiles.Add(pro);
+					}
+				}
+				else
+				{
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				}
 			}
-			return conversations;
-		}
-
-
-
-		public async Task<bool> UpdateProfile( Profile updatedProfile)
-		{
-			return true;
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return profiles;
 		}
 	}
 }

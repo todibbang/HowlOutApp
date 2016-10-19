@@ -2,7 +2,7 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.Line">
 	<ContentView.Content>
 		<StackLayout Spacing="0">
-			<BoxView BackgroundColor="{DynamicResource HowlOut}" HeightRequest="0.5" VerticalOptions="CenterAndExpand"></BoxView>
+			<BoxView BackgroundColor="{DynamicResource LineColor}" HeightRequest="0.5" VerticalOptions="CenterAndExpand"></BoxView>
 		</StackLayout>
 	</ContentView.Content>
 </ContentView>

@@ -6,6 +6,5 @@ namespace HowlOut
 		Open,
 		Closed,
 		Secret,
-		Organization
 	}
 }

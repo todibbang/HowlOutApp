@@ -14,8 +14,8 @@ namespace HowlOut
 		public Visibility Visibility { get; set; }
 		public List<EventType> EventTypes { get; set; }
 
-		public Profile Owner {get; set;}
-		public Organization OrganisationOwner { get; set;}
+		public Profile ProfileOwner {get; set;}
+		public Organization OrganizationOwner { get; set;}
 		public Group GroupSpecific { get; set; }
 
 		public double Latitude { get; set; }                //Position of the event

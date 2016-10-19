@@ -6,6 +6,12 @@ namespace HowlOut
 {
 	public partial class CreateGroup : ContentView
 	{
+		public ContentView createContent
+		{
+			get { return this; }
+			set { this.createContent = value; }
+		}
+
 		public Group newGroup;
 		Plugin.Media.Abstractions.MediaFile mediaFile;
 		DataManager _dataManager;
@@ -61,7 +67,7 @@ namespace HowlOut
 			launchButton.Clicked += async (sender, e) => {
 				if (isCreate && !Launching)
 				{
-					bool continueCreating = await App.SenderOfEvent(SelectSenderLayout);
+					bool continueCreating = await App.SenderOfEvent(SelectSenderLayout, null, newGroup);
 					if (continueCreating)
 					{
 						LaunchGroup(newGroup);
@@ -96,6 +102,11 @@ namespace HowlOut
 			{
 				groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
 			}
+			if (groupToCreate.OrganizationOwner == null)
+			{
+				groupToCreate.ProfileOwner = App.userProfile;
+			}
+			groupToCreate.GroupId = "0";
 			if (String.IsNullOrWhiteSpace(groupToCreate.Name))
 			{
 				await App.coreView.displayAlertMessage("Name Missing", "Name is missing", "Ok");
@@ -109,36 +120,27 @@ namespace HowlOut
 				await App.coreView.displayAlertMessage("Banner Missing", "No banner has been selected", "Ok");
 			}
 			else {
-				GroupDBO newGroupAsDBO = new GroupDBO
-				{
-					Name = groupToCreate.Name,
-					Description = groupToCreate.Description,
-					ImageSource = groupToCreate.ImageSource,
-					Visibility = groupToCreate.Visibility,
-					Owner = App.userProfile,
-					OrganizationOwner = groupToCreate.OrganizationOwner,
-				};
-
-				var groupCreated = await _dataManager.GroupApiManager.CreateGroup(newGroupAsDBO);
+				
+				var groupCreated = await _dataManager.GroupApiManager.CreateEditGroup(groupToCreate);
 
 				if (groupCreated != null)
 				{
-					InspectController inspect = new InspectController(null, groupCreated, null);
+					InspectController inspect = new InspectController(groupCreated);
 					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 				}
 				else {
 					await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");
 				}
 			}
-			Launching = false;
+			Launching = false; 
 		}
 
 		private async void UpdateGroup(Group groupToUpdate)
 		{
-			bool groupUpdated = await _dataManager.GroupApiManager.UpdateGroup(groupToUpdate);
+			var groupUpdated = await _dataManager.GroupApiManager.CreateEditGroup(groupToUpdate);
 
-			if (groupUpdated) {
-				InspectController inspect = new InspectController(null, groupToUpdate, null);
+			if (groupUpdated != null) {
+				InspectController inspect = new InspectController(groupUpdated);
 				App.coreView.setContentViewWithQueue(inspect, "Group", inspect.getScrollView());
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Group not updated, try again", "Ok");

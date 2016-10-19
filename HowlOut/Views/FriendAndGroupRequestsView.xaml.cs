@@ -9,17 +9,20 @@ namespace HowlOut
 		DataManager _dataManager = new DataManager ();
 		ListsAndButtons listMaker = new ListsAndButtons();
 
-		public FriendAndGroupRequestsView (bool profiles)
+
+		public FriendAndGroupRequestsView ()//(bool profiles)
 		{
 			InitializeComponent ();
 
+			bool profiles = false;
+
 			if(profiles) {
-				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
+				listMaker.createList (profileGrid, App.userProfile.RecievedFriendRequests, null, null, null, null, null);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 				friendsButton.FontAttributes = FontAttributes.Bold;
 			} else { 
-				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, ListsAndButtons.ListType.FriendAndGroupRequests, null, null);
+				listMaker.createList (groupGrid, null, App.userProfile.GroupsInviteTo, null, null, null, null);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 				groupsButton.FontAttributes = FontAttributes.Bold;
@@ -27,7 +30,7 @@ namespace HowlOut
 
 			friendsButton.Clicked  += (sender, e) => {
 				profileGrid.IsVisible = true;
-				groupGrid.IsVisible = false;
+				groupGrid.IsVisible = false; 
 				groupsButton.FontAttributes = FontAttributes.None;
 				friendsButton.FontAttributes = FontAttributes.Bold;
 			};

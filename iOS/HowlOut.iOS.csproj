@@ -166,6 +166,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Xamarin.Facebook.iOS.4.15.1\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Forms.CarouselView">
+      <HintPath>..\packages\Xamarin.Forms.CarouselView.2.3.0-pre2\lib\Xamarin.iOS10\Xamarin.Forms.CarouselView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HowlOut\HowlOut.csproj">

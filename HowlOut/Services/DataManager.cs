@@ -19,6 +19,8 @@ namespace HowlOut
 		public EventApiManager EventApiManager { get; set; }
 		public ProfileApiManager ProfileApiManager { get; set; }
 		public GroupApiManager GroupApiManager { get; set; }
+		public OrganizationApiManager OrganizationApiManager { get; set; }
+		public MessageApiManager MessageApiManager { get; set; }
 		public UtilityManager UtilityManager { get; set; }
 
 		public DataManager ()
@@ -27,6 +29,8 @@ namespace HowlOut
 			EventApiManager = new EventApiManager (httpClient);
 			ProfileApiManager = new ProfileApiManager (httpClient);
 			GroupApiManager = new GroupApiManager (httpClient);
+			OrganizationApiManager = new OrganizationApiManager(httpClient);
+			MessageApiManager = new MessageApiManager(httpClient);
 			UtilityManager = new UtilityManager ();
 		}
 
@@ -37,7 +41,7 @@ namespace HowlOut
 
 		public async Task update ()
 		{
-			App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.StoredUserFacebookId);
+			App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 		}
 
 
@@ -105,137 +109,76 @@ namespace HowlOut
 		}
 
 
-		public async void sendFriendRequest(Profile profile)
+		public async Task<bool> addFriendRequest(Profile profile, bool acceptOrDecline)
 		{
-			Profile newProfile = null;
-			bool success = await ProfileApiManager.RequestFriend(profile.ProfileId, App.userProfile.ProfileId);
+			bool success = await ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, acceptOrDecline);
 			if (success) {
-				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
+				App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 				await loadUpdatedProfile(profile);
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
-			}
-		}
-
-		public async Task<bool> acceptFriendRequest(Profile profile, bool goToProfile)
-		{
-			bool success = await ProfileApiManager.AcceptFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
-				if(goToProfile) await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
 			}
 			return success;
 		}
 
-		public async void declineFriendRequest(Profile profile)
+		public async Task<bool> sendProfilesInviteToEvent(Event eve, List<Profile> profiles)
 		{
-			bool success = await ProfileApiManager.DeclineFriendRequest(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not accepted, try again.", "Ok");
+			bool success = await EventApiManager.InviteProfilesToEvent(eve.EventId, profiles);
+			if (!success)
+			{
+				await App.coreView.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
+				return false;
+			}
+			else {
+				return true;
 			}
 		}
 
-		public async void removeFriend(Profile profile)
+		public async Task<bool> AttendTrackEvent(Event eve, bool attendOrTrack, bool joinOrLeave)
 		{
-			bool success = await ProfileApiManager.RemoveFriend(profile.ProfileId, App.userProfile.ProfileId);
-			if (success) {
-				App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
-				await loadUpdatedProfile(profile);
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+			var Continue = false;
+			Continue = await App.coreView.displayConfirmMessage("Allert", "You are about to join an event, continue?", "Yes", "No");
+			if (Continue)
+			{
+				bool success = await EventApiManager.AttendOrTrackEvent(eve.EventId, attendOrTrack, joinOrLeave);
+				if (!success)
+				{
+					await App.coreView.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
+			return Continue;
 		}
+
+
+
+		public async Task<bool> sendProfileInviteToGroup(Group group, List<Profile> profiles, GroupApiManager.GroupHandlingType type)
+		{
+			bool success = await GroupApiManager.InviteAcceptDeclineLeaveGroup(group.GroupId, profiles, type);
+			if (!success)
+			{
+				await App.coreView.displayAlertMessage("Error", "An error happened", "Ok");
+				return false;
+			}
+			else {
+				return true;
+			}
+
+			System.Diagnostics.Debug.WriteLine("Boo");
+		}
+
+
 
 		private async Task loadUpdatedProfile(Profile profile)
 		{
-			App.userProfile = await ProfileApiManager.GetLoggedInProfile (App.userProfile.ProfileId);
-			InspectController inspect = new InspectController(profile, null, null);
+			App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
+			InspectController inspect = new InspectController(profile);
 			App.coreView.setContentViewWithQueue (inspect, "UserProfile", inspect.getScrollView());
 		}
 
-		public async Task<bool> sendProfileInviteToEvent(Event eve, Profile profile)
-		{
-			List <string> IdsToInvite = new List<string> ();
-			IdsToInvite.Add (profile.ProfileId);
-			bool success = await EventApiManager.InviteToEvent(eve.EventId, IdsToInvite);
-			if (!success) {
-				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited", "Ok");
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		public async Task<bool>  sendProfileInviteToGroup(Group group, Profile profile)
-		{
-			List<string> profileIds = new List<string> ();
-			profileIds.Add (profile.ProfileId);
-			bool success = await GroupApiManager.InviteToGroup(group.GroupId, profileIds);
-			if (!success) {
-				await App.coreView.displayAlertMessage ("Error", "An error happened and " + profile.Name + " was not invited to the group " + group.Name, "Ok");
-				return false;
-			} else {
-				return true;
-			}
-
-			System.Diagnostics.Debug.WriteLine ("Boo");
-		}
-
-		public async void leaveEvent(Event eve)
-		{
-			bool leaveConfirmed = await App.coreView.displayConfirmMessage("Warning", "You are about to leave this event, would you like to continue?", "Yes", "No");
-			if (leaveConfirmed) {
-				bool hasLeft = await EventApiManager.UnattendEvent (eve.EventId, App.StoredUserFacebookId);
-				if (hasLeft) {
-					await App.coreView.displayAlertMessage ("Event Left", "You have successfully left the event.", "Ok");
-					App.coreView.setContentView (1);
-				} else {
-					await App.coreView.displayAlertMessage ("Event Not Left", "An error happened and you have not yet left the event, try again.", "Ok");
-				}
-			}
-		}
-
-		public async void joinEvent(Event eve)
-		{
-			bool joinConfirmed = await App.coreView.displayConfirmMessage("Joining", "You are about to join this event, would you like to continue?", "Yes", "No");
-			if (joinConfirmed) {
-				bool hasJoined = await EventApiManager.AttendEvent (eve.EventId, App.StoredUserFacebookId);
-				if (hasJoined) {
-					Event eventWhenJoined = await EventApiManager.GetEventById (eve.EventId);
-					await App.coreView.displayAlertMessage ("Event Joined", "You have successfully joined the event.", "Ok");
-					InspectController inspect = new InspectController(null, null, eventWhenJoined);
-					App.coreView.setContentViewWithQueue (inspect, "UserProfile", inspect.getScrollView());
-				} else {
-					await App.coreView.displayAlertMessage ("Event Not Joined", "An error happened and you have not yet joined the event, try again.", "Ok");
-				}
-			}
-		}
-
-		public async void followEvent(Event eve)
-		{
-			bool followConfirmed = await App.coreView.displayConfirmMessage("Following", "You are about to follow this event, would you like to continue?", "Yes", "No");
-			if (followConfirmed) {
-				bool hasFollowed = await EventApiManager.FollowEvent (eve.EventId, App.userProfile.ProfileId);
-				if (hasFollowed) {
-					await App.coreView.displayAlertMessage ("Event Followed", "You have successfully followed the event.", "Ok");
-				} else {
-					await App.coreView.displayAlertMessage ("Event Not Followed", "An error happened and you have not yet followed the event, try again.", "Ok");
-				}
-			}
-		}
-
-		public async void declineEvent(Event eve)
-		{
-			bool hasFollowed = await EventApiManager.DeclineEventInvite (eve.EventId, App.userProfile.ProfileId);
-			if (!hasFollowed) {
-				await App.coreView.displayAlertMessage ("Event Not Declined", "An error happened and you have not yet declined the invite, try again.", "Ok");
-			}
-		}
 
 		public bool IsProfileYou(Profile profile)
 		{
@@ -285,7 +228,7 @@ namespace HowlOut
 		public bool IsEventYours(Event eve)
 		{
 			bool yours = false;
-			if ((eve.Owner != null && eve.Owner.ProfileId == App.StoredUserFacebookId) || (eve.OrganisationOwner != null && App.userProfile.Groups.Exists(o => o.GroupId == eve.OrganisationOwner.OrganizationID)))
+			if ((eve.ProfileOwner != null && eve.ProfileOwner.ProfileId == App.StoredUserFacebookId) || (eve.OrganizationOwner != null && App.userProfile.Groups.Exists(o => o.GroupId == eve.OrganizationOwner.OrganizationId)))
 			{
 				yours = true;
 			}
@@ -310,7 +253,7 @@ namespace HowlOut
 		public bool AreYouGroupOwner(Group group)
 		{
 			bool you = false;
-			if (group.Owner.ProfileId == App.userProfile.ProfileId) {
+			if (group.ProfileOwner.ProfileId == App.userProfile.ProfileId) {
 				you = true;
 			}
 			return you;

@@ -23,14 +23,8 @@ namespace HowlOut
 			InitializeComponent ();
 			efl = new EventForLists(eve);
 			BindingContext = efl;
-			//attendingInfo.Text = (eve.Attendees.Count + 1) + "/" + eve.MaxSize;
-
-
 			_dataManager = new DataManager();
 			setInfo (eve);
-
-			//System.Diagnostics.Debug.WriteLine("Eve id:D " + eve.EventId);
-
 			if (!_dataManager.IsEventJoined(eve)) { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
 			else  { searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
 
@@ -77,20 +71,20 @@ namespace HowlOut
 				if (_dataManager.IsEventYours(eve)) {
 					App.coreView.setContentViewWithQueue (new CreateEvent (eve, false), "CreateEvent", null);
 				} else {
-					_dataManager.leaveEvent (eve);
+					_dataManager.AttendTrackEvent(eve, true, false);
 				}
 			};
 
 			joinButton.Clicked += (sender, e) => {
-				_dataManager.joinEvent(eve);
+				_dataManager.AttendTrackEvent(eve,true,true);
 			};
 
 			followButton.Clicked += (sender, e) =>  {
-				_dataManager.followEvent(eve);
+				_dataManager.AttendTrackEvent(eve, false, true);
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue (new InviteView (null, eve, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView", null);
+				App.coreView.setContentViewWithQueue (new InviteView (null, eve, null, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView", null);
 			};
 		}
 
@@ -103,19 +97,7 @@ namespace HowlOut
 			bottomTime.Text = eve.StartDate.ToString("HH:mm") + "-" + eve.EndDate.ToString("HH:mm");
 
 			topDist.Text = efl.Distance + " km";
-
-
-			//ProfileContent.Content = new ProfileDesignView (eve.Owner, null, null, 130, ProfileDesignView.Design.Plain, true);
-			//GroupContent.Content = new EventDesignView (eve, 130, EventDesignView.Design.Plain);
-			//BannerHeight.Height = (0.524 * App.coreView.Width) - 60;
-
-			//Title.Text = eve.Title;
 			eventDescription.Text = eve.Description;
-			//Distance.Text = _dataManager.UtilityManager.distance(new Position(eve.Latitude, eve.Longitude), App.lastKnownPosition);
-			//var Times = _dataManager.UtilityManager.setTime(eve.StartDate);
-			//BigTime.Text = Times [0];
-			//SmallTime.Text = Times [1];
-
 			StartTime.Text = "" + eve.StartDate.DayOfWeek + " the " + eve.StartDate.Day + " " + eve.StartDate.ToString("MMMM").ToLower();
 			EndTime.Text =  _dataManager.UtilityManager.getTime(eve.StartDate) + " - " + _dataManager.UtilityManager.getTime(eve.EndDate);
 

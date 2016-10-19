@@ -28,11 +28,15 @@ namespace HowlOut.iOS.Renderers
     {
         bool IsShown;
 
-		List<string> readPermissions = new List<string> { "public_profile" };
+		List<string> readPermissions = new List<string> { "public_profile", "user_events" };
 
 		LoginButton loginView;
 		ProfilePictureView pictureView;
 		UILabel nameLabel;
+
+		string name = "";
+		string token = "";
+		string id = "";
 
         public override void ViewDidLoad()
 		{
@@ -46,8 +50,10 @@ namespace HowlOut.iOS.Renderers
 
 				if (e.NewProfile == null)
 					return;
-
+				
 				nameLabel.Text = e.NewProfile.Name;
+				name = e.NewProfile.Name;
+				logIn();
 			});
 
 			// Set the Read and Publish permissions you want to get
@@ -62,23 +68,15 @@ namespace HowlOut.iOS.Renderers
 			{
 				if (e.Error != null)
 				{
-					// Handle if there was an error
 					HowlOut.LoginPage.LoginCancel();
 				}
 
 				if (e.Result.IsCancelled)
 				{
-					// Handle if the user cancelled the login request
 					HowlOut.LoginPage.LoginCancel();
 				}
-
-				App.SetToken(e.Result.Token.TokenString);
-				App.SetUserFacebookId(e.Result.Token.UserID);
-
-
-
-				// Handle your successful login
-				HowlOut.LoginPage.LoginSuccess();
+				token = e.Result.Token.TokenString;
+				id = e.Result.Token.UserID;
 			};
 
 			// Handle actions once the user is logged out
@@ -96,12 +94,57 @@ namespace HowlOut.iOS.Renderers
 				TextAlignment = UITextAlignment.Center,
 				BackgroundColor = UIColor.Clear
 			};
-
 			// Add views to main view
 			View.AddSubview(loginView);
 			View.AddSubview(pictureView);
 			View.AddSubview(nameLabel);
 		}
+
+		private async void logIn()
+		{
+			await HowlOut.App.storeToken(token, id, name);
+			HowlOut.LoginPage.LoginSuccess();
+		}
+
+		/*
+		async void getEvents(string id)
+		{
+			//var fields = "?fields=events,id,name,email,about,hometown,groups";
+			var request = new GraphRequest("/me/events?fields=name,id,place,description&rsvp_status=attending", null, AccessToken.CurrentAccessToken.TokenString, null, "GET");
+			var requestConnection = new GraphRequestConnection();
+
+			var fbEvents = new List<FaceBookEvent>();
+
+			requestConnection.AddRequest(request, (connection, result, error) =>
+			{
+				// Handle if something went wrong with the reques
+				if (error != null)
+				{
+					System.Diagnostics.Debug.WriteLine("Hnnn2");
+					new UIAlertView("Error...", error.Description, null, "Ok", null).Show();
+					return;
+				}
+
+				//fbEvents = JsonConvert.DeserializeObject<List<FaceBookEvent>>(result);
+
+				NSDictionary userInfo = (result as NSDictionary);
+				if (error != null)
+				{
+
+				}
+
+
+
+			});
+			requestConnection.Start();
+
+			await System.Threading.Tasks.Task.Delay(500);
+
+
+
+		}
+		*/
+
 
 		/*
 		public override void ViewDidAppear(bool animated)

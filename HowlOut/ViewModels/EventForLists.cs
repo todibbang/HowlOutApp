@@ -53,16 +53,16 @@ namespace HowlOut
 			eve = theGivenEvent;
 			Banner = eve.ImageSource;
 
-			Banner = eve.ImageSource;
 
-			EventHolder = eve.Owner.Name;
 
-			if (eve.Owner != null)
+			if (eve.ProfileOwner != null)
 			{
-				ProfileImageSource = "https://graph.facebook.com/v2.5/" + eve.Owner.ProfileId + "/picture?height=80&width=80";
+				ProfileImageSource = eve.ProfileOwner.ImageSource;
+				EventHolder = eve.ProfileOwner.Name;
 			}
 			else {
-				ProfileImageSource = eve.OrganisationOwner.ImageSource;
+				ProfileImageSource = eve.OrganizationOwner.ImageSource;
+				EventHolder = "Organization " + eve.OrganizationOwner.Name;
 			}
 
 			if (eve.GroupSpecific != null)

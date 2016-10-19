@@ -4,6 +4,8 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
+using Newtonsoft.Json;
+
 namespace HowlOut
 {
 	public partial class CoreView : ContentPage
@@ -13,7 +15,7 @@ namespace HowlOut
 		public List <string> contentViewTypes = new List<string> ();
 
 		public UpperBar topBar;
-		DataManager _dataManager;
+		public DataManager _dataManager;
 
 		//public CreateEvent createEventView;
 		public CreateView createView;
@@ -37,11 +39,11 @@ namespace HowlOut
 		{
 			//createEventView = new CreateEvent(new Event(), true);
 			createView = new CreateView();
-			manageEventView = new EventView(0, App.StoredUserFacebookId);
+			manageEventView = new EventView(0);
 			howlsEventView = new YourNotifications();
 			homeView = new HomeView();
 			await Task.Delay(50);
-			exploreEventView = new EventView(1, App.StoredUserFacebookId);
+			exploreEventView = new EventView(1);
 			contentViews.Add (exploreEventView);
 			scrollViews.Add (null);
 			contentViewTypes.Add ("Event");
@@ -54,7 +56,7 @@ namespace HowlOut
 		public async void setContentView (int type)
 		{
 			topBar.hideAll();
-			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard(); 
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard(); 			GetLoggedInProfile();
 			var first = DateTime.Now;
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			ContentView view = null;
@@ -66,11 +68,13 @@ namespace HowlOut
 				view = createView;
 				//topBar.showCreateNewGroupButton(true);
 				topBar.setNavigationLabel("Create", null);
+				createView.setLastCarousel();
 			} else if (type == 1)
 			{
 				view = manageEventView;
 				scroll = null;
 				topBar.setNavigationLabel("Your Events", scroll);
+				manageEventView.setLastCarousel();
 
 			} else if (type == 2)
 			{
@@ -78,12 +82,14 @@ namespace HowlOut
 				scroll = null;
 				topBar.showFilterSearchButton(true);
 				topBar.setNavigationLabel("Find Events", scroll);
+				exploreEventView.setLastCarousel();
 
 			} else if (type == 3)
 			{
 				view = howlsEventView;
 				scroll = howlsEventView.getScrollView();
 				topBar.setNavigationLabel("Howls", scroll);
+				topBar.showNewConversationButton(true);
 
 			} else if (type == 4)
 			{
@@ -120,6 +126,7 @@ namespace HowlOut
 		{
 			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
 			topBar.hideAll();
+			GetLoggedInProfile();
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 
 			System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
@@ -181,18 +188,30 @@ namespace HowlOut
 		}
 
 
+		public async Task<Profile> GetLoggedInProfile()
+		{
+			return App.userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile();
+		}
+
 		public async Task GoToSelectedEvent(string eveID)
 		{
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
-			InspectController inspect = new InspectController(null, null, eve);
+			InspectController inspect = new InspectController(eve);
 			setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 		}
 
 		public async Task GoToSelectedGroup(string groupID)
 		{
-			Group grp = await _dataManager.GroupApiManager.GetGroupById(groupID);
-			InspectController inspect = new InspectController(null, grp, null);
+			Group grp = await _dataManager.GroupApiManager.GetGroup(groupID);
+			InspectController inspect = new InspectController(grp);
 			setContentViewWithQueue(inspect, "Group", inspect.getScrollView());
+		}
+
+		public async Task GoToSelectedOrganization(string id)
+		{
+			Organization org = await _dataManager.OrganizationApiManager.GetOrganization(id);
+			InspectController inspect = new InspectController(org);
+			setContentViewWithQueue(inspect, "Organization", inspect.getScrollView());
 		}
 
 		public async Task displayAlertMessage (string title, string message, string buttonText)

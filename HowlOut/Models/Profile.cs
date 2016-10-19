@@ -21,8 +21,8 @@ namespace HowlOut
 
 		public List <Group> Groups { get; set; }				
 		public List <Group> GroupsInviteTo { get; set; }		
-		public List <Group> Organizations { get; set; }
-		public List <Group> OrganizationsInviteTo { get; set; }
+		public List <Organization> Organizations { get; set; }
+		public List <Organization> OrganizationsInviteTo { get; set; }
 
 		public List <Event> JoinedEvents { get; set; } 				
 		public List <Event> EventsInviteTo { get; set; } 			
@@ -31,7 +31,7 @@ namespace HowlOut
 
 		public List <Comment> Comments {get; set;}					
         public List <Notification> InAppNotifications { get; set; }
-		public SearchSettings SearchReference { get; set; }
+		public SearchSettings SearchPreference { get; set; }
 
 
 

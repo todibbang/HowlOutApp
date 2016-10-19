@@ -13,6 +13,11 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
+		public ContentView createContent { 
+			get { return this; }
+			set { this.createContent = value; }
+		}
+
 		MapsView mapView;
 		DataManager _dataManager;
 
@@ -98,6 +103,7 @@ namespace HowlOut
 					endTime.Time = newEvent.EndDate.TimeOfDay;
 					//endDate.Date = newEvent.EndDate;
 				}
+				System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
 			};
 			startTime.PropertyChanged += (sender, e) =>
 			{
@@ -109,6 +115,7 @@ namespace HowlOut
 					endTime.Time = newEvent.EndDate.TimeOfDay;
 					//endDate.Date = newEvent.EndDate;
 				}
+				System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
 			};
 			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
 			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
@@ -157,25 +164,27 @@ namespace HowlOut
 
 			NumberAttendendeesEntry.TextChanged += (sender, e) => { newEvent.MaxSize = int.Parse(NumberAttendendeesEntry.Text); };
 
-			takePictureButton.Clicked += async (sender, e) =>
+			var pictureImage = new TapGestureRecognizer();
+			pictureImage.Tapped += async (sender, e) =>
 			{
 				mediaFile = await _dataManager.UtilityManager.TakePicture();
 				if (mediaFile != null)
 				{
 					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					selectBannerButton.BackgroundColor = Color.Transparent;
 				}
 			};
+			takePictureButton.GestureRecognizers.Add(pictureImage);
 
-			albumPictureButton.Clicked += async (SenderOfEvent, e) =>
+			var albumImage = new TapGestureRecognizer();
+			albumImage.Tapped += async (SenderOfEvent, e) =>
 			{
 				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
 				if (mediaFile != null)
 				{
 					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					selectBannerButton.BackgroundColor = Color.Transparent;
 				}
 			};
+			albumPictureButton.GestureRecognizers.Add(albumImage);
 
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
@@ -203,7 +212,7 @@ namespace HowlOut
 
 			launchButton.Clicked += async (sender, e) => {
 				if(isCreate && !Launching) {
-					bool continueCreating = await App.SenderOfEvent(SelectSenderLayout);
+					bool continueCreating = await App.SenderOfEvent(SelectSenderLayout, newEvent, null);
 					if (continueCreating)
 					{
 						LaunchEvent(newEvent);
@@ -218,7 +227,6 @@ namespace HowlOut
 		}
 
 		public void setBanner(string banner) {
-			selectBannerButton.BackgroundColor = Color.Transparent;
 			SelectedBannerImage.Source = banner;
 			newEvent.ImageSource = banner;
 			mediaFile = null;
@@ -227,7 +235,7 @@ namespace HowlOut
 		private void setNewEvent()
 		{
 			cancelButton.IsVisible = false;
-			newEvent.Owner = new Profile(){ProfileId = App.StoredUserFacebookId};
+			//newEvent.ProfileOwner = new Profile(){ProfileId = App.StoredUserFacebookId};
 
 			System.Diagnostics.Debug.WriteLine (startTime.Time);
 			System.Diagnostics.Debug.WriteLine (DateTime.Now.TimeOfDay);
@@ -267,6 +275,7 @@ namespace HowlOut
 			//endDate.Date = newEvent.EndDate.Date;
 
 			locationEntry.Text = newEvent.AddressName;
+			NumberAttendendeesEntry.Text = newEvent.MaxSize+"";
 			visibilityPicker.SelectedIndex = Array.IndexOf(Enum.GetValues(newEvent.Visibility.GetType()), newEvent.Visibility);
 
 			/*
@@ -301,6 +310,11 @@ namespace HowlOut
 			{
 				eventToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
 			}
+			if (eventToCreate.OrganizationOwner == null)
+			{
+				eventToCreate.ProfileOwner = App.userProfile;
+			}
+			eventToCreate.EventId = "0";
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
 				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
@@ -314,32 +328,18 @@ namespace HowlOut
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.ImageSource)) {
 				await App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
 			}else {
-				EventDBO newEventAsDBO = new EventDBO{
-					Owner = eventToCreate.Owner, 
-					OrganisationOwner = eventToCreate.OrganisationOwner,
-					Title = eventToCreate.Title, 
-					Description = eventToCreate.Description,
-					StartDate = eventToCreate.StartDate, 
-					EndDate = eventToCreate.EndDate, 
-					MinAge = eventToCreate.MinAge,
-					MaxAge = eventToCreate.MaxAge, 
-					MinSize = eventToCreate.MinSize, 
-					MaxSize = eventToCreate.MaxSize, 
-					Visibility = eventToCreate.Visibility, 
-					Latitude = eventToCreate.Latitude,
-					Longitude = eventToCreate.Longitude, 
-					AddressName = eventToCreate.AddressName, 
-					EventTypes = eventToCreate.EventTypes,
-					ImageSource = eventToCreate.ImageSource,
-					GroupSpecific = eventToCreate.GroupSpecific
-				};
 
-				Event eventCreated = await _dataManager.EventApiManager.CreateEvent (newEventAsDBO);
+				eventToCreate.MinAge = 0;
+				eventToCreate.MaxAge = 100;
+				eventToCreate.MinSize = 1;
+
+
+				Event eventCreated = await _dataManager.EventApiManager.CreateEditEvent(eventToCreate);
 
 				if (eventCreated != null) {
 					eventCreated.Attendees = new List<Profile> ();
 					eventCreated.Followers = new List<Profile> ();
-					InspectController inspect = new InspectController(null, null, eventCreated);
+					InspectController inspect = new InspectController(eventCreated);
 					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 					App.coreView.createView.createEvent = new CreateEvent(new Event(), true);
 				} else {
@@ -351,11 +351,11 @@ namespace HowlOut
 
 		private async void UpdateEvent(Event eventToUpdate)
 		{
-			bool eventUpdated = await _dataManager.EventApiManager.UpdateEvent (eventToUpdate);
+			Event eventUpdated = await _dataManager.EventApiManager.CreateEditEvent (eventToUpdate);
 
-			if (eventUpdated) {
-
-				InspectController inspect = new InspectController(null, null, eventToUpdate);
+			if (eventUpdated != null) {
+				 
+				InspectController inspect = new InspectController(eventUpdated);
 				App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
 
 			} else {

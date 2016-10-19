@@ -9,6 +9,7 @@ namespace HowlOut
 	{
 
 		ScrollView scrollView;
+		ConversationView CV;
 
 		public UpperBar ()
 		{
@@ -18,27 +19,37 @@ namespace HowlOut
 			backImage.Tapped += async (sender, e) => 
 			{
 				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
 				await backBtn.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.returnToPreviousView();
 			};				
-			backBtn.GestureRecognizers.Add(backImage); 
+			backBtn.GestureRecognizers.Add(backImage);
 
-			createNew.Clicked += async (sender, e) =>
+			var newMessage = new TapGestureRecognizer();
+			newMessage.Tapped += async (sender, e) =>
 			{
-				await createNew.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
-				await createNew.ScaleTo(1, 50, Easing.Linear);
+				await newConversationBtn.ScaleTo(0.7, 50, Easing.Linear);
+				await newConversationBtn.ScaleTo(1, 50, Easing.Linear);
+				App.coreView.howlsEventView.ShowNewConversation();
 				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
-			};				
+			};
+			newConversationBtn.GestureRecognizers.Add(newMessage);
+
+			var addPeopleToCv = new TapGestureRecognizer();
+			addPeopleToCv.Tapped += async (sender, e) =>
+			{
+				await addPeopleToCvBtn.ScaleTo(0.7, 50, Easing.Linear);
+				await addPeopleToCvBtn.ScaleTo(1, 50, Easing.Linear);
+				CV.ShowPeopleToAddToConversation();
+				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
+			};
+			addPeopleToCvBtn.GestureRecognizers.Add(addPeopleToCv);
 
 			var createImage = new TapGestureRecognizer();
 			createImage.Tapped += async (sender, e) =>
 			{
 				await filterSearchBtn.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
 				await filterSearchBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchReference), "FilterSearch", null);
+				App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchPreference), "FilterSearch", null);
 			};
 			filterSearchBtn.GestureRecognizers.Add(createImage);
 
@@ -59,15 +70,22 @@ namespace HowlOut
 
 		public void hideAll()
 		{
-			showCreateNewGroupButton(false);
+			showNewConversationButton(false);
 			showFilterSearchButton(false);
 			showBackButton(false);
+			showAddPeopleToConversationButton(false, null);
 			scrollView = null;
 		}
 
-		public void showCreateNewGroupButton(bool show)
+		public void showNewConversationButton(bool show)
 		{
-			createNew.IsVisible = show;
+			newConversationBtn.IsVisible = show;
+		}
+
+		public void showAddPeopleToConversationButton(bool show, ConversationView cv)
+		{
+			addPeopleToCvBtn.IsVisible = show;
+			this.CV = cv;
 		}
 
 		public void showFilterSearchButton(bool show)

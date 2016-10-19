@@ -57,9 +57,9 @@ namespace HowlOut
 			friendsImage.Tapped += async (sender, e) =>
 			{
 				App.coreView.setContentView(3);
-				await howls.ScaleTo(0.7, 50, Easing.Linear);
-				await Task.Delay(60);
-				await howls.ScaleTo(1, 50, Easing.Linear);
+				//await howls.ScaleTo(0.7, 50, Easing.Linear);
+				//await Task.Delay(60);
+				//await howls.ScaleTo(1, 50, Easing.Linear);
 				unselectAll();
 				howls.Foreground = App.HowlOut;
 			};
@@ -69,6 +69,7 @@ namespace HowlOut
 			socialImage.Tapped += async (sender, e) =>
 			{
 				App.coreView.setContentView(4);
+				//App.coreView.homeView.updateLists();
 				await me.ScaleTo(0.7, 50, Easing.Linear);
 				await Task.Delay(60);
 				await me.ScaleTo(1, 50, Easing.Linear);

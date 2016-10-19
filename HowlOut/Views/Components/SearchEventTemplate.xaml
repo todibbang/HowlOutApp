@@ -18,8 +18,7 @@
 				</StackLayout>
 
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
-				<!-- <Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image> -->
-				<Image Grid.Row="1" Grid.RowSpan="2" Source="default_icon.png" Aspect="AspectFill"></Image>
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image>
 				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
@@ -41,7 +40,7 @@
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="20"/>
 					</Grid.RowDefinitions>
-					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
+					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand" Aspect="AspectFill"/>
 					<StackLayout Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>

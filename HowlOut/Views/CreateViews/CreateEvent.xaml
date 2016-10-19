@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateEvent"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut">
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0">
 			<Grid.RowDefinitions>
@@ -44,35 +44,34 @@
 							</Grid.RowDefinitions>
 
 							<!-- ICONS -->
-							<controls:IconView Grid.Row="0" Grid.Column="1" Source="ic_title" Foreground="{DynamicResource HowlOut}" />
-							<controls:IconView Grid.Row="2" Grid.Column="1" Source="ic_description" Foreground="{DynamicResource HowlOut}" />
-							<controls:IconView Grid.Row="4" Grid.Column="1" Source="ic_time" Foreground="{DynamicResource HowlOut}" />
-							<controls:IconView Grid.Row="6" Grid.Column="1" Source="ic_location" Foreground="{DynamicResource HowlOut}" />
-							<controls:IconView Grid.Row="8" Grid.Column="1" Source="ic_social" Foreground="{DynamicResource HowlOut}" />
-							<controls:IconView Grid.Row="10" Grid.Column="1" Source="ic_eye" Foreground="{DynamicResource HowlOut}" />
+							<local:IconView Grid.Row="0" Grid.Column="1" Source="ic_title" />
+							<local:IconView Grid.Row="2" Grid.Column="1" Source="ic_description" />
+							<local:IconView Grid.Row="4" Grid.Column="1" Source="ic_time" />
+							<local:IconView Grid.Row="6" Grid.Column="1" Source="ic_location" />
+							<local:IconView Grid.Row="8" Grid.Column="1" Source="ic_social" />
+							<local:IconView Grid.Row="10" Grid.Column="1" Source="ic_eye" />
 							
-							<local:CustomEntry Grid.Row="0" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Title..." PlaceholderColor="{DynamicResource LightGray}" x:Name="title" FontSize="14"></local:CustomEntry>
+							<local:CustomEntry Grid.Row="0" Grid.Column="2" Placeholder="Title..." x:Name="title"></local:CustomEntry>
 							<local:Line Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
-							<local:CustomEditor Grid.Row="2" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..." FontSize="14"></local:CustomEditor>
+							<local:CustomEditor Grid.Row="2" Grid.Column="2" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..."></local:CustomEditor>
 							<local:Line Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<StackLayout Grid.Row="4" Grid.Column="2" Orientation="Horizontal" Padding="7,0,10,0" HorizontalOptions="StartAndExpand" >
-								<local:CustomDatePicker x:Name="startDate" HasBorder="false" TextColor="{DynamicResource NormalTextColor}" Format="dd/MM/yyyy" HorizontalOptions="StartAndExpand"/>
+								<local:CustomDatePicker x:Name="startDate" HasBorder="false" Format="dd/MM/yyyy" HorizontalOptions="StartAndExpand"/>
 								<Label Text=""/>
-								<local:CustomTimePicker x:Name="startTime" HasBorder="false"  TextColor="{DynamicResource NormalTextColor}" Format="HH:mm" HorizontalOptions="StartAndExpand"/>
-								<Label Text="-      " VerticalTextAlignment="Center" HorizontalTextAlignment="Center" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="StartAndExpand"/>
-								<local:CustomTimePicker x:Name="endTime" HasBorder="false" TextColor="{DynamicResource NormalTextColor}" Format="HH:mm" HorizontalOptions="StartAndExpand"/>
+								<local:CustomTimePicker x:Name="startTime" HasBorder="false" Format="HH:mm" HorizontalOptions="StartAndExpand"/>
+								<Label Text="-      " VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+								<local:CustomTimePicker x:Name="endTime" HasBorder="false" Format="HH:mm" HorizontalOptions="StartAndExpand"/>
 							</StackLayout>
 							<local:Line Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"/>
-							<local:CustomEntry Grid.Row="6" Grid.Column="2" Style="{DynamicResource PlaceHolderStyle}" Placeholder="Location..." PlaceholderColor="{DynamicResource LightGray}" x:Name="locationEntry" FontSize="14"></local:CustomEntry>
+							<local:CustomEntry Grid.Row="6" Grid.Column="2" Placeholder="Location..." x:Name="locationEntry" ></local:CustomEntry>
 							<Button Grid.Row="6" Grid.Column="2" x:Name="locationButton" BackgroundColor="Transparent"/>
 							<local:Line Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<StackLayout Grid.Row="8" Grid.Column="2" Orientation="Horizontal">
-								<local:CustomEntry Style="{DynamicResource PlaceHolderStyle}" Placeholder="Attendendees needed..." PlaceholderColor="{DynamicResource LightGray}" x:Name="NumberAttendendeesEntry" FontSize="14" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>
-								<!-- <local:CustomEntry Style="{DynamicResource PlaceHolderStyle}" Placeholder="Max Attendendees..." PlaceholderColor="{DynamicResource LightGray}" x:Name="NumberAttendendeesMax" FontSize="14" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/> -->
+								<local:CustomEntry Placeholder="Attendendees needed..." x:Name="NumberAttendendeesEntry" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>
 							</StackLayout>
 							<local:Line Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<StackLayout Grid.Row="10" Grid.Column="2" Padding="9,6,0,6" VerticalOptions="Fill">
-								<local:CustomPicker Title="Open" HasBorder="false" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="CenterAndExpand" x:Name="visibilityPicker" >
+								<local:CustomPicker Title="Open" HasBorder="false" VerticalOptions="CenterAndExpand" x:Name="visibilityPicker" >
 							        <local:CustomPicker.Items>
 							            <x:String>Open</x:String> 
 										<x:String>Group</x:String>
@@ -85,10 +84,10 @@
 
 						<Image Grid.Row="2" x:Name="SelectedBannerImage" Aspect="AspectFill"/>
 						<StackLayout Grid.Row="2" >
-							<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
+							<Button Text="Select Banner" x:Name="selectBannerButton" HorizontalOptions="Fill" HeightRequest="50" BorderRadius="0" BorderWidth="0.5" BorderColor="{DynamicResource LineColor}" BackgroundColor="Transparent" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold" FontSize="18"/>
 						</StackLayout>   
-						<Button Grid.Row="2" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_camera.png" WidthRequest="40"/>
-						<Button Grid.Row="2" x:Name="albumPictureButton" HorizontalOptions="EndAndExpand" HeightRequest="50" BorderRadius="0" BorderWidth="0" Image="ic_album.png" WidthRequest="40"/> 
+						<local:IconView Grid.Row="2" x:Name="takePictureButton" HorizontalOptions="StartAndExpand" HeightRequest="50" Source="ic_camera.png" WidthRequest="40" TranslationX="20"/>
+						<local:IconView Grid.Row="2" x:Name="albumPictureButton" HorizontalOptions="EndAndExpand" HeightRequest="50" Source="ic_album.png" WidthRequest="40" TranslationX="-20"/> 
 
 							 
 						<Grid Grid.Row="3" Grid.RowSpan="2" x:Name="eventTypeGrid">

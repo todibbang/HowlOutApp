@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateView">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HowlOut.CreateView"
+		xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" BackgroundColor="White">
 			<Grid.RowDefinitions>
@@ -13,9 +16,16 @@
 				<Grid Padding="5,5,5,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="Transparent"/>
 			</StackLayout>
 
-			<ContentView Grid.Row="1" x:Name="createEventView" BackgroundColor="Transparent" IsVisible="false"/>
-			<ContentView Grid.Row="1" x:Name="createGroupView" BackgroundColor="Transparent" IsVisible="false"/>
-			<ContentView Grid.Row="1" x:Name="createOrganizationView" BackgroundColor="Transparent" IsVisible="false"/>
+
+
+			<cv:CarouselView Grid.Row="1" x:Name="createCarousel" HeightRequest="300">
+			    <cv:CarouselView.ItemTemplate>
+			      <DataTemplate>
+			        <ContentView Content="{Binding createContent}"/>
+			      </DataTemplate>
+			    </cv:CarouselView.ItemTemplate>
+			</cv:CarouselView>
+
 		</Grid> 
 	</ContentView.Content>
 </ContentView>
