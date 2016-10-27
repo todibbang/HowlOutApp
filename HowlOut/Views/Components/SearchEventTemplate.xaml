@@ -2,24 +2,21 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.SearchEventTemplate"
  			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
-			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,5,0,5">
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="5,5,5,5">
 	<ContentView.Content>
 		<StackLayout Padding="0,0,2,2" Spacing="0" BackgroundColor="{DynamicResource Shadow}">
 			<Grid RowSpacing="0" BackgroundColor="White" Padding="2">
 				<Grid.RowDefinitions >
 					<RowDefinition Height="auto"/>
-					<RowDefinition Height="170"/>
+					<RowDefinition Height="100"/>
 					<RowDefinition Height="30"/>
 					<RowDefinition Height="30"/>
+					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
-				
-				<StackLayout Grid.Row="0" HeightRequest="30" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" BackgroundColor="{DynamicResource HowlOutFade}" Padding="10,0,0,0">
-					<Label Text="{Binding SpecificGroupText}" VerticalOptions="EndAndExpand" TextColor="{DynamicResource NormalTextColor}"/>
-				</StackLayout>
 
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
 				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image>
-				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" Aspect="AspectFill" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
 				<StackLayout Grid.Row="1" VerticalOptions="Start" >
@@ -40,105 +37,37 @@
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="20"/>
 					</Grid.RowDefinitions>
+
 					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand" Aspect="AspectFill"/>
 					<StackLayout Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
+					<!--
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
-						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
+						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button> -->
+
+						<controls:CircleImage Source="{Binding EventCategory1}" HeightRequest="36" WidthRequest="36" Aspect="AspectFill"/>
+						<controls:CircleImage Source="{Binding EventCategory2}" IsVisible="{Binding EventType2Visible}" HeightRequest="36" WidthRequest="36" Aspect="AspectFill"/>
+						<controls:CircleImage Source="{Binding EventCategory3}" IsVisible="{Binding EventType3Visible}" HeightRequest="36" WidthRequest="36" Aspect="AspectFill"/>
 					</StackLayout>
+
+
+					
 					<Button Grid.Row="0" Grid.RowSpan="2" HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo" Text="{Binding attendingInfo}"/>
 					<StackLayout Grid.Row="1" Padding="60,0,0,0">
-						<Label Text="{Binding EventHolder}" FontSize="12" VerticalTextAlignment="End" VerticalOptions="EndAndExpand"/>
+						<Label Text="{Binding EventHolder}" FontSize="10" VerticalTextAlignment="End" VerticalOptions="EndAndExpand"/>
 					</StackLayout>
 				</Grid>
 
-
-				<!--
-				<Grid Grid.Row="1" TranslationY="-80" Padding="10,0,10,0" RowSpacing="0">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="40"/>
-						<RowDefinition Height="40"/>
-						<RowDefinition Height="20"/>
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="40"/>
-						<ColumnDefinition Width="60"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-
-					<controls:CircleImage Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="100" WidthRequest="100" HorizontalOptions="StartAndExpand"/>
-					<controls:CircleImage Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand"/>
-					<StackLayout Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10"> 
-						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
-						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
-						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
+				<StackLayout Grid.Row="4" HeightRequest="45" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" Padding="0,5,0,0">
+					<local:Line/>
+					<StackLayout Padding="10,0,0,0" Orientation="Horizontal">
+						<Label Text="This event is for members of " VerticalOptions="Center"/>
+						<controls:CircleImage Source="{Binding SpecificGroupImageSource}" HeightRequest="30" WidthRequest="30" Aspect="AspectFill"/>
+						<Label Text="{Binding SpecificGroupText}" TextColor="{DynamicResource HowlOut}" VerticalOptions="Center"/>
+						<Label Text="only." VerticalOptions="Center"/>
 					</StackLayout>
-					<Button Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo" Text="{Binding attendingInfo}"/>
-					<StackLayout Grid.Row="2" Grid.Column="2" Padding="0,0,0,0">
-						<Label Text="{Binding EventHolder}" FontSize="12" VerticalTextAlignment="End" VerticalOptions="EndAndExpand"/>
-					</StackLayout>
-				</Grid>
-				-->
-
-
-				
-
-				<!-- <Button Grid.Row="0" Grid.RowSpan="2" x:Name="SubjectButton" BackgroundColor="Transparent" /> -->
+				</StackLayout>
 			</Grid>
-
 		</StackLayout>
-
-
-		<!--
-		<Grid RowSpacing="0" ColumnSpacing="0" >
-			<Grid.RowDefinitions>
-				<RowDefinition Height="{Binding BannerHeight}"/>
-				<RowDefinition Height="30"/>
-				<RowDefinition Height="8"/>
-				<RowDefinition Height="22"/>
-				<RowDefinition Height="14"/>
-				<RowDefinition Height="8"/>
-			</Grid.RowDefinitions>
-
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="60"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="80"/>
-			</Grid.ColumnDefinitions>
-
-			<Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Banner}"></Image>
-			<Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
-			<BoxView Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#55000000"></BoxView>
-			<Image Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
-			<BoxView Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White"></BoxView>
-
-			<StackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Padding="0,10,0,0" Spacing="0">
-				<Label Text="{Binding BigTime}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-				<Label Text="{Binding SmallTime}" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			</StackLayout>
-			<StackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Padding="0,10,0,0">
-				<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White"/>
-			</StackLayout>
-			<StackLayout Grid.Row="0" Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Padding="0,10,0,0" Spacing="0">
-				<Label Text="{Binding Distance}" FontSize="18" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-				<Label Text="Km" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			</StackLayout>
-
-
-			<controls:CircleImage Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" Source="{Binding ProfileImageSource}"/>
-
-			<ContentView Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" x:Name="EventView" />
-
-			<StackLayout Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-				<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
-				<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
-				<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType3}" IsVisible="{Binding EventType3Visible}" x:Name="eventType3"></Button>
-			</StackLayout>
-
-			<Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="6" x:Name="SubjectButton" BackgroundColor="Transparent" />
-
-
-		</Grid>
-		-->
 	</ContentView.Content>
 </ContentView>

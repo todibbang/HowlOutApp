@@ -150,6 +150,44 @@ namespace HowlOut
 		{
 			GroupComment, EventComment, OrganizationComment, Converzation
 		}
+
+
+		public async Task<List<Notification>> GetNotifications()
+		{
+			List<Notification> notifications = new List<Notification>();
+
+			try
+			{
+				var response = await httpClient.GetAsync(new Uri(App.serverUri + "message/inAppNotification/" + App.StoredUserFacebookId));
+				if (response.IsSuccessStatusCode)
+				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					return notifications = JsonConvert.DeserializeObject<List<Notification>>(recievedContent);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return null;
+		}
+
+		public async Task<bool> DeleteNotifications(string id)
+		{
+			try
+			{
+				var response = await httpClient.DeleteAsync(new Uri(App.serverUri + "message/inAppNotification/" + id));
+				if (response.IsSuccessStatusCode)
+				{
+					return true;
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return false;
+		}
 	}
 }
 

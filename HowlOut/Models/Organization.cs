@@ -10,7 +10,7 @@ namespace HowlOut
 		public string ImageSource { get; set; }
 
 		public List <Profile> Members { get; set; }
-
+		public List <Comment> Comments { get; set; }
 
 		public Organization()
 		{

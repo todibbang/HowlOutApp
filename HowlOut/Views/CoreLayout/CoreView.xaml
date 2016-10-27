@@ -33,8 +33,9 @@
 				<local:BottomBar/> 
 			</StackLayout>
 
-			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="{DynamicResource HowlOut}" Color="White" IsRunning="true" IsVisible="false"/>
+			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="#30000000" Color="White" IsRunning="true" IsVisible="true"/>
 
+			
 			<StackLayout Grid.Row="0" Grid.RowSpan="3" BackgroundColor="#70000000" x:Name="WarningLayout" IsVisible="false">
 				
 
@@ -65,6 +66,7 @@
 					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  Text="OK" x:Name="optionOK" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
 				</Grid>
 			</StackLayout>
+
 
 			
 		</Grid>

@@ -33,6 +33,10 @@ namespace HowlOut
 		public string EventType2  {get; set;}
 		public string EventType3  {get; set;}
 
+		public string EventCategory1 { get; set; }
+		public string EventCategory2 { get; set; }
+		public string EventCategory3 { get; set; }
+
 		public bool EventType2Visible  {get; set;}
 		public bool EventType3Visible  {get; set;}
 
@@ -47,6 +51,9 @@ namespace HowlOut
 
 		public bool ForSpecificGroup { get; set; }
 		public string SpecificGroupText { get; set; }
+		public string SpecificGroupImageSource { get; set; }
+
+		public ContentView EventHolderView { get; set; }
 
 		public EventForLists (Event theGivenEvent)
 		{
@@ -59,16 +66,19 @@ namespace HowlOut
 			{
 				ProfileImageSource = eve.ProfileOwner.ImageSource;
 				EventHolder = eve.ProfileOwner.Name;
+				EventHolderView = new ProfileDesignView(eve.ProfileOwner, 60, true, GenericDesignView.Design.OnlyImage);
 			}
 			else {
 				ProfileImageSource = eve.OrganizationOwner.ImageSource;
 				EventHolder = "Organization " + eve.OrganizationOwner.Name;
+				EventHolderView = new OrganizationDesignView(eve.OrganizationOwner, 60, GenericDesignView.Design.OnlyImage);
 			}
 
 			if (eve.GroupSpecific != null)
 			{
 				ForSpecificGroup = true;
-				SpecificGroupText = "This is an event for " + eve.GroupSpecific.Name + ".";
+				SpecificGroupText = "" + eve.GroupSpecific.Name + "";
+				SpecificGroupImageSource = eve.GroupSpecific.ImageSource;
 			}
 
 			BannerHeight = (0.56 * App.coreView.Width) - 30;
@@ -121,14 +131,17 @@ namespace HowlOut
 
 			if (eve.EventTypes.Count != 0) {
 				EventType1 = eve.EventTypes [0] + "";
+				EventCategory1 = "category_" + eve.EventTypes[0].ToString().ToLower() + "_ic.jpg";
 			}
 			if (eve.EventTypes.Count > 1) {
 				EventType2 = eve.EventTypes [1] + "";
 				EventType2Visible = true;
+				EventCategory2 = "category_" + eve.EventTypes[1].ToString().ToLower() + "_ic.jpg";
 			}
 			if (eve.EventTypes.Count > 2) {
 				EventType3 = eve.EventTypes [2] + "";
 				EventType3Visible = true;
+				EventCategory3 = "category_" + eve.EventTypes[2].ToString().ToLower() + "_ic.jpg";
 			}
 
 

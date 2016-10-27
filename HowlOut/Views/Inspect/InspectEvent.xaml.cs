@@ -25,8 +25,10 @@ namespace HowlOut
 			BindingContext = efl;
 			_dataManager = new DataManager();
 			setInfo (eve);
-			if (!_dataManager.IsEventJoined(eve)) { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; } 
-			else  { searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; }
+			if (_dataManager.IsEventJoined(eve) || 
+			    (eve.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == eve.OrganizationOwner.OrganizationId))) 
+			{ searchSpecific.IsVisible = false; manageSpecific.IsVisible = true; } 
+			else  { searchSpecific.IsVisible = true; manageSpecific.IsVisible = false; }
 
 			detailsButton.Clicked += (sender, e) => 
 			{
@@ -35,13 +37,13 @@ namespace HowlOut
 					detailedInfo.IsVisible = true; 
 					quickInfo.IsVisible = false;
 					detailsButton.Text = "Hide Map";
-					App.scrollTo(100);
+					App.coreView.otherFunctions.scrollTo(100);
 				} 
 				else { 
 					detailedInfo.IsVisible = false; 
 					quickInfo.IsVisible = true;
 					detailsButton.Text = "Show Map";
-					App.scrollTo(200);
+					App.coreView.otherFunctions.scrollTo(200);
 				}
 
 				if(mapInitialized != true) { 
@@ -63,15 +65,21 @@ namespace HowlOut
 				App.coreView.setContentViewWithQueue(new MapsView(eve), "MapsView", null);
 			};
 
-			if (_dataManager.IsEventYours(eve)) {
+			if (_dataManager.IsEventYours(eve) ||
+				(eve.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == eve.OrganizationOwner.OrganizationId)))
+			{
 				editLeaveButton.Text = "Edit";
+			}
+			else if (eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId)) {
+				followButton.Text = "Untrack"; 
 			}
 
 			editLeaveButton.Clicked += (sender, e) => {
-				if (_dataManager.IsEventYours(eve)) {
+				if (_dataManager.IsEventYours(eve) ||
+				(eve.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == eve.OrganizationOwner.OrganizationId))) {
 					App.coreView.setContentViewWithQueue (new CreateEvent (eve, false), "CreateEvent", null);
 				} else {
-					_dataManager.AttendTrackEvent(eve, true, false);
+					_dataManager.AttendTrackEvent(eve, false, true);
 				}
 			};
 
@@ -80,11 +88,22 @@ namespace HowlOut
 			};
 
 			followButton.Clicked += (sender, e) =>  {
-				_dataManager.AttendTrackEvent(eve, false, true);
+				if (eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId))
+				{
+					_dataManager.AttendTrackEvent(eve, false, false);
+				}
+				else {
+					_dataManager.AttendTrackEvent(eve, true, false);
+				}
 			};
 
 			inviteButton.Clicked += (sender, e) => {
-				App.coreView.setContentViewWithQueue (new InviteView (null, eve, null, InviteView.WhatToShow.PeopleToInviteToEvent), "InviteView", null);
+				App.coreView.setContentViewWithQueue (new InviteListView (eve), "InviteView", null);
+			};
+
+			groupSpecificButton.Clicked += (sender, e) =>
+			{
+				App.coreView.setContentViewWithQueue(new InspectController(eve.GroupSpecific), "Inspect", null);
 			};
 		}
 

@@ -43,6 +43,7 @@ namespace HowlOut
 					}
 					updateAutoCompleteProfileList(searchBar.Text);
 					updateAutoCompleteGroupList(searchBar.Text);
+					updateAutoCompleteOrganizationsList(searchBar.Text);
 				}
 			};
 
@@ -57,22 +58,22 @@ namespace HowlOut
 				}
 			};
 
-			App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionOne);
+			App.coreView.otherFunctions.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionOne);
 			optionOne.Clicked += (sender, e) =>
 			{
-				App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionOne);
+				App.coreView.otherFunctions.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionOne);
 				profileGrid.IsVisible = true;
 				groupGrid.IsVisible = false;
 				organizationGrid.IsVisible = false;
 			};
 			optionTwo.Clicked += (sender, e) => {
-				App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionTwo);
+				App.coreView.otherFunctions.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionTwo);
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = true;
 				organizationGrid.IsVisible = false;
 			};
 			optionThree.Clicked += (sender, e) => {
-				App.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionThree);
+				App.coreView.otherFunctions.selectButton(new List<Button> { optionOne, optionTwo, optionThree }, optionThree);
 				organizationGrid.IsVisible = true;
 				profileGrid.IsVisible = false;
 				groupGrid.IsVisible = false;
@@ -99,21 +100,21 @@ namespace HowlOut
 		{
 			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
 			profileGrid.Children.Clear ();
-			listMaker.createList (profileGrid, profileSearchResult, null, null, null, null, null);
+			listMaker.createList (profileGrid, profileSearchResult, null, null, null, null, null, false);
 		}
 
 		public async void updateAutoCompleteGroupList(string input)
 		{
 			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
 			groupGrid.Children.Clear ();
-			listMaker.createList (groupGrid, null, groupSearchResult, null, null, null, null);
+			listMaker.createList (groupGrid, null, groupSearchResult, null, null, null, null, false);
 		}
 
 		public async void updateAutoCompleteOrganizationsList(string input)
 		{
 			var orgsSearchResult = await _dataManager.OrganizationApiManager.GetOrganizationsFromName(input);
 			organizationGrid.Children.Clear();
-			listMaker.createList(groupGrid, null, null, orgsSearchResult, null, null, null);
+			listMaker.createList(organizationGrid, null, null, orgsSearchResult, null, null, null, false);
 		}
 
 		private void setViewDesign(int number){

@@ -13,18 +13,18 @@
 				Placeholder = element.Placeholder;
 
 				if (Control.Text == "" || Control.Text == Placeholder)
-				{ 					Control.TextColor = Color.FromRgba(230, 230, 230, 255).ToUIColor();
+				{ 					Control.TextColor = App.PlaceHolderColor.ToUIColor();
 					Control.Text = Placeholder; 				}
-				else { 					Control.TextColor = Color.FromRgba(0, 0, 0, 255).ToUIColor(); 				}
-				Control.Layer.BorderColor = Color.White.ToCGColor();
-				Control.Layer.BorderWidth = 1; 				Control.Layer.CornerRadius = 4; 				Control.TextAlignment = UITextAlignment.Left;
+				else { 					Control.TextColor = App.NormalTextColor.ToUIColor(); 				}
+				//Control.Layer.BorderColor = Color.White.ToCGColor();
+				Control.Layer.BorderWidth = 0; 				Control.Layer.CornerRadius = 4; 				Control.TextAlignment = UITextAlignment.Left;
 
 				Control.ShouldBeginEditing += (UITextView textView) =>
 				{
 					if (textView.Text == Placeholder)
 					{
 						textView.Text = "";
-						textView.TextColor = Color.FromRgba(0,0,0,255).ToUIColor(); // Text Color
+						textView.TextColor = App.NormalTextColor.ToUIColor(); // Text Color
 					}
 
 					return true;
@@ -35,7 +35,7 @@
 					if (textView.Text == "")
 					{
 						textView.Text = Placeholder;
-						textView.TextColor = Color.FromRgba(230, 230, 230, 255).ToUIColor(); // Placeholder Color
+						textView.TextColor = App.PlaceHolderColor.ToUIColor(); // Placeholder Color
 					}
 
 					return true;

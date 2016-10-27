@@ -29,7 +29,8 @@ namespace HowlOut
 			{
 				await newConversationBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await newConversationBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.howlsEventView.ShowNewConversation();
+				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation(), true), "Create WolfPack", null);
+				//App.coreView.howlsView.ShowNewConversation();
 				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
 			};
 			newConversationBtn.GestureRecognizers.Add(newMessage);
@@ -39,7 +40,8 @@ namespace HowlOut
 			{
 				await addPeopleToCvBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await addPeopleToCvBtn.ScaleTo(1, 50, Easing.Linear);
-				CV.ShowPeopleToAddToConversation();
+				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation,false), "Create WolfPack", null);
+				//CV.ShowPeopleToAddToConversation();
 				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
 			};
 			addPeopleToCvBtn.GestureRecognizers.Add(addPeopleToCv);

@@ -61,7 +61,7 @@ namespace HowlOut
 			};
 
 */
-
+			/*
 			if (notification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile)
 			{
 				Title.Text = "New Friend On HowlOut.";
@@ -133,7 +133,7 @@ namespace HowlOut
 				Title.Text = "New Attendee";
 				Message.Text = notification.ContentProfile.Name + " has joined your event " + notification.ContentEvent.Title + ".";
 			}
-
+			*/
 
 		}
 	}

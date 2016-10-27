@@ -6,9 +6,10 @@ namespace HowlOut
 	{
 		Organization org;
 
-		public OrganizationDesignView(Organization org, int dims) : base(dims)
+		public OrganizationDesignView(Organization org, int dims, Design design) : base(dims)
 		{
 			this.org = org;
+			SetInfo(org.ImageSource, org.Name, org.Description, design);
 			subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewWithQueue(new InspectController(org), "", null); };
 			setInfo();
 		}
@@ -16,16 +17,21 @@ namespace HowlOut
 		async void setInfo()
 		{
 			org = await new DataManager().OrganizationApiManager.GetOrganization(org.OrganizationId);
-			SetImage(org.ImageSource, org.Name);
 			if (org.Members.Exists(p => p.ProfileId == App.StoredUserFacebookId))
 			{
-				addBtn.IsVisible = true;
-				addBtn.Text = "Edit";
-				addBtn.Clicked += (sender, e) =>
+				editBtn.IsVisible = true;
+				editBtn.Text = "Edit";
+				editBtn.Clicked += (sender, e) =>
 				{
 					App.coreView.setContentViewWithQueue(new CreateOrganization(org, false), "", null);
 				};
 
+				addBtn.IsVisible = true;
+				addBtn.Text = "Invite";
+				addBtn.Clicked += (sender, e) =>
+				{
+					App.coreView.setContentViewWithQueue(new InviteListView(org), "", null);
+				};
 			}
 			else {
 				if (App.userProfile.OrganizationsInviteTo.Exists(o => o.OrganizationId == org.OrganizationId))

@@ -24,8 +24,16 @@ namespace HowlOut.iOS.Renderers
 			{
 				SetBorderStyle(Picker);
 				SetTextColor(Picker);
+				//Picker.Items
 
-				Control.AdjustsFontSizeToFitWidth = true;
+				Control.Text = Picker.Title;
+
+				Control.Font.WithSize(14);
+				Control.Layer.BackgroundColor = Picker.BackgroundColor.ToCGColor();
+
+				//var someFontWithName = UIFont.FromName("fontName", 14);
+				//UIFont font = Control.Font.WithSize(14);
+				//Control.Font = font;
 			}
 
 			if (e.OldElement == null)

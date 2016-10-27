@@ -165,16 +165,6 @@ namespace HowlOut
 
 			return file;
 
-			//DisplayAlert("File Location", file.Path, "OK");
-			//return ImageSource.FromStream(file.GetStream);
-			/*
-			return image.Source = ImageSource.FromStream(() =>
-			{
-				var stream = file.GetStream();
-				file.Dispose();
-				return stream;
-			});
-			*/
 		}
 
 		public async Task<Plugin.Media.Abstractions.MediaFile> PictureFromAlbum()
@@ -184,22 +174,17 @@ namespace HowlOut
 				//DisplayAlert("Photos Not Supported", ":( Permission not granted to photos.", "OK");
 				return null;
 			}
-			var file = await CrossMedia.Current.PickPhotoAsync();
+			var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+			{
+				CompressionQuality = 60,
+				PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
 
+			});
 
 			if (file == null)
 				return null;
 
 			return file;
-			//s = file.GetStream();
-			/*
-			image.Source = ImageSource.FromStream(() =>
-			{
-				var stream = file.GetStream();
-				file.Dispose();
-				return stream;
-			});
-			*/
 		}
 
 		public async Task<String> UploadImageToStorage(Stream imageStream, string imageName)

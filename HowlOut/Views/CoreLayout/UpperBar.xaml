@@ -20,7 +20,7 @@
 					<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 
 
-					<Image Grid.Column="2" x:Name="addPeopleToCvBtn" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
+					<Image Grid.Column="2" x:Name="addPeopleToCvBtn" Source="ic_add_profiles.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
 
 					<Image Grid.Column="2" x:Name="newConversationBtn" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
 

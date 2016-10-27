@@ -13,9 +13,9 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView
 	{
-		public ContentView createContent { 
+		public ContentView content { 
 			get { return this; }
-			set { this.createContent = value; }
+			set { this.content = value; }
 		}
 
 		MapsView mapView;
@@ -28,6 +28,7 @@ namespace HowlOut
 		List<Button> typeButtons = new List<Button>();
 
 		private bool Launching = false;
+		bool validAttendingAmount = false;
 
 		Plugin.Media.Abstractions.MediaFile mediaFile;
 		//Image banner = new Image();
@@ -37,60 +38,19 @@ namespace HowlOut
 			_dataManager = new DataManager();
 			newEvent = givenEvent;
 			InitializeComponent();
-
+			if (isCreate)
+			{
+				setNewEvent();
+			}
+			else {
+				setEditEvent();
+			}
 			mapView = new MapsView(App.lastKnownPosition);
 
-			/*
-			for (int i = 18; i < 100; i++) agePicker.Add("" + i, i);
-			foreach (string age in agePicker.Keys) { minAge.Items.Add(age); maxAge.Items.Add(age); }
-
-			int sizeNumber = 5;
-			for (int i = 0; i < 20; i++) { sizePicker.Add("" + sizeNumber, sizeNumber); sizeNumber += 5; }
-			foreach (string size in sizePicker.Keys) { minSize.Items.Add(size); maxSize.Items.Add(size); }
-			*/
-			/// set title and description
 			title.TextChanged += (sender, e) => { newEvent.Title = title.Text; };
 			description.TextChanged += (sender, e) => { newEvent.Description = description.Text; };
 
-
-			int row = 0;
-			int column = 1;
-			eventTypeGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto });
-			foreach (EventType en in Enum.GetValues(typeof(EventType)))
-			{
-				if (column == 9)
-				{
-					eventTypeGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-					column = 1;
-					row++;
-				}
-
-				Button b = new Button()
-				{
-					TextColor = App.HowlOut,
-					BorderRadius = 25,
-					BorderWidth = 1,
-					HeightRequest = 50,
-					WidthRequest = 50,
-					BorderColor = App.HowlOutFade,
-					BackgroundColor = Color.White,
-					FontSize = 12,
-					Text = en.ToString(),
-				};
-				typeButtons.Add(b);
-				eventTypeGrid.Children.Add(b,column,row);
-				b.Clicked += (sender, e) =>
-				{
-					typeButtonPressed(b, en);
-				};
-
-				if (newEvent.EventTypes.Contains(en))
-				{
-					b.BackgroundColor = App.HowlOut;
-					b.TextColor = Color.White;
-				}
-				column += 2;
-			}
+			EventCategory.ManageCategories(eventTypeGrid, newEvent.EventTypes, true);
 
 			/// set time and date
 			startDate.PropertyChanged += (sender, e) =>
@@ -103,6 +63,7 @@ namespace HowlOut
 					endTime.Time = newEvent.EndDate.TimeOfDay;
 					//endDate.Date = newEvent.EndDate;
 				}
+				StartDateString.Text = startDate.Date.ToString("dd/MM/yyyy");
 				System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
 			};
 			startTime.PropertyChanged += (sender, e) =>
@@ -115,10 +76,14 @@ namespace HowlOut
 					endTime.Time = newEvent.EndDate.TimeOfDay;
 					//endDate.Date = newEvent.EndDate;
 				}
+				StartTimeString.Text = new DateTime(startTime.Time.Ticks).ToString("HH:mm");
 				System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
 			};
 			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
-			endTime.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
+			endTime.PropertyChanged += (sender, e) => { 
+				newEvent.EndDate = endDate.Date.Add(endTime.Time); 
+				EndTimeString.Text = new DateTime(endTime.Time.Ticks).ToString("HH:mm");
+			};
 
 			/// set location
 			locationButton.Clicked += (sender, e) =>
@@ -132,6 +97,7 @@ namespace HowlOut
 				}
 				mapView.createEventView = this;
 				App.coreView.setContentViewWithQueue(mapView, "MapsView", null);
+
 			};
 
 			visibilityPicker.SelectedIndexChanged += async (sender, e) =>
@@ -145,7 +111,7 @@ namespace HowlOut
 				}
 				if (visibilityPicker.SelectedIndex == 1)
 				{
-					bool success = await App.GroupEventIsFor(SelectSenderLayout, newEvent);
+					bool success = await App.coreView.otherFunctions.GroupEventIsFor(SelectSenderLayout, newEvent);
 					if (success)
 					{
 						newEvent.Visibility = Visibility.Closed;
@@ -160,9 +126,32 @@ namespace HowlOut
 				{
 					newEvent.Visibility = Visibility.Secret;
 				}
+				visibilityString.Text = visibilityPicker.Items[visibilityPicker.SelectedIndex];
 			};
+			visibilityString.Text = visibilityPicker.Title;
 
-			NumberAttendendeesEntry.TextChanged += (sender, e) => { newEvent.MaxSize = int.Parse(NumberAttendendeesEntry.Text); };
+			NumberAttendendeesEntry.TextChanged += (sender, e) => {
+				string t = NumberAttendendeesEntry.Text;
+				if (t.Contains(","))
+				{
+					t = t.Remove(t.Length - 1);
+
+				}
+
+				if (!string.IsNullOrWhiteSpace(t))
+				{
+					try
+					{
+						newEvent.MaxSize = int.Parse(t);
+						validAttendingAmount = true;
+					}
+					catch (Exception ex)
+					{
+						validAttendingAmount = false;
+					}
+				}
+				NumberAttendendeesEntry.Text = t;
+			};
 
 			var pictureImage = new TapGestureRecognizer();
 			pictureImage.Tapped += async (sender, e) =>
@@ -192,34 +181,17 @@ namespace HowlOut
 				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
 			};
 
-
-			/*
-			/// set age and size limits
-			minAge.SelectedIndexChanged += (sender, args) => {
-				if (minAge.SelectedIndex != -1) { string age = minAge.Items[minAge.SelectedIndex]; newEvent.MinAge = agePicker[age]; } };
-			maxAge.SelectedIndexChanged += (sender, args) => {
-				if (maxAge.SelectedIndex != -1) { string age = maxAge.Items[maxAge.SelectedIndex]; newEvent.MaxAge = agePicker[age]; } };
-			minSize.SelectedIndexChanged += (sender, args) => {
-				if (minSize.SelectedIndex != -1) { string size = minSize.Items[minSize.SelectedIndex]; newEvent.MinSize = sizePicker[size]; } };
-			maxSize.SelectedIndexChanged += (sender, args) => {
-				if (maxSize.SelectedIndex != -1) { string size = maxSize.Items[maxSize.SelectedIndex]; newEvent.MaxSize = sizePicker[size]; } };
-			*/
-			if (isCreate) {
-				setNewEvent ();
-			} else {
-				setEditEvent ();
-			}
-
 			launchButton.Clicked += async (sender, e) => {
 				if(isCreate && !Launching) {
-					bool continueCreating = await App.SenderOfEvent(SelectSenderLayout, newEvent, null);
+					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, newEvent, null);
 					if (continueCreating)
 					{
 						LaunchEvent(newEvent);
 						Launching = true;
 					}
 				} else if(!isCreate && !Launching) {
-					UpdateEvent(newEvent);
+					LaunchEvent(newEvent);
+					Launching = true;
 				}
 			};
 
@@ -259,6 +231,7 @@ namespace HowlOut
 			}
 
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
+			newEvent.EventId = "0";
 			//newEvent.EndDate = endDate.Date.Add(endTime.Time);
 		}
 
@@ -276,36 +249,23 @@ namespace HowlOut
 
 			locationEntry.Text = newEvent.AddressName;
 			NumberAttendendeesEntry.Text = newEvent.MaxSize+"";
-			visibilityPicker.SelectedIndex = Array.IndexOf(Enum.GetValues(newEvent.Visibility.GetType()), newEvent.Visibility);
-
-			/*
-			int minvalue = 0;
-			int maxvalue = 0;
-
-			for (int i = 0; i < minAge.Items.Count; i++) {
-				if (minAge.Items [i] == newEvent.MinAge.ToString ())
-					minvalue = i;
-				if (maxAge.Items [i] == newEvent.MaxAge.ToString ())
-					maxvalue = i;
+			validAttendingAmount = true;
+			if (newEvent.GroupSpecific != null)
+			{
+				visibilityPicker.Title = "Group: " + newEvent.GroupSpecific.Name;
+			}
+			else {
+				visibilityPicker.Title = newEvent.Visibility.ToString();
 			}
 
-			minAge.SelectedIndex = minvalue;
-			maxAge.SelectedIndex = maxvalue;
+			visibilityPicker.IsEnabled = false;
+			SelectedBannerImage.Source = newEvent.ImageSource;
 
-			for (int i = 0; i < minSize.Items.Count; i++) {
-				if (minSize.Items [i] == newEvent.MinSize.ToString ())
-					minvalue = i;
-				if (maxSize.Items [i] == newEvent.MaxSize.ToString ())
-					maxvalue = i;
-			}
-
-			minSize.SelectedIndex = minvalue;
-			maxSize.SelectedIndex = maxvalue;
-			*/
 		}
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
+			App.coreView.IsLoading(true);
 			if (mediaFile != null)
 			{
 				eventToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
@@ -314,12 +274,12 @@ namespace HowlOut
 			{
 				eventToCreate.ProfileOwner = App.userProfile;
 			}
-			eventToCreate.EventId = "0";
+
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
 				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
 				await App.coreView.displayAlertMessage ("Description Missing", "Description is missing", "Ok");
-			} else if ((eventToCreate.MaxSize == -1)) {
+			} else if ((eventToCreate.MaxSize == -1) || !validAttendingAmount) {
 				await App.coreView.displayAlertMessage("Attendendees Needed Missing", "", "Ok");
 			} else if (eventToCreate.EventTypes.Count == 0) {
 				await App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
@@ -328,7 +288,7 @@ namespace HowlOut
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.ImageSource)) {
 				await App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
 			}else {
-
+				
 				eventToCreate.MinAge = 0;
 				eventToCreate.MaxAge = 100;
 				eventToCreate.MinSize = 1;
@@ -341,42 +301,14 @@ namespace HowlOut
 					eventCreated.Followers = new List<Profile> ();
 					InspectController inspect = new InspectController(eventCreated);
 					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
-					App.coreView.createView.createEvent = new CreateEvent(new Event(), true);
+					App.coreView.createEvent = new CreateEvent(new Event(), true);
+
 				} else {
 					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 				}
 			}
 			Launching = false;
-		}
-
-		private async void UpdateEvent(Event eventToUpdate)
-		{
-			Event eventUpdated = await _dataManager.EventApiManager.CreateEditEvent (eventToUpdate);
-
-			if (eventUpdated != null) {
-				 
-				InspectController inspect = new InspectController(eventUpdated);
-				App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
-
-			} else {
-				await App.coreView.displayAlertMessage ("Error", "Event not updated, try again", "Ok");
-			}
-		}
-
-		private Button typeButtonPressed(Button typeButton, EventType eventType)
-		{
-			if (typeButton.BackgroundColor == Color.White) {
-				if (newEvent.EventTypes.Count < 3) {
-					typeButton.BackgroundColor = App.HowlOut;
-					typeButton.TextColor = Color.White;
-					newEvent.EventTypes.Add (eventType);
-				}
-			} else {
-				typeButton.BackgroundColor = Color.White;
-				typeButton.TextColor = App.HowlOut;
-				newEvent.EventTypes.Remove (eventType);
-			}
-			return typeButton;
+			App.coreView.IsLoading(false);
 		}
 
 		public async void CancelTheEvent()
@@ -387,6 +319,7 @@ namespace HowlOut
 				bool wasEventDeleted = await _dataManager.EventApiManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
+					App.coreView.exploreEvents = new EventListView(0);
 					App.coreView.setContentView (1);
 				} else {
 					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");

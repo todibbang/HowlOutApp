@@ -50,6 +50,18 @@ namespace HowlOut
 			set { this.Time = value; }
 		}
 
+		public string ImageSource{
+			get
+			{
+				if (Messages != null && Messages.Count > 0) { 
+					string id = Messages.OrderByDescending(c => c.DateAndTime).ToList()[0].SenderId;
+					return Profiles.Find(p => p.ProfileId == id).ImageSource; }
+				else if (Profiles != null && Profiles.Count > 1) { return Profiles.Find(p => p.ProfileId != App.StoredUserFacebookId).ImageSource;}
+				return "default_icon.png";
+			}
+			set { this.ImageSource = value; }
+		}
+
 		public Conversation()
 		{
 		}

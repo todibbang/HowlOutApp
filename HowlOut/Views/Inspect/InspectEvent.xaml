@@ -4,55 +4,53 @@
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="Transparent"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
-			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-			 xmlns:controlsTwo="clr-namespace:HowlOut;assembly=HowlOut">
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,0,0,10">
 			
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
-				<RowDefinition Height="70"/>
+				<RowDefinition Height="30"/>
 				<RowDefinition Height="50"/>
 			</Grid.RowDefinitions>
 
 			<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" x:Name="quickInfo" >
-				<Grid.RowDefinitions>
-					<RowDefinition Height="{Binding InspectBannerHeight}" x:Name="bannerRow"/>
-					<RowDefinition Height="60"/>
+				<Grid.RowDefinitions >
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="170"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
 
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
-				<Image Grid.Row="0" Source="{Binding Banner}" Aspect="AspectFill"></Image>
-				<Image Grid.Row="0" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image>
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
-				<StackLayout Grid.Row="0" VerticalOptions="Start" x:Name="titleInfo">
+				<StackLayout Grid.Row="1" VerticalOptions="Start" x:Name="titleInfo" >
 					<StackLayout Padding="2,10,2,0" Orientation="Horizontal" HorizontalOptions="Fill" >
-
 						<StackLayout HorizontalOptions="StartAndExpand" WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
-							<Label Text="{Binding BigTime}" x:Name="topTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label Text="{Binding SmallTime}" x:Name="bottomTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding topTime}" x:Name="topTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding bottomTime}" x:Name="bottomTime" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
-
-						
 						<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="White"/>
-
 						<StackLayout HorizontalOptions="EndAndExpand"  WidthRequest="80" Spacing="0" VerticalOptions="StartAndExpand">
-							<Label Text="{Binding Distance}" x:Name="topDist" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label Text="Km" FontSize="12"  x:Name="bottomDist" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding topDist}" x:Name="topDist" FontSize="12" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text="{Binding bottomDist}" FontSize="12" x:Name="bottomDist" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
-
 					</StackLayout>
 				</StackLayout>
-
-				<!-- Her vises eventholders billede, antal deltagere og de kategorier som eventet høre under  -->
-				<Grid Grid.Row="1" TranslationY="-30" Padding="10,0,10,0" RowSpacing="0">
+				<Grid Grid.Row="2" Grid.RowSpan="2" Padding="10,0,10,0" RowSpacing="0">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="20"/>
 					</Grid.RowDefinitions>
 
-					<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand" Aspect="AspectFill"/>
+					<!--<controls:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand" Aspect="AspectFill"/>
+					-->
+
 					<StackLayout Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,12,0,12" Spacing="10">
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType1}" x:Name="eventType1"></Button>
 						<Button Style="{DynamicResource SmallTypeButtonStyle}" Text="{Binding EventType2}" IsVisible="{Binding EventType2Visible}" x:Name="eventType2"></Button>
@@ -60,14 +58,26 @@
 					</StackLayout>
 					<Button Grid.Row="0" Grid.RowSpan="2" HeightRequest="60" WidthRequest="60" HorizontalOptions="EndAndExpand" BorderColor="{DynamicResource HowlOut}" BorderRadius="30" BorderWidth="4" BackgroundColor="White" TextColor="{DynamicResource NormalTextColor}" x:Name="attendingInfo" Text="{Binding attendingInfo}"/>
 					<StackLayout Grid.Row="1" Padding="60,0,0,0">
-						<Label Text="{Binding EventHolder}" FontSize="12" VerticalTextAlignment="End" VerticalOptions="EndAndExpand"/>
+						<Label Text="{Binding EventHolder}" FontSize="12" VerticalTextAlignment="End" VerticalOptions="EndAndExpand" TranslationY="5"/>
 					</StackLayout>
+
+					<ContentView  Grid.Row="0" Grid.RowSpan="2" Content="{Binding EventHolderView}" HorizontalOptions="StartAndExpand"/>
 				</Grid>
-				
+
+				<StackLayout Grid.Row="4" HeightRequest="45" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" Padding="0,10,0,0">
+					<local:Line/>
+					<StackLayout Padding="25,0,0,0" Orientation="Horizontal">
+						<controls:CircleImage Source="{Binding SpecificGroupImageSource}" HeightRequest="30" WidthRequest="30" Aspect="AspectFill"/>
+						<Label Text="{Binding SpecificGroupText}" TextColor="{DynamicResource HowlOut}" VerticalOptions="Center"/>
+						<Label Text="members only." VerticalOptions="Center"/>
+					</StackLayout>
+					<local:Line/>
+				</StackLayout>
+				<Button Grid.Row="4" IsVisible="{Binding ForSpecificGroup}" x:Name="groupSpecificButton"/>
 
 
 				<!-- Eventets Beskrivelse -->
-				<StackLayout Grid.Row="1" Padding="10, 10, 10, 0" VerticalOptions="Start" HeightRequest="200" TranslationY="30">
+				<StackLayout Grid.Row="5" Padding="10, 10, 10, 0" VerticalOptions="Start" >
 					<Label Style="{DynamicResource DescriptionStyle}" x:Name="eventDescription" FontSize="13"/>
 				</StackLayout>
 			</Grid>
@@ -94,21 +104,34 @@
 				</Grid>
 			</StackLayout>
 
+
+			
 			<!-- Knappen som gør man kan kan få mere / mindre info -->
 			<StackLayout Grid.Row="1" VerticalOptions="EndAndExpand" HorizontalOptions="Start" Orientation="Horizontal" HeightRequest="20">
-				<controlsTwo:IconView Source="ic_map" Foreground="{DynamicResource HowlOut}" HeightRequest="20" HorizontalOptions="Start" TranslationX="-30"/>
-				<Button TextColor="{DynamicResource TextColor}" x:Name="detailsButton" Text="Show Map" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" WidthRequest="200" TranslationX="-120"/>
+				<local:IconView Source="ic_map" Foreground="{DynamicResource HowlOut}" HeightRequest="20" HorizontalOptions="Start" TranslationX="-30"/>
+				<Button TextColor="{DynamicResource HowlOut}" x:Name="detailsButton" Text="Show Map" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" WidthRequest="200" TranslationX="-120"/>
 			</StackLayout>
 
+			<!--
+			<StackLayout Grid.Row="2" HeightRequest="45" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" Padding="0,5,0,0">
+				<local:Line/>
+				<StackLayout Padding="10,0,0,0" Orientation="Horizontal">
+					<Label Text="This event is for members of " VerticalOptions="Center"/>
+					<controls:CircleImage Source="{Binding SpecificGroupImageSource}" HeightRequest="30" WidthRequest="30" Aspect="AspectFill"/>
+					<Label Text="{Binding SpecificGroupText}" TextColor="{DynamicResource HowlOut}" VerticalOptions="Center"/>
+					<Label Text="only." VerticalOptions="Center"/>
+				</StackLayout>
+			</StackLayout> -->
+
 			<!-- Knapper der giver mulighed for at deltage, followe, invite og leave afhængigt af om man er med i event eller ej -->
-			<StackLayout Grid.Row="2" x:Name="manageSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
+			<StackLayout Grid.Row="3" x:Name="manageSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
 				<Button Text="Invite" x:Name="inviteButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 				<Button Text="Leave"  x:Name="editLeaveButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
 
-			<StackLayout Grid.Row="2" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
+			<StackLayout Grid.Row="3" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
 				<Button Text="Join"   x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-				<Button Text="Track" x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button Text="Track"  x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
 
 

@@ -134,19 +134,43 @@ namespace HowlOut
 			}
 		}
 
-		public async Task<bool> AttendTrackEvent(Event eve, bool attendOrTrack, bool joinOrLeave)
+		public async Task<bool> AttendTrackEvent(Event eve, bool attendOrUnattend, bool joinOrTrack)
 		{
 			var Continue = false;
-			Continue = await App.coreView.displayConfirmMessage("Allert", "You are about to join an event, continue?", "Yes", "No");
+			string action = "";
+			if (joinOrTrack)
+			{
+				if (attendOrUnattend)
+				{
+					action = "You are about to join an event, continue?";
+				}
+				else {
+					action = "You are about to leave an event, continue?";
+				}
+
+			}
+			else {
+				if (attendOrUnattend)
+				{
+					action = "You are about to track an event, continue?";
+				}
+				else {
+					action = "You are about to untrack an event, continue?";
+				}
+			}
+
+
+			Continue = await App.coreView.displayConfirmMessage("Allert", action, "Yes", "No");
 			if (Continue)
 			{
-				bool success = await EventApiManager.AttendOrTrackEvent(eve.EventId, attendOrTrack, joinOrLeave);
+				bool success = await EventApiManager.AttendOrTrackEvent(eve.EventId, attendOrUnattend, joinOrTrack);
 				if (!success)
 				{
 					await App.coreView.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
 					return false;
 				}
 				else {
+					App.coreView.setContentViewWithQueue(new InspectController(eve), "", null);
 					return true;
 				}
 			}
@@ -228,7 +252,7 @@ namespace HowlOut
 		public bool IsEventYours(Event eve)
 		{
 			bool yours = false;
-			if ((eve.ProfileOwner != null && eve.ProfileOwner.ProfileId == App.StoredUserFacebookId) || (eve.OrganizationOwner != null && App.userProfile.Groups.Exists(o => o.GroupId == eve.OrganizationOwner.OrganizationId)))
+			if ((eve.ProfileOwner != null && eve.ProfileOwner.ProfileId == App.StoredUserFacebookId) || (eve.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == eve.OrganizationOwner.OrganizationId)))
 			{
 				yours = true;
 			}
@@ -239,12 +263,11 @@ namespace HowlOut
 		{
 			bool yours = false;
 			if (IsEventYours (eve)) {
-				yours = true;
-			} else {
-				for(int i = 0; i < eve.Attendees.Count; i++) {
-					if (eve.Attendees [i].ProfileId == App.userProfile.ProfileId) {
-						yours = true;
-					}
+				return true;
+			} 
+			for (int i = 0; i < eve.Attendees.Count; i++) {
+				if (eve.Attendees[i].ProfileId == App.userProfile.ProfileId) {
+					yours = true;
 				}
 			}
 			return yours;
@@ -253,7 +276,7 @@ namespace HowlOut
 		public bool AreYouGroupOwner(Group group)
 		{
 			bool you = false;
-			if (group.ProfileOwner.ProfileId == App.userProfile.ProfileId) {
+			if ((group.ProfileOwner != null && group.ProfileOwner.ProfileId == App.userProfile.ProfileId) || (group.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == group.OrganizationOwner.OrganizationId))) {
 				you = true;
 			}
 			return you;
@@ -262,6 +285,10 @@ namespace HowlOut
 		public bool AreYouGroupMember(Group group)
 		{
 			bool you = false;
+			if (AreYouGroupOwner(group))
+			{
+				return true;
+			}
 			for (int i = 0; i < group.Members.Count; i++) {
 				if (group.Members [i].ProfileId == App.userProfile.ProfileId) {
 					you = true;

@@ -10,10 +10,12 @@ namespace HowlOut
 	{
 		Profile profile;
 		Plugin.Media.Abstractions.MediaFile mediaFile;
+		Design design = Design.ShowAll;
 
 		public ProfileDesignView(Profile profile, Event eveInvitingTo, int dims) : base(dims)
 		{
 			this.profile = profile;
+			design = Design.NameAndButtons;
 			SetupButtons(true);
 			if (!eveInvitingTo.Attendees.Exists(p => p.ProfileId == profile.ProfileId))
 			{
@@ -27,6 +29,7 @@ namespace HowlOut
 		public ProfileDesignView(Profile profile, Group grpInvitingTo, int dims) : base(dims)
 		{
 			this.profile = profile;
+			design = Design.NameAndButtons;
 			SetupButtons(true);
 			if (!grpInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
 			{
@@ -51,6 +54,7 @@ namespace HowlOut
 		public ProfileDesignView(Profile profile, Organization orgInvitingTo, int dims) : base(dims)
 		{
 			this.profile = profile;
+			design = Design.NameAndButtons;
 			SetupButtons(true);
 			if (!orgInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
 			{
@@ -61,9 +65,10 @@ namespace HowlOut
 			} 
 		}
 
-		public ProfileDesignView(Profile profile, int dims, bool clickable) : base(dims)
+		public ProfileDesignView(Profile profile, int dims, bool clickable, Design design) : base(dims)
 		{
 			this.profile = profile;
+			this.design = design;
 			SetupButtons(clickable);
 			if (profile.ProfileId == App.StoredUserFacebookId) {
 				editBtn.IsVisible = true;
@@ -103,13 +108,28 @@ namespace HowlOut
 
 		public async void SetupButtons(bool clickable)
 		{
+			
+
+
 			if (clickable)
 				subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewWithQueue(new InspectController(profile), "", null); };
 
 			Profile updateProfile = App.userProfile;
-
-			editBtn.Clicked += async (sender, e) =>
+			bool edit = false;
+			editBtn.Clicked += (sender, e) =>
 			{
+				ShowHideEditLayout(!edit);
+
+				if (edit)
+				{
+					SetInfo(profile.ImageSource, profile.Name, profile.Description, design);
+				}
+
+
+				edit = !edit;
+
+
+				/*
 				if (editLayout.IsVisible)
 				{
 					await App.scrollTo(0);
@@ -119,8 +139,15 @@ namespace HowlOut
 				else {
 					editLayout.IsVisible = true;
 					await App.scrollTo(editBtn);
+
 				}
+				*/
 			};
+
+
+
+
+			Image newImage = new Image();
 
 			var pictureImage = new TapGestureRecognizer();
 			pictureImage.Tapped += async (sender, e) =>
@@ -128,7 +155,7 @@ namespace HowlOut
 				mediaFile = await _dataManager.UtilityManager.TakePicture();
 				if (mediaFile != null)
 				{
-					editImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					profileImage.Source = ImageSource.FromStream(mediaFile.GetStream);
 					//SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
 				}
 			};
@@ -137,10 +164,11 @@ namespace HowlOut
 			var albumImage = new TapGestureRecognizer();
 			albumImage.Tapped += async (SenderOfEvent, e) =>
 			{
+				
 				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
 				if (mediaFile != null)
 				{
-					editImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					profileImage.Source = ImageSource.FromStream(mediaFile.GetStream);
 				}
 			};
 			albumButton.GestureRecognizers.Add(albumImage);
@@ -148,17 +176,25 @@ namespace HowlOut
 			fbImageButton.Clicked += (sender, e) =>
 			{
 				updateProfile.ImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=200&width=200";
-				editImage.Source = updateProfile.ImageSource;
+				profileImage.Source = updateProfile.ImageSource;
 				mediaFile = null;
 			};
 
 			updateProfileBtn.Clicked += async  (sender, e) =>
 			{
+				App.coreView.IsLoading(true);
 				if (mediaFile != null)
 				{
 					updateProfile.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
 				}
-				await _dataManager.ProfileApiManager.CreateUpdateProfile(updateProfile, false);
+				updateProfile.Description = descriptionEdit.Text;
+				bool success = await _dataManager.ProfileApiManager.CreateUpdateProfile(updateProfile, false);
+				if (success)
+				{
+					App.coreView.homeView = new HomeView();
+					App.coreView.setContentView(4);
+				}
+				App.coreView.IsLoading(false);
 			};
 
 			profileLogOutBtn.Clicked += async (sender, e) =>
@@ -167,10 +203,8 @@ namespace HowlOut
 				await Navigation.PushModalAsync(new LoginPage());
 			};
 
-
-
 			profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
-			SetImage(profile.ImageSource, profile.Name);
+			SetInfo(profile.ImageSource, profile.Name, profile.Description, design);
 		}
 	}
 }

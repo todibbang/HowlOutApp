@@ -25,6 +25,7 @@ namespace HowlOut.iOS.Renderers
 				SetBorderStyle(timePicker);
 				SetTextColor(timePicker);
 
+
 				Control.AdjustsFontSizeToFitWidth = true;
 			}
 

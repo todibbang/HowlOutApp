@@ -16,15 +16,35 @@ namespace HowlOut
 
 		public UpperBar topBar;
 		public DataManager _dataManager;
+		public OtherFunctions otherFunctions = new OtherFunctions();
 
 		//public CreateEvent createEventView;
-		public CreateView createView;
-		public EventView manageEventView;
-		public EventView exploreEventView;
-		public YourNotifications howlsEventView;
+
+		public CarouselList createView;
+		public CarouselList manageEventView;
+		public CarouselList searchEventView;
+		public CarouselList howlsView;
+
+		//public CreateView createView;
+		//public EventView manageEventView;
+		//public EventView exploreEventView;
+		//public HowlsView howlsView;
 		public HomeView homeView;
 
-		int lastCoreView = 2;
+		public CreateEvent createEvent;
+		public CreateGroup createGroup;
+		public CreateOrganization createOrganization;
+
+		public EventListView joinedEvents;
+		public EventListView trackedEvents;
+
+		public EventListView exploreEvents;
+		public EventListView friendsEvents;
+
+		public YourNotifications conversatios;
+		public YourNotifications notifications;
+
+		int lastCoreView = 2; 
 
 		public CoreView ()
 		{
@@ -37,18 +57,45 @@ namespace HowlOut
 
 		public async void startCoreView()
 		{
-			//createEventView = new CreateEvent(new Event(), true);
-			createView = new CreateView();
-			manageEventView = new EventView(0);
-			howlsEventView = new YourNotifications();
+			createEvent = new CreateEvent(new Event(), true);
+			createGroup = new CreateGroup(new Group(), true);
+			createOrganization = new CreateOrganization(new Organization(), true);
+
+			joinedEvents = new EventListView(2);
+			trackedEvents = new EventListView(3);
+
+			exploreEvents = new EventListView(0);
+			friendsEvents = new EventListView(1);
+
+			conversatios = new YourNotifications(1);
+			notifications = new YourNotifications(0);
+
+
+			createView = new CarouselList(
+				new List<VisualElement>() {createEvent, createGroup, createOrganization },
+				new List<string>() { "Event", "Group", "Organization"}
+			);
+			manageEventView = new CarouselList(
+				new List<VisualElement>() { joinedEvents, trackedEvents },
+				new List<string>() { "Manage", "Follow" }
+			);
+			howlsView = new CarouselList(
+				new List<VisualElement>() { conversatios, notifications },
+				new List<string>() { "Conversations", "Notifications" }
+			);
+
 			homeView = new HomeView();
-			await Task.Delay(50);
-			exploreEventView = new EventView(1);
-			contentViews.Add (exploreEventView);
+
+			searchEventView = new CarouselList(
+				new List<VisualElement>() { exploreEvents, friendsEvents },
+				new List<string>() { "Explore", "Friends" }
+			);
+			contentViews.Add (searchEventView);
 			scrollViews.Add (null);
 			contentViewTypes.Add ("Event");
 			topBar.setNavigationLabel("Event", null);
-			mainView.Content = exploreEventView;
+			topBar.showFilterSearchButton(true);
+			mainView.Content = searchEventView;
 			await _dataManager.update();
 			loading.IsVisible = false;
 		}
@@ -78,17 +125,18 @@ namespace HowlOut
 
 			} else if (type == 2)
 			{
-				view = exploreEventView;
+				view = searchEventView;
 				scroll = null;
 				topBar.showFilterSearchButton(true);
 				topBar.setNavigationLabel("Find Events", scroll);
-				exploreEventView.setLastCarousel();
+				searchEventView.setLastCarousel();
 
 			} else if (type == 3)
 			{
-				view = howlsEventView;
-				scroll = howlsEventView.getScrollView();
+				view = howlsView;
+				scroll = null;
 				topBar.setNavigationLabel("Howls", scroll);
+				howlsView.setLastCarousel();
 				topBar.showNewConversationButton(true);
 
 			} else if (type == 4)
@@ -178,6 +226,11 @@ namespace HowlOut
 
 				}
 			}
+		}
+
+		public void IsLoading(bool show)
+		{
+			loading.IsVisible = show;
 		}
 
 		protected override bool OnBackButtonPressed()

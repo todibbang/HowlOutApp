@@ -10,44 +10,48 @@ namespace HowlOut
 	public partial class YourNotifications : ContentView
 	{
 		private DataManager _dataManager;
+		List<Notification> notiList = new List<Notification>();
 		int listType = 1;
 
-		List<Profile> profilesAdded;
+		public ContentView content
+		{
+			get { return this; }
+			set { this.content = value; }
+		}
 
-		public YourNotifications()
+		public YourNotifications(int viewType)
 		{
 			InitializeComponent();
 			_dataManager = new DataManager();
-			App.setOptionsGrid(optionGrid, new List<string> { "Notifications", "Conversations" }, new List<VisualElement> { updateList, updateList }, new List<Action> { ()=> UpdateNotifications(), () => UpdateConversations() }, null);
+			listType = viewType;
+			if (listType == 0)
+			{
+				UpdateNotifications(true);
+			}
+			else {
+				
+				UpdateConversations();
+			}
+
+			//App.setOptionsGrid(optionGrid, new List<string> { "Notifications", "Conversations" }, new List<VisualElement> { updateList, updateList }, new List<Action> { ()=> UpdateNotifications(), () => UpdateConversations() }, null);
 
 			updateList.ItemSelected += OnListItemSelected;
 			updateList.Refreshing += async (sender, e) => { await UpdateLists(); };
 
-			peopleToAddConversationList.ItemSelected += OnPeopleToAddListItemSelected;
-			addedToConversationList.ItemSelected += OnAddedPeopleListItemSelected;
 
-			cancelCreateConversation.Clicked += (sender, e) => { CreateNewConversation.IsVisible = false; };
-			createConversation.Clicked += async (sender, e) => {
-				profilesAdded.Add(App.userProfile);
-				Conversation conv = await _dataManager.MessageApiManager.CreateConversations(profilesAdded);
-				if (conv != null) {
-					App.coreView.setContentViewWithQueue(new ConversationView(conv), "", null);
-					CreateNewConversation.IsVisible = false;
-				}
-			};
 		}
 
 		async Task UpdateLists()
 		{
-			if (listType == 0) { await UpdateNotifications(); }
+			if (listType == 0) { await UpdateNotifications(true); }
 			else { await UpdateConversations(); }
 		}
 
-		public async Task UpdateNotifications()
+		public async Task UpdateNotifications(bool update)
 		{
 			loading.IsVisible = true;
 			//TODO add correct servercall
-			List<Notification> notiList = new List<Notification>(); //await _dataManager.ProfileApiManager.GetNotifications(await _dataManager.EventApiManager.GetEventById("50"), await _dataManager.ProfileApiManager.GetProfile("191571161232364"), await _dataManager.GroupApiManager.GetGroupById("8"));
+			if (update) { notiList = await _dataManager.MessageApiManager.GetNotifications(); }
 			notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
 			ObservableCollection<GroupedNotifications> groupedNotifications = new ObservableCollection<GroupedNotifications>();
 			if (notiList.Count > 0)
@@ -109,68 +113,35 @@ namespace HowlOut
 			if (listType == 0) {
 				var selectedNotification = updateList.SelectedItem as Notification;
 
-				if (selectedNotification.Type == Notification.MessageType.PersonallyInvitedToEvent ||
-						selectedNotification.Type == Notification.MessageType.EventHolderWhosEventPreviouslyAttendedHasCreatedEvent ||
-						selectedNotification.Type == Notification.MessageType.FollowedProfileHasCreatedEvent ||
-						   selectedNotification.Type == Notification.MessageType.FriendCreatedEvent ||
-						selectedNotification.Type == Notification.MessageType.FriendJoinedEvent ||
-						selectedNotification.Type == Notification.MessageType.PicturesAddedToEvent ||
-						selectedNotification.Type == Notification.MessageType.YourGroupInvitedToEvent)
+				if (selectedNotification.Type == Notification.MessageType.ProfileInvitedToEvent ||
+				    selectedNotification.Type == Notification.MessageType.FriendJoined ||
+				    selectedNotification.Type == Notification.MessageType.FriendCreatedEvent ||
+				    selectedNotification.Type == Notification.MessageType.GroupInvitedToEvent)
 				{
 					App.coreView.GoToSelectedEvent(selectedNotification.ContentEvent.EventId);
 				}
-				else if (selectedNotification.Type == Notification.MessageType.FacebookFriendHasCreatedProfile ||
-						 selectedNotification.Type == Notification.MessageType.FriendRequest)
+				else if (selectedNotification.Type == Notification.MessageType.FriendRequest)
 				{
 					InspectController inspect = new InspectController(selectedNotification.ContentProfile);
 					App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
 				}
-				else if (selectedNotification.Type == Notification.MessageType.FriendJoinedGroup ||
-						 selectedNotification.Type == Notification.MessageType.GroupRequest)
+				else if (selectedNotification.Type == Notification.MessageType.GroupRequest)
 				{
 					App.coreView.GoToSelectedGroup(selectedNotification.ContentGroup.GroupId);
 				}
+				_dataManager.MessageApiManager.DeleteNotifications(selectedNotification.InAppNotificationId);
+				notiList.Remove(selectedNotification);
+				UpdateNotifications(false);
 			} else if (listType == 1) {
 				var selectedConversation = updateList.SelectedItem as Conversation;
 				App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation), "Conversation", null);
 			}
+
 			updateList.SelectedItem = null;
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 		}
 
-		public void ShowNewConversation()
-		{
-			profilesAdded = new List<Profile>();
-			CreateNewConversation.IsVisible = true;
-			peopleToAddConversationList.ItemsSource = App.userProfile.Friends;
-			addedToConversationList.ItemsSource = null;
 
-		}
-
-		public void OnPeopleToAddListItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
-			if (peopleToAddConversationList.SelectedItem == null) { return; }
-			var selectedProfile = peopleToAddConversationList.SelectedItem as Profile;
-			if (!profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
-			{
-				profilesAdded.Add(selectedProfile);
-				addedToConversationList.ItemsSource = null;
-				addedToConversationList.ItemsSource = profilesAdded;
-			}
-			peopleToAddConversationList.SelectedItem = null;
-		}
-		public void OnAddedPeopleListItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
-			if (addedToConversationList.SelectedItem == null) { return; }
-			var selectedProfile = addedToConversationList.SelectedItem as Profile;
-			if (profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
-			{
-				profilesAdded.Remove(profilesAdded.Find(p => p.ProfileId == selectedProfile.ProfileId));
-				addedToConversationList.ItemsSource = null;
-				addedToConversationList.ItemsSource = profilesAdded;
-			}
-			addedToConversationList.SelectedItem = null;
-		}
 
 
 		/*

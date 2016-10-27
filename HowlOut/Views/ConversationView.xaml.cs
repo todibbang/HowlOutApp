@@ -10,15 +10,24 @@ namespace HowlOut
 	public partial class ConversationView : ContentView
 	{
 		private DataManager _dataManager = new DataManager();
-		private Conversation conversation;
+		public Conversation conversation;
 		private List<Comment> comments;
 		private StackLayout wallLayout;
 		List<Profile> profilesAdded;
+
+		public ContentView content
+		{
+			get { return this; }
+			set { this.content = value; }
+		}
+
+		private double listHeight;
 
 		private MessageApiManager.CommentType type;
 		private string ID;
 
 		public ConversationView(List<Comment> coms, MessageApiManager.CommentType mT, string id, StackLayout layout)
+		//public ConversationView(List<Comment> coms, MessageApiManager.CommentType mT, string id)
 		{
 			InitializeComponent();
 			comments = coms;
@@ -44,23 +53,23 @@ namespace HowlOut
 			ID = conv.ConversationID;
 
 			UpdateList(true);
-			postCommentButtonBottom.Clicked += async (sender, e) => { await PostNewComment(commentEntryBottom.Text); };
+			postCommentButtonBottom.Clicked += async (sender, e) => {
+				await PostNewComment(commentEntryBottom.Text); 
+			};
 			setSize();
 
-			peopleToAddConversationList.ItemSelected += OnPeopleToAddListItemSelected;
-			addedToConversationList.ItemSelected += OnAddedPeopleListItemSelected;
-
-			cancelCreateConversation.Clicked += (sender, e) => { AddToConversation.IsVisible = false; };
-			createConversation.Clicked += async (sender, e) =>
+			commentEntryBottom.Focused += (sender, e) =>
 			{
-				Conversation newConv = await _dataManager.MessageApiManager.AddProfilesToConversation(conv.ConversationID, profilesAdded);
-				if (newConv != null)
-				{
-					App.coreView.setContentViewWithQueue(new ConversationView(newConv), "", null);
-					AddToConversation.IsVisible = false;
-				}
+				bottomInputLifter.Height = 200;
+				listLayout.HeightRequest = listHeight - 200;
+				commentList.HeightRequest = listHeight - 200;
 			};
-
+			commentEntryBottom.Unfocused += (sender, e) =>
+			{
+				bottomInputLifter.Height = 0;
+				listLayout.HeightRequest = listHeight;
+				commentList.HeightRequest = listHeight;
+			};
 
 		}
 
@@ -69,6 +78,8 @@ namespace HowlOut
 			await Task.Delay(10);
 			outerGrid.HeightRequest = App.coreView.Height - (35 + 62 + 30);
 			commentList.HeightRequest = outerGrid.HeightRequest - 80;
+			listLayout.HeightRequest = commentList.Height;
+			listHeight = commentList.HeightRequest;
 			App.coreView.topBar.showAddPeopleToConversationButton(true, this);
 		}
 
@@ -157,48 +168,6 @@ namespace HowlOut
 		{
 			commentList.SelectedItem = null;
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
-		}
-
-
-
-
-
-
-
-
-		//Adds profiles to conversation
-		public void ShowPeopleToAddToConversation()
-		{
-			profilesAdded = new List<Profile>();
-			AddToConversation.IsVisible = true;
-			peopleToAddConversationList.ItemsSource = App.userProfile.Friends;
-			addedToConversationList.ItemsSource = null;
-
-		}
-
-		public void OnPeopleToAddListItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
-			if (peopleToAddConversationList.SelectedItem == null) { return; }
-			var selectedProfile = peopleToAddConversationList.SelectedItem as Profile;
-			if (!profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
-			{
-				profilesAdded.Add(selectedProfile);
-				addedToConversationList.ItemsSource = null;
-				addedToConversationList.ItemsSource = profilesAdded;
-			}
-			peopleToAddConversationList.SelectedItem = null;
-		}
-		public void OnAddedPeopleListItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
-			if (addedToConversationList.SelectedItem == null) { return; }
-			var selectedProfile = addedToConversationList.SelectedItem as Profile;
-			if (profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
-			{
-				profilesAdded.Remove(profilesAdded.Find(p => p.ProfileId == selectedProfile.ProfileId));
-				addedToConversationList.ItemsSource = null;
-				addedToConversationList.ItemsSource = profilesAdded;
-			}
-			addedToConversationList.SelectedItem = null;
 		}
 	}
 }

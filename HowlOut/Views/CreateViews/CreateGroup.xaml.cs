@@ -6,10 +6,10 @@ namespace HowlOut
 {
 	public partial class CreateGroup : ContentView
 	{
-		public ContentView createContent
+		public ContentView content
 		{
 			get { return this; }
-			set { this.createContent = value; }
+			set { this.content = value; }
 		}
 
 		public Group newGroup;
@@ -24,6 +24,7 @@ namespace HowlOut
 			newGroup = group;
 			if (isCreate) {
 				cancelButton.IsVisible = false;
+				newGroup.GroupId = "0";
 			}
 			else {
 				setEditEvent();
@@ -38,24 +39,31 @@ namespace HowlOut
 				if (visibilityPicker.SelectedIndex == 0) { newGroup.Visibility = Visibility.Open; }
 				if (visibilityPicker.SelectedIndex == 1) { newGroup.Visibility = Visibility.Closed; }
 				if (visibilityPicker.SelectedIndex == 2) { newGroup.Visibility = Visibility.Secret; }
+				visibilityString.Text = visibilityPicker.Items[visibilityPicker.SelectedIndex];
 			};
+			visibilityString.Text = visibilityPicker.Title;
 
-			// Group Image Settings
-			takePictureButton.Clicked += async (sender, e) => {
+			var pictureImage = new TapGestureRecognizer();
+			pictureImage.Tapped += async (sender, e) =>
+			{
 				mediaFile = await _dataManager.UtilityManager.TakePicture();
-				if (mediaFile != null) {
+				if (mediaFile != null)
+				{
 					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					selectBannerButton.BackgroundColor = Color.Transparent;
 				}
 			};
+			takePictureButton.GestureRecognizers.Add(pictureImage);
 
-			albumPictureButton.Clicked += async (SenderOfEvent, e) => {
+			var albumImage = new TapGestureRecognizer();
+			albumImage.Tapped += async (SenderOfEvent, e) =>
+			{
 				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
-				if (mediaFile != null) {
+				if (mediaFile != null)
+				{
 					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					selectBannerButton.BackgroundColor = Color.Transparent;
 				}
 			};
+			albumPictureButton.GestureRecognizers.Add(albumImage);
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createGroupView = this;
@@ -67,7 +75,7 @@ namespace HowlOut
 			launchButton.Clicked += async (sender, e) => {
 				if (isCreate && !Launching)
 				{
-					bool continueCreating = await App.SenderOfEvent(SelectSenderLayout, null, newGroup);
+					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, null, newGroup);
 					if (continueCreating)
 					{
 						LaunchGroup(newGroup);
@@ -76,7 +84,7 @@ namespace HowlOut
 				}
 				else if (!isCreate && !Launching)
 				{
-					UpdateGroup(newGroup);
+					LaunchGroup(newGroup);
 				}
 			};
 
@@ -98,6 +106,7 @@ namespace HowlOut
 
 		private async void LaunchGroup(Group groupToCreate)
 		{
+			App.coreView.IsLoading(true);
 			if (mediaFile != null)
 			{
 				groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
@@ -106,7 +115,7 @@ namespace HowlOut
 			{
 				groupToCreate.ProfileOwner = App.userProfile;
 			}
-			groupToCreate.GroupId = "0";
+
 			if (String.IsNullOrWhiteSpace(groupToCreate.Name))
 			{
 				await App.coreView.displayAlertMessage("Name Missing", "Name is missing", "Ok");
@@ -127,16 +136,25 @@ namespace HowlOut
 				{
 					InspectController inspect = new InspectController(groupCreated);
 					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+					App.coreView.createGroup = new CreateGroup(new Group(), true);
+					App.coreView.homeView = new HomeView();
 				}
 				else {
 					await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");
 				}
 			}
 			Launching = false; 
+			App.coreView.IsLoading(false);
 		}
 
+		/*
 		private async void UpdateGroup(Group groupToUpdate)
 		{
+			if (mediaFile != null)
+			{
+				groupToUpdate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
+			}
+
 			var groupUpdated = await _dataManager.GroupApiManager.CreateEditGroup(groupToUpdate);
 
 			if (groupUpdated != null) {
@@ -146,6 +164,7 @@ namespace HowlOut
 				await App.coreView.displayAlertMessage ("Error", "Group not updated, try again", "Ok");
 			}
 		}
+		*/
 
 		public async void DeleteGroup(Group groupToDelete)
 		{

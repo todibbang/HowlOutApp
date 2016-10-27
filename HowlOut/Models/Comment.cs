@@ -8,14 +8,7 @@ namespace HowlOut
 		public string SenderId {get; set;}
 		public DateTime DateAndTime { get; set; }
 
-		public Uri ProfileImageUri {
-			get {
-				return new Uri ("https://graph.facebook.com/v2.5/"+SenderId+"/picture?height=150&width=150");
-			}
-			set{
-				this.ProfileImageUri = value;
-			}
-		}
+		public string ImageSource { get; set;  }
 
 		public string Time
 		{

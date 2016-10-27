@@ -7,10 +7,10 @@ namespace HowlOut
 {
 	public partial class EventListView : ContentView
 	{
-		public ContentView eventContent
+		public ContentView content
 		{
 			get { return this; }
-			set { this.eventContent = value; }
+			set { this.content = value; }
 		}
 
 		private DataManager _dataManager;
@@ -18,14 +18,31 @@ namespace HowlOut
 		bool beingRepositioned = false;
 		int currentView = 0;
 		Profile profile;
-
+		Group group;
+		Organization organization;
 		//string ID;
 
 		public EventListView(Profile pro)
 		{
 			InitializeComponent();
 			profile = pro;
+			currentView = 4;
+			setUp();
+		}
+
+		public EventListView(Group grp)
+		{
+			InitializeComponent();
+			group = grp;
 			currentView = 5;
+			setUp();
+		}
+
+		public EventListView(Organization org)
+		{
+			InitializeComponent();
+			organization = org;
+			currentView = 6;
 			setUp();
 		}
 
@@ -103,10 +120,24 @@ namespace HowlOut
 				evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(false, new List<Profile> { App.userProfile });
 
 			}
-			else if (listToUpdate == 5)
+			else if (listToUpdate == 4)
 			{
 				evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { profile });
 
+			}
+			else if (listToUpdate == 5)
+			{
+				evelist = await _dataManager.EventApiManager.GetEventsForGroups(new List<Group> { group });
+				HeightRequest = evelist.Count * 90;
+				HeightRequest += 20;
+				if (HeightRequest > 200) HeightRequest = 200;
+			}
+			else if (listToUpdate == 6)
+			{
+				evelist = await _dataManager.EventApiManager.GetEventsForOrgs(new List<Organization> { organization });
+				HeightRequest = evelist.Count * 90;
+				HeightRequest += 20;
+				if (HeightRequest > 200) HeightRequest = 200;
 			}
 			/*
 			else if (listToUpdate == 2)
@@ -138,8 +169,10 @@ namespace HowlOut
 			} else if (evelist.Count == 0) {
 				loading.IsVisible = false;
 				searchEventList.IsRefreshing = false;
+				searchEventList.ItemsSource = null;
 				return;
 			}
+						searchEventList.ItemsSource = null;
 
 			var orderedList = new ObservableCollection<Event>();
 

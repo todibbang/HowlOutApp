@@ -36,11 +36,11 @@
 					
 					
 					
-					<StackLayout BackgroundColor="White" Spacing="0">
+					<StackLayout Spacing="0">
 						<Grid RowSpacing="0">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="2"/>
-								<RowDefinition Height="227"/>
+								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="2"/>
 							</Grid.RowDefinitions>
 

@@ -6,16 +6,15 @@ namespace HowlOut
 {
 	public partial class CreateOrganization : ContentView
 	{
-		public ContentView createContent
+		public ContentView content
 		{
 			get { return this; }
-			set { this.createContent = value; }
+			set { this.content = value; }
 		}
 
 		public Organization newOrg;
 		Plugin.Media.Abstractions.MediaFile mediaFile;
 		DataManager _dataManager;
-		private bool Launching = false;
 
 		public CreateOrganization(Organization org, bool isCreate)
 		{
@@ -25,6 +24,7 @@ namespace HowlOut
 			if (isCreate)
 			{
 				cancelButton.IsVisible = false;
+				newOrg.OrganizationId = "0";
 			}
 			else {
 				setEditEvent();
@@ -33,26 +33,28 @@ namespace HowlOut
 			title.TextChanged += (sender, e) => { newOrg.Name = title.Text; };
 			description.TextChanged += (sender, e) => { newOrg.Description = description.Text; };
 
-			// Group Image Settings
-			takePictureButton.Clicked += async (sender, e) =>
+			var pictureImage = new TapGestureRecognizer();
+			pictureImage.Tapped += async (sender, e) =>
 			{
 				mediaFile = await _dataManager.UtilityManager.TakePicture();
 				if (mediaFile != null)
 				{
 					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					selectBannerButton.BackgroundColor = Color.Transparent;
 				}
 			};
+			takePictureButton.GestureRecognizers.Add(pictureImage);
 
-			albumPictureButton.Clicked += async (SenderOfEvent, e) =>
+			var albumImage = new TapGestureRecognizer();
+			albumImage.Tapped += async (SenderOfEvent, e) =>
 			{
 				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
 				if (mediaFile != null)
 				{
 					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					selectBannerButton.BackgroundColor = Color.Transparent;
 				}
 			};
+			albumPictureButton.GestureRecognizers.Add(albumImage);
+
 			selectBannerButton.Clicked += (sender, e) =>
 			{
 				SelectBannerView selectBannerView = new SelectBannerView();
@@ -64,15 +66,9 @@ namespace HowlOut
 
 			launchButton.Clicked += (sender, e) =>
 			{
-				if (isCreate && !Launching)
-				{
+
 					LaunchOrganization(newOrg);
-					Launching = true;
-				}
-				else if (!isCreate && !Launching)
-				{
-					UpdateOrganization(newOrg);
-				}
+
 			};
 
 			cancelButton.Clicked += (sender, e) =>
@@ -93,11 +89,12 @@ namespace HowlOut
 
 		private async void LaunchOrganization(Organization orgToCreate)
 		{
+			App.coreView.IsLoading(true);
 			if (mediaFile != null)
 			{
 				orgToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
 			}
-			orgToCreate.OrganizationId = "0";
+
 			if (String.IsNullOrWhiteSpace(orgToCreate.Name))
 			{
 				await App.coreView.displayAlertMessage("Name Missing", "Name is missing", "Ok");
@@ -118,16 +115,23 @@ namespace HowlOut
 				{
 					InspectController inspect = new InspectController(orgCreated);
 					App.coreView.setContentViewWithQueue(inspect, "Organization", inspect.getScrollView());
+					App.coreView.createOrganization = new CreateOrganization(new Organization(), true);
+					App.coreView.homeView = new HomeView();
 				}
 				else {
 					await App.coreView.displayAlertMessage("Error", "Organization not created, try again", "Ok");
 				}
 			}
-			Launching = false;
+			App.coreView.IsLoading(false);
 		}
-
+		/*
 		private async void UpdateOrganization(Organization orgToUpdate)
 		{
+			if (mediaFile != null)
+			{
+				orgToUpdate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
+			}
+
 			var orgUpdated = await _dataManager.OrganizationApiManager.CreateEditOrganization(orgToUpdate);
 
 			if (orgUpdated != null)
@@ -139,6 +143,7 @@ namespace HowlOut
 				await App.coreView.displayAlertMessage("Error", "Organization not updated, try again", "Ok");
 			}
 		}
+		*/
 
 		public async void DeleteOrganization(Organization orgToDelete)
 		{
@@ -160,7 +165,6 @@ namespace HowlOut
 
 		public void setBanner(string banner)
 		{
-			selectBannerButton.BackgroundColor = Color.Transparent;
 			SelectedBannerImage.Source = banner;
 			newOrg.ImageSource = banner;
 			mediaFile = null;

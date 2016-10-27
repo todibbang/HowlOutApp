@@ -81,11 +81,30 @@ namespace HowlOut
 
 		public async Task<List<Event>> GetEventsForGroups(List<Group> groups)
 		{
-			var uri = "/eventsFromGroupIds?";
-			for (int i = 0; i < groups.Count; i++) {
-				uri += "&groupIds=" + groups[i].GroupId;
+			if (groups != null && groups.Count > 0)
+			{
+				var uri = "/eventsFromGroupIds?currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+				for (int i = 0; i < groups.Count; i++)
+				{
+					uri += "&groupIds=" + groups[i].GroupId;
+				}
+				return await GetEventsServerCall(uri);
 			}
-			return await GetEventsServerCall(uri);
+			return null;
+		}
+
+		public async Task<List<Event>> GetEventsForOrgs(List<Organization> orgs)
+		{
+			if (orgs != null && orgs.Count > 0)
+			{
+				var uri = "/eventsFromOrganizationIds?currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+				for (int i = 0; i < orgs.Count; i++)
+				{
+					uri += "&organizationIds=" + orgs[i].OrganizationId;
+				}
+				return await GetEventsServerCall(uri);
+			}
+			return null;
 		}
 
 		public async Task<Event> CreateEditEvent(Event eventToCreate)
@@ -127,9 +146,9 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> AttendOrTrackEvent(string eventId, bool attendOrTrack, bool joinOrLeave)
+		public async Task<bool> AttendOrTrackEvent(string eventId, bool attendOrLeave, bool joinOrUnjoin)
 		{
-			var uri = "/joinOrTrack/"+eventId+"/"+ App.StoredUserFacebookId + "?attend="+attendOrTrack + "&join="+joinOrLeave;
+			var uri = "/joinOrTrack/"+eventId+"/"+ App.StoredUserFacebookId + "?attend="+attendOrLeave + "&join="+joinOrUnjoin;
 			return await PutEventServerCall(uri);
 		}
 
@@ -139,6 +158,7 @@ namespace HowlOut
 			for (int i = 1; i < profiles.Count; i++) {
 				uri += "&profileIds=" + profiles[i].ProfileId;
 			}
+			uri += "&profileSenderId=" + App.StoredUserFacebookId;
 			return await PutEventServerCall(uri);
 		}
 
