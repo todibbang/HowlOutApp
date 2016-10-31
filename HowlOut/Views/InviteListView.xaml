@@ -46,7 +46,7 @@
             </ListView>
 
 			<Label Text="Friends" Grid.Row="2" TextColor="{DynamicResource HowlOut}" HorizontalOptions="Center"/>
-			<ListView x:Name="peopleToAddConversationList" Grid.Row="3"
+			<ListView x:Name="profilesToBeAdded" Grid.Row="3"
 			HasUnevenRows="true"
 			InputTransparent="false"
 			SeparatorVisibility="None"
@@ -78,8 +78,8 @@
             </ListView>
 
             <StackLayout Grid.Row="4" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
-				<Button x:Name="cancelCreateConversation" Text="Cancel" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-				<Button x:Name="createConversation" Text="Create" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button x:Name="cancelBtn" Text="Cancel" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button x:Name="addBtn" Text="Invite" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
 			
 

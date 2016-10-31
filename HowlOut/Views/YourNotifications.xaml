@@ -53,7 +53,7 @@
                     <ListView.GroupHeaderTemplate>
                     	<DataTemplate>
 	                      <ViewCell Height="20">
-		                        <StackLayout Padding="0,0,0,0" BackgroundColor="Transparent">
+		                        <StackLayout Padding="20,0,0,0" BackgroundColor="Transparent">
 					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" BackgroundColor="{DynamicResource HowlOutBackground}"/>
 					    		</StackLayout>
 		              		</ViewCell>

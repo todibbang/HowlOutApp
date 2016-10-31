@@ -36,22 +36,30 @@ namespace HowlOut
 			var pictureImage = new TapGestureRecognizer();
 			pictureImage.Tapped += async (sender, e) =>
 			{
-				mediaFile = await _dataManager.UtilityManager.TakePicture();
-				if (mediaFile != null)
+				try
 				{
-					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					mediaFile = await _dataManager.UtilityManager.TakePicture();
+					if (mediaFile != null)
+					{
+						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					}
 				}
+				catch (Exception ex) { }
 			};
 			takePictureButton.GestureRecognizers.Add(pictureImage);
 
 			var albumImage = new TapGestureRecognizer();
 			albumImage.Tapped += async (SenderOfEvent, e) =>
 			{
-				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
-				if (mediaFile != null)
+				try
 				{
-					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
+					if (mediaFile != null)
+					{
+						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					}
 				}
+				catch (Exception ex) { }
 			};
 			albumPictureButton.GestureRecognizers.Add(albumImage);
 

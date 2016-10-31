@@ -41,7 +41,7 @@ namespace HowlOut
 			editProfileButtons.HeightRequest = dimentions * 0.16;
 			//buttonLayoutEdit.HeightRequest = dimentions * 0.16;
 
-			nameLabel.FontSize = dimentions * 0.115;
+			nameLabel.FontSize = 4 + (dimentions * 0.06);
 			descriptionLabel.FontSize = dimentions * 0.055;
 			//nameLabelEdit.FontSize = dimentions * 0.115;
 			descriptionLabelEdit.FontSize = dimentions * 0.055;

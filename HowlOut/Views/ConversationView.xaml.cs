@@ -11,7 +11,7 @@ namespace HowlOut
 	{
 		private DataManager _dataManager = new DataManager();
 		public Conversation conversation;
-		private List<Comment> comments;
+		List<Comment> comments;
 		private StackLayout wallLayout;
 		List<Profile> profilesAdded;
 
@@ -23,8 +23,8 @@ namespace HowlOut
 
 		private double listHeight;
 
-		private MessageApiManager.CommentType type;
-		private string ID;
+		public MessageApiManager.CommentType type;
+		public string ConversationId;
 
 		public ConversationView(List<Comment> coms, MessageApiManager.CommentType mT, string id, StackLayout layout)
 		//public ConversationView(List<Comment> coms, MessageApiManager.CommentType mT, string id)
@@ -34,7 +34,7 @@ namespace HowlOut
 			entryTop.IsVisible = true;
 			commentList.ItemSelected += OnItemSelected;
 			type = mT;
-			ID = id;
+			ConversationId = id;
 			wallLayout = layout;
 
 			UpdateList(true);
@@ -50,7 +50,7 @@ namespace HowlOut
 			entryBottom.IsVisible = true;
 			commentList.ItemSelected += OnItemSelected;
 			type = MessageApiManager.CommentType.Converzation;
-			ID = conv.ConversationID;
+			ConversationId = conv.ConversationID;
 
 			UpdateList(true);
 			postCommentButtonBottom.Clicked += async (sender, e) => {
@@ -70,7 +70,7 @@ namespace HowlOut
 				listLayout.HeightRequest = listHeight;
 				commentList.HeightRequest = listHeight;
 			};
-
+			App.coreView.topBar.showAddPeopleToConversationButton(true, this);
 		}
 
 		private async Task setSize()
@@ -80,7 +80,7 @@ namespace HowlOut
 			commentList.HeightRequest = outerGrid.HeightRequest - 80;
 			listLayout.HeightRequest = commentList.Height;
 			listHeight = commentList.HeightRequest;
-			App.coreView.topBar.showAddPeopleToConversationButton(true, this);
+			App.coreView.addConversationViewToActiveList(this);
 		}
 
 		private async Task PostNewComment(string comment)
@@ -99,7 +99,7 @@ namespace HowlOut
 
 				if (type == MessageApiManager.CommentType.Converzation)
 				{
-					Conversation cons = await _dataManager.MessageApiManager.WriteToConversation(ID, commentObj);
+					Conversation cons = await _dataManager.MessageApiManager.WriteToConversation(ConversationId, commentObj);
 					if (cons != null)
 					{
 						success = true;
@@ -109,7 +109,7 @@ namespace HowlOut
 				}
 				else {
 
-					List<Comment> coms = await _dataManager.MessageApiManager.CreateComment(ID, type, commentObj);
+					List<Comment> coms = await _dataManager.MessageApiManager.CreateComment(ConversationId, type, commentObj);
 					if (coms != null)
 					{
 						success = true;
@@ -137,7 +137,7 @@ namespace HowlOut
 					comments = conversation.Messages;
 				}
 				else {
-					comments = await _dataManager.MessageApiManager.GetComments(ID, type);
+					comments = await _dataManager.MessageApiManager.GetComments(ConversationId, type);
 				}
 			}
 
@@ -157,9 +157,9 @@ namespace HowlOut
 			}
 			else {
 				commentList.ScrollTo(commentList.ItemsSource.OfType<Comment>().First(), ScrollToPosition.Start, true);
-				commentList.HeightRequest = comments.Count * 130;
-				listViewRow.Height = comments.Count * 130;
-				wallLayout.HeightRequest = comments.Count * 130;
+				commentList.HeightRequest = comments.Count * 120 + 100;
+				listViewRow.Height = comments.Count * 120 + 100;
+				wallLayout.HeightRequest = comments.Count * 120 + 100;
 			}
 			return true;
 		}

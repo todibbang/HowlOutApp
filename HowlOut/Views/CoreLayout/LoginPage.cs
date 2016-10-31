@@ -12,6 +12,7 @@ namespace HowlOut
     {
         public LoginPage()
         {
+			System.Diagnostics.Debug.WriteLine("Height" + Height);
             // Page is Rendered in CustomRenderer for IOS and Android
         }
 
@@ -20,6 +21,8 @@ namespace HowlOut
         public static Object sender;
         public static void LoginSuccess()
         {
+
+
             //Invoked and then sent to the App.cs
             LoginSucceeded(sender, EventArgs.Empty);
 

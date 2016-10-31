@@ -27,13 +27,50 @@ namespace HowlOut
 					row++;
 				}
 
-				bool selected = false;
-				if (list.Contains(en)) { selected = true; }
-				EventCategoryButton b = new EventCategoryButton(en, selected, 60, list);
+				int selected = 0;
+				if (list.Contains(en)) { selected = 1; }
+				EventCategoryButton b = new EventCategoryButton(en, selected, 60, list, limit);
 				//typeButtons.Add(b);
 				grid.Children.Add(b, column, row);
 				b.button.Clicked += (sender, e) =>
 				{
+					selected++;
+
+
+					if (limit)
+					{
+						if (selected > 1) selected = 0;
+
+						if (list.Count == 3 && selected == 1)
+						{
+							selected = 0;
+						}
+					}
+					else {
+
+						if (selected > 2) selected = 0;
+
+					}
+
+
+
+
+					if (selected == 0)
+					{
+						list.Remove(en);
+						System.Diagnostics.Debug.WriteLine("removed");
+					} else if (selected == 1)
+					{
+						list.Add(en);
+						System.Diagnostics.Debug.WriteLine("added");
+					} else if (selected == 2)
+					{
+						list.Add(en);
+						System.Diagnostics.Debug.WriteLine("blocked");
+					}
+
+					/*
+
 					if (list.Contains(en))
 					{
 						list.Remove(en);
@@ -42,6 +79,7 @@ namespace HowlOut
 						list.Add(en);
 						System.Diagnostics.Debug.WriteLine("Added 1");
 					}
+					*/
 				};
 				column += 2;
 			}

@@ -160,7 +160,7 @@ namespace HowlOut
 			}
 
 
-			Continue = await App.coreView.displayConfirmMessage("Allert", action, "Yes", "No");
+			Continue = await App.coreView.displayConfirmMessage("Alert", action, "Yes", "No");
 			if (Continue)
 			{
 				bool success = await EventApiManager.AttendOrTrackEvent(eve.EventId, attendOrUnattend, joinOrTrack);
@@ -170,7 +170,7 @@ namespace HowlOut
 					return false;
 				}
 				else {
-					App.coreView.setContentViewWithQueue(new InspectController(eve), "", null);
+					App.coreView.setContentViewReplaceCurrent(new InspectController(eve), "", null, 1);
 					return true;
 				}
 			}

@@ -7,6 +7,7 @@ using Facebook.LoginKit;
 using Foundation;
 using UIKit;
 using ImageCircle.Forms.Plugin.iOS;
+using HowlOut;
 
 namespace HowlOut.iOS
 {
@@ -14,6 +15,9 @@ namespace HowlOut.iOS
 	public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
 	{
 		private SBNotificationHub Hub { get; set; }
+
+		public static int width;
+		public static int height;
 
 		public const string ConnectionString = "Endpoint=sb://howlout.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=S56W4coW1bGmVTdirY59X7poLwlxZjWkEcYOMmyAezI=";
 		public const string NotificationHubPath = "HowloutNotificationHub";
@@ -39,6 +43,8 @@ namespace HowlOut.iOS
 				UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
 			}
 
+			height = (int) UIScreen.MainScreen.Bounds.Height;
+			width = (int) UIScreen.MainScreen.Bounds.Width;
 
 			Facebook.CoreKit.Profile.EnableUpdatesOnAccessTokenChange(true);
 			Settings.AppID = appId;
@@ -56,30 +62,31 @@ namespace HowlOut.iOS
 		public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 		{
 			Hub = new SBNotificationHub(ConnectionString, NotificationHubPath);
-
-			Hub.UnregisterAllAsync(deviceToken, (error) =>
-			{
-				if (error != null)
-				{
-					Console.WriteLine("Error calling Unregister: {0}", error.ToString());
-					return;
-				}
-
-				NSSet tags = null; // create tags if you want
-				Hub.RegisterNativeAsync(deviceToken, tags, (errorCallback) =>
-				{
-					if (errorCallback != null)
-						Console.WriteLine("RegisterNativeAsync error: " + errorCallback.ToString());
-				});
-			});
+			App.StoredNotificationToken.DeviceToken = deviceToken.ToString();
 		}
 
 
 		public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
 		{
-			System.Diagnostics.Debug.WriteLine("Notification !!!!");
-
 			ProcessNotification(userInfo, false);
+
+			NSObject Type;
+			NSObject Id;
+
+			var success = userInfo.TryGetValue(new NSString("type"), out Type);
+			App.UpdateLiveConversations();
+			if (success)
+			{
+				success = userInfo.TryGetValue(new NSString("id"), out Id);
+				if (success)
+				{
+					System.Diagnostics.Debug.WriteLine(Type.ToString() + ", " + Id.ToString());
+					if (Type.ToString() == "conversation" || Type.ToString() == "comment")
+					{
+						
+					}
+				}
+			}
 		}
 
 		void ProcessNotification(NSDictionary options, bool fromFinishedLaunching)

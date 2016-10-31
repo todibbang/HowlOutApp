@@ -11,6 +11,7 @@ namespace HowlOut
 	{
 		private DataManager _dataManager;
 		List<Notification> notiList = new List<Notification>();
+		public List<Conversation> conversations = new List<Conversation>();
 		int listType = 1;
 
 		public ContentView content
@@ -83,6 +84,7 @@ namespace HowlOut
 			//TODO add correct servercall
 			List<Conversation> conList = await _dataManager.MessageApiManager.GetConversations();
 			conList = conList.OrderByDescending(c => c.LastUpdated).ToList();
+			conversations = conList;
 			ObservableCollection<GroupedConversations> groupedConversations = new ObservableCollection<GroupedConversations>();
 			if (conList.Count > 0)
 			{
@@ -116,7 +118,8 @@ namespace HowlOut
 				if (selectedNotification.Type == Notification.MessageType.ProfileInvitedToEvent ||
 				    selectedNotification.Type == Notification.MessageType.FriendJoined ||
 				    selectedNotification.Type == Notification.MessageType.FriendCreatedEvent ||
-				    selectedNotification.Type == Notification.MessageType.GroupInvitedToEvent)
+				    selectedNotification.Type == Notification.MessageType.GroupInvitedToEvent || 
+				    selectedNotification.Type == Notification.MessageType.SomeoneJoinedYourEvent)
 				{
 					App.coreView.GoToSelectedEvent(selectedNotification.ContentEvent.EventId);
 				}

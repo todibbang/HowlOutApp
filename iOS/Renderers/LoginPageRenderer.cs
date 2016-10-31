@@ -33,6 +33,7 @@ namespace HowlOut.iOS.Renderers
 		LoginButton loginView;
 		ProfilePictureView pictureView;
 		UILabel nameLabel;
+		UIButton b;
 
 		string name = "";
 		string token = "";
@@ -41,6 +42,9 @@ namespace HowlOut.iOS.Renderers
         public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
+
+			int height = AppDelegate.height;
+			int width = AppDelegate.width;
 
 			// If was send true to Profile.EnableUpdatesOnAccessTokenChange method
 			// this notification will be called after the user is logged in and
@@ -56,8 +60,16 @@ namespace HowlOut.iOS.Renderers
 				logIn();
 			});
 
+			b = UIButton.FromType(UIButtonType.System);
+			b.SetTitle("Button!", UIControlState.Normal);
+
+			b.TouchUpInside += (sender, e) => {
+				System.Diagnostics.Debug.WriteLine("Lort");
+			};
 			// Set the Read and Publish permissions you want to get
-			loginView = new LoginButton(new CGRect(51, 0, 218, 46))
+
+
+			loginView = new LoginButton(new CGRect(width / 2 - (110), height / 1.5, 220, 46))
 			{
 				LoginBehavior = LoginBehavior.Native,
 				ReadPermissions = readPermissions.ToArray()
@@ -86,17 +98,19 @@ namespace HowlOut.iOS.Renderers
 			};
 
 			// The user image profile is set automatically once is logged in
-			pictureView = new ProfilePictureView(new CGRect(50, 50, 220, 220));
+			pictureView = new ProfilePictureView(new CGRect(width / 2 - 110, 50, 220, 220));
 
 			// Create the label that will hold user's facebook name
-			nameLabel = new UILabel(new RectangleF(20, 319, 280, 21))
+			nameLabel = new UILabel(new RectangleF(width / 2 - 140, 319, 280, 21))
 			{
 				TextAlignment = UITextAlignment.Center,
 				BackgroundColor = UIColor.Clear
 			};
 			// Add views to main view
+			View.AddSubview(new UILabel(new RectangleF(20, 319, 280, 21)));
 			View.AddSubview(loginView);
-			View.AddSubview(pictureView);
+			View.AddSubview(b);
+			//View.AddSubview(pictureView);
 			View.AddSubview(nameLabel);
 		}
 

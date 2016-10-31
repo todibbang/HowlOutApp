@@ -7,13 +7,24 @@ namespace HowlOut
 	public partial class InviteListView : ContentView
 	{
 		List<Profile> profilesAdded = new List<Profile>();
+		List<Profile> profilesThatCanBeAdded = App.userProfile.Friends;
 		DataManager _dataManager = new DataManager();
 
 		public InviteListView(Conversation conversation, bool create)
 		{
 			InitializeComponent();
+			if (create)
+			{
+				addBtn.Text = "Create";
+			}
+			else {
+				foreach (Profile p in conversation.Profiles)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
+			}
 			setup();
-			createConversation.Clicked += async (sender, e) =>
+			addBtn.Clicked += async (sender, e) =>
 			{
 				App.coreView.returnToPreviousView();
 				if (create)
@@ -38,39 +49,80 @@ namespace HowlOut
 		public InviteListView(Event eve)
 		{
 			InitializeComponent();
+			foreach (Profile p in eve.Attendees)
+			{
+				profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+			}
 			setup();
+			addBtn.Clicked += async (sender, e) =>
+			{
+				if (profilesAdded.Count > 0)
+				{
+					bool success = await _dataManager.EventApiManager.InviteProfilesToEvent(eve.EventId, profilesAdded);
+					if (success)
+					{
+						App.coreView.returnToPreviousView();
+					}
+				}
+			};
 		}
 		public InviteListView(Group grp)
 		{
 			InitializeComponent();
+			foreach (Profile p in grp.Members)
+			{
+				profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+			}
 			setup();
+			addBtn.Clicked += async (sender, e) =>
+			{
+				if (profilesAdded.Count > 0)
+				{
+					bool success = await _dataManager.GroupApiManager.InviteAcceptDeclineLeaveGroup(grp.GroupId, profilesAdded, GroupApiManager.GroupHandlingType.Invite);
+					if (success)
+					{
+						App.coreView.returnToPreviousView();
+					}
+				}
+			};
 		}
 		public InviteListView(Organization org)
 		{
 			InitializeComponent();
+			foreach (Profile p in org.Members)
+			{
+				profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+			}
 			setup();
+			addBtn.Clicked += async (sender, e) =>
+			{
+				foreach (Profile p in profilesAdded)
+				{
+					await _dataManager.OrganizationApiManager.AcceptInviteDeclineLeaveOrganization(org.OrganizationId, p.ProfileId, OrganizationApiManager.OrganizationHandlingType.Invite);
+				}
+				App.coreView.returnToPreviousView();
+			};
 		}
 
 		void setup()
 		{
-			peopleToAddConversationList.ItemSelected += OnPeopleToAddListItemSelected;
+			profilesToBeAdded.ItemsSource = profilesThatCanBeAdded;
+			profilesToBeAdded.ItemSelected += OnPeopleToAddListItemSelected;
 			addedToConversationList.ItemSelected += OnAddedPeopleListItemSelected;
-
-			cancelCreateConversation.Clicked += (sender, e) => { App.coreView.returnToPreviousView(); };
-
+			cancelBtn.Clicked += (sender, e) => { App.coreView.returnToPreviousView(); };
 		}
 
 		public void OnPeopleToAddListItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
-			if (peopleToAddConversationList.SelectedItem == null) { return; }
-			var selectedProfile = peopleToAddConversationList.SelectedItem as Profile;
+			if (profilesToBeAdded.SelectedItem == null) { return; }
+			var selectedProfile = profilesToBeAdded.SelectedItem as Profile;
 			if (!profilesAdded.Exists(p => p.ProfileId == selectedProfile.ProfileId))
 			{
 				profilesAdded.Add(selectedProfile);
 				addedToConversationList.ItemsSource = null;
 				addedToConversationList.ItemsSource = profilesAdded;
 			}
-			peopleToAddConversationList.SelectedItem = null;
+			profilesToBeAdded.SelectedItem = null;
 		}
 		public void OnAddedPeopleListItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{

@@ -10,7 +10,7 @@ namespace HowlOut
 	{
 
 
-		public bool selected = false;
+		public int selectedState = 0;
 
 		public Button button;
 
@@ -18,15 +18,12 @@ namespace HowlOut
 		bool limit = false;
 
 
-		public EventCategoryButton(EventType category, bool selected, int dims, List<EventType> list)
+		public EventCategoryButton(EventType category, int selectedState, int dims, List<EventType> list, bool lim)
 		{
-			if (list != null)
-			{
-				limit = true;
-				eventCategoriesList = list;
-			}
 
-			this.selected = selected;
+			eventCategoriesList = list;
+			limit = lim;
+
 			this.BackgroundColor = Color.FromHex("#30ffffff");
 			Padding = 0;
 			RowSpacing = 0;
@@ -46,24 +43,43 @@ namespace HowlOut
 
 			button = new Button()
 			{
-				BorderRadius = dims/2,
-				BorderWidth = 3,
+				BorderRadius = dims / 2,
+				BorderWidth = 0,
 				HeightRequest = dims,
 				WidthRequest = dims,
-				BackgroundColor = Color.Transparent,
+				FontSize = 35,
+				TextColor = App.NormalTextColor,
+				//BackgroundColor = Color.Transparent,
 			};
 
-			select(button, selected); 
+			select(button, selectedState); 
 
 			button.Clicked += (sender, e) =>
 			{
-				selected = !selected;
+				selectedState++;
 
-				if (limit && eventCategoriesList.Count == 3 && selected)
+
+
+
+
+				if (limit)
 				{
-					selected = false;
+					if (selectedState > 1) selectedState = 0;
+
+					if (eventCategoriesList.Count == 3 && selectedState == 1)
+					{
+						selectedState = 0;
+					}
 				}
-				select(button, selected);
+				else {
+					
+					if (selectedState > 2) selectedState = 0;
+
+				}
+
+
+
+				select(button, selectedState);
 			};
 
 			Children.Add(button, 0, 0);
@@ -77,15 +93,21 @@ namespace HowlOut
 			Children.Add(l, 0, 1);
 		}
 
-		private void select(Button b, bool sele)
+		private void select(Button b, int sele)
 		{
-			if (sele )
+			if (sele == 0)
 			{
-				b.BorderColor = App.HowlOut;
-				System.Diagnostics.Debug.WriteLine("Added 2");
+				b.BackgroundColor = Color.FromHex("#dcffffff");
+				b.Text = "";
 			}
-			else {
-				b.BorderColor = Color.Transparent;
+			else if (sele == 1)
+			{
+				b.BackgroundColor = Color.Transparent;
+				b.Text = "";
+			}
+			else if (sele == 2) {
+				b.BackgroundColor = Color.FromHex("#acefc4c4");
+				b.Text = "X";
 			}
 		}
 	}

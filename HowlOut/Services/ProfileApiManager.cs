@@ -22,6 +22,7 @@ namespace HowlOut
 		{
 			var uri = "/"+id;
 			List<Profile> profiles = await GetProfilesServerCall(uri);
+			if (profiles == null) return null;
 			return profiles[0];
 		}
 
@@ -29,6 +30,7 @@ namespace HowlOut
 		{
 			var uri = "/me?profileId=" + App.StoredUserFacebookId;
 			List<Profile> profiles = await GetProfilesServerCall(uri);
+			if (profiles == null || profiles.Count == 0) return null;
 			return profiles[0];
 		}
 
@@ -55,6 +57,30 @@ namespace HowlOut
 				else
 				{
 					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return false;
+		}
+
+		public async Task<bool> RegisterForNotifications (NotificationToken token)
+		{
+			try
+			{
+				var uri = "register/registerForNotification?profileId=" + App.StoredUserFacebookId + "&devicePlatform=apns";
+				token.DeviceToken = token.DeviceToken.Substring(1, token.DeviceToken.Length - 2);
+				token.DeviceToken = token.DeviceToken.Replace(" ", String.Empty);
+				//Profile newPro = new Profile() { Name = pro.Name, Description = pro.Description, ProfileId = pro.ProfileId, ImageSource = pro.ImageSource };
+				var content = JsonConvert.SerializeObject(token);
+				var recievedContent = "";
+
+				var response = await httpClient.PostAsync(new Uri(App.serverUri + uri), new StringContent(content, Encoding.UTF8, "application/json"));
+				if (response.IsSuccessStatusCode) { return true; 
+				}
+				else { await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)

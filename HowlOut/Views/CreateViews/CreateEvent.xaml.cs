@@ -29,6 +29,7 @@ namespace HowlOut
 
 		private bool Launching = false;
 		bool validAttendingAmount = false;
+		bool isCreate = false;
 
 		Plugin.Media.Abstractions.MediaFile mediaFile;
 		//Image banner = new Image();
@@ -37,6 +38,7 @@ namespace HowlOut
 		{
 			_dataManager = new DataManager();
 			newEvent = givenEvent;
+			this.isCreate = isCreate;
 			InitializeComponent();
 			if (isCreate)
 			{
@@ -156,22 +158,30 @@ namespace HowlOut
 			var pictureImage = new TapGestureRecognizer();
 			pictureImage.Tapped += async (sender, e) =>
 			{
-				mediaFile = await _dataManager.UtilityManager.TakePicture();
-				if (mediaFile != null)
+				try
 				{
-					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					mediaFile = await _dataManager.UtilityManager.TakePicture();
+					if (mediaFile != null)
+					{
+						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					}
 				}
+				catch (Exception ex) { }
 			};
 			takePictureButton.GestureRecognizers.Add(pictureImage);
 
 			var albumImage = new TapGestureRecognizer();
 			albumImage.Tapped += async (SenderOfEvent, e) =>
 			{
-				mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
-				if (mediaFile != null)
+				try
 				{
-					SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
+					if (mediaFile != null)
+					{
+						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
+					}
 				}
+				catch (Exception ex) { }
 			};
 			albumPictureButton.GestureRecognizers.Add(albumImage);
 
@@ -300,7 +310,13 @@ namespace HowlOut
 					eventCreated.Attendees = new List<Profile> ();
 					eventCreated.Followers = new List<Profile> ();
 					InspectController inspect = new InspectController(eventCreated);
-					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+					if (isCreate)
+					{
+						App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+					}
+					else {
+						App.coreView.setContentViewReplaceCurrent(inspect, "", null, 2);
+					}
 					App.coreView.createEvent = new CreateEvent(new Event(), true);
 
 				} else {

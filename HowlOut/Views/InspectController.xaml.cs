@@ -12,6 +12,7 @@ namespace HowlOut
 	public partial class InspectController : ContentView
 	{
 		private DataManager _dataManager = new DataManager();
+		public ConversationView conversationView = null;
 
 		public InspectController(Profile userProfile)
 		{
@@ -29,39 +30,26 @@ namespace HowlOut
 			{
 				if (userProfile.Friends.Count > 0)
 				{
-					infoLayout.Children.Add(new Line());
-					infoLayout.IsVisible = true;
-					infoLayout.Children.Add(new Label() { Text = "  Friends", FontSize = 12 });
-					infoLayout.Children.Add(new ListsAndButtons(userProfile.Friends, null, null, true));
+					addNewElement(new ListsAndButtons(userProfile.Friends, null, null, true), "Friends");
 				}
 
 				if (userProfile.Groups.Count > 0)
 				{
-					infoLayout.Children.Add(new Line());
-					infoLayout.IsVisible = true;
-					infoLayout.Children.Add(new Label() { Text = "  Groups", FontSize = 12 });
-					infoLayout.Children.Add(new ListsAndButtons(null, userProfile.Groups, null, true));
+					addNewElement(new ListsAndButtons(null, userProfile.Groups, null, true), "Groups");
 				}
 
 				if (userProfile.Organizations.Count > 0)
 				{
-					infoLayout.Children.Add(new Line());
-					infoLayout.IsVisible = true;
-					infoLayout.Children.Add(new Label() { Text = "  Organizations", FontSize = 12 });
-					infoLayout.Children.Add(new ListsAndButtons(null, null, userProfile.Organizations, true));
+					addNewElement(new ListsAndButtons(null, null, userProfile.Organizations, true), "Organizations");
 				}
 			}
 			else if (App.userProfile.Friends.Exists(p => p.ProfileId == userProfile.ProfileId))
 			{
 				if (userProfile.Friends.Count > 0)
 				{
-					infoLayout.Children.Add(new Line());
-					infoLayout.IsVisible = true;
-					infoLayout.Children.Add(new Label() { Text = "  Friends", FontSize = 12 });
-					infoLayout.Children.Add(new ListsAndButtons(userProfile.Friends, null, null, true));
+					addNewElement(new ListsAndButtons(userProfile.Friends, null, null, true), "Friends");
 				}
-				moreLayout.IsVisible = true;
-				moreLayout.Children.Add(new EventListView(userProfile));
+				addNewElement(new EventListView(userProfile), "Events");
 			}
 
 		}
@@ -83,16 +71,12 @@ namespace HowlOut
 			{
 				if (userGroup.Members.Count > 0)
 				{
-					infoLayout.Children.Add(new Line());
-					infoLayout.IsVisible = true;
-					infoLayout.Children.Add(new Label() { Text = "  Members", FontSize = 12 });
-					infoLayout.Children.Add(new ListsAndButtons(userGroup.Members, null, null, true));
+					addNewElement(new ListsAndButtons(userGroup.Members, null, null, true), "Members");
 				}
-				infoLayout.Children.Add(new Line());
-				moreLayout.IsVisible = true;
-				moreLayout.Children.Add(new EventListView(userGroup));
+				addNewElement(new EventListView(userGroup), "Events");
 				StackLayout wall = new StackLayout();
-				wall.Children.Add(new ConversationView(userGroup.Comments, MessageApiManager.CommentType.GroupComment, userGroup.GroupId, wall));
+				conversationView = new ConversationView(userGroup.Comments, MessageApiManager.CommentType.GroupComment, userGroup.GroupId, wall);
+				wall.Children.Add(conversationView);
 				moreLayout.Children.Add(wall);
 			}
 		}
@@ -114,16 +98,12 @@ namespace HowlOut
 			{
 				if (organization.Members.Count > 0)
 				{
-					infoLayout.Children.Add(new Line());
-					infoLayout.IsVisible = true;
-					infoLayout.Children.Add(new Label() { Text = "  Members", FontSize = 12 });
-					infoLayout.Children.Add(new ListsAndButtons(organization.Members, null, null, true));
+					addNewElement(new ListsAndButtons(organization.Members, null, null, true), "Members");
 				}
-				infoLayout.Children.Add(new Line());
-				moreLayout.IsVisible = true;
-				moreLayout.Children.Add(new EventListView(organization));
+				addNewElement(new EventListView(organization), "Events");
 				StackLayout wall = new StackLayout();
-				wall.Children.Add(new ConversationView(organization.Comments, MessageApiManager.CommentType.OrganizationComment, organization.OrganizationId, wall));
+				conversationView = new ConversationView(organization.Comments, MessageApiManager.CommentType.OrganizationComment, organization.OrganizationId, wall);
+				wall.Children.Add(conversationView);
 				moreLayout.Children.Add(wall);
 			}
 		}
@@ -138,6 +118,17 @@ namespace HowlOut
 		{
 			eve = await _dataManager.EventApiManager.GetEventById(eve.EventId);
 			infoView.Content = new InspectEvent(eve, _dataManager.IsEventJoined(eve), scrollView);
+
+			if (_dataManager.IsEventJoined(eve))
+			{
+				moreLayout.IsVisible = true;
+				StackLayout wall = new StackLayout();
+				conversationView = new ConversationView(eve.Comments, MessageApiManager.CommentType.EventComment, eve.EventId, wall);
+				wall.Children.Add(conversationView);
+				moreLayout.Children.Add(wall);
+			}
+
+
 			if (eve.ProfileOwner != null)
 			{
 				App.coreView.topBar.setNavigationLabel(eve.ProfileOwner.Name + "'s Event", scrollView);
@@ -149,18 +140,26 @@ namespace HowlOut
 
 			if (eve.Attendees.Count > 0)
 			{
-				infoLayout.Children.Add(new Line());
-				infoLayout.IsVisible = true;
-				infoLayout.Children.Add(new Label() { Text = "  Attendees", FontSize = 12 });
-				infoLayout.Children.Add(new ListsAndButtons(eve.Attendees, null, null, true));
+				addNewElement(new ListsAndButtons(eve.Attendees, null, null, true), "Attendees");
 			}
-			if (_dataManager.IsEventJoined(eve))
-			{
-				moreLayout.IsVisible = true;
-				StackLayout wall = new StackLayout();
-				wall.Children.Add(new ConversationView(eve.Comments, MessageApiManager.CommentType.EventComment, eve.EventId, wall));
-				moreLayout.Children.Add(wall);
-			}
+		}
+
+		void addNewElement(View element, string Title)
+		{
+			Grid grid = new Grid() { RowSpacing=0, BackgroundColor = Color.White};
+			element.BackgroundColor = App.HowlOutBackground;
+			grid.RowDefinitions.Add(new RowDefinition { Height = 1});
+			grid.RowDefinitions.Add(new RowDefinition { Height = 40});
+			grid.RowDefinitions.Add(new RowDefinition { Height = 1 });
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+			grid.Children.Add(new Line(), 0, 0);
+			grid.Children.Add(new Label() { Text = "  " + Title, VerticalTextAlignment = TextAlignment.Center, TranslationY = 5 },0,1);
+			grid.Children.Add(new Line(), 0, 2);
+			grid.Children.Add(element, 0, 3);
+			infoLayout.IsVisible = true;
+			infoLayout.Children.Add(grid);
+
 		}
 
 		public ScrollView getScrollView()

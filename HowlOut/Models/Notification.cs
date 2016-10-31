@@ -39,6 +39,11 @@ namespace HowlOut
 					return "You have been invited to an event";
 				}
 
+				if (Type == MessageType.GroupInvitedToEvent)
+				{
+					return "Your group has been invited to an event";
+				}
+
 				if (Type == Notification.MessageType.SomeoneJoinedYourEvent)
 				{
 					return "Profile joined your event";

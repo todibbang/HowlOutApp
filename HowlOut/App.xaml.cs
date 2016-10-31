@@ -42,9 +42,12 @@ namespace HowlOut
 		public static string StoredUserFacebookId;
         static string StoredUserFacebookName;
 
+		public static NotificationToken StoredNotificationToken = new NotificationToken();
+
         public App ()
 		{
            // coreView = new CoreView(new SearchEvent(), false);
+
 
 
 
@@ -121,12 +124,20 @@ namespace HowlOut
            // await storeToken();
 
 			var success = false;
+			int tries = 0;
 
 			while (!success)
 			{
 
 				Profile profile = new Profile() { ProfileId = StoredUserFacebookId, Name = StoredUserFacebookName, Age = 0, ImageSource = "https://graph.facebook.com/v2.5/" + StoredUserFacebookId + "/picture?height=200&width=200" };
 				success = await _dataManager.ProfileApiManager.CreateUpdateProfile(profile, true);
+
+			}
+			success = false;
+			while (!success || tries > 3)
+			{
+				success = await _dataManager.ProfileApiManager.RegisterForNotifications(StoredNotificationToken);
+				tries++;
 			}
 			coreView = new CoreView();
 			MainPage = coreView;
@@ -144,6 +155,22 @@ namespace HowlOut
 			coreView.startCoreView ();
 			//coreView.setContentView (new EventView(), "Event");
 
+		}
+
+		public static async void UpdateLiveConversations()
+		{
+			List<Conversation> conversations = new List<Conversation>();
+			coreView.notifications.UpdateNotifications(true);
+			await coreView.conversatios.UpdateConversations();
+			conversations = coreView.conversatios.conversations;
+			foreach (ConversationView cv in coreView.activeConversationViews)
+			{
+				if (cv.type == MessageApiManager.CommentType.Converzation)
+				{
+					cv.conversation = conversations.Find(c => c.ConversationID == cv.ConversationId);
+				}
+				cv.UpdateList(true);
+			}
 		}
 
 

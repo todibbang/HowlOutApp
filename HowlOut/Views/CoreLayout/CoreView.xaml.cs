@@ -44,6 +44,8 @@ namespace HowlOut
 		public YourNotifications conversatios;
 		public YourNotifications notifications;
 
+		public List<ConversationView> activeConversationViews = new List<ConversationView>();
+
 		int lastCoreView = 2; 
 
 		public CoreView ()
@@ -109,6 +111,8 @@ namespace HowlOut
 			ContentView view = null;
 			ScrollView scroll = null;
 
+
+
 			//System.Diagnostics.Debug.WriteLine (view.ToString() + " , the new view");
 			if (type == 0)
 			{
@@ -155,15 +159,14 @@ namespace HowlOut
 				view = new HomeView();
 			}
 			*/
+			activeConversationViews.Clear();
 			scrollViews.Clear();
 			contentViews.Clear ();
 			contentViewTypes.Clear ();
 			contentViews.Add (view);
 			scrollViews.Add(scroll);
 
-			//await ViewExtensions.ScaleTo(view, 0, 0);
 			mainView.Content = view;
-			//await ViewExtensions.ScaleTo(view, 1, 200);
 			var second = DateTime.Now;
 			var time = second - first;
 			System.Diagnostics.Debug.WriteLine ("Time to load: " + (time.Milliseconds) + " ms");
@@ -186,10 +189,41 @@ namespace HowlOut
 			topBar.showBackButton (true);
 
 			topBar.setNavigationLabel(type, s);
-
-			//await ViewExtensions.ScaleTo(view, 0, 0);
 			mainView.Content = view;
 			//await ViewExtensions.ScaleTo(view, 1, 200);
+		}
+
+		public async void setContentViewReplaceCurrent(ContentView view, string type, ScrollView s, int amount)
+		{
+			//await ViewExtensions.ScaleTo (mainView.Content, 0, 200);
+			topBar.hideAll();
+			GetLoggedInProfile();
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+
+			System.Diagnostics.Debug.WriteLine(view.ToString() + " , the new view");
+
+			for (int i = 0; i < amount; i++)
+			{
+				contentViews.Remove(contentViews[contentViews.Count - (1+i)]);
+				scrollViews.Remove(scrollViews[scrollViews.Count - (1-i)]);
+				contentViewTypes.Remove(contentViewTypes[contentViewTypes.Count - (1-i)]);
+			}
+
+
+			contentViews.Add(view);
+			scrollViews.Add(s);
+			contentViewTypes.Add(type);
+
+			topBar.showBackButton(true);
+
+			topBar.setNavigationLabel(type, s);
+			mainView.Content = view;
+			//await ViewExtensions.ScaleTo(view, 1, 200);
+		}
+
+		public void addConversationViewToActiveList(ConversationView convView)
+		{
+			activeConversationViews.Add(convView);
 		}
 
 		public void returnToPreviousView()
