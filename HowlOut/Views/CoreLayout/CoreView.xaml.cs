@@ -171,6 +171,7 @@ namespace HowlOut
 			scrollViews.Add(scroll);
 
 			mainView.Content = view;
+
 			var second = DateTime.Now;
 			var time = second - first;
 			System.Diagnostics.Debug.WriteLine ("Time to load: " + (time.Milliseconds) + " ms");

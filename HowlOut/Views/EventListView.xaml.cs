@@ -14,6 +14,7 @@ namespace HowlOut
 			set { this.content = value; }
 		}
 
+		List<Event> evelist;
 		private DataManager _dataManager;
 		private StandardButton standardButton = new StandardButton();
 		bool beingRepositioned = false;
@@ -97,9 +98,8 @@ namespace HowlOut
 
 		public async void UpdateManageList(int listToUpdate)
 		{
-			loading.IsVisible = true;
 			ErrorLoading.IsVisible = false;
-			List<Event> evelist = new List<Event>();
+			evelist = new List<Event>();
 			currentView = listToUpdate;
 			var first = DateTime.Now;
 			if (listToUpdate == 0)
@@ -164,16 +164,14 @@ namespace HowlOut
 
 			if (evelist == null)
 			{
-				loading.IsVisible = false;
 				searchEventList.IsRefreshing = false;
 				return;
 			} else if (evelist.Count == 0) {
-				loading.IsVisible = false;
 				searchEventList.IsRefreshing = false;
 				searchEventList.ItemsSource = null;
 				return;
 			}
-						searchEventList.ItemsSource = null;
+			searchEventList.ItemsSource = null;
 
 			var orderedList = new ObservableCollection<Event>();
 
@@ -252,7 +250,6 @@ namespace HowlOut
 			searchEventList.ItemTemplate = mt;
 			searchEventList.ItemsSource = groupedEvents;
 			searchEventList.IsRefreshing = false;
-			loading.IsVisible = false;
 		}
 
 		public void UpdateList()

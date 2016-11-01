@@ -30,7 +30,6 @@
                       </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                 </ListView>
-			<ActivityIndicator Grid.Row="0" Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading" BackgroundColor="Transparent"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

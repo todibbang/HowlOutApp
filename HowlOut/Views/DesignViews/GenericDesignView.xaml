@@ -40,9 +40,9 @@
 			</Grid>
 
 			<StackLayout Grid.Row="1" x:Name="selectFromBannerList" IsVisible="false" Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="40" Spacing="15" Padding="80,2,80,2">
-				<local:IconView x:Name="takePictureButton" Source="ic_camera.png" IsVisible="false" WidthRequest="40" HorizontalOptions="StartAndExpand"/>
+				<local:IconView x:Name="takePictureButton" Source="ic_camera.png" IsVisible="false" WidthRequest="40" HorizontalOptions="StartAndExpand" Foreground="White"/>
 				<Button Text="f" x:Name="selectBannerButton" WidthRequest="40" BorderRadius="20" BorderColor="Transparent"  HorizontalOptions="CenterAndExpand" BackgroundColor="White" TextColor="#ff3b5998" FontAttributes="Bold" FontSize="40"/>
-				<local:IconView x:Name="albumPictureButton" Source="ic_album.png" IsVisible="false" WidthRequest="40" HorizontalOptions="EndAndExpand"/> 
+				<local:IconView x:Name="albumPictureButton" Source="ic_album.png" IsVisible="false" WidthRequest="40" HorizontalOptions="EndAndExpand" Foreground="White"/> 
 			</StackLayout>  
 			
 			<StackLayout Grid.Row="2" x:Name="nameLayout" VerticalOptions="CenterAndExpand" IsVisible="false">
