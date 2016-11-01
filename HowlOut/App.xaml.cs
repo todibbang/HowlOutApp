@@ -62,7 +62,7 @@ namespace HowlOut
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad> ().LoadText ("userFacebookId");
 
-			System.Diagnostics.Debug.WriteLine ("STORED USER FACEBOOK ID");
+			System.Diagnostics.Debug.WriteLine ("STORED FACEBOOK ID");
 			System.Diagnostics.Debug.WriteLine (StoredUserFacebookId);
             
 			_dataManager.UtilityManager.updateLastKnownPosition ();
@@ -134,12 +134,16 @@ namespace HowlOut
 
 			}
 			success = false;
-			while (!success || tries > 3)
+			while (!success)
 			{
 				success = await _dataManager.ProfileApiManager.RegisterForNotifications(StoredNotificationToken);
 				tries++;
+				if (tries > 5) break;
 			}
+
+
 			coreView = new CoreView();
+			coreView.token = StoredNotificationToken.DeviceToken + ", " + success;
 			MainPage = coreView;
 			startProgram(coreView);
 			/*

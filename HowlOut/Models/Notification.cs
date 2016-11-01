@@ -74,7 +74,7 @@ namespace HowlOut
 
 				if (Type == Notification.MessageType.GroupRequest)
 				{
-					return ContentProfile.Name + " has invited you to join his Wolf Pack!";
+					return ContentProfile.Name + " has invited you to join his group!";
 				}
 
 				if (Type == Notification.MessageType.FriendRequest)

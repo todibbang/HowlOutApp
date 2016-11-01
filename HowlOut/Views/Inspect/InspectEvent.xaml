@@ -131,7 +131,7 @@
 
 			<StackLayout Grid.Row="3" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
 				<Button Text="Join"   x:Name="joinButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-				<Button Text="Track"  x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button Text="Follow"  x:Name="followButton" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>
 
 

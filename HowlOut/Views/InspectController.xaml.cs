@@ -74,6 +74,7 @@ namespace HowlOut
 					addNewElement(new ListsAndButtons(userGroup.Members, null, null, true), "Members");
 				}
 				addNewElement(new EventListView(userGroup), "Events");
+				moreLayout.IsVisible = true;
 				StackLayout wall = new StackLayout();
 				conversationView = new ConversationView(userGroup.Comments, MessageApiManager.CommentType.GroupComment, userGroup.GroupId, wall);
 				wall.Children.Add(conversationView);
@@ -92,7 +93,7 @@ namespace HowlOut
 		{
 			organization = await _dataManager.OrganizationApiManager.GetOrganization(organization.OrganizationId);
 			infoView.Content = new OrganizationDesignView(organization, 200, GenericDesignView.Design.ShowAll);
-			App.coreView.topBar.setNavigationLabel("Wolfpack " + organization.Name, scrollView);
+			App.coreView.topBar.setNavigationLabel("Group " + organization.Name, scrollView);
 
 			if (organization.Members.Exists(p => p.ProfileId == App.userProfile.ProfileId))
 			{
@@ -101,6 +102,7 @@ namespace HowlOut
 					addNewElement(new ListsAndButtons(organization.Members, null, null, true), "Members");
 				}
 				addNewElement(new EventListView(organization), "Events");
+				moreLayout.IsVisible = true;
 				StackLayout wall = new StackLayout();
 				conversationView = new ConversationView(organization.Comments, MessageApiManager.CommentType.OrganizationComment, organization.OrganizationId, wall);
 				wall.Children.Add(conversationView);

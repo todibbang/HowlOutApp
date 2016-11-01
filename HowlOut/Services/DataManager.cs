@@ -152,10 +152,10 @@ namespace HowlOut
 			else {
 				if (attendOrUnattend)
 				{
-					action = "You are about to track an event, continue?";
+					action = "You are about to follow an event, continue?";
 				}
 				else {
-					action = "You are about to untrack an event, continue?";
+					action = "You are about to unfollow an event, continue?";
 				}
 			}
 

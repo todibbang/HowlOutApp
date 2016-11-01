@@ -46,7 +46,9 @@ namespace HowlOut
 
 		public List<ConversationView> activeConversationViews = new List<ConversationView>();
 
-		int lastCoreView = 2; 
+		int lastCoreView = 2;
+
+		public string token = "";
 
 		public CoreView ()
 		{
@@ -100,6 +102,8 @@ namespace HowlOut
 			mainView.Content = searchEventView;
 			await _dataManager.update();
 			loading.IsVisible = false;
+
+			if(token.Length > 15) displayAlertMessage("token", token, "ok");
 		}
 
 		public async void setContentView (int type)

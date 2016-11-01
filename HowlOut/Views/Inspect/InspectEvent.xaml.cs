@@ -71,7 +71,7 @@ namespace HowlOut
 				editLeaveButton.Text = "Edit";
 			}
 			else if (eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId)) {
-				followButton.Text = "Untrack"; 
+				followButton.Text = "Unfollow"; 
 			}
 
 			editLeaveButton.Clicked += (sender, e) => {

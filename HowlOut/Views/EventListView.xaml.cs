@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace HowlOut
 {
@@ -221,10 +222,29 @@ namespace HowlOut
 					monthGroup.Add(eveFL[d]);
 					if (d == eveFL.Count - 1)
 					{
+						//monthGroup = monthGroup.OrderBy(c => c.Distance);
 						groupedEvents.Add(monthGroup);
 					}
 				}
 			}
+			/*
+			foreach (GroupedEvents groupping in groupedEvents)
+			{
+
+				groupping = groupping.OrderBy(c => c.Distance).ToList();
+			} */
+
+			for (int i = 0; i < groupedEvents.Count; i++)
+			{
+				var newList = groupedEvents[i].OrderBy(c => c.Distance);
+				groupedEvents[i] = new GroupedEvents() { Date = (newList.First().eve.StartDate.ToString("MMMMM")) };
+				foreach (EventForLists e in newList)
+				{
+					groupedEvents[i].Add(e);
+				}
+			}
+
+
 			searchEventList.IsVisible = true;
 			DataTemplate mt = null;
 			if (listToUpdate == 0 || listToUpdate == 1) { mt = new DataTemplate(() => { return new ViewCell { View = new SearchEventTemplate() }; }); }

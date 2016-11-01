@@ -68,8 +68,8 @@
 
 
 						<StackLayout Grid.Row="5" Padding="20">
-							<Button Text="Create WolfPack" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-							<Button Text="Disband WolfPack" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+							<Button Text="Create Group" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+							<Button Text="Disband Group" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 						</StackLayout>
 
 					</Grid>

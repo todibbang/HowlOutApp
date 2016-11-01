@@ -29,7 +29,7 @@ namespace HowlOut
 			{
 				await newConversationBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await newConversationBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation(), true), "Create WolfPack", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation(), true), "Create Group", null);
 				//App.coreView.howlsView.ShowNewConversation();
 				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
 			};
@@ -40,7 +40,7 @@ namespace HowlOut
 			{
 				await addPeopleToCvBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await addPeopleToCvBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation,false), "Create WolfPack", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation,false), "Create Group", null);
 				//CV.ShowPeopleToAddToConversation();
 				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
 			};
