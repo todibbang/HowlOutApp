@@ -145,8 +145,8 @@ namespace HowlOut
 				{
 					InspectController inspect = new InspectController(groupCreated);
 					App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
-					App.coreView.createGroup = new CreateGroup(new Group(), true);
-					App.coreView.homeView = new HomeView();
+					//App.coreView.createGroup = new CreateGroup(new Group(), true);
+					//App.coreView.homeView = new HomeView();
 				}
 				else {
 					await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");

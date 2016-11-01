@@ -317,7 +317,7 @@ namespace HowlOut
 					else {
 						App.coreView.setContentViewReplaceCurrent(inspect, "", null, 2);
 					}
-					App.coreView.createEvent = new CreateEvent(new Event(), true);
+					//App.coreView.createEvent = new CreateEvent(new Event(), true);
 
 				} else {
 					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
@@ -335,7 +335,7 @@ namespace HowlOut
 				bool wasEventDeleted = await _dataManager.EventApiManager.DeleteEvent (newEvent.EventId);
 				if (wasEventDeleted) {
 					await App.coreView.displayAlertMessage ("Event Deleted", "The event was successfully cancelled", "Ok");
-					App.coreView.exploreEvents = new EventListView(0);
+					//App.coreView.exploreEvents = new EventListView(0);
 					App.coreView.setContentView (1);
 				} else {
 					App.coreView.displayAlertMessage ("Event Not Deleted", "The event was not cancelled, try again", "Ok");

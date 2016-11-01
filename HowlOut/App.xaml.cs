@@ -164,9 +164,9 @@ namespace HowlOut
 		public static async void UpdateLiveConversations()
 		{
 			List<Conversation> conversations = new List<Conversation>();
-			coreView.notifications.UpdateNotifications(true);
-			await coreView.conversatios.UpdateConversations();
-			conversations = coreView.conversatios.conversations;
+			//coreView.notifications.UpdateNotifications(true);
+			//await coreView.conversatios.UpdateConversations();
+			//conversations = coreView.conversatios.conversations;
 			foreach (ConversationView cv in coreView.activeConversationViews)
 			{
 				if (cv.type == MessageApiManager.CommentType.Converzation)

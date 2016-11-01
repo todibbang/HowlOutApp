@@ -191,7 +191,7 @@ namespace HowlOut
 				bool success = await _dataManager.ProfileApiManager.CreateUpdateProfile(updateProfile, false);
 				if (success)
 				{
-					App.coreView.homeView = new HomeView();
+					//App.coreView.homeView = new HomeView();
 					App.coreView.setContentView(4);
 				}
 				App.coreView.IsLoading(false);

@@ -123,8 +123,8 @@ namespace HowlOut
 				{
 					InspectController inspect = new InspectController(orgCreated);
 					App.coreView.setContentViewWithQueue(inspect, "Organization", inspect.getScrollView());
-					App.coreView.createOrganization = new CreateOrganization(new Organization(), true);
-					App.coreView.homeView = new HomeView();
+					//App.coreView.createOrganization = new CreateOrganization(new Organization(), true);
+					//App.coreView.homeView = new HomeView();
 				}
 				else {
 					await App.coreView.displayAlertMessage("Error", "Organization not created, try again", "Ok");
