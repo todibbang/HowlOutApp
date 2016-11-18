@@ -26,7 +26,19 @@ namespace HowlOut
 
 
 			avaliableBanners = new List<string>();
-			avaliableBanners.AddRange(partyBanners);
+			if (App.userProfile.Banners.Count > 0)
+			{
+				foreach (Banner b in App.userProfile.Banners)
+				{
+					avaliableBanners.Add(b.ImageSource);
+				}
+			}
+			foreach (string b in partyBanners)
+			{
+				if (!avaliableBanners.Exists(s => s.Equals(b))) {
+					avaliableBanners.Add(b);
+				}
+			}
 
 			for (int i = 0; i < avaliableBanners.Count; i++) {
 				Grid newGrid = new Grid () {
@@ -46,8 +58,10 @@ namespace HowlOut
 					BackgroundColor = Color.Transparent,
 				};
 
-				Image newImage = new Image () {
-					Source = avaliableBanners [i],
+				Image newImage = new Image()
+				{
+					Source = avaliableBanners[i],
+					Aspect = Aspect.AspectFill,
 				};
 
 				newImage.Source = avaliableBanners [i];

@@ -37,9 +37,15 @@ namespace HowlOut
 		public CreateEvent(Event givenEvent, bool isCreate)
 		{
 			_dataManager = new DataManager();
+			InitializeComponent();
+			setCreateView(givenEvent, isCreate);
+		}
+
+		private void setCreateView(Event givenEvent, bool isCreate)
+		{
 			newEvent = givenEvent;
 			this.isCreate = isCreate;
-			InitializeComponent();
+
 			if (isCreate)
 			{
 				setNewEvent();
@@ -55,37 +61,12 @@ namespace HowlOut
 			EventCategory.ManageCategories(eventTypeGrid, newEvent.EventTypes, true);
 
 			/// set time and date
-			startDate.PropertyChanged += (sender, e) =>
-			{
-				newEvent.StartDate = startDate.Date.Add(startTime.Time);
-				var newTimeSpan = newEvent.StartDate + new TimeSpan(1, 0, 0);
-				if (newEvent.EndDate.Ticks < newTimeSpan.Ticks)
-				{
-					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2, 0, 0);
-					endTime.Time = newEvent.EndDate.TimeOfDay;
-					//endDate.Date = newEvent.EndDate;
-				}
-				StartDateString.Text = startDate.Date.ToString("dd/MM/yyyy");
-				System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
-			};
-			startTime.PropertyChanged += (sender, e) =>
-			{
-				newEvent.StartDate = startDate.Date.Add(startTime.Time);
-				var newTimeSpan = newEvent.StartDate + new TimeSpan(1, 0, 0);
-				if (newEvent.EndDate.Ticks < newTimeSpan.Ticks)
-				{
-					newEvent.EndDate = newEvent.StartDate + new TimeSpan(2, 0, 0);
-					endTime.Time = newEvent.EndDate.TimeOfDay;
-					//endDate.Date = newEvent.EndDate;
-				}
-				StartTimeString.Text = new DateTime(startTime.Time.Ticks).ToString("HH:mm");
-				System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
-			};
-			endDate.PropertyChanged += (sender, e) => { newEvent.EndDate = endDate.Date.Add(endTime.Time); };
-			endTime.PropertyChanged += (sender, e) => { 
-				newEvent.EndDate = endDate.Date.Add(endTime.Time); 
-				EndTimeString.Text = new DateTime(endTime.Time.Ticks).ToString("HH:mm");
-			};
+			startDate.MinimumDate = DateTime.Now;
+			endDate.MinimumDate = DateTime.Now;
+			startDate.PropertyChanged += (sender, e) => { checkValidDate(); };
+			startTime.PropertyChanged += (sender, e) => { checkValidDate(); };
+			endDate.PropertyChanged += (sender, e) => { checkValidDate(); };
+			endTime.PropertyChanged += (sender, e) => { checkValidDate(); };
 
 			/// set location
 			locationButton.Clicked += (sender, e) =>
@@ -132,7 +113,8 @@ namespace HowlOut
 			};
 			visibilityString.Text = visibilityPicker.Title;
 
-			NumberAttendendeesEntry.TextChanged += (sender, e) => {
+			NumberAttendendeesEntry.TextChanged += (sender, e) =>
+			{
 				string t = NumberAttendendeesEntry.Text;
 				if (t.Contains(","))
 				{
@@ -185,21 +167,26 @@ namespace HowlOut
 			};
 			albumPictureButton.GestureRecognizers.Add(albumImage);
 
-			selectBannerButton.Clicked += (sender, e) => {
+			selectBannerButton.Clicked += (sender, e) =>
+			{
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
 				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
 			};
 
-			launchButton.Clicked += async (sender, e) => {
-				if(isCreate && !Launching) {
+			launchButton.Clicked += async (sender, e) =>
+			{
+				if (isCreate && !Launching)
+				{
 					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, newEvent, null);
 					if (continueCreating)
 					{
 						LaunchEvent(newEvent);
 						Launching = true;
 					}
-				} else if(!isCreate && !Launching) {
+				}
+				else if (!isCreate && !Launching)
+				{
 					LaunchEvent(newEvent);
 					Launching = true;
 				}
@@ -207,6 +194,32 @@ namespace HowlOut
 
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
 		}
+
+		void checkValidDate()
+		{
+			if (endDate.Date.Add(endTime.Time).Ticks < startDate.Date.Add(startTime.Time).Ticks)
+			{
+				endDate.Date = startDate.Date;
+				endTime.Time.Add(new TimeSpan((startTime.Time.Hours + 3) % 24, 0, 0));
+				endTime.Time = startDate.Date.Add(startTime.Time.Add(new TimeSpan(3,0,0))).TimeOfDay;
+				if ((startTime.Time.Hours + 3) % 24 < startTime.Time.Hours)
+				{
+					endDate.Date = startDate.Date.AddDays(1);
+				}
+			}
+
+			newEvent.StartDate = startDate.Date.Add(startTime.Time);
+			newEvent.EndDate = endDate.Date.Add(endTime.Time);
+
+			System.Diagnostics.Debug.WriteLine(newEvent.StartDate.ToString("g") + ", " + newEvent.EndDate.ToString("g"));
+
+			StartDateString.Text = startDate.Date.ToString("ddd") + " " + startDate.Date.ToString("dd/MM/yyyy");
+			EndDateString.Text = endDate.Date.ToString("ddd") + " " +  endDate.Date.ToString("dd/MM/yyyy");
+
+			StartTimeString.Text = " -   " + new DateTime(startTime.Time.Ticks).ToString("HH:mm");
+			EndTimeString.Text = " -   " + new DateTime(endTime.Time.Ticks).ToString("HH:mm");
+		}
+
 
 		public void setBanner(string banner) {
 			SelectedBannerImage.Source = banner;
@@ -242,7 +255,7 @@ namespace HowlOut
 
 			newEvent.StartDate = startDate.Date.Add(startTime.Time);
 			newEvent.EventId = "0";
-			//newEvent.EndDate = endDate.Date.Add(endTime.Time);
+			newEvent.EndDate = endDate.Date.Add(endTime.Time);
 		}
 
 		private void setEditEvent()
@@ -255,7 +268,6 @@ namespace HowlOut
 			startTime.Time = newEvent.StartDate.TimeOfDay;
 			endTime.Time = newEvent.EndDate.TimeOfDay;
 			startDate.Date = newEvent.StartDate.Date;
-			//endDate.Date = newEvent.EndDate.Date;
 
 			locationEntry.Text = newEvent.AddressName;
 			NumberAttendendeesEntry.Text = newEvent.MaxSize+"";
@@ -312,12 +324,15 @@ namespace HowlOut
 					InspectController inspect = new InspectController(eventCreated);
 					if (isCreate)
 					{
-						App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+						App.coreView.setContentViewWithQueue(inspect, "Event", inspect.getScrollView());
+						App.coreView.updateHomeView();
 					}
 					else {
 						App.coreView.setContentViewReplaceCurrent(inspect, "", null, 2);
 					}
-					//App.coreView.createEvent = new CreateEvent(new Event(), true);
+					//setCreateView(new Event(), true);
+					App.coreView.createEvent = new CreateEvent(new Event(), true);
+					App.coreView.updateCreateViews();
 
 				} else {
 					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");

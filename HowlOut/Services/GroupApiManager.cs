@@ -21,6 +21,7 @@ namespace HowlOut
 		{
 			var uri = "/"+id;
 			List<Group> groups = await GetGroupServerCall(uri);
+			if (groups == null || groups.Count == 0) return null;
 			return groups[0];
 		}
 
@@ -60,14 +61,21 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> InviteAcceptDeclineLeaveGroup(string id, List<Profile> profiles, GroupHandlingType handlingType)
+		public async Task<bool> RequestAcceptDeclineLeaveGroup(string id, GroupHandlingType handlingType)
 		{
-			var uri = "/inviteAcceptDeclineLeaveGroup?groupId=" + id;
-			for (int i = 0; i < profiles.Count; i++)
+			var uri = "/requestAcceptDeclineLeaveGroup?groupId=" + id + "&handlingType=" + handlingType;
+			App.coreView.updateHomeView();
+			return await PutGroupServerCall(uri);
+		}
+
+		public async Task<bool> InviteDeclineToGroup(string id, bool invite, List<Profile> profiles)
+		{
+			var uri = "/inviteDeclineToGroup?invite=" + invite + "&groupId=" + id;
+			foreach (Profile p in profiles)
 			{
-				uri += "&profileIds=" + profiles[i].ProfileId;
+				uri += "&profileIds=" + p.ProfileId;
 			}
-			uri += "&handlingType="+handlingType;
+			App.coreView.updateHomeView();
 			return await PutGroupServerCall(uri);
 		}
 
@@ -154,7 +162,7 @@ namespace HowlOut
 
 		public enum GroupHandlingType
 		{
-			Invite, Decline, Accept, Leave, Request
+			Decline, Accept, Leave, Request
 		}
 	}
 }

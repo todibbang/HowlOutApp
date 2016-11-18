@@ -17,25 +17,28 @@
 				<Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" Padding="0" >
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="1*"/>
-						<ColumnDefinition Width="75*"/>
-						<ColumnDefinition Width="75*"/>
+						<ColumnDefinition Width="45*"/>
+						<ColumnDefinition Width="30*"/>
+						<ColumnDefinition Width="30*"/>
+						<ColumnDefinition Width="45*"/>
 						<ColumnDefinition Width="1*"/>
 					</Grid.ColumnDefinitions>
 
 					<Grid.RowDefinitions>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="75*"/>
-						<RowDefinition Height="45*"/>
 						<RowDefinition Height="30*"/>
+						<RowDefinition Height="45*"/>
 						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 				
-					<controls:CircleImage Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="3" Aspect="AspectFill"
+					<controls:CircleImage Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" Aspect="AspectFill"
 						Source="{Binding ProfileImageSource}" x:Name="ProfileImage"/>
-
-					<Button Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="3" 
+					<Button Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" 
 						x:Name="MainButton" IsVisible="false" BorderColor="{DynamicResource HowlOut}" BackgroundColor="#40000000" TextColor="White" FontAttributes="Bold"/>
-					<Button Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Grid.RowSpan="5" x:Name="SubjectButton" BackgroundColor="Transparent" />
+					<local:IconView Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Source="ic_organization.png" Foreground="White" x:Name="modelTypeIcon" VerticalOptions="End" IsVisible="false"/> 
+					<Button Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="0" Grid.RowSpan="5" x:Name="SubjectButton" BackgroundColor="Transparent" />
+					<controls:CircleImage Grid.Column="4" Grid.Row="3" Aspect="AspectFill" x:Name="organizationOwnerImage" IsVisible="false"/>
 				</Grid>
 			</Grid>
 
@@ -45,20 +48,23 @@
 				<local:IconView x:Name="albumPictureButton" Source="ic_album.png" IsVisible="false" WidthRequest="40" HorizontalOptions="EndAndExpand" Foreground="White"/> 
 			</StackLayout>  
 			
-			<StackLayout Grid.Row="2" x:Name="nameLayout" VerticalOptions="CenterAndExpand" IsVisible="false">
-				<Label  x:Name="nameLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center"/>
+			<StackLayout Grid.Row="2" x:Name="nameLayout" VerticalOptions="CenterAndExpand" IsVisible="false" Spacing="0" Padding="0,0,0,5">
+				<Label  x:Name="nameLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+				<Label  x:Name="subNameLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
 			</StackLayout>
 			
-			<StackLayout Grid.Row="3" >
+			<StackLayout Grid.Row="3" Padding="0" x:Name="descriptionLayout" IsVisible="false" BackgroundColor="White">
+				<local:Line x:Name="descriptionLineOne" IsVisible="false"/>
 				<Label x:Name="descriptionLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
 				<local:CustomEditor x:Name="descriptionLabelEdit" VerticalOptions="StartAndExpand" Placeholder="Description..." IsVisible="false" BackgroundColor="White" HeightRequest="100"/> 
 				<StackLayout Grid.Row="4" x:Name="editProfileButtons" IsVisible="false" Orientation="Horizontal" Padding="0,10,0,0">
 					<Button Style="{DynamicResource ButtonStyle}" Text="Update" x:Name="updateProfileButton" BorderRadius="10" WidthRequest="190" ></Button>
 					<Button Style="{DynamicResource ButtonStyle}" Text="Log out" x:Name="logOutButton" BorderRadius="10" WidthRequest="190" ></Button>
 				</StackLayout>
+				<local:Line x:Name="descriptionLineTwo" IsVisible="false"/>
 			</StackLayout>
 
-			<StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,3,0,0" >
+			<StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,8,0,0" >
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="addButton" Text="add" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeButton" Text="remove" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="decline" BorderRadius="10" IsVisible="false"/>

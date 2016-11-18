@@ -40,7 +40,7 @@
 								<RowDefinition Height="1"/>
 								<RowDefinition Height="40"/>
 								<RowDefinition Height="1"/>
-								<RowDefinition Height="40"/>
+								<RowDefinition Height="80"/>
 								<RowDefinition Height="1"/>
 								<RowDefinition Height="40"/>
 								<RowDefinition Height="1"/>
@@ -62,17 +62,30 @@
 							<local:Line Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<local:CustomEditor Grid.Row="2" Grid.Column="2" VerticalOptions="StartAndExpand" x:Name="description" HeightRequest="100" Placeholder="Description..." TranslationX="4"></local:CustomEditor>
 							<local:Line Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
-							<StackLayout Grid.Row="4" Grid.Column="2" Orientation="Horizontal" HorizontalOptions="StartAndExpand" >
-								<local:CustomEntry Text="dd/MM/yyyy" HorizontalOptions="StartAndExpand" x:Name="StartDateString"/>
-								<local:CustomEntry Text="HH:mm" HorizontalOptions="StartAndExpand" x:Name="StartTimeString"/>
-								<local:CustomEntry Text="HH:mm" HorizontalOptions="StartAndExpand" x:Name="EndTimeString"/>
+							<StackLayout Grid.Row="4" Grid.Column="2" HorizontalOptions="StartAndExpand" Spacing="0" Padding="10,0,0,0">
+								<StackLayout Orientation="Horizontal" HeightRequest="40">
+									<Label Text="Start:    " VerticalOptions="Center"/>
+									<Label Text="man dd/MM/yyyy" HorizontalOptions="StartAndExpand" x:Name="StartDateString" VerticalOptions="Center"/>
+									<Label Text=" -   HH:mm" HorizontalOptions="StartAndExpand" x:Name="StartTimeString" VerticalOptions="Center"/>
+								</StackLayout>
+								<StackLayout Orientation="Horizontal" HeightRequest="40">
+									<Label Text="End:      "  VerticalOptions="Center"/>
+									<Label Text="man dd/MM/yyyy" HorizontalOptions="StartAndExpand" x:Name="EndDateString" VerticalOptions="Center"/>
+									<Label Text=" -   HH:mm" HorizontalOptions="StartAndExpand" x:Name="EndTimeString" VerticalOptions="Center"/>
+								</StackLayout> 
 							</StackLayout>
-							<StackLayout Grid.Row="4" Grid.Column="2" Orientation="Horizontal" Padding="7,0,10,0" HorizontalOptions="StartAndExpand" >
-								<local:CustomDatePicker x:Name="startDate" HasBorder="false" Format="dd/MM/yyyy" HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
-								<Label Text=""/>
-								<local:CustomTimePicker x:Name="startTime" HasBorder="false" Format="HH:mm" HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
-								<Label Text="  " VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
-								<local:CustomTimePicker x:Name="endTime" HasBorder="false" Format="HH:mm" HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
+							<StackLayout Grid.Row="4" Grid.Column="2" HorizontalOptions="StartAndExpand" Spacing="0" Padding="10,0,0,0">
+								<StackLayout Orientation="Horizontal" HeightRequest="40">
+									<Label Text="Start:    "  VerticalOptions="Center"/>
+									<local:CustomDatePicker x:Name="startDate" HasBorder="false" Format="DD/MM/yyyy   " HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
+									<local:CustomTimePicker x:Name="startTime" HasBorder="false" Format="     HH:mm " HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
+								
+								</StackLayout> 
+								<StackLayout Orientation="Horizontal" HeightRequest="40">
+									<Label Text="End:      " VerticalOptions="Center" />
+									<local:CustomDatePicker x:Name="endDate" HasBorder="false" Format="dd/MM/yyyy   " HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
+									<local:CustomTimePicker x:Name="endTime" HasBorder="false" Format="     HH:mm " HorizontalOptions="StartAndExpand" BackgroundColor="Transparent" TextColor="Transparent"/>
+								</StackLayout>
 							</StackLayout>
 							<local:Line Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<local:CustomEntry Grid.Row="6" Grid.Column="2" Placeholder="Location..." x:Name="locationEntry" ></local:CustomEntry>
@@ -113,7 +126,7 @@
 						</Grid>
 
 						<StackLayout Grid.Row="5" Padding="20">
-							<Button Text="HowlOut Event" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+							<Button Text="Create Event" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 							<Button Text="Cancel Event" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 						</StackLayout>
 						<StackLayout Grid.Row="6" Padding="20" IsVisible="false">
@@ -127,7 +140,7 @@
 							<Picker x:Name="maxSize">></Picker>
 							<local:Line />
 
-							<local:CustomDatePicker x:Name="endDate" Format="dd/MM/yyyy"/>
+
 						</StackLayout>
 
 					</Grid>

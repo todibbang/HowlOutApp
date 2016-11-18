@@ -62,21 +62,29 @@ namespace HowlOut
 			return false;
 		}
 
-		public async Task<bool> AcceptInviteDeclineLeaveOrganization(string OrgId, string ProId, OrganizationHandlingType handlingType)
+		public async Task<bool> AcceptDeclineLeaveOrganization(string OrgId, OrganizationHandlingType handlingType)
 		{
-			var uri = "/acceptInviteDeclineLeaveOrganization?organizationId=" + OrgId + "&profileId=" + ProId + "&handlingType="+handlingType;
-			App.coreView.GetLoggedInProfile();
+			var uri = "/acceptDeclineLeaveOrganization?organizationId=" + OrgId + "&handlingType="+handlingType;
+			App.coreView.updateHomeView();
+			return await PutOrganizationServerCall(uri);
+		}
+
+		public async Task<bool> InviteToOrganization(string OrgId, Profile profile)
+		{
+			var uri = "/inviteToOrganization?organizationId=" + OrgId;
+			uri += "&profileIds=" + profile.ProfileId;
+			App.coreView.updateHomeView();
 			return await PutOrganizationServerCall(uri);
 		}
 
 		public enum OrganizationHandlingType
 		{
-			Invite, Decline, Accept, Leave
+			Decline, Accept, Leave
 		}
 
 		public async Task<bool> TrackOrganization(string OrgId, bool followUnfollow)
 		{
-			var uri = "/track?organizationId=" + OrgId + "&profileId=" + App.StoredUserFacebookId + "&follow=" + followUnfollow;
+			var uri = "/track?organizationId=" + OrgId + "&follow=" + followUnfollow;
 			return await PutOrganizationServerCall(uri);
 		}
 

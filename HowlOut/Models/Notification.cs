@@ -1,56 +1,129 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace HowlOut
 {
 	public class Notification
 	{
-		public MessageType Type { get; set; }
-		public Profile ContentProfile { get; set; }
-		public Event ContentEvent { get; set; }
-		public Group ContentGroup { get; set; }
-		public DateTime SendTime { get; set; }
 		public string InAppNotificationId { get; set; }
+		public NotificationModelType ModelType { get; set; }
+		public string ModelId { get; set; }
+		public NotificationType NotificationType { get; set; }
+		public string ContentName { get; set; }
+		public string ContentImageSource { get; set; }
+		public string SenderName { get; set; }
+		public bool Seen { get; set; }
+		public DateTime SendTime { get; set; }
+		public virtual Profile Profile { get; set; }
+		public string SecondModelId { get; set; }
+
+		public FontAttributes fontAttributes 
+		{ 
+			get 
+			{
+				if (Seen)
+				{
+					return FontAttributes.None;
+				}
+				return FontAttributes.Bold;
+				} set { } 
+		}
+		public Color textColor
+		{
+			get
+			{
+				if (Seen)
+				{
+					return App.NormalTextColor;
+				}
+				return App.HowlOut;
+			}
+			set { }
+		}
 
 		public string Header { get {
 
-				if (Type == Notification.MessageType.FriendJoined)
-				{
-					return "Friend Joined Event";
-				}
-
-				if (Type == Notification.MessageType.FriendCreatedEvent)
-				{
-					return "Friend Created Event";
-				}
-
-				if (Type == Notification.MessageType.GroupRequest)
-				{
-					return "Group Invite";
-				}
-
-				if (Type == Notification.MessageType.FriendRequest)
-				{
-					return "Friend Request";
-				}
-
-				if (Type == Notification.MessageType.ProfileInvitedToEvent)
+				//Events
+				if (NotificationType == NotificationType.InvitedToEvent)
 				{
 					return "You have been invited to an event";
 				}
-
-				if (Type == MessageType.GroupInvitedToEvent)
+				if (NotificationType == NotificationType.JoinedYourEvent)
+				{
+					return "Profile joined your event";
+				}
+				if (NotificationType == NotificationType.EventCancelled)
+				{
+					return "Event Cancelled";
+				}
+				if (NotificationType == NotificationType.FriendJoinedEvent)
+				{
+					return "Friend Joined Event";
+				}
+				if (NotificationType == NotificationType.FriendCreatedEvent)
+				{
+					return "Friend Created Event";
+				}
+				if (NotificationType == NotificationType.GroupInvitedToEvent)
 				{
 					return "Your group has been invited to an event";
 				}
 
-				if (Type == Notification.MessageType.SomeoneJoinedYourEvent)
+				// Friends
+				if (NotificationType == NotificationType.RequestedToFriend)
 				{
-					return "Profile joined your event";
+					return "Friend Request";
+				}
+				if (NotificationType == NotificationType.AcceptedToFriend)
+				{
+					return "Friend Request Accepted";
+				}
+
+				//Groups
+				if (NotificationType == NotificationType.InvitedToGroup)
+				{
+					return "Group Invite";
+				}
+				if (NotificationType == NotificationType.RequestedToJoinGroup)
+				{
+					return "Profile Wants To Join Your Group";
+				}
+
+				//Organizations
+				if (NotificationType == NotificationType.InvitedToOrganization)
+				{
+					return "Organization Invite";
+				}
+
+				//Communication
+				if (NotificationType == NotificationType.WrittenToEventComments)
+				{
+					return "New Event Comment";
+				}
+				if (NotificationType == NotificationType.WrittenToGroupComments)
+				{
+					return "New Group Comment";
+				}
+				if (NotificationType == NotificationType.WrittenToOrganizationComments)
+				{
+					return "New Organization Comment";
+				}
+				if (NotificationType == NotificationType.WrittenToEventConversation)
+				{
+					return "New Event Message";
+				}
+				if (NotificationType == NotificationType.WrittenToGroupConversation)
+				{
+					return "New Group Message";
+				}
+				if (NotificationType == NotificationType.WrittenToOrganizationConversation)
+				{
+					return "New Organization Message";
 				}
 
 
-				return "";
+				return NotificationType.ToString();
 				} set {
 				this.Header = value;
 				}
@@ -58,42 +131,86 @@ namespace HowlOut
 		public string Content {
 			get
 			{
-				if (ContentProfile == null)
+				/*
+				//Events
+				if (NotificationType == NotificationType.InvitedToEvent)
 				{
-					ContentProfile = new Profile() { Name = "Profile" };
+					return SenderName + " has invited you to the event " + ContentName;
 				}
-				if (Type == Notification.MessageType.FriendJoined)
+				if (NotificationType == NotificationType.JoinedYourEvent)
 				{
-					return ContentProfile.Name + " has joined an event!";
+					return SenderName + " joined your event " + ContentName;
 				}
-
-				if (Type == Notification.MessageType.FriendCreatedEvent)
+				if (NotificationType == NotificationType.EventCancelled)
 				{
-					return ContentProfile.Name + " has created a new event, check it out!";
+					return SenderName + " cancelled the event '" + ContentName + "' you were attending";
 				}
-
-				if (Type == Notification.MessageType.GroupRequest)
+				if (NotificationType == NotificationType.FriendJoinedEvent)
 				{
-					return ContentProfile.Name + " has invited you to join his group!";
+					return SenderName + " joined your event " + ContentName;
 				}
-
-				if (Type == Notification.MessageType.FriendRequest)
+				if (NotificationType == NotificationType.FriendCreatedEvent)
 				{
-					return ContentProfile.Name + " wants to be your friend!";
+					return SenderName + " created an event: " + ContentName;
 				}
-
-				if (Type == Notification.MessageType.ProfileInvitedToEvent)
+				if (NotificationType == NotificationType.GroupInvitedToEvent)
 				{
-					return ContentProfile.Name + " has invited you to an event.";
+					return "Your group has been invited to the event " + ContentName;
 				}
 
-				if (Type == Notification.MessageType.SomeoneJoinedYourEvent)
+				// Friends
+				if (NotificationType == NotificationType.RequestedToFriend)
 				{
-					return ContentProfile.Name + " has joined your event " + ContentEvent.Title + ".";
+					return SenderName + " wants to be your friend";
+				}
+				if (NotificationType == NotificationType.AcceptedToFriend)
+				{
+					return SenderName + " accepted your friend request";
 				}
 
+				//Groups
+				if (NotificationType == NotificationType.InvitedToGroup)
+				{
+					return SenderName + " invited you to join the group " + ContentName;
+				}
+				if (NotificationType == NotificationType.RequestedToJoinGroup)
+				{
+					return SenderName + " wants to join your group " + ContentName;
+				}
 
-				return "";
+				//Organizations
+				if (NotificationType == NotificationType.InvitedToOrganization)
+				{
+					return SenderName + " invited you to join the organization " + ContentName;
+				}
+
+				//Communication
+				if (NotificationType == NotificationType.WrittenToEventComments)
+				{
+					return SenderName + " has written a comment in the event " + ContentName;
+				}
+				if (NotificationType == NotificationType.WrittenToGroupComments)
+				{
+					return SenderName + " has written a comment in the group " + ContentName;
+				}
+				if (NotificationType == NotificationType.WrittenToOrganizationComments)
+				{
+					return SenderName + " has written a comment in the organization " + ContentName;
+				}
+				if (NotificationType == NotificationType.WrittenToEventConversation)
+				{
+					return SenderName + " has sent a message in a conversation for the event " + ContentName;
+				}
+				if (NotificationType == NotificationType.WrittenToGroupConversation)
+				{
+					return SenderName + " has sent a message in a conversation for the group " + ContentName;
+				}
+				if (NotificationType == NotificationType.WrittenToOrganizationConversation)
+				{
+					return SenderName + " has sent a message in a conversation for the organization " + ContentName;
+				}
+				*/
+				return ContentName;
 			}
 			set
 			{
@@ -111,7 +228,7 @@ namespace HowlOut
 				this.Time = value;
 			}
 		}
-
+		/*
 		public string ImageSource
 		{
 			get
@@ -127,17 +244,10 @@ namespace HowlOut
 				this.ImageSource = value;
 			}
 		}
+		*/
 
 		public Notification()
 		{
-			List<Profile> HeaderProfiles = new List<Profile>();
-
-
-		}
-
-		public enum MessageType
-		{
-			FriendJoined, FriendCreatedEvent, GroupRequest, ProfileInvitedToEvent, GroupInvitedToEvent, FriendRequest, SomeoneJoinedYourEvent
 		}
 	}
 }

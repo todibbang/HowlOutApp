@@ -38,7 +38,7 @@ namespace HowlOut
 		public List <Group> InvitedGroups {get; set;}		//Groups invited to the event
 
 		public List <Comment> Comments {get; set;}
-
+		public List <Conversation> Conversations { get; set; }
 		public SearchSettings ProfileSearchSettings { get; set; }
 
 		public Event()

@@ -31,23 +31,22 @@ namespace HowlOut
 			this.profile = profile;
 			design = Design.NameAndButtons;
 			SetupButtons(true);
-			if (!grpInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
+			if (grpInvitingTo.ProfilesRequestingToJoin.Exists(p => p.ProfileId == profile.ProfileId))
 			{
 				HandleButtonRequests(delegate ()
 				{
-					return _dataManager.GroupApiManager.InviteAcceptDeclineLeaveGroup(grpInvitingTo.GroupId, new List<Profile> { profile }, GroupApiManager.GroupHandlingType.Invite);
-				}, addBtn, "Invite", "Invited");
-			}
-			else if (grpInvitingTo.RequestingToJoin.Exists(p => p.ProfileId == profile.ProfileId))
-			{
-				HandleButtonRequests(delegate ()
-				{
-					return _dataManager.GroupApiManager.InviteAcceptDeclineLeaveGroup(grpInvitingTo.GroupId, new List<Profile> { profile }, GroupApiManager.GroupHandlingType.Accept);
+					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, true, new List<Profile> { profile });
 				}, addBtn, "Accept", "Acceptd");
 				HandleButtonRequests(delegate ()
 				{
-					return _dataManager.GroupApiManager.InviteAcceptDeclineLeaveGroup(grpInvitingTo.GroupId, new List<Profile> { profile }, GroupApiManager.GroupHandlingType.Decline);
+					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, false, new List<Profile> { profile });
 				}, removeBtn, "Decline", "Declined");
+			} else  if (!grpInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
+			{
+				HandleButtonRequests(delegate ()
+				{
+					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, true, new List<Profile> { profile });
+				}, addBtn, "Invite", "Invited");
 			}
 		}
 
@@ -60,7 +59,7 @@ namespace HowlOut
 			{
 				HandleButtonRequests(delegate ()
 				{
-					return _dataManager.OrganizationApiManager.AcceptInviteDeclineLeaveOrganization(orgInvitingTo.OrganizationId, profile.ProfileId, OrganizationApiManager.OrganizationHandlingType.Invite);
+					return _dataManager.OrganizationApiManager.InviteToOrganization(orgInvitingTo.OrganizationId, profile);
 				}, addBtn, "Invite", "Invited");
 			} 
 		}
@@ -112,7 +111,10 @@ namespace HowlOut
 
 
 			if (clickable)
-				subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewWithQueue(new InspectController(profile), "", null); };
+				subjBtn.Clicked += (sender, e) => {
+				_dataManager.setUpdateSeen(profile.ProfileId, NotificationModelType.Profile);
+				App.coreView.setContentViewWithQueue(new InspectController(profile), "", null); 
+			};
 
 			Profile updateProfile = App.userProfile;
 			bool edit = false;
@@ -122,7 +124,7 @@ namespace HowlOut
 
 				if (edit)
 				{
-					SetInfo(profile.ImageSource, profile.Name, profile.Description, design);
+					SetInfo(profile.ImageSource, profile.Name, profile.Description, design, ModelType.Profile);
 				}
 
 
@@ -195,6 +197,9 @@ namespace HowlOut
 					App.coreView.setContentView(4);
 				}
 				App.coreView.IsLoading(false);
+				App.coreView.updateHomeView();
+				ShowHideEditLayout(false);
+				edit = false;
 			};
 
 			profileLogOutBtn.Clicked += async (sender, e) =>
@@ -204,7 +209,7 @@ namespace HowlOut
 			};
 
 			profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
-			SetInfo(profile.ImageSource, profile.Name, profile.Description, design);
+			SetInfo(profile.ImageSource, profile.Name, profile.Description, design, ModelType.Profile);
 		}
 	}
 }

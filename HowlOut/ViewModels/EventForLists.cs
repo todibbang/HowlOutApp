@@ -90,14 +90,15 @@ namespace HowlOut
 			Distance = util.distance(new Position(eve.Latitude, eve.Longitude), position);
 			var Times = util.setTime (eve.StartDate);
 
-			int attendees = 0;
+			int attendees = eve.NumberOfAttendees;
+			/*
 			if (eve.Attendees != null)
 			{
 				attendees = eve.Attendees.Count + 1;
 			}
 			else {
 				attendees = eve.NumberOfAttendees;
-			}
+			} */
 
 
 			attendingInfo = attendees + "/" + eve.MaxSize;

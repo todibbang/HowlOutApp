@@ -54,7 +54,6 @@
       <DependentUpon>FilterSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\FacebookUserObject.cs" />
-    <Compile Include="Models\EventDBO.cs" />
     <Compile Include="Services\UtilityManager.cs" />
     <Compile Include="Services\ExtMap.cs" />
     <Compile Include="Views\MapsView.xaml.cs">
@@ -67,7 +66,6 @@
     <Compile Include="Services\ProfileApiManager.cs" />
     <Compile Include="Services\GroupApiManager.cs" />
     <Compile Include="Services\EventApiManager.cs" />
-    <Compile Include="Models\GroupDBO.cs" />
     <Compile Include="Views\ListsAndButtons.xaml.cs">
       <DependentUpon>ListsAndButtons.xaml</DependentUpon>
     </Compile>
@@ -191,7 +189,6 @@
     <Compile Include="Views\DesignViews\ProfileDesignView.cs" />
     <Compile Include="Views\DesignViews\GroupDesignView.cs" />
     <Compile Include="Services\OrganizationApiManager.cs" />
-    <Compile Include="Models\OrganizationDTO.cs" />
     <Compile Include="Services\MessageApiManager.cs" />
     <EmbeddedResource Include="Views\CreateViews\CreateOrganization.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -216,6 +213,27 @@
     </Compile>
     <Compile Include="Services\OtherFunctions.cs" />
     <Compile Include="Models\NotificationToken.cs" />
+    <Compile Include="Renderers\ConversationEditor.cs" />
+    <Compile Include="Renderers\FacebookShareButton.cs" />
+    <Compile Include="Renderers\FacebookSendButton.cs" />
+    <EmbeddedResource Include="Views\FindNewFriendsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\FindNewFriendsView.xaml.cs">
+      <DependentUpon>FindNewFriendsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\NotificationModelType.cs" />
+    <Compile Include="Enums\NotificationType.cs" />
+    <Compile Include="Enums\ConversationModelType.cs" />
+    <EmbeddedResource Include="Views\YourConversations.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\YourConversations.xaml.cs">
+      <DependentUpon>YourConversations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\NotificationController.cs" />
+    <Compile Include="Models\Banner.cs" />
+    <Compile Include="Enums\ModelType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />
@@ -297,6 +315,7 @@
     <Folder Include="Models\Grouped\" />
     <Folder Include="Views\CreateViews\" />
     <Folder Include="Views\DesignViews\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">

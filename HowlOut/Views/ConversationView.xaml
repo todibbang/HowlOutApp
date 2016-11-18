@@ -4,9 +4,92 @@
 		x:Class="HowlOut.ConversationView" xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
-		<!-- <ScrollView BackgroundColor="Transparent"> -->
-			<Grid Padding="0" IsVisible="true" RowSpacing="0" HeightRequest="0" x:Name="outerGrid">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="55"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
 
+
+			
+			<ScrollView BackgroundColor="Transparent" IsVisible="false" x:Name="conversationScrollView" Grid.Row="0" Grid.RowSpan="2">
+				<Grid Padding="0" IsVisible="true" RowSpacing="0" HeightRequest="0" x:Name="outerGrid" >
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+
+					<StackLayout x:Name="modelTypeView" HeightRequest="40" BackgroundColor="Aqua" IsVisible="false">
+
+					</StackLayout>
+					
+					<StackLayout Grid.Row="1" x:Name="conversationListLayout">
+						<ListView VerticalOptions="Start"
+						x:Name="conversationList" 
+						HasUnevenRows="true"
+						InputTransparent="false"
+						SeparatorVisibility="None"
+						CachingStrategy="RecycleElement"
+						BackgroundColor="Transparent">
+							<ListView.Header>
+									<StackLayout HeightRequest="300"/>
+							</ListView.Header>
+		                    <ListView.ItemTemplate>
+		                     	 <DataTemplate>
+		                      		<ViewCell>
+			                      		<local:InspectManageComment />
+			                  		</ViewCell>
+		                      	</DataTemplate>
+		                    </ListView.ItemTemplate>
+							
+		                    <ListView.GroupHeaderTemplate>
+		                    	<DataTemplate>
+			                      <ViewCell Height="20">
+				                        <StackLayout Padding="0,0,0,1" BackgroundColor="{DynamicResource Shadow}">
+							    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" BackgroundColor="{DynamicResource HowlOutBackground}"/>
+							    		</StackLayout>
+				              		</ViewCell>
+		                      </DataTemplate>
+		                    </ListView.GroupHeaderTemplate>
+		                </ListView>
+					</StackLayout>
+
+
+					<BoxView Grid.Row="2" BackgroundColor="White" />
+					<Grid Grid.Row="2" VerticalOptions="End" Padding="4,4,4,4" BackgroundColor="{DynamicResource PlaceHolderColor}" x:Name="entryBottom" IsVisible="false" RowSpacing="0"> 
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<Grid.RowDefinitions>
+							<RowDefinition Height="100"/>
+							<RowDefinition Height="0" x:Name="bottomInputLifter"/>
+						</Grid.RowDefinitions>
+						
+						<!--<controls:CircleImage Grid.Row="2" Grid.Column="1" x:Name="usersPhoto"/> -->
+						<Button Grid.Column="0" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" BackgroundColor="White" BorderRadius="5" BorderWidth="0" BorderColor="{DynamicResource HowlOut}"/>
+						<StackLayout Grid.Column="0" Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+							<local:ConversationEditor Style="{DynamicResource CommentStyle}" x:Name="commentEntryBottom" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Placeholder="Write message...."/>
+						</StackLayout>
+					</Grid>
+				</Grid>
+			</ScrollView>
+
+
+			<StackLayout BackgroundColor="White" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10">
+				<controls:CircleImage WidthRequest="45" x:Name="conversationInfoImage" HeightRequest="45" Aspect="AspectFill"/>
+				<StackLayout>
+					<Label x:Name="conversationInfoModelLabel" VerticalOptions="Center" TextColor="{DynamicResource HowlOut}"/>
+					<Label x:Name="conversationInfoLabel" VerticalOptions="Center" />
+				</StackLayout>
+			</StackLayout>
+			<Button x:Name="conversationInfoProfilesButton" TranslationX="60" BackgroundColor="Transparent"/>
+
+			
+			
+			<Grid Padding="0" RowSpacing="0" x:Name="commentView" IsVisible="false" Grid.Row="0" Grid.RowSpan="2">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*" x:Name="listViewRow"/>
@@ -16,8 +99,8 @@
 				<Grid VerticalOptions="Start" Grid.Row="0" Padding="0,5,0,5" BackgroundColor="{DynamicResource PlaceHolderColor}" x:Name="entryTop" IsVisible="false"> 
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="2"/>
-						<ColumnDefinition Width="50"/>
 						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="50"/>
 						<ColumnDefinition Width="2"/>
 					</Grid.ColumnDefinitions>
 
@@ -27,14 +110,14 @@
 					</Grid.RowDefinitions>
 					
 					<!-- <controls:CircleImage Grid.Row="0" Grid.Column="1" x:Name="usersPhoto"/> -->
-					<Button Grid.Column="1" Grid.Row="1" Text="Post" x:Name="postCommentButtonTop" Style="{DynamicResource ButtonStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="30" FontSize="14"/>
-					<Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" BackgroundColor="White" BorderRadius="5" BorderWidth="1" BorderColor="White"/>
-					<StackLayout Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-						<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntryTop" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent"/>
+					<Button Grid.Column="2" Grid.Row="1" Text="Post" x:Name="postCommentButtonTop" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontSize="14"/>
+					<Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" BackgroundColor="White" BorderRadius="5" BorderWidth="1" BorderColor="White"/>
+					<StackLayout Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+						<local:ConversationEditor Style="{DynamicResource CommentStyle}" x:Name="commentEntryTop" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Placeholder="Write comment...."/>
 					</StackLayout>
 				</Grid>
 				
-				<StackLayout Grid.Row="1" x:Name="listLayout">
+				<StackLayout Grid.Row="1" x:Name="commentListLayout">
 					<ListView VerticalOptions="Start"
 					x:Name="commentList" 
 					HasUnevenRows="true"
@@ -61,33 +144,9 @@
 	                    </ListView.GroupHeaderTemplate>
 	                </ListView>
 				</StackLayout>
-
-
-
-				<Grid Grid.Row="2" VerticalOptions="End" Padding="0,10,0,10" BackgroundColor="{DynamicResource HowlOutFade}" x:Name="entryBottom" IsVisible="false"> 
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="5"/>
-						<ColumnDefinition Width="50"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="5"/>
-					</Grid.ColumnDefinitions>
-
-					<Grid.RowDefinitions>
-						<RowDefinition Height="50"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="0" x:Name="bottomInputLifter"/>
-					</Grid.RowDefinitions>
-					
-					<!--<controls:CircleImage Grid.Row="2" Grid.Column="1" x:Name="usersPhoto"/> -->
-					<Button Grid.Column="1" Grid.Row="1" Text="Post" x:Name="postCommentButtonBottom" Style="{DynamicResource ButtonStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="30" FontSize="14"/>
-					<Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" BackgroundColor="White" BorderRadius="5" BorderWidth="1" BorderColor="{DynamicResource HowlOut}"/>
-					<StackLayout Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-						<Editor Style="{DynamicResource CommentStyle}" x:Name="commentEntryBottom" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent"/>
-					</StackLayout>
-				</Grid>
-				<ActivityIndicator Grid.Row="1" Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading" BackgroundColor="Transparent"/> 
 			</Grid>
-		<!-- </ScrollView> -->
 
+
+		</Grid>
 	</ContentView.Content>
 </ContentView>

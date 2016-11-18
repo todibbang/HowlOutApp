@@ -6,6 +6,12 @@ namespace HowlOut
 {
 	public partial class HomeView : ContentView
 	{
+		public ContentView content
+		{
+			get { return this; }
+			set { this.content = value; }
+		}
+
 		DataManager _dataManager = new DataManager ();
 		ListsAndButtons listMaker = new ListsAndButtons();
 
@@ -100,21 +106,21 @@ namespace HowlOut
 		{
 			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
 			profileGrid.Children.Clear ();
-			listMaker.createList (profileGrid, profileSearchResult, null, null, null, null, null, false);
+			listMaker.createList (profileSearchResult, null, null, null, null, null, false, true);
 		}
 
 		public async void updateAutoCompleteGroupList(string input)
 		{
 			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
 			groupGrid.Children.Clear ();
-			listMaker.createList (groupGrid, null, groupSearchResult, null, null, null, null, false);
+			listMaker.createList (null, groupSearchResult, null, null, null, null, false, true);
 		}
 
 		public async void updateAutoCompleteOrganizationsList(string input)
 		{
 			var orgsSearchResult = await _dataManager.OrganizationApiManager.GetOrganizationsFromName(input);
 			organizationGrid.Children.Clear();
-			listMaker.createList(organizationGrid, null, null, orgsSearchResult, null, null, null, false);
+			listMaker.createList(null, null, orgsSearchResult, null, null, null, false, true);
 		}
 
 		private void setViewDesign(int number){

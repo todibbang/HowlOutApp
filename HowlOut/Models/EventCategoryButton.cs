@@ -73,7 +73,7 @@ namespace HowlOut
 				}
 				else {
 					
-					if (selectedState > 2) selectedState = 0;
+					if (selectedState > 1) selectedState = 0;
 
 				}
 

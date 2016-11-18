@@ -1,4 +1,4 @@
-﻿using System; using System.Collections.Generic; using System.Text; using HowlOut; using HowlOut.iOS.Renderers; using UIKit; using Xamarin.Forms; using Xamarin.Forms.Platform.iOS;  [assembly: ExportRenderer(typeof(CustomEditor), typeof(CustomEditorRenderer))] namespace HowlOut.iOS.Renderers {
+﻿using System; using System.Collections.Generic; using System.Text; using HowlOut; using HowlOut.iOS.Renderers; using UIKit; using Xamarin.Forms; using Xamarin.Forms.Platform.iOS;   [assembly: ExportRenderer(typeof(CustomEditor), typeof(CustomEditorRenderer))] namespace HowlOut.iOS.Renderers {
 	public class CustomEditorRenderer : EditorRenderer
 	{
 		private string Placeholder { get; set; }
@@ -25,8 +25,7 @@
 					{
 						textView.Text = "";
 						textView.TextColor = App.NormalTextColor.ToUIColor(); // Text Color
-					}
-
+					} 
 					return true;
 				};
 

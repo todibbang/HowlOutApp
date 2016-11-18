@@ -8,6 +8,7 @@ using HowlOut;
 using Newtonsoft.Json;
 using Facebook.LoginKit;
 using Facebook.CoreKit;
+using Facebook.ShareKit;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UIKit;
@@ -57,7 +58,9 @@ namespace HowlOut.iOS.Renderers
 				
 				nameLabel.Text = e.NewProfile.Name;
 				name = e.NewProfile.Name;
-				logIn();
+
+
+				logIn(width, height);
 			});
 
 			b = UIButton.FromType(UIButtonType.System);
@@ -97,6 +100,11 @@ namespace HowlOut.iOS.Renderers
 				// Handle your logout
 			};
 
+
+
+
+
+
 			// The user image profile is set automatically once is logged in
 			pictureView = new ProfilePictureView(new CGRect(width / 2 - 110, 50, 220, 220));
 
@@ -109,15 +117,42 @@ namespace HowlOut.iOS.Renderers
 			// Add views to main view
 			View.AddSubview(new UILabel(new RectangleF(20, 319, 280, 21)));
 			View.AddSubview(loginView);
+
+
+
 			View.AddSubview(b);
 			//View.AddSubview(pictureView);
 			View.AddSubview(nameLabel);
 		}
 
-		private async void logIn()
+		private async void logIn(int width, int height)
 		{
-			await HowlOut.App.storeToken(token, id, name);
-			HowlOut.LoginPage.LoginSuccess();
+
+			ShareLinkContent content = new ShareLinkContent();
+			content.SetContentUrl(new NSUrl("https://developers.facebook.com"));
+
+			SendButton sendBtn = new SendButton(new CGRect(width / 2 - 110, height / 1.2, 220, 46));
+			sendBtn.SetShareContent(content);
+
+			ShareButton shareBtn = new ShareButton(new CGRect(width / 2 - 110, height / 1.1, 220, 46));
+			shareBtn.SetShareContent(content);
+
+			UIButton continueBtn = new UIButton(new CGRect(width / 2 - 110, height / 1.35, 220, 46));
+			continueBtn.BackgroundColor = App.HowlOut.ToUIColor();
+			continueBtn.TintColor = App.HowlOut.ToUIColor();
+			continueBtn.TouchUpInside += async (sender, e) =>
+			{
+				await HowlOut.App.storeToken(token, id, name);
+				HowlOut.LoginPage.LoginSuccess();
+			};
+
+			View.AddSubview(sendBtn);
+			View.AddSubview(shareBtn);
+			View.AddSubview(continueBtn);
+
+
+			//await HowlOut.App.storeToken(token, id, name);
+			//HowlOut.LoginPage.LoginSuccess();
 		}
 
 		/*

@@ -1,7 +1,5 @@
 ﻿using System;
 using Xamarin.Forms;
-using System.ComponentModel;
-
 
 namespace HowlOut
 {

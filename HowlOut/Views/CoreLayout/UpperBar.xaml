@@ -3,23 +3,24 @@
 	<ContentView.Content>
 		<Grid BackgroundColor="Transparent" RowSpacing="0">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="40"/>
+						<ColumnDefinition Width="50"/>
 						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="40"/>
+						<ColumnDefinition Width="50"/>
 					</Grid.ColumnDefinitions>
 
 					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
+						<RowDefinition Height="40"/>
 						<RowDefinition Height="5"/>
 					</Grid.RowDefinitions>
 
 					<Image Grid.Column="0" x:Name="backBtn" Source="ic_back.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"></Image>
-
+					<Button Grid.Column="0" x:Name="backButton" BackgroundColor="Transparent"/>
+			
 					<Button Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="20" IsVisible="true" BackgroundColor="Transparent" BorderColor="Transparent"/>
 
 					<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 
-
+					<Button Grid.Column="0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="leaveCvBtn" TextColor="White" Text="Leave" FontSize="20" IsVisible="False" BackgroundColor="Transparent" BorderColor="Transparent"/>
 					<Image Grid.Column="2" x:Name="addPeopleToCvBtn" Source="ic_add_profiles.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
 
 					<Image Grid.Column="2" x:Name="newConversationBtn" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>

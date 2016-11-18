@@ -73,6 +73,23 @@ namespace HowlOut
 			else if (eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId)) {
 				followButton.Text = "Unfollow"; 
 			}
+			if (eve.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == eve.OrganizationOwner.OrganizationId)) {
+				joinLeaveWhenOrganizationOwnerButton.IsVisible = true;
+				if (eve.Attendees.Exists(p => p.ProfileId == App.StoredUserFacebookId))
+				{
+					joinLeaveWhenOrganizationOwnerButton.Text = "Leave";
+					joinLeaveWhenOrganizationOwnerButton.Clicked += (sender, e) =>
+					{
+						_dataManager.AttendTrackEvent(eve, false, true);
+					};
+				}
+				else {
+					joinLeaveWhenOrganizationOwnerButton.Clicked += (sender, e) =>
+					{
+						_dataManager.AttendTrackEvent(eve, true, true);
+					};
+				}
+			}
 
 			editLeaveButton.Clicked += (sender, e) => {
 				if (_dataManager.IsEventYours(eve) ||

@@ -108,8 +108,8 @@
 	<string>651141215029165</string>
 	<key>FacebookDisplayName</key>
 	<string>HowlOut</string>
-	<key>Custom Property1</key>
-	<string></string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to the camera to take photos.</string>
 	<key>URL types</key>
 	<array>
 		<dict>
@@ -119,5 +119,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to photos.</string>
 </dict>
 </plist>

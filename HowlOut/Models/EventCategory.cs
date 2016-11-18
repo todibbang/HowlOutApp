@@ -48,7 +48,7 @@ namespace HowlOut
 					}
 					else {
 
-						if (selected > 2) selected = 0;
+						if (selected > 1) selected = 0;
 
 					}
 
@@ -65,7 +65,7 @@ namespace HowlOut
 						System.Diagnostics.Debug.WriteLine("added");
 					} else if (selected == 2)
 					{
-						list.Add(en);
+						//list.Add(en);
 						System.Diagnostics.Debug.WriteLine("blocked");
 					}
 

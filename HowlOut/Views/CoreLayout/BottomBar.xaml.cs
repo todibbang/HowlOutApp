@@ -10,6 +10,12 @@ namespace HowlOut
 		DataManager _dataManager;
 		private StandardButton standardButton = new StandardButton();
 
+		public Button createNoti { get { return noti_0; } }
+		public Button conversationNoti { get { return noti_1; } }
+		public Button eventNoti { get { return noti_2; } }
+		public Button howlsNoti { get { return noti_3; } }
+		public Button homeNoti { get { return noti_4; } }
+
 		public BottomBar ()
 		{
 			InitializeComponent ();
@@ -57,9 +63,9 @@ namespace HowlOut
 			friendsImage.Tapped += async (sender, e) =>
 			{
 				App.coreView.setContentView(3);
-				//await howls.ScaleTo(0.7, 50, Easing.Linear);
-				//await Task.Delay(60);
-				//await howls.ScaleTo(1, 50, Easing.Linear);
+				await howls.ScaleTo(0.7, 50, Easing.Linear);
+				await Task.Delay(60);
+				await howls.ScaleTo(1, 50, Easing.Linear);
 				unselectAll();
 				howls.Foreground = App.HowlOut;
 			};

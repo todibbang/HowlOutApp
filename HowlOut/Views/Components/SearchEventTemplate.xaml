@@ -16,7 +16,7 @@
 
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
 				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image>
-				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" Aspect="AspectFill" VerticalOptions="StartAndExpand"></Image>
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" Aspect="AspectFill" VerticalOptions="StartAndExpand"></Image> 
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
 				<StackLayout Grid.Row="1" VerticalOptions="Start" >
@@ -61,10 +61,9 @@
 				<StackLayout Grid.Row="4" HeightRequest="45" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" Padding="0,5,0,0">
 					<local:Line/>
 					<StackLayout Padding="10,0,0,0" Orientation="Horizontal">
-						<Label Text="This event is for members of " VerticalOptions="Center"/>
 						<controls:CircleImage Source="{Binding SpecificGroupImageSource}" HeightRequest="30" WidthRequest="30" Aspect="AspectFill"/>
 						<Label Text="{Binding SpecificGroupText}" TextColor="{DynamicResource HowlOut}" VerticalOptions="Center"/>
-						<Label Text="only." VerticalOptions="Center"/>
+						<Label Text="members only." VerticalOptions="Center"/>
 					</StackLayout>
 				</StackLayout>
 			</Grid>

@@ -8,6 +8,7 @@ using Foundation;
 using UIKit;
 using ImageCircle.Forms.Plugin.iOS;
 using HowlOut;
+using UserNotifications;
 
 namespace HowlOut.iOS
 {
@@ -19,6 +20,8 @@ namespace HowlOut.iOS
 		public static int width;
 		public static int height;
 
+		public bool notiCheck = true;
+
 		public const string ConnectionString = "Endpoint=sb://howlout.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=S56W4coW1bGmVTdirY59X7poLwlxZjWkEcYOMmyAezI=";
 		public const string NotificationHubPath = "HowloutNotificationHub";
 
@@ -29,7 +32,21 @@ namespace HowlOut.iOS
 		{
 			global::Xamarin.Forms.Forms.Init ();
 
-			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+
+			if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+			{
+				UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
+				{
+					
+				});
+				var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
+					   UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
+					   new NSSet());
+
+				UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
+				UIApplication.SharedApplication.RegisterForRemoteNotifications();
+			} 
+			else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
 			{
 				var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
 					   UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
@@ -38,7 +55,9 @@ namespace HowlOut.iOS
 				UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
 				UIApplication.SharedApplication.RegisterForRemoteNotifications();
 			}
-			else {
+			else
+			{
+
 				UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
 				UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
 			}
@@ -51,6 +70,8 @@ namespace HowlOut.iOS
 			Settings.DisplayName = appName;
 
 
+
+
 			ImageCircleRenderer.Init ();
 			LoadApplication(new App());
 
@@ -58,6 +79,22 @@ namespace HowlOut.iOS
 			//return ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
 		}
 
+		public override void OnActivated(UIApplication application)
+		{
+			Console.WriteLine("OnActivated called, App is active.");
+			setNotiCheck(false);
+		}
+		public override void DidEnterBackground(UIApplication application)
+		{
+			Console.WriteLine("App entering background state.");
+			setNotiCheck(true);
+		}
+
+		private async void setNotiCheck(bool check)
+		{
+			await System.Threading.Tasks.Task.Delay(4000);
+			notiCheck = check;
+		}
 
 		public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 		{
@@ -68,23 +105,18 @@ namespace HowlOut.iOS
 
 		public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
 		{
-			ProcessNotification(userInfo, false);
+			ProcessNotification(userInfo, notiCheck);
 
 			NSObject Type;
 			NSObject Id;
 
 			var success = userInfo.TryGetValue(new NSString("type"), out Type);
-			App.UpdateLiveConversations();
 			if (success)
 			{
 				success = userInfo.TryGetValue(new NSString("id"), out Id);
 				if (success)
 				{
-					System.Diagnostics.Debug.WriteLine(Type.ToString() + ", " + Id.ToString());
-					if (Type.ToString() == "conversation" || Type.ToString() == "comment")
-					{
-						
-					}
+					App.notificationController.HandlePushNotification(Type.ToString(), Id.ToString(), notiCheck);
 				}
 			}
 		}
@@ -129,4 +161,5 @@ namespace HowlOut.iOS
 		}
 	}
 }
+
 

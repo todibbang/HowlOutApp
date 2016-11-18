@@ -44,16 +44,38 @@ namespace HowlOut
 			return comments;
 		}
 
-		public async Task<List<Conversation>> GetConversations()
+		public async Task<List<Conversation>> GetConversations(string modelId, ConversationModelType modelType)
 		{
-			List<Conversation> conversations = new List<Conversation>();
-
+			List<Conversation> conversations = new List<Conversation>(); 
+			string uri = App.serverUri + "message/conversation/";
+			if (modelType != ConversationModelType.Profile) uri += modelId + "?modelType=" + modelType;
+			else uri += "getAll";
 			try
 			{
-				var response = await httpClient.GetAsync(new Uri(App.serverUri + "message/conversation/" + App.StoredUserFacebookId));
+				var response = await httpClient.GetAsync(new Uri(uri));
 				if (response.IsSuccessStatusCode) { 
 					var recievedContent = await response.Content.ReadAsStringAsync(); 
 					return conversations = JsonConvert.DeserializeObject<List<Conversation>>(recievedContent);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+			}
+			return null;
+		}
+
+		public async Task<Conversation> GetOneConversation(string id)
+		{
+			Conversation conversation = new Conversation();
+
+			try
+			{
+				var response = await httpClient.GetAsync(new Uri(App.serverUri + "message/conversation/getOne/" + id));
+				if (response.IsSuccessStatusCode)
+				{
+					var recievedContent = await response.Content.ReadAsStringAsync();
+					return conversation = JsonConvert.DeserializeObject<Conversation>(recievedContent);
 				}
 			}
 			catch (Exception ex)
@@ -78,14 +100,15 @@ namespace HowlOut
 			return null;
 		}
 
-		public async Task<Conversation> CreateConversations(List<Profile> profiles)
+		public async Task<Conversation> CreateConversations(ConversationModelType modelType, List<Profile> profiles, string modelTypeId, string title)
 		{
-			var uri = "?profileIds=" + profiles[0].ProfileId;
-			for (int i = 1; i < profiles.Count; i++)
+			var uri = "?modelType="+modelType;
+			for (int i = 0; i < profiles.Count; i++)
 			{
 				uri += "&profileIds=" + profiles[i].ProfileId;
 			}
-
+			if (!string.IsNullOrWhiteSpace(modelTypeId) && modelType != ConversationModelType.Profile) uri += "&modelTypeId=" + modelTypeId;
+			if (!string.IsNullOrWhiteSpace(title)) uri += "&title=" + title;
 			try {
 				var response = await httpClient.PostAsync(new Uri(App.serverUri + "message/conversation" + uri), new StringContent(""));
 				if (response.IsSuccessStatusCode) { 
@@ -146,6 +169,25 @@ namespace HowlOut
 			return null;
 		}
 
+		public async Task<bool> leaveConversation(string id)
+		{
+			var uri = App.serverUri + "message/conversation/LeaveConversation?conversationId=" + id;
+			try
+			{
+				var response = await httpClient.PutAsync(new Uri(uri), new StringContent(""));
+				if (response.IsSuccessStatusCode)
+				{
+					return true;
+				}
+				else
+				{
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				}
+			}
+			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
+			return false;
+		}
+
 		public enum CommentType
 		{
 			GroupComment, EventComment, OrganizationComment, Converzation
@@ -172,11 +214,11 @@ namespace HowlOut
 			return null;
 		}
 
-		public async Task<bool> DeleteNotifications(string id)
+		public async Task<bool> SetNotificationSeen(string id)
 		{
 			try
 			{
-				var response = await httpClient.DeleteAsync(new Uri(App.serverUri + "message/inAppNotification/" + id));
+				var response = await httpClient.PutAsync(new Uri(App.serverUri + "message/inAppNotification/setSeen/" + id + "?isSeen=true"), new StringContent("", Encoding.UTF8, "application/json"));
 				if (response.IsSuccessStatusCode)
 				{
 					return true;

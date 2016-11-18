@@ -9,29 +9,26 @@ namespace HowlOut
 	{
 
 		ScrollView scrollView;
+		YourConversations CVList;
 		ConversationView CV;
 
 		public UpperBar ()
 		{
 			InitializeComponent ();
 
-			var backImage = new TapGestureRecognizer();
-			backImage.Tapped += async (sender, e) => 
+			backButton.Clicked += async (sender, e) => 
 			{
 				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await backBtn.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.returnToPreviousView();
 			};				
-			backBtn.GestureRecognizers.Add(backImage);
 
 			var newMessage = new TapGestureRecognizer();
 			newMessage.Tapped += async (sender, e) =>
 			{
 				await newConversationBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await newConversationBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation(), true), "Create Group", null);
-				//App.coreView.howlsView.ShowNewConversation();
-				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = CVList.modelId, ModelType = CVList.modelType }, true ), "Create Group", null);
 			};
 			newConversationBtn.GestureRecognizers.Add(newMessage);
 
@@ -40,11 +37,15 @@ namespace HowlOut
 			{
 				await addPeopleToCvBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await addPeopleToCvBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation,false), "Create Group", null);
-				//CV.ShowPeopleToAddToConversation();
-				//App.coreView.setContentViewWithQueue (new CreateGroup(null), "Create WolfPack", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation, false), "Create Group", null);
 			};
 			addPeopleToCvBtn.GestureRecognizers.Add(addPeopleToCv);
+
+			leaveCvBtn.Clicked += async (sender, e) =>
+			{
+				await App.coreView.displayConfirmMessage("Leaving Conversation", "You are about to leave this conversation, do you wish to continue", "Yes", "No");
+				await App.coreView._dataManager.MessageApiManager.leaveConversation(CV.ConversationId);
+			};
 
 			var createImage = new TapGestureRecognizer();
 			createImage.Tapped += async (sender, e) =>
@@ -72,21 +73,23 @@ namespace HowlOut
 
 		public void hideAll()
 		{
-			showNewConversationButton(false);
+			showNewConversationButton(false, null);
 			showFilterSearchButton(false);
 			showBackButton(false);
 			showAddPeopleToConversationButton(false, null);
 			scrollView = null;
 		}
 
-		public void showNewConversationButton(bool show)
+		public void showNewConversationButton(bool show, YourConversations yc)
 		{
 			newConversationBtn.IsVisible = show;
+			CVList = yc;
 		}
 
 		public void showAddPeopleToConversationButton(bool show, ConversationView cv)
 		{
 			addPeopleToCvBtn.IsVisible = show;
+			leaveCvBtn.IsVisible = false;
 			this.CV = cv;
 		}
 
@@ -110,6 +113,7 @@ namespace HowlOut
 		public void showBackButton(bool active)
 		{
 			backBtn.IsVisible = active;
+			backButton.IsVisible = active;
 		}
 	}
 }

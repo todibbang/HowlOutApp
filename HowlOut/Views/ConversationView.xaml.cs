@@ -30,6 +30,7 @@ namespace HowlOut
 		//public ConversationView(List<Comment> coms, MessageApiManager.CommentType mT, string id)
 		{
 			InitializeComponent();
+			commentView.IsVisible = true;
 			comments = coms;
 			entryTop.IsVisible = true;
 			commentList.ItemSelected += OnItemSelected;
@@ -39,48 +40,186 @@ namespace HowlOut
 
 			UpdateList(true);
 			postCommentButtonTop.Clicked += async (sender, e) => { await PostNewComment(commentEntryTop.Text); };
-			setSize();
+			setSize(false);
 		}
-
 
 		public ConversationView(Conversation conv)
 		{
 			InitializeComponent();
+			conversationScrollView.IsVisible = true;
+			setConversationInfo(conv);
 			conversation = conv;
 			entryBottom.IsVisible = true;
-			commentList.ItemSelected += OnItemSelected;
+			conversationList.ItemSelected += OnItemSelected;
 			type = MessageApiManager.CommentType.Converzation;
 			ConversationId = conv.ConversationID;
 
 			UpdateList(true);
-			postCommentButtonBottom.Clicked += async (sender, e) => {
-				await PostNewComment(commentEntryBottom.Text); 
-			};
-			setSize();
+			setSize(true);
 
-			commentEntryBottom.Focused += (sender, e) =>
+
+			bool scrollDelay = false;
+			commentEntryBottom.Focused += async (sender, e) =>
 			{
-				bottomInputLifter.Height = 200;
-				listLayout.HeightRequest = listHeight - 200;
-				commentList.HeightRequest = listHeight - 200;
+				conversationList.TranslationY = 90;
+				conversationScrollView.HeightRequest = 1000;
+				conversationInfo.IsVisible = false;
+				try
+				{
+					await Task.Delay(1);
+					if (conversationList.ItemsSource.OfType<Comment>().Last() != null)
+					{
+						conversationList.ScrollTo(conversationList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, true);
+					}
+				}
+				catch (Exception ex) { }
+
+				scrollDelay = true;
+				await Task.Delay(200);
+				scrollDelay = false;
+
 			};
 			commentEntryBottom.Unfocused += (sender, e) =>
 			{
-				bottomInputLifter.Height = 0;
-				listLayout.HeightRequest = listHeight;
-				commentList.HeightRequest = listHeight;
+				conversationList.TranslationY = 0;
 			};
+
+			setTopbar();
+
+			conversationScrollView.Scrolled += (sender, e) =>
+			{
+				System.Diagnostics.Debug.WriteLine(conversationScrollView.ScrollY);
+				if (conversationScrollView.ScrollY > 0 && conversationScrollView.ScrollY < 100 && !scrollDelay)
+				{
+					DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+				}
+
+				if (conversationScrollView.ScrollY < 10 && !scrollDelay)
+				{
+					conversationInfo.IsVisible = true;
+				}
+			};
+
+			App.coreView.viewdConversation = this;
+
+
+		}
+
+		async void setConversationInfo(Conversation c)
+		{
+			if (c.Profiles != null)
+			{
+				foreach (Profile p in c.Profiles)
+				{
+					if (p.ProfileId != App.StoredUserFacebookId)
+					{
+						if (c.Profiles.Count > 2)
+						{
+							conversationInfoLabel.Text += p.Name.Split(' ')[0] + ", ";
+						}
+						else {
+							conversationInfoLabel.Text += p.Name + ", ";
+						}
+
+						if (conversationInfoImage.Source == null && c.ModelType == ConversationModelType.Profile)
+						{
+							conversationInfoImage.Source = p.ImageSource;
+						}
+					}
+				}
+			}
+
+			TapGestureRecognizer t = new TapGestureRecognizer();
+
+
+			if (c.ModelType == ConversationModelType.Event)
+			{
+				t.Tapped += (sender, e) =>
+				{
+					App.coreView.GoToSelectedEvent(c.ModelId);
+				};
+
+				Event eve = await _dataManager.EventApiManager.GetEventById(c.ModelId);
+				conversationInfoImage.Source = eve.ImageSource;
+				conversationInfoModelLabel.Text = "Event: " + eve.Title;
+			}
+			else if (c.ModelType == ConversationModelType.Group)
+			{
+				t.Tapped += (sender, e) =>
+				{
+					App.coreView.GoToSelectedGroup(c.ModelId);
+				};
+
+				Group grp = await _dataManager.GroupApiManager.GetGroup(c.ModelId);
+				conversationInfoImage.Source = grp.ImageSource;
+				conversationInfoModelLabel.Text = "Group: " + grp.Name;
+			}
+			else if (c.ModelType == ConversationModelType.Organization)
+			{
+				t.Tapped += (sender, e) =>
+				{
+					App.coreView.GoToSelectedOrganization(c.ModelId);
+				};
+
+				Organization org = await _dataManager.OrganizationApiManager.GetOrganization(c.ModelId);
+				conversationInfoImage.Source = org.ImageSource;
+				conversationInfoModelLabel.Text = "Organization: " + org.Name;
+			}
+			else {
+				t.Tapped += (sender, e) =>
+				{
+					App.coreView.setContentViewWithQueue(new ListsAndButtons(c.Profiles, null,null, false, false), "", null);
+				};
+			}
+
+			conversationInfoProfilesButton.Clicked += (sender, e) =>
+			{
+				App.coreView.setContentViewWithQueue(new ListsAndButtons(c.Profiles, null, null, false, false), "", null);
+			};
+
+			conversationInfoImage.GestureRecognizers.Add(t);
+			conversationInfo.IsVisible = true;
+		}
+
+		/*
+		private async Task setInfoBar(Conversation conv)
+		{
+			if (conv.ModelType != ConversationModelType.Profile)
+			{
+				App.coreView.GoToSelectedEvent()
+
+				if (conv.ModelType == ConversationModelType.Event)
+				{
+					ContentView cv = new GroupDesignView(groups[i], height, design);
+				}
+
+				modelTypeView.Children.Add
+			}
+		} */
+
+		private async Task setTopbar()
+		{
+			await Task.Delay(10);
 			App.coreView.topBar.showAddPeopleToConversationButton(true, this);
 		}
 
-		private async Task setSize()
+		private async Task setSize(bool add)
 		{
 			await Task.Delay(10);
-			outerGrid.HeightRequest = App.coreView.Height - (35 + 62 + 30);
+			outerGrid.HeightRequest = App.coreView.Height - (137);
 			commentList.HeightRequest = outerGrid.HeightRequest - 80;
-			listLayout.HeightRequest = commentList.Height;
-			listHeight = commentList.HeightRequest;
-			App.coreView.addConversationViewToActiveList(this);
+			conversationList.HeightRequest = outerGrid.HeightRequest - 80;
+			commentListLayout.HeightRequest = commentListLayout.Height;
+			conversationListLayout.HeightRequest = conversationListLayout.Height;
+
+			//listHeight = commentList.HeightRequest;
+			//listHeight = commentList.HeightRequest;
+			if(add)App.coreView.addConversationViewToActiveList(this);
+		}
+
+		public async void pushPostNewComment()
+		{
+			await PostNewComment(commentEntryBottom.Text);
 		}
 
 		private async Task PostNewComment(string comment)
@@ -92,10 +231,19 @@ namespace HowlOut
 				{
 					Content = comment,
 					SenderId = App.StoredUserFacebookId,
-					DateAndTime = DateTime.Now.ToLocalTime()
+					DateAndTime = DateTime.Now.ToLocalTime(),
+					ImageSource = App.userProfile.ImageSource
 				};
 
 				bool success = false;
+
+				comments.Add(commentObj);
+				UpdateList(false);
+
+				commentEntryTop.Text = "";
+				commentEntryBottom.Text = "";
+
+				//commentEntryBottom.
 
 				if (type == MessageApiManager.CommentType.Converzation)
 				{
@@ -104,7 +252,6 @@ namespace HowlOut
 					{
 						success = true;
 						comments = cons.Messages;
-						UpdateList(false);
 					}
 				}
 				else {
@@ -114,13 +261,11 @@ namespace HowlOut
 					{
 						success = true;
 						comments = coms;
-						UpdateList(false);
 					}
 				}
 
 				if (success) {
-					commentEntryTop.Text = ""; 
-					commentEntryBottom.Text = "";
+					
 				} else {
 					await App.coreView.displayAlertMessage("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
 				}
@@ -129,11 +274,11 @@ namespace HowlOut
 
 		public async Task<bool> UpdateList(bool update)
 		{
-			loading.IsVisible = true;
 			if (update)
 			{
 				if (type == MessageApiManager.CommentType.Converzation)
 				{
+					conversation = await _dataManager.MessageApiManager.GetOneConversation(ConversationId);
 					comments = conversation.Messages;
 				}
 				else {
@@ -143,17 +288,19 @@ namespace HowlOut
 
 			if (type == MessageApiManager.CommentType.Converzation) {
 				comments = comments.OrderBy(c => c.DateAndTime).ToList();
+				conversationList.ItemsSource = comments;
+				conversationList.IsRefreshing = false;
 			} else {
 				comments = comments.OrderByDescending(c => c.DateAndTime).ToList();
+				commentList.ItemsSource = comments;
+				commentList.IsRefreshing = false;
 			}
 
-			commentList.ItemsSource = comments;
-			commentList.IsRefreshing = false;
-			loading.IsVisible = false;
+
 			await Task.Delay(10);
 			if (type == MessageApiManager.CommentType.Converzation)
 			{
-				commentList.ScrollTo(commentList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, true);
+				conversationList.ScrollTo(conversationList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, false);
 			}
 			else {
 				commentList.ScrollTo(commentList.ItemsSource.OfType<Comment>().First(), ScrollToPosition.Start, true);
@@ -167,6 +314,7 @@ namespace HowlOut
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			commentList.SelectedItem = null;
+			conversationList.SelectedItem = null;
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 		}
 	}

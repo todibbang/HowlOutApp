@@ -17,11 +17,12 @@ namespace HowlOut
 		DataManager dataManager = new DataManager ();
 
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
-		Button selectButton = new Button() { TextColor= App.HowlOut, BorderColor=App.HowlOutFade, BorderWidth=1, BorderRadius=10, HeightRequest=40 };
+		Button selectButton = new Button() { BackgroundColor = App.HowlOut, TextColor=Color.White, BorderRadius=10, HeightRequest=40 };
 
 		bool searching = false;
 		bool searchingQQ = false;
 
+		bool searchingTap = false;
 		public bool mapTapped = false;
 
 		public MapsView (Position position)
@@ -30,27 +31,36 @@ namespace HowlOut
 
 			mapLayout.VerticalOptions = LayoutOptions.FillAndExpand;
 			utilityManager.setMapForEvent(position, map, mapLayout);
-			selectButton.Text = "selectButton";
-			selectButton.BackgroundColor = Color.White;
+			selectButton.Text = "Current Location";
+			//selectButton.BackgroundColor = Color.White;
 			selectLayout.Children.Add (selectButton);
 			searchList.IsVisible = false;
 			searchList.HeightRequest=0;
 
 			map.Tapped += (sender, e) => {
-				mapTapped = true;
-				getResults(map.tapPosition, map);
-				searchList.IsVisible = false;
-				searchList.HeightRequest=0;
+				if (!searchingTap)
+				{
+					selectButton.Text = "Select This Position";
+					searchingTap = true;
+					mapTapped = true;
+					getResults(map.tapPosition, map);
+					searchList.IsVisible = false;
+					searchList.HeightRequest=0;
+				}
 			};
 
-			selectButton.Clicked += (sender, e) => {
+			selectButton.Clicked += async (sender, e) => {
+				if (!mapTapped)
+				{
+					await getResults(position, map);
+				}
 				//App.coreView.setContentView (createEventView, "CreateEvent");
 				App.coreView.returnToPreviousView();
 			};
 
 			searchBar.TextChanged += (sender, e) => {
-				if(mapTapped || searchBar.Text == "" || searchBar.Text == null) { 
-					mapTapped = false; 
+				if(searchingTap || searchBar.Text == "" || searchBar.Text == null) { 
+					searchingTap = false;
 					searchList.HeightRequest=0;
 					searchList.IsVisible = false;
 				} else {
@@ -59,6 +69,13 @@ namespace HowlOut
 					System.Diagnostics.Debug.WriteLine("After1");
 					searchList.HeightRequest=300;
 					searchList.IsVisible = true;
+					mapTapped = false;
+				}
+
+				if (searchBar.Text == "" || searchBar.Text == null)
+				{
+					selectButton.Text = "Current Location";
+					mapTapped = false;
 				}
 			};
 			if (searchBar.Text == "" || searchBar.Text == null) { 
@@ -80,15 +97,16 @@ namespace HowlOut
 			searchBar.IsVisible = false;
 		}
 
-		public async void getResults(Position position, ExtMap map)
+		public async Task getResults(Position position, ExtMap map)
 		{
 			tappedAddress="";
 			var possibleAddresses = await getAddressFromPosition.GetAddressesForPositionAsync (position);
 			foreach (var address in possibleAddresses) { tappedAddress += address; }
 			tappedAddress = Regex.Replace(tappedAddress, @"\r\n?|\n", ",");
-			utilityManager.setPin (map.tapPosition, map, tappedAddress, tappedAddress);
-			setTheNewAddressToTheEvent (map.tapPosition, tappedAddress);
+			utilityManager.setPin (position, map, tappedAddress, tappedAddress);
+			setTheNewAddressToTheEvent (position, tappedAddress);
 			searchBar.Text = tappedAddress;
+
 		}
 
 		public async void updateAutocompleteList()
@@ -115,14 +133,17 @@ namespace HowlOut
 			if(searchList.SelectedItem == null)
 				return;
 			var selectedAddress = searchList.SelectedItem as Address;
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			searchBar.Text = selectedAddress.forslagstekst;
 			searchList.SelectedItem = null;
 			searchList.IsVisible = false;
 			searchList.HeightRequest=0;
+			mapTapped = true;
+			selectButton.Text = "Select This Position";
 			setSelectedAddress (selectedAddress);
 		}
 
-		public async void setSelectedAddress(Address newAddress)
+		public async Task setSelectedAddress(Address newAddress)
 		{
 			newAddress.data.position = await dataManager.GetCoordinates(newAddress.data.href);
 			utilityManager.setMapForEvent(newAddress.data.position, map, mapLayout);

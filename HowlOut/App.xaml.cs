@@ -15,15 +15,16 @@ namespace HowlOut
 	public partial class App : Application
 	{
 		public static CoreView coreView;
+		public static NotificationController notificationController = new NotificationController();
 		public static Profile userProfile;
 		public static Position lastKnownPosition = new Position(55.5, 12.6);
 		DataManager _dataManager;
 
 		public static Color HowlOut = Color.FromHex("#ff4bc6b4");
-		public static Color HowlOutFade = Color.FromHex("#504bc6b4");
-		public static Color HowlOutBackground = Color.FromHex("#fff8f8f8");
+		public static Color HowlOutFade = Color.FromHex("#ffa9e4db");
+		public static Color HowlOutBackground = Color.FromHex("#fff2f2f2");
 		public static Color LineColor = Color.FromHex("#ffb8b8b8");
-		public static Color PlaceHolderColor = Color.FromHex("#ffe6e6e6");
+		public static Color PlaceHolderColor = Color.FromHex("#ffd6d6d6");
 		public static Color NormalTextColor = Color.FromHex("#ff808080");
 
 		public static Action<string> PostSuccessFacebookAction { get; set; }
@@ -40,19 +41,15 @@ namespace HowlOut
 
         public static string StoredToken;
 		public static string StoredUserFacebookId;
+		public static string StoredApiKey;
         static string StoredUserFacebookName;
 
 		public static NotificationToken StoredNotificationToken = new NotificationToken();
 
         public App ()
 		{
-           // coreView = new CoreView(new SearchEvent(), false);
-
-
-
-
             InitializeComponent();
-			_dataManager = new DataManager ();
+
 
 			//Eventsfired from the LoginPage to trigger actions here
             LoginPage.LoginSucceeded += LoginPage_LoginSucceeded;
@@ -61,10 +58,12 @@ namespace HowlOut
             //This loads a user token if existent, or else it will load "null" 
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad> ().LoadText ("userFacebookId");
+			StoredApiKey = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("StoredApiKey");
 
 			System.Diagnostics.Debug.WriteLine ("STORED FACEBOOK ID");
 			System.Diagnostics.Debug.WriteLine (StoredUserFacebookId);
             
+			_dataManager = new DataManager();
 			_dataManager.UtilityManager.updateLastKnownPosition ();
 
             if (!App.IsLoggedIn)
@@ -78,7 +77,6 @@ namespace HowlOut
 				MainPage = coreView;
 				startProgram(coreView);
             }
-
 		}
 
 		public static async Task storeToken(string token, string id, string name)
@@ -90,6 +88,12 @@ namespace HowlOut
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad> ().LoadText ("userFacebookId");
 			StoredUserFacebookName = name;
         }
+
+		public static async Task storeApiKey(string key)
+		{
+			DependencyService.Get<ISaveAndLoad>().SaveText("StoredApiKey", key);
+			StoredApiKey = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("StoredApiKey");
+		}
 			
 		public static bool IsLoggedIn {
             get 
@@ -133,6 +137,7 @@ namespace HowlOut
 				success = await _dataManager.ProfileApiManager.CreateUpdateProfile(profile, true);
 
 			}
+			_dataManager = new DataManager();
 			success = false;
 			while (!success)
 			{
@@ -163,16 +168,10 @@ namespace HowlOut
 
 		public static async void UpdateLiveConversations()
 		{
-			List<Conversation> conversations = new List<Conversation>();
-			//coreView.notifications.UpdateNotifications(true);
-			//await coreView.conversatios.UpdateConversations();
-			//conversations = coreView.conversatios.conversations;
+			if(coreView.viewdConversation != null)coreView.viewdConversation.conversation = await coreView._dataManager.MessageApiManager.GetOneConversation(coreView.viewdConversation.ConversationId);
+			await coreView.conversatios.UpdateConversations(true);
 			foreach (ConversationView cv in coreView.activeConversationViews)
 			{
-				if (cv.type == MessageApiManager.CommentType.Converzation)
-				{
-					cv.conversation = conversations.Find(c => c.ConversationID == cv.ConversationId);
-				}
 				cv.UpdateList(true);
 			}
 		}

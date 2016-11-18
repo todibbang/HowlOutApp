@@ -1,5 +1,5 @@
 ﻿using System;
 namespace HowlOut
 {
-	public interface ForceCloseKeyboard 	{ 		void CloseKeyboard(); 	}
+	public interface ForceCloseKeyboard 	{ 		void CloseKeyboard(); 	} 
 }

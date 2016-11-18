@@ -34,8 +34,18 @@ namespace HowlOut
 		public async Task setLastCarousel()
 		{
 			carousel.Position = 0;
-			await Task.Delay(20);
+			await Task.Delay(2);
 			carousel.Position = lastCarouselView;
+		}
+
+		public async Task setCarousel(int i)
+		{
+			carousel.Position = 0;
+			await Task.Delay(2);
+			if (i <= visualElements.Count - 1)
+			{
+				carousel.Position = i;
+			}
 		}
 	}
 }

@@ -19,9 +19,10 @@ namespace HowlOut
 				b.FontSize = 16;
 				b.TextColor = App.PlaceHolderColor;
 			}
-			selected.FontAttributes = FontAttributes.Bold;
+			selected.FontAttributes = FontAttributes.None;
 			selected.FontSize = 18;
-			selected.TextColor = App.NormalTextColor;
+			selected.TextColor = App.HowlOut;
+
 		}
 
 		public void setOptionsGrid(Grid buttonGrid, List<String> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)

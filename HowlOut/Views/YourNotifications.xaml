@@ -11,9 +11,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<ActivityIndicator Grid.Row="0" Color="{DynamicResource HowlOut}" IsRunning="true" x:Name="loading"/>
-
-
+			<Label Text="No Notifications to load" x:Name="nothingToLoad" IsVisible="false" HorizontalOptions="Center" VerticalOptions="Center"/>
 			<Grid Grid.Row="0" Padding="10,0,0,0">
 				<ListView x:Name="updateList" Grid.Row="0" IsVisible="true"
 				HasUnevenRows="true"
@@ -36,15 +34,15 @@
 										<RowDefinition Height="80"/>
 									</Grid.RowDefinitions>
 
-									<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="0,0,0,2" BackgroundColor="{DynamicResource Shadow}">
-										<StackLayout Padding="50,2,10,5" VerticalOptions="FillAndExpand" BackgroundColor="White">
-											<Label x:Name="Title" TextColor="{DynamicResource HowlOut}" Text="{Binding Header}"/>
+									<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2" BackgroundColor="{DynamicResource Shadow}">
+										<StackLayout Padding="10,2,10,5" VerticalOptions="FillAndExpand" BackgroundColor="White">
+											<Label x:Name="Title" TextColor="{Binding textColor}" Text="{Binding Header}" FontAttributes="{Binding fontAttributes}"/>
 											<Label x:Name="Message" FontSize="12" TextColor="{DynamicResource NormalTextColor}" Text="{Binding Content}"/>
 											<Label x:Name="time" FontSize="8" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="EndAndExpand" Text="{Binding Time}"/>
 
 										</StackLayout>
 									</StackLayout>
-									<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+									<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ContentImageSource}" Aspect="AspectFill"/>
 								</Grid>
 	                  		</ViewCell>
                       	</DataTemplate>
@@ -53,8 +51,8 @@
                     <ListView.GroupHeaderTemplate>
                     	<DataTemplate>
 	                      <ViewCell Height="20">
-		                        <StackLayout Padding="20,0,0,0" BackgroundColor="Transparent">
-					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" BackgroundColor="{DynamicResource HowlOutBackground}"/>
+		                        <StackLayout Padding="0,0,0,0" BackgroundColor="{DynamicResource HowlOutBackground}" >
+					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" TranslationX="20"/>
 					    		</StackLayout>
 		              		</ViewCell>
                       </DataTemplate>

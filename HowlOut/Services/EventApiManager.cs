@@ -23,7 +23,6 @@ namespace HowlOut
 
 		public async Task<List<Event>> SearchEvents()
 		{
-			string profileId = App.userProfile.ProfileId;
 			double userLat = App.lastKnownPosition.Latitude;
 			double userLong = App.lastKnownPosition.Longitude;
 			List<Event> events = new List<Event>();
@@ -43,14 +42,12 @@ namespace HowlOut
 				else { newLon += lon[i]; }
 			}
 
-			var uri = "/search?profileId=" + profileId +
-				"&userLat=" + newLat + "&userLong=" + newLon + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
+			var uri = "/search?userLat=" + newLat + "&userLong=" + newLon + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
 
 			if (lat.Contains(",")) {
 				var newLatSplit = Regex.Split(newLat, "\\,");
 				var newLonSplit = Regex.Split(newLon, "\\,");
-				uri = "/search?profileId=" + profileId +
-					"&userLat=" + newLatSplit[0] + "." + newLatSplit[1] + "&userLong=" +
+				uri = "/search?userLat=" + newLatSplit[0] + "." + newLatSplit[1] + "&userLong=" +
 					newLonSplit[0] + "." + newLonSplit[1] + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
 			}
 			events = await GetEventsServerCall(uri);

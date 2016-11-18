@@ -23,6 +23,9 @@ namespace HowlOut
 		public Image profileImage { get { return ProfileImage; } }
 		public CustomEditor descriptionEdit { get { return descriptionLabelEdit; } }
 
+		public Image organizationImage { get { return organizationOwnerImage; } }
+		public Label subName { get { return subNameLabel; } }
+
 		public GenericDesignView(int dimentions)
 		{
 			_dataManager = new DataManager();
@@ -37,11 +40,12 @@ namespace HowlOut
 			pictureGrid.WidthRequest = dimentions;
 			nameLayout.HeightRequest = dimentions * 0.2;
 			//descriptionLayout.HeightRequest = dimentions * 0.2;
-			buttonLayout.HeightRequest = dimentions * 0.16;
-			editProfileButtons.HeightRequest = dimentions * 0.16;
+			buttonLayout.HeightRequest = 10 + dimentions * 0.1;
+			editProfileButtons.HeightRequest = 10 + dimentions * 0.1;
 			//buttonLayoutEdit.HeightRequest = dimentions * 0.16;
 
 			nameLabel.FontSize = 4 + (dimentions * 0.06);
+			subNameLabel.FontSize = 3 + (dimentions * 0.05);
 			descriptionLabel.FontSize = dimentions * 0.055;
 			//nameLabelEdit.FontSize = dimentions * 0.115;
 			descriptionLabelEdit.FontSize = dimentions * 0.055;
@@ -62,7 +66,7 @@ namespace HowlOut
 		{
 			b.BorderRadius = (int)(0.08 * dimentions);
 			b.BorderWidth = (0.003 * dimentions);
-			b.WidthRequest = (dimentions * 0.6);
+			b.WidthRequest = (dimentions * 0.5);
 			b.FontSize = 3 + (int)(0.05 * dimentions);
 			b.Clicked += async (sender, e) =>
 			{
@@ -71,7 +75,7 @@ namespace HowlOut
 			};
 		}
 
-		public void SetInfo(string source, string name, string description, Design design)
+		public void SetInfo(string source, string name, string description, Design design, ModelType modelType)
 		{
 			ProfileImage.Source = source;
 			nameLabel.Text = name;
@@ -92,7 +96,25 @@ namespace HowlOut
 				nameLayout.IsVisible = true;
 				buttonLayout.IsVisible = true;
 				descriptionLabel.IsVisible = true;
+				descriptionLayout.IsVisible = true;
+				if (!string.IsNullOrWhiteSpace(description))
+				{
+					descriptionLineOne.IsVisible = true;
+					descriptionLineTwo.IsVisible = true;
+				}
 			}
+
+			if (modelType == ModelType.Group)
+			{
+				modelTypeIcon.IsVisible = true;
+				modelTypeIcon.Source = "ic_group.png";
+			}
+			else if (modelType == ModelType.Organization)
+			{
+				modelTypeIcon.IsVisible = true;
+				modelTypeIcon.Source = "ic_organization.png";
+			}
+
 		}
 
 		public void ShowHideEditLayout(bool show)

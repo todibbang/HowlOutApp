@@ -16,16 +16,10 @@ namespace HowlOut
 	public class UtilityManager
 	{
 		HttpClient httpClient;
-		ProfileApiManager profileManager;
-		EventApiManager eventApiManager;
-		GroupApiManager groupManager;
 
 		public UtilityManager ()
 		{
 			httpClient = new HttpClient(new NativeMessageHandler());
-			profileManager = new ProfileApiManager (httpClient);
-			eventApiManager= new EventApiManager (httpClient);
-			groupManager = new GroupApiManager (httpClient);
 		}
 
 		public async void updateLastKnownPosition()

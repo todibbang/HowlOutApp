@@ -22,18 +22,18 @@ namespace HowlOut
 		{
 			var uri = "/"+id;
 			List<Profile> profiles = await GetProfilesServerCall(uri);
-			if (profiles == null) return null;
+			if (profiles == null || profiles.Count == 0) return null;
 			return profiles[0];
 		}
 
 		public async Task<Profile> GetLoggedInProfile()
 		{
-			var uri = "/me?profileId=" + App.StoredUserFacebookId;
-			List<Profile> profiles = await GetProfilesServerCall(uri);
+			List<Profile> profiles = await GetProfilesServerCall("/me");
 			if (profiles == null || profiles.Count == 0) return null;
+			App.userProfile = profiles[0];
 			return profiles[0];
 		}
-
+		
 		public async Task<List<Profile>> GetProfilesFromName(string name)
 		{
 			var uri = "/profilesFromName/" + name;
@@ -46,12 +46,14 @@ namespace HowlOut
 			var uri = "?create="+create;
 			Profile newPro = new Profile() { Name = pro.Name, Description = pro.Description, ProfileId = pro.ProfileId, ImageSource = pro.ImageSource };
 			var content = JsonConvert.SerializeObject(newPro);
+
 			var recievedContent = "";
 			try
 			{
 				var response = await httpClient.PostAsync(new Uri(App.serverUri + "profile" + uri), new StringContent(content, Encoding.UTF8, "application/json"));
 				if (response.IsSuccessStatusCode)
 				{
+					if(create) await App.storeApiKey(JsonConvert.DeserializeObject<String>(await response.Content.ReadAsStringAsync()));
 					return true;
 				}
 				else
@@ -70,7 +72,7 @@ namespace HowlOut
 		{
 			try
 			{
-				var uri = "register/registerForNotification?profileId=" + App.StoredUserFacebookId + "&devicePlatform=apns";
+				var uri = "register/registerForNotification?devicePlatform=apns";
 				token.DeviceToken = token.DeviceToken.Substring(1, token.DeviceToken.Length - 2);
 				token.DeviceToken = token.DeviceToken.Replace(" ", String.Empty);
 				//Profile newPro = new Profile() { Name = pro.Name, Description = pro.Description, ProfileId = pro.ProfileId, ImageSource = pro.ImageSource };
@@ -101,13 +103,16 @@ namespace HowlOut
 		public async Task<bool> RequestDeclineAcceptUnfriend(string profileFriendId, bool acceptOrDecline)
 		{
 			var uri = "/requestDeclineAcceptUnfriend?profileSignedInId=" + App.StoredUserFacebookId + "&profileFriendId=" + profileFriendId + "&acceptOrRequest=" + acceptOrDecline;
-			return await PutProfileServerCall(uri);
+			bool response = await PutProfileServerCall(uri);
+			if (response) App.coreView.updateHomeView();
+			return response;
 		}
 
 		public async Task<List<Profile>> GetProfilesServerCall(string uri)
 		{
 			List<Profile> profiles = new List<Profile>();
-			var recievedContent = "";
+
+			string recievedContent = "";
 			try {
 				var response = await httpClient.GetAsync(new Uri(App.serverUri + "profile" + uri));
 				if (response.IsSuccessStatusCode)

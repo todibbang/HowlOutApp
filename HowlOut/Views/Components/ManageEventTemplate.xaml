@@ -29,8 +29,8 @@
 			<Image Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Source="{Binding Banner}"/>
 			<Image Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Source="white_opac.png" Aspect="Fill"/>
 			<Image Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Source="white_opac.png" Aspect="Fill"/> -->
-			<Image Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"/>
-			<StackLayout Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" BackgroundColor="#daffffff"/>
+			<!-- <Image Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"/>  -->
+			<StackLayout Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" BackgroundColor="White"/> 
 			<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" Source="{Binding ProfileImageSource}" Aspect="AspectFill"/>
 			<Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" BackgroundColor="#50000000" BorderColor="Transparent" BorderRadius="40"/>
 			<StackLayout Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">

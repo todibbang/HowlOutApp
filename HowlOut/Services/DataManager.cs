@@ -11,11 +11,14 @@ using Plugin.Geolocator;
 using Xamarin.Forms;
 using System.Text.RegularExpressions;
 
+using System.Globalization;
+
 namespace HowlOut
 {
 	public class DataManager
 	{
 		private HttpClient httpClient;
+		private HttpClient httpClientNoHeader;
 		public EventApiManager EventApiManager { get; set; }
 		public ProfileApiManager ProfileApiManager { get; set; }
 		public GroupApiManager GroupApiManager { get; set; }
@@ -26,6 +29,8 @@ namespace HowlOut
 		public DataManager ()
 		{
 			httpClient = new HttpClient (new NativeMessageHandler ());
+			httpClientNoHeader = new HttpClient(new NativeMessageHandler());
+			httpClient.DefaultRequestHeaders.Add("apiKey", App.StoredApiKey);
 			EventApiManager = new EventApiManager (httpClient);
 			ProfileApiManager = new ProfileApiManager (httpClient);
 			GroupApiManager = new GroupApiManager (httpClient);
@@ -53,7 +58,7 @@ namespace HowlOut
 			ObservableCollection<Address> addresses = new ObservableCollection<Address> ();
 
 			try { 
-				var response = await httpClient.GetAsync (new Uri (path));
+				var response = await httpClientNoHeader.GetAsync (new Uri (path));
 				if (response.IsSuccessStatusCode) {
 					var content = await response.Content.ReadAsStringAsync ();
 					addresses = JsonConvert.DeserializeObject<ObservableCollection<Address>> (content);
@@ -73,7 +78,7 @@ namespace HowlOut
 
 		public async Task<Position> GetCoordinates (string input)
 		{
-			input = Regex.Replace (input, "http", "https");
+			//input = Regex.Replace (input, "http", "https");
 
 			string path = input;
 
@@ -82,7 +87,7 @@ namespace HowlOut
 			Position position = new Position ();
 
 			try { 
-				var response = await httpClient.GetAsync (new Uri (path));
+				var response = await httpClientNoHeader.GetAsync (new Uri (path));
 
 				System.Diagnostics.Debug.WriteLine ("Success getting new coords");
 
@@ -93,9 +98,16 @@ namespace HowlOut
 					//adgangspunkt = JsonConvert.DeserializeObject<string>(content);
 
 					System.Diagnostics.Debug.WriteLine (adgangspunkt);
+					//Regex.Replace(adgangspunkt, ".", ",");
 					var substrings = Regex.Split (adgangspunkt, "koordinater");
 
-					position = new Position (Convert.ToDouble (substrings [1].Substring (35, 16)), Convert.ToDouble (substrings [1].Substring (11, 16)));
+					position = new Position (double.Parse(substrings [1].Substring (35, 16), CultureInfo.InvariantCulture), double.Parse(substrings [1].Substring (11, 16), CultureInfo.InvariantCulture));
+					//position.Latitude = double.Parse(substrings[1].Substring(35, 16));
+					//position
+
+
+					//System.Diagnostics.Debug.WriteLine(substrings[1].Substring(35, 16) + ", " + substrings[1].Substring(11, 16));	
+					//System.Diagnostics.Debug.WriteLine(double.Parse(substrings[1].Substring(35, 16), CultureInfo.InvariantCulture) +", "+ position.Longitude);
 					//position.Latitude = Convert.ToDouble(substrings [1].Substring (11, 16));
 					//position.Longitude = Convert.ToDouble(substrings [1].Substring (35, 16));
 				}
@@ -115,6 +127,8 @@ namespace HowlOut
 			if (success) {
 				App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 				await loadUpdatedProfile(profile);
+				App.coreView.setContentViewReplaceCurrent(new InspectController(profile), "", null, 1);
+				App.coreView.updateHomeView();
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
 			}
@@ -171,6 +185,7 @@ namespace HowlOut
 				}
 				else {
 					App.coreView.setContentViewReplaceCurrent(new InspectController(eve), "", null, 1);
+					App.coreView.updateHomeView();
 					return true;
 				}
 			}
@@ -179,9 +194,9 @@ namespace HowlOut
 
 
 
-		public async Task<bool> sendProfileInviteToGroup(Group group, List<Profile> profiles, GroupApiManager.GroupHandlingType type)
+		public async Task<bool> sendProfileInviteToGroup(Group group, List<Profile> profiles)
 		{
-			bool success = await GroupApiManager.InviteAcceptDeclineLeaveGroup(group.GroupId, profiles, type);
+			bool success = await GroupApiManager.InviteDeclineToGroup(group.GroupId, true, profiles);
 			if (!success)
 			{
 				await App.coreView.displayAlertMessage("Error", "An error happened", "Ok");
@@ -305,6 +320,94 @@ namespace HowlOut
 				}
 			}
 			return you;
+		}
+
+		public bool checkIfUnseen(string modelId, NotificationModelType modelType)
+		{
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				if (n.ModelId == modelId && !n.Seen && n.ModelType == modelType)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public bool chechIfConversationUnseen(ConversationModelType cType, string cId)
+		{
+			NotificationModelType modelType = NotificationModelType.ProfileConversation;
+			if(cType == ConversationModelType.Event ) modelType = NotificationModelType.EventConversation;
+			if (cType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
+			if (cType == ConversationModelType.Organization) modelType = NotificationModelType.OrganizationConversation;
+
+
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				if (modelType == NotificationModelType.ProfileConversation)
+				{
+					if (n.ModelId == cId && !n.Seen && n.ModelType == modelType)
+					{
+						return true;
+					}
+				}
+				else {
+					if (n.SecondModelId == cId && !n.Seen && n.ModelType == modelType)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public async Task setConversationSeen(string modelId, ConversationModelType mType)
+		{
+			NotificationModelType modelType = NotificationModelType.ProfileConversation;
+			if (mType == ConversationModelType.Event) modelType = NotificationModelType.EventConversation;
+			if (mType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
+			if (mType == ConversationModelType.Organization) modelType = NotificationModelType.OrganizationConversation;
+			List<Notification> notiToRemove = new List<Notification>();;
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				System.Diagnostics.Debug.WriteLine(n.ModelId + ", " + n.ModelType);
+
+				if (((n.SecondModelId == modelId && modelType != NotificationModelType.ProfileConversation) || 
+				     (n.ModelId == modelId && modelType == NotificationModelType.ProfileConversation)) 
+				    && !n.Seen && n.ModelType == modelType)
+				{
+					n.Seen = true;
+					notiToRemove.Add(n);
+					await MessageApiManager.SetNotificationSeen(n.InAppNotificationId);
+				}
+			}
+			foreach (Notification n in notiToRemove) App.coreView.notifications.unseenNotifications.Remove(n);
+			//await App.coreView.notifications.UpdateNotifications(false);
+			await App.coreView.conversatios.UpdateConversations(false);
+		}
+
+		public async Task setUpdateSeen(string modelId, NotificationModelType modelType)
+		{
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				System.Diagnostics.Debug.WriteLine(n.ModelId + ", " + n.ModelType);
+
+				if (n.ModelId == modelId && !n.Seen && n.ModelType == modelType)
+				{
+					n.Seen = true;
+					await MessageApiManager.SetNotificationSeen(n.InAppNotificationId);
+				}
+			}
+			await App.coreView.notifications.UpdateNotifications(false);
+			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false); }
+			else if (modelType == NotificationModelType.ProfileConversation) { await App.coreView.conversatios.UpdateConversations(false); }
+		}
+
+		public async Task setNotificationSeen(string id)
+		{
+			App.coreView.notifications.unseenNotifications.Find(n => n.InAppNotificationId == id).Seen = true;
+			await App.coreView.notifications.UpdateNotifications(false);   
+			await MessageApiManager.SetNotificationSeen(id);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Forms;
 
 namespace HowlOut
 {
@@ -9,14 +10,48 @@ namespace HowlOut
 		public string ConversationID { get; set; }
 		public List <Profile> Profiles { get; set; }
 		public List <Comment> Messages { get; set; }
+		public string Title { get; set; }
+		public Group Group { get; set; }
+		public Event Event { get; set; }
+		public Organization Organization { get; set; }
+		public Comment LastMessage { get; set; }
 
-		public DateTime LastUpdated {  get {
-				if (Messages != null && Messages.Count > 0) { return Messages.OrderByDescending(c => c.DateAndTime).ToList()[0].DateAndTime; }
-				return new DateTime();
-			} set { this.LastUpdated = value; }
+		public ConversationModelType ModelType { get; set; }
+		public string ModelId { get; set; }
+
+		public FontAttributes fontAttributes
+		{
+			get
+			{
+				if (App.coreView._dataManager.chechIfConversationUnseen(ModelType, ConversationID ))
+				{
+					return FontAttributes.Bold;
+				} 
+				return FontAttributes.None;
+			}
+			set { }
+		}
+		public Color textColor
+		{
+			get
+			{
+				if (App.coreView._dataManager.chechIfConversationUnseen(ModelType, ConversationID))
+				{
+					return App.HowlOut;
+				}
+				return App.NormalTextColor;
+			}
+			set { }
 		}
 
+
+
 		public string Header { get {
+				if (!string.IsNullOrWhiteSpace(Title))
+				{
+					return Title;
+				}
+
 				string text = "";
 				char[] splitString = {' ', ','};
 				if (Profiles != null) {
@@ -39,8 +74,14 @@ namespace HowlOut
 			} set { this.Header = value; }
 		}
 
+		public DateTime LastUpdated { get {
+				if (LastMessage != null) { return LastMessage.DateAndTime; }
+				return new DateTime();
+			} set { this.LastUpdated = value; }
+		}
+
 		public string Content { get {
-				if (Messages != null && Messages.Count - 1 >= 0 && Messages[Messages.Count - 1] != null) { return Messages[Messages.Count - 1].Content; } 
+				if (LastMessage != null) { return LastMessage.Content; } 
 				return "";
 			} set { this.Content = value; }
 		}
@@ -50,17 +91,42 @@ namespace HowlOut
 			set { this.Time = value; }
 		}
 
-		public string ImageSource{
+		public string ContentImageSource{
 			get
 			{
 				if (Messages != null && Messages.Count > 0) { 
 					string id = Messages.OrderByDescending(c => c.DateAndTime).ToList()[0].SenderId;
-					return Profiles.Find(p => p.ProfileId == id).ImageSource; }
+					//string id = Messages.OrderByDescending(c => c.DateAndTime).ToList().Find(c => c.SenderId != App.StoredUserFacebookId).SenderId;
+					return Profiles.Find(p => p.ProfileId == id).ImageSource; 
+				}
 				else if (Profiles != null && Profiles.Count > 1) { return Profiles.Find(p => p.ProfileId != App.StoredUserFacebookId).ImageSource;}
 				return "default_icon.png";
 			}
-			set { this.ImageSource = value; }
+			set { this.ContentImageSource = value; }
 		}
+
+		public string SpecificInfo
+		{
+			get
+			{
+				if (ModelType == ConversationModelType.Event) return "Event conversation";
+				if (ModelType == ConversationModelType.Group) return "Group conversation";
+				if (ModelType == ConversationModelType.Organization) return "Organization conversation";
+				return "";
+			}
+			set { this.SpecificInfo = value; }
+		}
+
+		public bool ShowSpecificInfo
+		{
+			get
+			{
+				if (ModelType != ConversationModelType.Profile) return true;
+				return false;
+			}
+			set { this.ShowSpecificInfo = value; }
+		}
+
 
 		public Conversation()
 		{

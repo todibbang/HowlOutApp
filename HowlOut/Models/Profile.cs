@@ -32,7 +32,7 @@ namespace HowlOut
 		public List <Comment> Comments {get; set;}					
         public List <Notification> InAppNotifications { get; set; }
 		public SearchSettings SearchPreference { get; set; }
-
+		public List<Banner> Banners { get; set; }
 
 
 		public Profile ()

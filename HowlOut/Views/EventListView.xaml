@@ -5,7 +5,7 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" >
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
-			<Label Text="Error Loading Events" x:Name="ErrorLoading" IsVisible="false"/>
+			<Label Text="No Events to load" x:Name="nothingToLoad" IsVisible="false" HorizontalOptions="Center" VerticalOptions="Center"/>
 			<ListView x:Name="searchEventList"
 				HasUnevenRows="true"
 				InputTransparent="false"
