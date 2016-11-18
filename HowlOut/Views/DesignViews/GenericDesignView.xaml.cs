@@ -54,7 +54,6 @@ namespace HowlOut
 			MainButton.BorderWidth = (int)(0.04 * dimentions);
 			MainButton.FontSize = (int)(0.2 * dimentions);
 
-
 			setButtonDimentions(addButton, dimentions);
 			setButtonDimentions(editButton, dimentions);
 			setButtonDimentions(removeButton, dimentions);
@@ -108,11 +107,15 @@ namespace HowlOut
 			{
 				modelTypeIcon.IsVisible = true;
 				modelTypeIcon.Source = "ic_group.png";
+				modelTypeIcon2.IsVisible = true;
+				modelTypeIcon2.Source = "ic_group.png";
 			}
 			else if (modelType == ModelType.Organization)
 			{
 				modelTypeIcon.IsVisible = true;
 				modelTypeIcon.Source = "ic_organization.png";
+				modelTypeIcon2.IsVisible = true;
+				modelTypeIcon2.Source = "ic_organization.png";
 			}
 
 		}

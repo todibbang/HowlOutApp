@@ -53,6 +53,12 @@ namespace HowlOut
 		public string SpecificGroupText { get; set; }
 		public string SpecificGroupImageSource { get; set; }
 
+		public bool isOrganizationOwner { get
+			{
+				if (eve.OrganizationOwner != null) return true;
+				return false;
+			}set { } }
+
 		public ContentView EventHolderView { get; set; }
 
 		public EventForLists (Event theGivenEvent)

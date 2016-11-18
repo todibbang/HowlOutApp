@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HowlOut
-{
+{ 
 	public class OtherFunctions
 	{
-		public OtherFunctions()
-		{
-		}
+		
 
 		public void selectButton(List<Button> buttons, Button selected)
 		{
@@ -254,6 +252,22 @@ namespace HowlOut
 			{
 				App.coreView.scrollViews[App.coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
 			}
+		}
+
+		public void ViewImages(List<string> images)
+		{
+			List<VisualElement> ve = new List<VisualElement>();
+			List<string> st = new List<string>();
+			foreach (string s in images)
+			{
+				ve.Add(new ImageView(s));
+				st.Add("Image");
+			}
+
+
+			CarouselList cl = new CarouselList( ve, st );
+
+			App.coreView.setContentViewWithQueue(cl, "", null);
 		}
 	}
 }

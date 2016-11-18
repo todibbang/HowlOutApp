@@ -122,6 +122,14 @@ namespace HowlOut
 			{
 				App.coreView.setContentViewWithQueue(new InspectController(eve.GroupSpecific), "Inspect", null);
 			};
+
+			TapGestureRecognizer banImg = new TapGestureRecognizer();
+			banImg.Tapped += (sender, e) =>
+			{
+				OtherFunctions of = new OtherFunctions();
+				of.ViewImages(new List<string>() { eve.ImageSource });
+			};
+			BannerImage.GestureRecognizers.Add(banImg);
 		}
 
 		public async void setInfo (Event eve)

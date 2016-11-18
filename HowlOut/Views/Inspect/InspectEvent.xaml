@@ -25,7 +25,7 @@
 				</Grid.RowDefinitions>
 
 				<!-- Her tegnes event billede og gradient som gør den hvide skrift tydligere -->
-				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill"></Image>
+				<Image Grid.Row="1" Grid.RowSpan="2" Source="{Binding Banner}" Aspect="AspectFill" x:Name="BannerImage"></Image>
 				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" VerticalOptions="StartAndExpand"></Image>
 
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
