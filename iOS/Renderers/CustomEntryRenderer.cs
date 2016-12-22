@@ -5,9 +5,9 @@
 		{
 			base.OnElementChanged(e);  			var toolbar = new UIToolbar(new CGRect(0.0f, 0.0f, Control.Frame.Size.Width, 44.0f));  			toolbar.Items = new[] 			{ 				new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace), 				new UIBarButtonItem("Done", UIBarButtonItemStyle.Plain, delegate {  Control.ResignFirstResponder(); }) 			}; 			this.Control.InputAccessoryView = toolbar;
 
-			if (Control != null)
+			if (this.Control != null)
 			{
-				Control.Layer.BorderWidth = 1; 				Control.Layer.BorderWidth = 3; 				Control.Layer.BorderColor = App.HowlOutBackground.ToCGColor(); 				Control.TextAlignment = UITextAlignment.Left;
+				this.Control.Layer.BorderWidth = 1; 				this.Control.Layer.BorderColor = App.HowlOutBackground.ToCGColor(); 				this.Control.TextAlignment = UITextAlignment.Left;
 			}
 		}
 	} }

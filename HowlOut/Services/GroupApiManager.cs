@@ -37,6 +37,7 @@ namespace HowlOut
 			var uri = "";
 			var content = JsonConvert.SerializeObject(grp);
 			List<Group> groups = await PostGroupServerCall(uri, content);
+			if (groups == null || groups.Count == 0) return null;
 			return groups[0];
 		}
 
@@ -71,6 +72,24 @@ namespace HowlOut
 		public async Task<bool> InviteDeclineToGroup(string id, bool invite, List<Profile> profiles)
 		{
 			var uri = "/inviteDeclineToGroup?invite=" + invite + "&groupId=" + id;
+			foreach (Profile p in profiles)
+			{
+				uri += "&profileIds=" + p.ProfileId;
+			}
+			App.coreView.updateHomeView();
+			return await PutGroupServerCall(uri);
+		}
+
+		public async Task<bool> RequestAcceptDeclineLeaveGroupAsOwner(string id, OwnerHandlingType handlingType)
+		{
+			var uri = "/AcceptDeclineLeaveGroupAsOwner?groupId=" + id + "&handlingType=" + handlingType;
+			App.coreView.updateHomeView();
+			return await PutGroupServerCall(uri);
+		}
+
+		public async Task<bool> InviteToGroupAsOwner(string id, List<Profile> profiles)
+		{
+			var uri = "/inviteToGroupAsOwner?groupId=" + id;
 			foreach (Profile p in profiles)
 			{
 				uri += "&profileIds=" + p.ProfileId;

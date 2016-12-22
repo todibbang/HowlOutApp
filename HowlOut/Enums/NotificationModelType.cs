@@ -5,11 +5,9 @@ namespace HowlOut
 	{
 		Event,
 		Group,
-		Organization,
 		Profile,
 		ProfileConversation,
 		EventConversation,
 		GroupConversation,
-		OrganizationConversation
 	}
 }

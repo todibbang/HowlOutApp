@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Net.Http;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -178,3 +179,4 @@ namespace HowlOut
 	}
 }
 
+*/

@@ -60,7 +60,9 @@ namespace HowlOut
 			}
 			catch (Exception ex)
 			{
+				await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
+				await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 			}
 			return null;
 		}
@@ -122,6 +124,25 @@ namespace HowlOut
 			}
 			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
 			return null;
+		}
+
+		public async Task<bool> EditConversationTitle(string id, string title)
+		{
+			try
+			{
+				var response = await httpClient.PutAsync(
+					new Uri(App.serverUri + "message/conversation/setConversationTitle?conversationId="+id+"&conversationTitle="+title), new StringContent(""));
+				if (response.IsSuccessStatusCode)
+				{
+					return true;
+				}
+				else
+				{
+					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				}
+			}
+			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
+			return false;
 		}
 
 		public async Task<Conversation> WriteToConversation(string id, Comment comment)

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace HowlOut
 {
-	public partial class YourConversations : ContentView
+	public partial class YourConversations : ContentView, ViewModelInterface
 	{
 		private DataManager _dataManager;
 		public List<Conversation> conList = new List<Conversation>();
@@ -15,55 +15,74 @@ namespace HowlOut
 		public string modelId;
 		public ConversationModelType modelType;
 
+		int conversationListType = 0;
+
 		public ContentView content
 		{
 			get { return this; }
 			set { this.content = value; }
 		}
 
-		public YourConversations(ConversationModelType type, string id)
+		public YourConversations(ConversationModelType type, string id, int clt)
 		{
 			InitializeComponent();
 			_dataManager = new DataManager();
 			modelType = type;
 			modelId = id;
+			conversationListType = clt;
 			UpdateConversations(true);
 
 			updateList.ItemSelected += OnListItemSelected;
 			updateList.Refreshing += async (sender, e) => { await UpdateConversations(true); };
-			CreateButton(type, id);
+			if (conversationListType != 2)
+			{
+				CreateButton(type, id);
+			}
+			else {
+				createNewConversation.IsVisible = false;
+			}
 
 			createNewConversation.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = modelId, ModelType = modelType }, true), "Create Group", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = modelId, ModelType = modelType }, true));
 			};
-
-
 		}
+
+		public void viewInFocus(UpperBar bar)
+		{
+			if (modelType == ConversationModelType.Event)
+			{
+				bar.setNavigationLabel("Event Conversations", null);
+			}
+			else if (modelType == ConversationModelType.Group)
+			{
+				bar.setNavigationLabel("Group Conversations", null);
+			}
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 
 		async Task CreateButton(ConversationModelType type, string id)
 		{
 			if (type != ConversationModelType.Profile)
 			{
+				listHeaderHeight.HeightRequest = 50;
 				conversationInfo.IsVisible = true;
 				if (type == ConversationModelType.Event)
 				{
 					Event eve = await _dataManager.EventApiManager.GetEventById(id);
 					conversationInfoImage.Source = eve.ImageSource;
-					conversationInfoModelLabel.Text = "Event: " + eve.Title;
+					conversationInfoModelLabel.Text = eve.Title;
 				}
 				else if (type == ConversationModelType.Group)
 				{
 					Group grp = await _dataManager.GroupApiManager.GetGroup(id);
 					conversationInfoImage.Source = grp.ImageSource;
-					conversationInfoModelLabel.Text = "Group: " + grp.Name;
+					conversationInfoModelLabel.Text = grp.Name;
 				}
-				else if (type == ConversationModelType.Organization)
-				{
-					Organization org = await _dataManager.OrganizationApiManager.GetOrganization(id);
-					conversationInfoImage.Source = org.ImageSource;
-					conversationInfoModelLabel.Text = "Organization: " + org.Name;
-				}
+
 			}
 		}
 
@@ -71,9 +90,25 @@ namespace HowlOut
 		{
 			nothingToLoad.IsVisible = false;
 			if (update) { conList = await _dataManager.MessageApiManager.GetConversations(modelId, modelType); }
-			if (conList == null) return;
-			if (conList.Count == 0) nothingToLoad.IsVisible = true;
+			if (conList == null)
+			{
+				nothingToLoad.IsVisible = true;
+				updateList.IsRefreshing = false;
+				return;
+			}
+
 			if (conList.Count > 1) conList = conList.OrderByDescending(c => c.LastUpdated).ToList();
+
+			if (conversationListType == 1)
+			{
+				conList.RemoveAll(c => c.ModelType != ConversationModelType.Profile);
+			}
+			else if (conversationListType == 2)
+			{
+				conList.RemoveAll(c => c.ModelType == ConversationModelType.Profile);
+			}
+
+			if (conList.Count == 0) nothingToLoad.IsVisible = true;
 
 
 			int n = 0;
@@ -115,7 +150,7 @@ namespace HowlOut
 			var selectedConversation = updateList.SelectedItem as Conversation;
 			if (selectedConversation == null) return;
 			_dataManager.setConversationSeen(selectedConversation.ConversationID, selectedConversation.ModelType);
-			App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation), "Conversation", null);
+			App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation));
 			updateList.SelectedItem = null;
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 		}

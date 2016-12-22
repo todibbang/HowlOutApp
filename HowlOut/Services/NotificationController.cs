@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace HowlOut
 {
 	public class NotificationController
@@ -12,9 +14,10 @@ namespace HowlOut
 
 		}
 
-		public void HandlePushNotification(string modelType, string modelId, bool fromBackground)
+		public void HandlePushNotification(string modelType, string modelId, bool fromBackground, string alert)
 		{
 			System.Diagnostics.Debug.WriteLine(modelType + ", " + modelId);
+
 
 			App.coreView.notifications.UpdateNotifications(true);
 
@@ -33,6 +36,7 @@ namespace HowlOut
 			   modelType == "FriendCreatedEvent" ||
 			   modelType == "GroupInvitedToEvent")
 			{
+				App.coreView.ShowNotification(() => {App.coreView.GoToSelectedEvent(modelId); }, alert);
 				if (fromBackground)
 				{
 					App.coreView.GoToSelectedEvent(modelId);
@@ -46,6 +50,7 @@ namespace HowlOut
 			   modelType == "WrittenToEventConversation"// ||
 			   )
 			{
+				App.coreView.ShowNotification(() => { App.coreView.GoToSelectedConversation(modelId); }, alert);
 				if (fromBackground)
 				{
 					App.coreView.GoToSelectedConversation(modelId);
@@ -60,26 +65,20 @@ namespace HowlOut
 			   modelType == "InvitedToGroup" ||
 			   modelType == "RequestedToJoinGroup")
 			{
+				App.coreView.ShowNotification(() => { App.coreView.GoToSelectedGroup(modelId); }, alert);
 				if (fromBackground)
 				{
 					App.coreView.GoToSelectedGroup(modelId);
 				}
 			}
 
-			//GO TO ORGANIZATION
-			if (modelType == "WrittenToOrganizationComments" ||
-			   modelType == "InvitedToOrganization")
-			{
-				if (fromBackground)
-				{
-					App.coreView.GoToSelectedOrganization(modelId);
-				}
-			}
+
 
 			//GO TO PROFILE
 			if (modelType == "RequestedToFriend" ||
 			   modelType == "AcceptedToFriend" )
 			{
+				App.coreView.ShowNotification(() => { App.coreView.GoToSelectedProfile(modelId); }, alert);
 				if (fromBackground)
 				{
 					App.coreView.GoToSelectedProfile(modelId);

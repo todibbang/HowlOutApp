@@ -10,10 +10,10 @@ namespace HowlOut
 		DataManager _dataManager;
 		private StandardButton standardButton = new StandardButton();
 
-		public Button createNoti { get { return noti_0; } }
-		public Button conversationNoti { get { return noti_1; } }
-		public Button eventNoti { get { return noti_2; } }
-		public Button howlsNoti { get { return noti_3; } }
+		//public Button createNoti { get { return noti_0; } }
+		public Button conversationNoti { get { return noti_3; } }
+		//public Button eventNoti { get { return noti_2; } }
+		//public Button howlsNoti { get { return noti_3; } }
 		public Button homeNoti { get { return noti_4; } }
 
 		public BottomBar ()

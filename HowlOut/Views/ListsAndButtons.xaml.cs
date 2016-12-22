@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 using ImageCircle.Forms.Plugin.Abstractions;
 using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
-	public partial class ListsAndButtons : ContentView
+	public partial class ListsAndButtons : ContentView, ViewModelInterface
 	{
 		DataManager _dataManager = new DataManager();
 
@@ -21,27 +22,38 @@ namespace HowlOut
 			InitializeComponent ();
 		}
 
-		public ListsAndButtons(List<Profile> profiles, List<Group> groups, List<Organization> orgs,
-							   Event eventInvitingTo, Group groupInvitingTo, Organization organizationInvitingTo)
+		public ListsAndButtons(List<Profile> profiles, List<Group> groups,
+							   Event eventInvitingTo, Group groupInvitingTo)
 		{
 			InitializeComponent();
-			createList(profiles, groups, orgs, eventInvitingTo, groupInvitingTo, organizationInvitingTo, true, true);
+			createList(profiles, groups, eventInvitingTo, groupInvitingTo, true, true, false);
 		}
 
-		public ListsAndButtons(List<Profile> profiles, List<Group> groups, List<Organization> orgs, bool preview, bool buttons)
+		public ListsAndButtons(List<Profile> profiles, List<Group> groups, bool preview, bool buttons)
 		{
 			InitializeComponent();
-			createList(profiles, groups, orgs, null, null, null, preview, buttons);
+			createList(profiles, groups, null, null, preview, buttons, false);
 		}
 
+		public void viewInFocus(UpperBar bar)
+		{
 
-		public void createList(List<Profile> profiles, List<Group> groups, List<Organization> orgs, 
-		                       Event eventInvitingTo, Group groupInvitingTo, Organization organizationInvitingTo, bool preview, bool buttons)
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
+
+		public async Task<Group> createList(List<Profile> profiles, List<Group> groups,
+		                       Event eventInvitingTo, Group groupInvitingTo, bool preview, bool buttons, bool returnClick)
 		{
 			thisGrid.Children.Clear();
 			thisGrid.RowDefinitions.Clear();
 			thisGrid.ColumnDefinitions.Clear();
 			Grid grid = thisGrid;
+
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			Group clickedGroup = null;
 
 			GenericDesignView.Design design = GenericDesignView.Design.Name;
 
@@ -57,32 +69,18 @@ namespace HowlOut
 				newRowValue = 4;
 				height = 75;
 			}
-			float rowHeight = height * 1.8f;
+			float rowHeight = height * 1.3f;
 			int column = 0;
 			int row = 0;
 			int count = 0;
 
-
-
 			if (!preview && !buttons)
 			{
-				findMoreFriends.IsVisible = true;
 				findFriendsBtn.Clicked += (sender, e) =>
 				{
-					App.coreView.setContentViewWithQueue(new FindNewFriendsView(0), "", null);
+					App.coreView.setContentViewWithQueue(new FindNewFriendsView(0));
 				};
 			}
-
-
-			/*
-			if (!preview && buttons)
-			{
-				design = GenericDesignView.Design.NameAndButtons;
-				newRowValue = 4;
-				height = 80;
-				rowHeight = height * 2f;
-			}
-			*/
 
 			grid.Children.Clear();
 
@@ -93,10 +91,6 @@ namespace HowlOut
 			else if (groups != null)
 			{
 				count = groups.Count;
-			}
-			else if (orgs != null)
-			{
-				count = orgs.Count;
 			}
 
 			grid.RowDefinitions.Add (new RowDefinition{ Height = rowHeight });
@@ -121,43 +115,54 @@ namespace HowlOut
 					{
 						cell.Children.Add(new ProfileDesignView(profiles[i], groupInvitingTo, height), 0, 0);
 					}
-					else if (organizationInvitingTo != null)
-					{
-						cell.Children.Add(new ProfileDesignView(profiles[i], organizationInvitingTo, height), 0, 0);
-					}
 					else {
-						cell.Children.Add(new ProfileDesignView(profiles[i], height, true, design ), 0, 0);
+						cell.Children.Add(new ProfileDesignView(profiles[i], height, true, design), 0, 0);
 					}
 				}
 				else if (groups != null)
 				{
 					cell.Children.Add(new GroupDesignView(groups[i], height, design), 0, 0);
 				}
-				else if (orgs != null)
-				{
-					cell.Children.Add(new OrganizationDesignView(orgs[i], height, design), 0, 0);
-				}
 
 				grid.Children.Add(cell, column, row);
+				if(returnClick) {
+					Button clickedGroupBtn = new Button() { };
+					Group clickedGrp = groups[i];
+					grid.Children.Add(clickedGroupBtn, column, row);
+
+					clickedGroupBtn.Clicked += (sender, e) =>
+					{
+						clickedGroup = clickedGrp;
+						tcs.TrySetResult(true);
+					};
+				}
 				column ++;
 
 				if (preview && count > newRowValue && i == (newRowValue-2))
 				{
 					Button b = new Button() { BackgroundColor = App.HowlOut, HeightRequest = height, WidthRequest = height, Text="more", TextColor=Color.White, BorderRadius=height / 2};
-					Grid g = new Grid() { };
-					g.RowDefinitions.Add(new RowDefinition { Height = 12});
+					Grid g = new Grid() { RowSpacing=0 };
+					g.RowDefinitions.Add(new RowDefinition { Height = 1});
 					g.RowDefinitions.Add(new RowDefinition { Height = height });
 					g.ColumnDefinitions.Add(new ColumnDefinition { Width = height });
+					Grid g2 = new Grid();
 					g.Children.Add(b,0,1);
-					grid.Children.Add(g, column, row);
+					g2.Children.Add(g);
+					grid.Children.Add(g2, column, row);
 					b.Clicked += (sender, e) =>
 					{
-						App.coreView.setContentViewWithQueue(new ListsAndButtons(profiles, groups, orgs, false, buttons), "", null);
+						App.coreView.setContentViewWithQueue(new ListsAndButtons(profiles, groups, false, buttons));
 					};
 
 					break;
 				}
 			}
+
+			if (returnClick)
+			{
+				await tcs.Task;
+			}
+			return clickedGroup;
 		}
 		public enum ListType {
 			Normal,

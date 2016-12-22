@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace HowlOut
 {
-	public partial class MapsView : ContentView
+	public partial class MapsView : ContentView, ViewModelInterface
 	{
 		public Geocoder getAddressFromPosition = new Geocoder ();
 		public String tappedAddress = "";
 		public CreateEvent createEventView;
 		UtilityManager utilityManager = new UtilityManager ();
 		DataManager dataManager = new DataManager ();
+		Event eve;
 
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
 		Button selectButton = new Button() { BackgroundColor = App.HowlOut, TextColor=Color.White, BorderRadius=10, HeightRequest=40 };
@@ -86,11 +87,18 @@ namespace HowlOut
 			searchList.ItemSelected += OnItemSelected;
 		}
 
+		public void viewInFocus(UpperBar bar) { }
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
+
 		public MapsView (Event eve)
 		{
 			InitializeComponent ();
 			utilityManager.setMapForEvent (new Position(eve.Latitude, eve.Longitude), map, mapLayout);
 			utilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
+			this.eve = eve;
 			searchList.IsVisible = false;
 			searchList.HeightRequest=0;
 			selectButton.IsVisible = false;

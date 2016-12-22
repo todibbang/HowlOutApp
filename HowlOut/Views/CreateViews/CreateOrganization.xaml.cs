@@ -1,10 +1,11 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace HowlOut
 {
-	public partial class CreateOrganization : ContentView
+	public partial class CreateOrganization : ContentView, ViewModelInterface
 	{
 		public ContentView content
 		{
@@ -15,6 +16,15 @@ namespace HowlOut
 		public Organization newOrg;
 		Plugin.Media.Abstractions.MediaFile mediaFile;
 		DataManager _dataManager;
+
+		public void viewInFocus(UpperBar bar)
+		{
+			
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 
 		public CreateOrganization(Organization org, bool isCreate)
 		{
@@ -67,7 +77,7 @@ namespace HowlOut
 			{
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createOrganizationView = this;
-				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
+				App.coreView.setContentViewWithQueue(selectBannerView);
 			};
 
 
@@ -122,7 +132,7 @@ namespace HowlOut
 				if (orgCreated != null)
 				{
 					InspectController inspect = new InspectController(orgCreated);
-					App.coreView.setContentViewWithQueue(inspect, "Organization", inspect.getScrollView());
+					App.coreView.setContentViewWithQueue(inspect);
 					App.coreView.updateHomeView();
 					App.coreView.createOrganization = new CreateOrganization(new Organization(), true);
 					App.coreView.updateCreateViews();
@@ -135,7 +145,6 @@ namespace HowlOut
 			}
 			App.coreView.IsLoading(false);
 		}
-		/*
 		private async void UpdateOrganization(Organization orgToUpdate)
 		{
 			if (mediaFile != null)
@@ -154,7 +163,6 @@ namespace HowlOut
 				await App.coreView.displayAlertMessage("Error", "Organization not updated, try again", "Ok");
 			}
 		}
-		*/
 
 		public async void DeleteOrganization(Organization orgToDelete)
 		{
@@ -183,3 +191,4 @@ namespace HowlOut
 	}
 }
 
+*/

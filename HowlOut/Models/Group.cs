@@ -11,16 +11,18 @@ namespace HowlOut
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public string ImageSource { get; set; }
+		public string SmallImageSource { get; set; }
+		public string LargeImageSource { get; set; }
 		public int NumberOfActiveEvents { get; set; }
 
-		public Visibility Visibility { get; set; }
+		public GroupVisibility Visibility { get; set; }
 
-		public Profile ProfileOwner { get; set; }
-		public Organization OrganizationOwner { get; set; }
+		public List<Profile> ProfileOwners { get; set; }
 
 		public int NumberOfMembers { get; set; }
 		public List <Profile> Members { get; set; }	
 		public List <Profile> InvitedProfiles { get; set; }
+		public List <Profile> InvitedProfilesAsOwner { get; set; }
 		public List <Profile> ProfilesRequestingToJoin { get; set; }
 
 		public List <Comment> Comments { get; set; }

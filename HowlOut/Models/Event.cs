@@ -11,12 +11,11 @@ namespace HowlOut
 		public string Description {get; set;}
 		public string ImageSource { get; set; }
 
-		public Visibility Visibility { get; set; }
+		public EventVisibility Visibility { get; set; }
 		public List<EventType> EventTypes { get; set; }
 
-		public Profile ProfileOwner {get; set;}
-		public Organization OrganizationOwner { get; set;}
-		public Group GroupSpecific { get; set; }
+		public List<Profile> ProfileOwners {get; set;}
+		public Group GroupOwner { get; set; }
 
 		public double Latitude { get; set; }                //Position of the event
 		public double Longitude { get; set; }               //Position of the event
@@ -35,6 +34,7 @@ namespace HowlOut
 		public List <Profile> Attendees {get; set;}			//People attending the event
 		public List <Profile> Followers {get; set;}			//People following the event
 		public List <Profile> InvitedProfiles {get; set;}	//People invited to the event
+		public List <Profile> InvitedProfilesAsOwner { get; set; }  //People invited to the event
 		public List <Group> InvitedGroups {get; set;}		//Groups invited to the event
 
 		public List <Comment> Comments {get; set;}

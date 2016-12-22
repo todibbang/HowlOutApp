@@ -16,24 +16,42 @@ using UIKit;
 
 namespace HowlOut.iOS.Renderers
 {
-	public class FacebookShareButtonRenderer : ViewRenderer
+	public class FacebookShareButtonRenderer : ViewRenderer<FacebookShareButton, UIView>
 	{
+		protected override void OnElementChanged(ElementChangedEventArgs<FacebookShareButton> e)
+		{
+			FacebookShareButton element = (FacebookShareButton)Element;
+			if (element == null) return;
+			ShareLinkContent content = new ShareLinkContent();
+			content.SetContentUrl(new NSUrl(element.Link));
+			ShareButton shareBtn = new ShareButton(new CGRect(0, 0, 0, 0));
+			shareBtn.SetShareContent(content);
+
+			UIButton cBtn = new UIButton(new CGRect(0, 0, 61, 60));
+			cBtn.Layer.BorderWidth = 2;
+			cBtn.Layer.CornerRadius = 30;
+			cBtn.Layer.BorderColor = Color.FromHex("#ff2e4587").ToCGColor();
+
+			cBtn.TouchUpInside += (sender, ef) =>
+			{
+				shareBtn.SendActionForControlEvents(UIControlEvent.TouchUpInside);
+			};
+			this.AddSubview(cBtn);
+		}
+		/*
 		public FacebookShareButtonRenderer()
 		{
-			//base.ViewDidLoad();
-
-			int height = AppDelegate.height;
-			int width = AppDelegate.width;
-
 			ShareLinkContent content = new ShareLinkContent();
 			content.SetContentUrl(new NSUrl("https://developers.facebook.com"));
 
 			//ShareButton shareBtn = new ShareButton(new CGRect(width / 2 - 110, height / 1.1, 220, 46));
-			ShareButton shareBtn = new ShareButton(new CGRect(0, 0, 100, 44));
+			ShareButton shareBtn = new ShareButton(new CGRect(0, 0, 220, 46));
+
 			shareBtn.SetShareContent(content);
 
-			this.AddSubview(shareBtn);
-		}
+			shareBtn.BackgroundColor = Color.Silver.ToUIColor();
 
+			this.AddSubview(shareBtn);
+		} */
 	}
 }

@@ -5,11 +5,11 @@ using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
-	public partial class SelectBannerView : ContentView
+	public partial class SelectBannerView : ContentView, ViewModelInterface
 	{
 		public CreateEvent createEventView;
 		public CreateGroup createGroupView;
-		public CreateOrganization createOrganizationView;
+		//public CreateOrganization createOrganizationView;
 
 		ObservableCollection<Button> bannerButtons = new ObservableCollection<Button>();
 
@@ -82,13 +82,22 @@ namespace HowlOut
 					//createEventView.newEvent.BannerName = button.Text;
 					if (createEventView != null) { createEventView.setBanner(button.Text); }
 					else if (createGroupView != null) { createGroupView.setBanner(button.Text); }
-					else if (createOrganizationView != null) { createOrganizationView.setBanner(button.Text); }
+					//else if (createOrganizationView != null) { createOrganizationView.setBanner(button.Text); }
 					//App.coreView.setContentView (createEventView, "CreateEvent");
 					App.coreView.returnToPreviousView();
 				};
 			}
 
 		}
+
+		public void viewInFocus(UpperBar bar)
+		{
+			
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 	}
 }
 

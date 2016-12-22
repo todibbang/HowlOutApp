@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -13,7 +14,42 @@ namespace HowlOut
 		{
 			InitializeComponent ();
 
+			TapGestureRecognizer tgr = new TapGestureRecognizer();
+			tgr = new TapGestureRecognizer();
+			tgr.Tapped += async (sender, e) =>
+			{
+				EventForLists eveFL = (EventForLists)this.BindingContext;
+				Event eve = eveFL.eve;
+				bool success = false;
+				if (App.userProfile.EventsFollowed.Exists(ef => ef == eve.EventId))
+				{
+					success = await _dataManager.AttendTrackEvent(eve, false, false);
+					if (success)
+					{
+						trackImg.Foreground = App.HowlOutFade;
+					}
+				}
+				else {
+					success = await _dataManager.AttendTrackEvent(eve, true, false);
+					if (success)
+					{
+						trackImg.Foreground = App.HowlOut;
+					}
+				}
+			};
+			trackImg.GestureRecognizers.Add(tgr);
+			setFollowButton();
+		}
 
+		public async void setFollowButton()
+		{
+			await Task.Delay(2);
+			EventForLists eveFL = (EventForLists)this.BindingContext;
+			Event eve = eveFL.eve;
+			if (App.userProfile.EventsFollowed.Exists(ef => ef == eve.EventId))
+			{
+				trackImg.Foreground = App.HowlOut;
+			}
 		}
 		public SearchEventTemplate (Event eve)
 		{
@@ -43,6 +79,8 @@ namespace HowlOut
 			else {
 				bottomDist.Text = addressList[1].Substring(5).Trim();
 			}
+
+
 
 			/*
 			SubjectButton.Clicked += (sender, e) => {

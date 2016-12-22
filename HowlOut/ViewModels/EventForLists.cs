@@ -37,6 +37,8 @@ namespace HowlOut
 		public string EventCategory2 { get; set; }
 		public string EventCategory3 { get; set; }
 
+		public string EventVisibilityString { get; set; }
+
 		public bool EventType2Visible  {get; set;}
 		public bool EventType3Visible  {get; set;}
 
@@ -49,15 +51,16 @@ namespace HowlOut
 
 		public string EventHolder { get; set; }
 
-		public bool ForSpecificGroup { get; set; }
+		public bool GroupOwner { get; set; }
 		public string SpecificGroupText { get; set; }
 		public string SpecificGroupImageSource { get; set; }
 
+		/*
 		public bool isOrganizationOwner { get
 			{
 				if (eve.OrganizationOwner != null) return true;
 				return false;
-			}set { } }
+			}set { } } */
 
 		public ContentView EventHolderView { get; set; }
 
@@ -68,24 +71,26 @@ namespace HowlOut
 
 
 
-			if (eve.ProfileOwner != null)
+			if (eve.ProfileOwners != null)
 			{
-				ProfileImageSource = eve.ProfileOwner.ImageSource;
-				EventHolder = eve.ProfileOwner.Name;
-				EventHolderView = new ProfileDesignView(eve.ProfileOwner, 60, true, GenericDesignView.Design.OnlyImage);
+				ProfileImageSource = eve.ProfileOwners[0].ImageSource;
+				EventHolder = eve.ProfileOwners[0].Name;
+				//EventHolderView = new ProfileDesignView(eve.ProfileOwners[0], 60, true, GenericDesignView.Design.OnlyImage);
+				GroupOwner = false;
 			}
-			else {
-				ProfileImageSource = eve.OrganizationOwner.ImageSource;
-				EventHolder = "Organization " + eve.OrganizationOwner.Name;
-				EventHolderView = new OrganizationDesignView(eve.OrganizationOwner, 60, GenericDesignView.Design.OnlyImage);
+			else if(eve.GroupOwner != null){
+				ProfileImageSource = eve.GroupOwner.ImageSource;
+				EventHolder = eve.GroupOwner.Name;
+				//EventHolderView = new GroupDesignView(eve.GroupOwner, 60, GenericDesignView.Design.OnlyImage);
+				GroupOwner = true;
 			}
-
+			/*
 			if (eve.GroupSpecific != null)
 			{
 				ForSpecificGroup = true;
 				SpecificGroupText = "" + eve.GroupSpecific.Name + "";
 				SpecificGroupImageSource = eve.GroupSpecific.ImageSource;
-			}
+			} */
 
 			BannerHeight = (0.56 * App.coreView.Width) - 30;
 			InspectBannerHeight = (0.56 * App.coreView.Width);
@@ -105,6 +110,12 @@ namespace HowlOut
 			else {
 				attendees = eve.NumberOfAttendees;
 			} */
+
+			EventVisibilityString = "Public";
+			if (eve.Visibility == EventVisibility.Private)
+			{
+				EventVisibilityString = "Private";
+			}
 
 
 			attendingInfo = attendees + "/" + eve.MaxSize;

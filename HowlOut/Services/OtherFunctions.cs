@@ -7,31 +7,34 @@ namespace HowlOut
 { 
 	public class OtherFunctions
 	{
-		
+		public static EventHandler testEvent;
 
 		public void selectButton(List<Button> buttons, Button selected)
 		{
 			foreach (Button b in buttons)
 			{
 				b.FontAttributes = FontAttributes.None;
-				b.FontSize = 16;
+				b.FontSize = 12;
 				b.TextColor = App.PlaceHolderColor;
 			}
-			selected.FontAttributes = FontAttributes.None;
-			selected.FontSize = 18;
-			selected.TextColor = App.HowlOut;
+			selected.FontAttributes = FontAttributes.Bold;
+			selected.FontSize = 12;
+			selected.TextColor = App.NormalTextColor;
 
 		}
 
-		public void setOptionsGrid(Grid buttonGrid, List<String> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)
+		public void setOptionsGrid(Grid buttonGrid, List<string> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)
 		{
 			List<Button> buttons = new List<Button>();
 			List<Action> clickButtonAction = new List<Action>();
-			foreach (String s in buttonText)
+			if (buttonText != null)
 			{
-				Button b = new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.PlaceHolderColor, FontSize = 16 };
-				buttons.Add(b);
-				clickButtonAction.Add(() => selectButton(buttons, b));
+				foreach (String s in buttonText)
+				{
+					Button b = new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.PlaceHolderColor, FontSize = 12 };
+					buttons.Add(b);
+					clickButtonAction.Add(() => selectButton(buttons, b));
+				}
 			}
 
 			if (grids != null && grids[0] != null) grids[0].IsVisible = true;
@@ -39,6 +42,12 @@ namespace HowlOut
 			selectButton(buttons, buttons[0]);
 
 			int bNumber = 0;
+			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(28, GridUnitType.Absolute) });
+			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Absolute) });
+			buttonGrid.RowSpacing = 0;
+
+			StackLayout selectedBar = new StackLayout() { BackgroundColor = App.HowlOut };
+			buttonGrid.Children.Add(selectedBar, 0, 1);
 
 			for (int i = 0; i < (buttons.Count * 2 - 1); i++)
 			{
@@ -52,7 +61,7 @@ namespace HowlOut
 
 				if (i == (buttons.Count * 2 - 1) - 1)
 				{
-					buttonGrid.Children.Add(new Button() { BorderColor = App.LineColor, BorderWidth = 0.5, BorderRadius = 0, BackgroundColor = Color.White }, 0, i + 1, 0, 1);
+					buttonGrid.Children.Add(new Button() { BorderColor = App.LineColor, BorderWidth = 0.0, BorderRadius = 0, BackgroundColor = Color.White }, 0, i + 1, 0, 1);
 				}
 			}
 
@@ -64,7 +73,7 @@ namespace HowlOut
 					bNumber++;
 				}
 				else {
-					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = App.LineColor }, i, 0);
+					//buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = App.LineColor }, i, 0);
 				}
 			}
 
@@ -72,7 +81,10 @@ namespace HowlOut
 			{
 				carousel.PositionSelected += (sender, e) =>
 				{
-					if (clickButtonAction[carousel.Position] != null) { clickButtonAction[carousel.Position].Invoke(); }
+					if (clickButtonAction[carousel.Position] != null) { 
+						clickButtonAction[carousel.Position].Invoke(); 
+					}
+					buttonGrid.Children.Add(selectedBar, carousel.Position * 2, 1);
 				};
 			}
 
@@ -91,12 +103,12 @@ namespace HowlOut
 					if (clickButtonAction[buttons.IndexOf(b)] != null) { clickButtonAction[buttons.IndexOf(b)].Invoke(); }
 					if (grids != null && grids[buttons.IndexOf(b)] != null) { grids[buttons.IndexOf(b)].IsVisible = true; }
 					if (actions != null && actions[buttons.IndexOf(b)] != null) { actions[buttons.IndexOf(b)].Invoke(); }
-					scrollTo(b);
+					//scrollTo(b);
 				};
 			}
 
 		}
-
+		/*
 		public async Task scrollTo(VisualElement a)
 		{
 
@@ -108,71 +120,97 @@ namespace HowlOut
 				y += parent.Y;
 				parent = parent.ParentView;
 			}
+
 			if (App.coreView.scrollViews[App.coreView.scrollViews.Count - 1] != null)
 			{
 				App.coreView.scrollViews[App.coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
 			}
 			//s.ScrollToAsync(s.X, (y - 100), true);
 		}
+		*/
 
-		public async Task<bool> SenderOfEvent(StackLayout SelectEventSenderLayout, Event eve, Group grp)
+
+		public async Task<bool> SenderOfEvent(StackLayout SelectEventSenderLayout, Event eve)
 		{
 			bool continueCreating = true;
 
-			if (App.userProfile.Organizations != null && App.userProfile.Organizations.Count > 0)
+			if (App.userProfile.GroupsOwned != null && App.userProfile.GroupsOwned.Count > 0)
 			{
+				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 				SelectEventSenderLayout.Children.Clear();
+				SelectEventSenderLayout.IsVisible = true;
+
 				SelectEventSenderLayout.Children.Add(new Label()
 				{
-					Text = "Who is the sender of this event?",
-					TextColor = Color.White,
+					Text = "Who is the owner of this event?",
 					FontSize = 16,
 					FontAttributes = FontAttributes.Bold,
 					HorizontalOptions = LayoutOptions.CenterAndExpand,
 				});
 
-				List<Button> buttons = new List<Button>();
-				organisationButton(App.userProfile.Name, buttons, SelectEventSenderLayout);
-
-				foreach (Organization o in App.userProfile.Organizations)
+				Grid uGrid = new Grid() { HeightRequest = 120, WidthRequest = 120, Padding = new Thickness(0,0,0,10) };
+				uGrid.Children.Add(new ProfileDesignView(App.userProfile,120,false, GenericDesignView.Design.OnlyImage),0,0);
+				Button youBtn = new Button()
 				{
-					organisationButton(o.Name, buttons, SelectEventSenderLayout);
-				}
-				organisationButton("Cancel", buttons, SelectEventSenderLayout);
-
-				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-				SelectEventSenderLayout.IsVisible = true;
-				foreach (Button b in buttons)
+					HeightRequest = 150,
+					WidthRequest = 150,
+				};
+				uGrid.Children.Add(youBtn, 0, 0);
+				SelectEventSenderLayout.Children.Add(uGrid);
+				youBtn.Clicked += async (sender, e) =>
 				{
-					b.Clicked += (sender, e) =>
-					{
+					bool success = await App.coreView.displayConfirmMessage("Continue ?", "You have selected yourself to be the owner of this event. Continue creating the event ?", "Confirm", "Cancel");
+					if(success)tcs.TrySetResult(true);
+				};
+				StackLayout labLayout = new StackLayout();
+				ListsAndButtons lab = new ListsAndButtons();
+				labLayout.Children.Add(lab);
+				SelectEventSenderLayout.Children.Add(labLayout);
 
+				Button cancleBtn = new Button()
+				{
+					Text = "Cancel",
+					HeightRequest = 30,
+					WidthRequest = 100,
+					FontSize = 14,
+					TextColor = Color.White,
+					BorderRadius = 10,
+					BackgroundColor = App.HowlOutRed,
+					VerticalOptions = LayoutOptions.EndAndExpand
+				};
+				SelectEventSenderLayout.Children.Add(cancleBtn);
+				getGroupClicked(lab, eve);
 
-						if (b == buttons[0])
-						{
-							System.Diagnostics.Debug.WriteLine("You are the sender of the event");
-						}
-						else if (b == buttons[buttons.Count - 1])
-						{
-							System.Diagnostics.Debug.WriteLine("Cancel creating event");
-							continueCreating = false;
-						}
-						else {
-							System.Diagnostics.Debug.WriteLine("Sender of event is " + App.userProfile.Organizations[buttons.IndexOf(b) - 1].Name);
-							if (eve != null) eve.OrganizationOwner = App.userProfile.Organizations[buttons.IndexOf(b) - 1];
-							if (grp != null) grp.OrganizationOwner = App.userProfile.Organizations[buttons.IndexOf(b) - 1];
-						}
-						tcs.TrySetResult(true);
-					};
-				}
-
+				cancleBtn.Clicked += (sender, e) =>
+				{
+					continueCreating = false;
+					tcs.TrySetResult(true);
+				};
+				testEvent += async (sender, e) =>
+				{
+					bool success = await App.coreView.displayConfirmMessage("Continue ?", "Continue creating the event with the selected group as owner ?", "Confirm", "Cancel");
+					if (success) tcs.TrySetResult(true);
+					else {
+						labLayout.Children.Clear();
+						labLayout.Children.Add(lab = new ListsAndButtons());
+						getGroupClicked(lab, eve);
+					}
+				};
 				await tcs.Task;
+				lab = null;
 				SelectEventSenderLayout.IsVisible = false;
 			}
-
 			return continueCreating;
 		}
 
+		private async Task getGroupClicked(ListsAndButtons lab, Event eve)
+		{
+			eve.GroupOwner = await lab.createList(null, App.userProfile.GroupsOwned, null, null, false, false, true);
+			EventArgs e = new EventArgs();
+			testEvent(null, e);
+		}
+
+		/*
 		public async Task<bool> GroupEventIsFor(StackLayout SelectEventSenderLayout, Event newEvent)
 		{
 			bool continueCreating = false;
@@ -225,7 +263,7 @@ namespace HowlOut
 			}
 
 			return continueCreating;
-		}
+		} */
 
 		void organisationButton(String name, List<Button> buttons, StackLayout SelectEventSenderLayout)
 		{
@@ -247,11 +285,13 @@ namespace HowlOut
 
 		public async Task scrollTo(double y)
 		{
+			/*
 			await Task.Delay(40);
 			if (App.coreView.scrollViews[App.coreView.scrollViews.Count - 1] != null)
 			{
 				App.coreView.scrollViews[App.coreView.scrollViews.Count - 1].ScrollToAsync(0, (y - 120), true);
 			}
+			*/
 		}
 
 		public void ViewImages(List<string> images)
@@ -265,9 +305,9 @@ namespace HowlOut
 			}
 
 
-			CarouselList cl = new CarouselList( ve, st );
+			CarouselList cl = new CarouselList(ve, st, CarouselList.ViewType.Other );
 
-			App.coreView.setContentViewWithQueue(cl, "", null);
+			App.coreView.setContentViewWithQueue(cl);
 		}
 	}
 }

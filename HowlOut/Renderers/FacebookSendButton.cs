@@ -5,8 +5,13 @@ namespace HowlOut
 {
 	public class FacebookSendButton : View
 	{
-		public FacebookSendButton()
+		public static readonly BindableProperty LinkProperty =
+			BindableProperty.Create("Link", typeof(string), typeof(FacebookSendButton), "");
+
+		public string Link
 		{
+			get { return (string)GetValue(LinkProperty); }
+			set { SetValue(LinkProperty, value); }
 		}
 	}
 }

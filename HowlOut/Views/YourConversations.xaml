@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.YourConversations"
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
-		 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
+		 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,0,0,0">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="50"/>
+				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="60"/>
 			</Grid.RowDefinitions>
@@ -21,7 +21,7 @@
 				IsGroupingEnabled="true"
 				IsPullToRefreshEnabled="true">
 					<ListView.Header>
-							<StackLayout HeightRequest="45"/>
+							<StackLayout HeightRequest="0" x:Name="listHeaderHeight"/>
 					</ListView.Header>
                     <ListView.ItemTemplate>
                      	 <DataTemplate>
@@ -63,14 +63,12 @@
                 </ListView>
              </Grid>
 
-			<StackLayout BackgroundColor="White" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10" Grid.Row="0">
-				<controls:CircleImage WidthRequest="45" x:Name="conversationInfoImage" HeightRequest="45" Aspect="AspectFill"/>
+			<StackLayout BackgroundColor="White" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10">
+				<controls:CircleImage WidthRequest="30" x:Name="conversationInfoImage" HeightRequest="25" Aspect="AspectFill"/>
 				<StackLayout>
-					<Label Text="Conversations for:" VerticalOptions="Center" />
-					<Label x:Name="conversationInfoModelLabel" VerticalOptions="Center" TextColor="{DynamicResource HowlOut}"/>
+					<Label x:Name="conversationInfoModelLabel" VerticalOptions="CenterAndExpand" TextColor="{DynamicResource NormalTextColor}" FontSize="12"/>
 				</StackLayout>
 			</StackLayout>
-			
              <Button Grid.Row="2" Text="+" x:Name="createNewConversation" WidthRequest="60" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" BorderRadius="30" FontSize="30" HeightRequest="60" HorizontalOptions="End" TranslationX="-20" TranslationY="-20"/>
 
 		</Grid>

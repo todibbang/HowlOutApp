@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.IO;
 
 namespace HowlOut
 {
-	public partial class CreateGroup : ContentView
+	public partial class CreateGroup : ContentView, ViewModelInterface
 	{
 		public ContentView content
 		{
@@ -13,9 +14,18 @@ namespace HowlOut
 		}
 
 		public Group newGroup;
-		Plugin.Media.Abstractions.MediaFile mediaFile;
+		List<byte[]> imageStreams;
 		DataManager _dataManager;
 		private bool Launching = false;
+
+		public void viewInFocus(UpperBar bar)
+		{
+			
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 
 		public CreateGroup (Group group, bool isCreate)
 		{
@@ -36,9 +46,9 @@ namespace HowlOut
 			// Here's the visibility of the group selected
 			visibilityPicker.SelectedIndexChanged += (sender, e) =>
 			{
-				if (visibilityPicker.SelectedIndex == 0) { newGroup.Visibility = Visibility.Open; }
-				if (visibilityPicker.SelectedIndex == 1) { newGroup.Visibility = Visibility.Closed; }
-				if (visibilityPicker.SelectedIndex == 2) { newGroup.Visibility = Visibility.Secret; }
+				if (visibilityPicker.SelectedIndex == 0) { newGroup.Visibility = GroupVisibility.Public; }
+				if (visibilityPicker.SelectedIndex == 1) { newGroup.Visibility = GroupVisibility.Closed; }
+				if (visibilityPicker.SelectedIndex == 2) { newGroup.Visibility = GroupVisibility.Private; }
 				visibilityString.Text = visibilityPicker.Items[visibilityPicker.SelectedIndex];
 			};
 			visibilityString.Text = visibilityPicker.Title;
@@ -48,11 +58,7 @@ namespace HowlOut
 			{
 				try
 				{
-					mediaFile = await _dataManager.UtilityManager.TakePicture();
-					if (mediaFile != null)
-					{
-						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					}
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage.Source);
 				}
 				catch (Exception ex) { }
 			};
@@ -63,11 +69,7 @@ namespace HowlOut
 			{
 				try
 				{
-					mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
-					if (mediaFile != null)
-					{
-						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					}
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage.Source);
 				}
 				catch (Exception ex) { }
 			};
@@ -76,20 +78,16 @@ namespace HowlOut
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createGroupView = this;
-				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
+				App.coreView.setContentViewWithQueue(selectBannerView);
 			};
 
 
 
-			launchButton.Clicked += async (sender, e) => {
+			launchButton.Clicked += (sender, e) => {
 				if (isCreate && !Launching)
 				{
-					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, null, newGroup);
-					if (continueCreating)
-					{
-						LaunchGroup(newGroup);
-						Launching = true;
-					}
+					LaunchGroup(newGroup);
+					Launching = true;
 				}
 				else if (!isCreate && !Launching)
 				{
@@ -116,14 +114,11 @@ namespace HowlOut
 		private async void LaunchGroup(Group groupToCreate)
 		{
 			App.coreView.IsLoading(true);
-			if (mediaFile != null)
+			if (imageStreams != null)
 			{
-				groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
+				groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
 			}
-			if (groupToCreate.OrganizationOwner == null)
-			{
-				groupToCreate.ProfileOwner = App.userProfile;
-			}
+			groupToCreate.ProfileOwners = new List<Profile> {  new Profile() { ProfileId = App.userProfile.ProfileId, } };
 
 			if (String.IsNullOrWhiteSpace(groupToCreate.Name))
 			{
@@ -144,7 +139,7 @@ namespace HowlOut
 				if (groupCreated != null)
 				{
 					InspectController inspect = new InspectController(groupCreated);
-					App.coreView.setContentViewWithQueue(inspect, "Group", inspect.getScrollView());
+					App.coreView.setContentViewWithQueue(inspect);
 					App.coreView.updateHomeView();
 					App.coreView.createGroup = new CreateGroup(new Group(), true);
 					App.coreView.updateCreateViews();
@@ -196,7 +191,7 @@ namespace HowlOut
 			selectBannerButton.BackgroundColor = Color.Transparent;
 			SelectedBannerImage.Source = banner;
 			newGroup.ImageSource = banner;
-			mediaFile = null;
+			imageStreams = null;
 		}
 	}
 }

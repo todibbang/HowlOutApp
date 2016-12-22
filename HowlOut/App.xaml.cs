@@ -23,9 +23,10 @@ namespace HowlOut
 		public static Color HowlOut = Color.FromHex("#ff4bc6b4");
 		public static Color HowlOutFade = Color.FromHex("#ffa9e4db");
 		public static Color HowlOutBackground = Color.FromHex("#fff2f2f2");
+		public static Color HowlOutRed = Color.FromHex("#ffe85151");
 		public static Color LineColor = Color.FromHex("#ffb8b8b8");
 		public static Color PlaceHolderColor = Color.FromHex("#ffd6d6d6");
-		public static Color NormalTextColor = Color.FromHex("#ff808080");
+		public static Color NormalTextColor = Color.FromHex("#ff707070");
 
 		public static Action<string> PostSuccessFacebookAction { get; set; }
 
@@ -52,8 +53,9 @@ namespace HowlOut
 
 
 			//Eventsfired from the LoginPage to trigger actions here
-            LoginPage.LoginSucceeded += LoginPage_LoginSucceeded;
+			LoginPage.FacebookLoginSucceeded += LoginPage_LoginSucceeded;
             LoginPage.LoginCancelled += LoginPage_LoginCancelled;
+			LoginPage.HowlOutLoginAttempted += SetHowlOutLogin;
 
             //This loads a user token if existent, or else it will load "null" 
             StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
@@ -72,12 +74,14 @@ namespace HowlOut
             }
             else
             {
-				CrossLocalNotifications.Current.Show ("Notifications works!!", "Nice",99,DateTime.Now.AddSeconds(30));
+				//CrossLocalNotifications.Current.Show ("Notifications works!!", "Nice",99,DateTime.Now.AddSeconds(30));
 				coreView = new CoreView();
 				MainPage = coreView;
 				startProgram(coreView);
             }
 		}
+
+
 
 		public static async Task storeToken(string token, string id, string name)
         {
@@ -115,6 +119,11 @@ namespace HowlOut
 
 		}
 
+		private void SetHowlOutLogin(object sender, EventArgs e)
+		{
+			MainPage = new HowlOutLogin();
+		}
+
         private void LoginPage_LoginCancelled(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Blytka 5");
@@ -133,7 +142,11 @@ namespace HowlOut
 			while (!success)
 			{
 
-				Profile profile = new Profile() { ProfileId = StoredUserFacebookId, Name = StoredUserFacebookName, Age = 0, ImageSource = "https://graph.facebook.com/v2.5/" + StoredUserFacebookId + "/picture?height=200&width=200" };
+				Profile profile = new Profile() { ProfileId = StoredUserFacebookId, Name = StoredUserFacebookName, Age = 0, 
+					SmallImageSource = "https://graph.facebook.com/v2.5/" + StoredUserFacebookId + "/picture?height=500&width=50",
+					ImageSource = "https://graph.facebook.com/v2.5/" + StoredUserFacebookId + "/picture?height=100&width=100",
+					LargeImageSource = "https://graph.facebook.com/v2.5/" + StoredUserFacebookId + "/picture?height=300&width=300"
+				};
 				success = await _dataManager.ProfileApiManager.CreateUpdateProfile(profile, true);
 
 			}
@@ -169,7 +182,8 @@ namespace HowlOut
 		public static async void UpdateLiveConversations()
 		{
 			if(coreView.viewdConversation != null)coreView.viewdConversation.conversation = await coreView._dataManager.MessageApiManager.GetOneConversation(coreView.viewdConversation.ConversationId);
-			await coreView.conversatios.UpdateConversations(true);
+			await coreView.profileConversatios.UpdateConversations(true);
+			await coreView.otherConversatios.UpdateConversations(true);
 			foreach (ConversationView cv in coreView.activeConversationViews)
 			{
 				cv.UpdateList(true);

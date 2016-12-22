@@ -44,7 +44,7 @@ namespace HowlOut
 		{
 			map.MoveToRegion (
 				MapSpan.FromCenterAndRadius (
-					new Position (pos.Latitude, pos.Longitude), Distance.FromKilometers (0.5)));
+					new Position (pos.Latitude, pos.Longitude), Distance.FromKilometers (1.2)));
 			mapLayout.Children.Add(map);
 		}
 
@@ -135,32 +135,107 @@ namespace HowlOut
 			return new List<string> () { number, describer };
 		}
 
-
-		public async Task<Plugin.Media.Abstractions.MediaFile>  TakePicture()
+		/*
+		public async Task<List<Plugin.Media.Abstractions.MediaFile>>  TakePicture()
 		{
 			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
 			{
 				return null;
 			}
+			List<Plugin.Media.Abstractions.MediaFile> files = new List<Plugin.Media.Abstractions.MediaFile>();
 
 			var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
 			{
 
 				Directory = "Sample",
 				Name = "test.jpg",
-				CompressionQuality = 60,
-				PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium
+				CompressionQuality = 0,
+				PhotoSize = Plugin.Media.Abstractions.PhotoSize.Small
 			});
+
+
+
+			files.Add(file);
+
+			//Plugin.Media.Abstractions.StoreCameraMediaOptions g = new Plugin.Media.Abstractions.StoreCameraMediaOptions();
+			//g.PhotoSize = Plugin.Media.Abstractions.PhotoSize.
 
 			if (file == null)
 				return null;
 
 			//s = file.GetStream();
 
-			return file;
+			return files;
 
+		}*/
+
+		public async Task<List<byte[]>> TakePicture(ImageSource imgSrc)
+		{
+			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+			{
+				return null;
+			}
+			var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+			{
+				Directory = "Sample",
+				Name = "test.jpg",
+				CompressionQuality = 0,
+				PhotoSize = Plugin.Media.Abstractions.PhotoSize.Small
+			});
+
+			if (file == null)
+				return null;
+
+			using (var memoryStream = new MemoryStream())
+			{
+				file.GetStream().CopyTo(memoryStream);
+
+				List<byte[]> mStream = new List<byte[]>() {
+					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 50),
+					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 100),
+					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 300)
+				};
+				if (imgSrc != null) imgSrc = ImageSource.FromStream(() => new MemoryStream(mStream[2]));
+
+				await Task.Delay(10);
+				file.Dispose();
+				return mStream;
+			}
 		}
 
+		public async Task<List<byte[]>> PictureFromAlbum(ImageSource imgSrc)
+		{
+			if (!CrossMedia.Current.IsPickPhotoSupported)
+			{
+				return null;
+			}
+			var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+			{
+				CompressionQuality = 60,
+				PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+			});
+
+			if (file == null)
+				return null;
+			
+			using (var memoryStream = new MemoryStream())
+			{
+				file.GetStream().CopyTo(memoryStream);
+
+				List<byte[]>  mStream = new List<byte[]>() {
+					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 50),
+					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 100),
+					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 300)
+				};
+				if (imgSrc != null) imgSrc = ImageSource.FromStream(() => new MemoryStream(mStream[2]));
+				await Task.Delay(10);
+				file.Dispose();
+				return mStream;
+
+				//new MemoryStream();
+			}
+		}
+		/*
 		public async Task<Plugin.Media.Abstractions.MediaFile> PictureFromAlbum()
 		{
 			if (!CrossMedia.Current.IsPickPhotoSupported)
@@ -175,11 +250,13 @@ namespace HowlOut
 
 			});
 
+
+
 			if (file == null)
 				return null;
 
 			return file;
-		}
+		} */
 
 		public async Task<String> UploadImageToStorage(Stream imageStream, string imageName)
 		{

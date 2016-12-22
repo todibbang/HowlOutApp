@@ -16,6 +16,12 @@ namespace HowlOut
 		{
 			InitializeComponent();
 			image.Source = source;
+			TapGestureRecognizer tgr = new TapGestureRecognizer();
+			tgr.Tapped += (sender, e) =>
+			{
+				App.coreView.returnToPreviousView();
+			};
+			image.GestureRecognizers.Add(tgr);
 		}
 	}
 }

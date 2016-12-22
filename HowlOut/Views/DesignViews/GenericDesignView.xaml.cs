@@ -23,7 +23,8 @@ namespace HowlOut
 		public Image profileImage { get { return ProfileImage; } }
 		public CustomEditor descriptionEdit { get { return descriptionLabelEdit; } }
 
-		public Image organizationImage { get { return organizationOwnerImage; } }
+		//public Image organizationImage { get { return organizationOwnerImage; } }
+		public Button organizationBtn{ get { return organizationOwnerBtn; } }
 		public Label subName { get { return subNameLabel; } }
 
 		public GenericDesignView(int dimentions)
@@ -40,7 +41,7 @@ namespace HowlOut
 			pictureGrid.WidthRequest = dimentions;
 			nameLayout.HeightRequest = dimentions * 0.2;
 			//descriptionLayout.HeightRequest = dimentions * 0.2;
-			buttonLayout.HeightRequest = 10 + dimentions * 0.1;
+			buttonLayout.HeightRequest = 12 + dimentions * 0.1;
 			editProfileButtons.HeightRequest = 10 + dimentions * 0.1;
 			//buttonLayoutEdit.HeightRequest = dimentions * 0.16;
 
@@ -50,22 +51,31 @@ namespace HowlOut
 			//nameLabelEdit.FontSize = dimentions * 0.115;
 			descriptionLabelEdit.FontSize = dimentions * 0.055;
 
-			MainButton.BorderRadius = (int)(0.440 * dimentions);
-			MainButton.BorderWidth = (int)(0.04 * dimentions);
-			MainButton.FontSize = (int)(0.2 * dimentions);
+			MainButton.BorderRadius = (int)(0.5 * dimentions);
+			MainButton.BorderWidth = (int)(0.06 * dimentions);
+
+			organizationOwnerBtn.BorderRadius = (int)(0.18 * dimentions);
+			organizationOwnerBtn.BorderWidth = (int)(0.02 * dimentions);
 
 			setButtonDimentions(addButton, dimentions);
 			setButtonDimentions(editButton, dimentions);
 			setButtonDimentions(removeButton, dimentions);
 			setButtonDimentions(updateProfileButton, dimentions);
 			setButtonDimentions(logOutButton, dimentions);
+
+			/*
+			if (dimentions < 100)
+			{
+				buttonLayout.Children.Add(setPillButtonLayout(new List<Button>() {addBtn, editButton, removeBtn }));
+				buttonLayout.IsVisible = true;
+			}
+			*/
 		}
 
 		void setButtonDimentions(Button b, int dimentions)
 		{
-			b.BorderRadius = (int)(0.08 * dimentions);
-			b.BorderWidth = (0.003 * dimentions);
-			b.WidthRequest = (dimentions * 0.5);
+			b.BorderRadius = (int) (buttonLayout.HeightRequest / 2.0);
+			b.WidthRequest = (dimentions * 0.4);
 			b.FontSize = 3 + (int)(0.05 * dimentions);
 			b.Clicked += async (sender, e) =>
 			{
@@ -74,8 +84,50 @@ namespace HowlOut
 			};
 		}
 
+		public void setPillButtonLayout(List<Button> buttons)
+		{
+			Grid buttonGrid = new Grid();
+			int bNumber = 0;
+
+			buttonGrid.HorizontalOptions = LayoutOptions.FillAndExpand;
+
+			buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 3 });
+			for (int i = 0; i < (buttons.Count * 2 - 1); i++)
+			{
+				if (i % 2 == 0)
+				{
+					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+				}
+				else {
+					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 1 });
+				}
+
+				if (i == (buttons.Count * 2 - 1) - 1)
+				{
+					buttonGrid.Children.Add(new Button() { BorderColor = App.HowlOut, BorderWidth = 0.5, BorderRadius = buttons[0].BorderRadius, BackgroundColor = App.HowlOut }, 0, i + 3, 0, 1);
+				}
+			}
+			buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 3 });
+
+			for (int i = 0; i < (buttons.Count * 2 - 1); i++)
+			{
+				if (i % 2 == 0)
+				{
+					buttonGrid.Children.Add(buttons[bNumber], i+1, 0);
+					bNumber++;
+				}
+				else {
+					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = App.HowlOutBackground }, i+1, 0);
+				}
+			}
+			buttonLayout.Children.Add(buttonGrid);
+		}
+
 		public void SetInfo(string source, string name, string description, Design design, ModelType modelType)
 		{
+			//Image img = new Image() { Source = source };
+
+
 			ProfileImage.Source = source;
 			nameLabel.Text = name;
 			//nameLabelEdit.Text = name;
@@ -105,17 +157,16 @@ namespace HowlOut
 
 			if (modelType == ModelType.Group)
 			{
+				/*
 				modelTypeIcon.IsVisible = true;
 				modelTypeIcon.Source = "ic_group.png";
 				modelTypeIcon2.IsVisible = true;
 				modelTypeIcon2.Source = "ic_group.png";
+				*/
+				//MainButton.BorderColor = Color.FromHex("#ff66aacc");
 			}
-			else if (modelType == ModelType.Organization)
-			{
-				modelTypeIcon.IsVisible = true;
-				modelTypeIcon.Source = "ic_organization.png";
-				modelTypeIcon2.IsVisible = true;
-				modelTypeIcon2.Source = "ic_organization.png";
+			else {
+				MainButton.IsVisible = false;
 			}
 
 		}

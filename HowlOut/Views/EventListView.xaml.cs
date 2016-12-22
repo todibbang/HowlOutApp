@@ -21,7 +21,7 @@ namespace HowlOut
 		int currentView = 0;
 		Profile profile;
 		Group group;
-		Organization organization;
+		//Organization organization;
 		//string ID;
 
 		public EventListView(Profile pro)
@@ -39,14 +39,14 @@ namespace HowlOut
 			currentView = 5;
 			setUp();
 		}
-
+		/*
 		public EventListView(Organization org)
 		{
 			InitializeComponent();
 			organization = org;
 			currentView = 6;
 			setUp();
-		}
+		} */
 
 		public EventListView(int viewType)
 		{
@@ -58,10 +58,16 @@ namespace HowlOut
 		void setUp()
 		{
 			_dataManager = new DataManager();
-			UpdateList( true);
+			if (currentView == 0) exploreSettings.IsVisible = true;
+			UpdateList( true, "");
 			searchEventList.ItemSelected += OnItemSelected;
 			searchEventList.IsPullToRefreshEnabled = true;
-			searchEventList.Refreshing += (sender, e) => { UpdateList( true); };
+			searchEventList.Refreshing += (sender, e) => { UpdateList(true, ""); };
+			exploreSettings.Clicked += (sender, e) =>
+			{
+				if (App.userProfile != null && App.userProfile.SearchPreference != null)
+					App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchPreference));
+			};
 		}
 
 		public async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -81,7 +87,7 @@ namespace HowlOut
 			}
 
 			InspectController inspect = new InspectController(selectedEvent.eve);
-			App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+			App.coreView.setContentViewWithQueue(inspect);
 			list.SelectedItem = null;
 
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
@@ -97,191 +103,186 @@ namespace HowlOut
 			Event eve = await _dataManager.EventApiManager.GetEventById(eveID);
 
 			InspectController inspect = new InspectController(eve);
-			App.coreView.setContentViewWithQueue(inspect, "UserProfile", inspect.getScrollView());
+			App.coreView.setContentViewWithQueue(inspect);
 
 		}
 
-		public async void UpdateManageList(int listToUpdate, bool update)
+		public async void UpdateManageList(int listToUpdate, bool update, string searchText)
 		{
-			nothingToLoad.IsVisible = false;
-			currentView = listToUpdate;
-			var first = DateTime.Now;
-			if (update)
-			{
-				evelist = new List<Event>();
-
-				if (listToUpdate == 0)
+			try {
+				nothingToLoad.IsVisible = false;
+				currentView = listToUpdate;
+				var first = DateTime.Now;
+				if (update)
 				{
-					evelist = await _dataManager.EventApiManager.SearchEvents();
-				}
-				else if (listToUpdate == 1)
-				{
-					evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, App.userProfile.Friends);
+					evelist = new List<Event>();
 
+					if (listToUpdate == 0)
+					{
+						evelist = await _dataManager.EventApiManager.SearchEvents(searchText);
+					}
+					else if (listToUpdate == 10)
+					{
+						evelist = await _dataManager.EventApiManager.GetEndedEvents();
+					}
+					else if (listToUpdate == 1)
+					{
+						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, App.userProfile.Friends);
+
+					}
+					else if (listToUpdate == 2)
+					{
+						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { App.userProfile });
+
+					}
+					else if (listToUpdate == 3)
+					{
+						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(false, new List<Profile> { App.userProfile });
+
+					}
+					else if (listToUpdate == 4)
+					{
+						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { profile });
+						HeightRequest = evelist.Count * 130;
+						HeightRequest += 30;
+					}
+					else if (listToUpdate == 5)
+					{
+						evelist = await _dataManager.EventApiManager.GetEventsForGroups(new List<Group> { group });
+						HeightRequest = evelist.Count * 130;
+						HeightRequest += 30;
+						//if (HeightRequest > 200) HeightRequest = 200;
+					}
+					/*
+					else if (listToUpdate == 6)
+					{
+						evelist = await _dataManager.EventApiManager.GetEventsForOrgs(new List<Organization> { organization });
+						HeightRequest = evelist.Count * 90;
+						HeightRequest += 20;
+						if (HeightRequest > 200) HeightRequest = 200;
+					} */
 				}
+				if (listToUpdate == 2 || listToUpdate == 10)
+				{
+					int n = 0;
+					foreach (Event c in evelist)
+					{
+						if (_dataManager.checkIfUnseen(c.EventId, NotificationModelType.Event))
+						{
+							n++;
+						}
+					}
+					//App.coreView.setEventsNoti(n);
+				}
+
+				/*
 				else if (listToUpdate == 2)
 				{
-					evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { App.userProfile });
-
-				}
-				else if (listToUpdate == 3)
-				{
-					evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(false, new List<Profile> { App.userProfile });
-
-				}
-				else if (listToUpdate == 4)
-				{
-					evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { profile });
-
-				}
-				else if (listToUpdate == 5)
-				{
-					evelist = await _dataManager.EventApiManager.GetEventsForGroups(new List<Group> { group });
-					HeightRequest = evelist.Count * 90;
-					HeightRequest += 20;
-					if (HeightRequest > 200) HeightRequest = 200;
-				}
-				else if (listToUpdate == 6)
-				{
-					evelist = await _dataManager.EventApiManager.GetEventsForOrgs(new List<Organization> { organization });
-					HeightRequest = evelist.Count * 90;
-					HeightRequest += 20;
-					if (HeightRequest > 200) HeightRequest = 200;
-				}
-			}
-			if (listToUpdate == 2)
-			{
-				int n = 0;
-				foreach (Event c in evelist)
-				{
-					if (_dataManager.checkIfUnseen(c.EventId, NotificationModelType.Event))
+					evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo();
+					var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId(ID);
+					for (int i = evelist.Count - 1; i > -1; i--)
 					{
-						n++;
-					}
-				}
-				App.coreView.setEventsNoti(n);
-			}
-
-			/*
-			else if (listToUpdate == 2)
-			{
-				evelist = await _dataManager.ProfileApiManager.GetEventsInvitedTo();
-				var evesAttended = await _dataManager.EventApiManager.GetEventsWithOwnerId(ID);
-				for (int i = evelist.Count - 1; i > -1; i--)
-				{
-					for (int m = 0; m < evesAttended.Count; m++)
-					{
-						if (evelist[i].EventId == evesAttended[m].EventId)
+						for (int m = 0; m < evesAttended.Count; m++)
 						{
-							evelist.RemoveAt(i);
-							break;
+							if (evelist[i].EventId == evesAttended[m].EventId)
+							{
+								evelist.RemoveAt(i);
+								break;
+							}
 						}
 					}
 				}
-			}
-			*/
-			var second = DateTime.Now;
-			var time = second - first;
-			System.Diagnostics.Debug.WriteLine("Time to load: " + (time.Milliseconds) + " ms");
+				*/
+				var second = DateTime.Now;
+				var time = second - first;
+				System.Diagnostics.Debug.WriteLine("Time to load: " + (time.Milliseconds) + " ms");
 
-			if (evelist == null)
-			{
-				searchEventList.IsRefreshing = false;
-				return;
-			} else if (evelist.Count == 0) {
-				nothingToLoad.IsVisible = true;
-				searchEventList.IsRefreshing = false;
+				if (evelist == null)
+				{
+					nothingToLoad.IsVisible = true;
+					searchEventList.IsRefreshing = false;
+					searchEventList.ItemsSource = null;
+					return;
+				}
+				else if (evelist.Count == 0)
+				{
+					nothingToLoad.IsVisible = true;
+					searchEventList.IsRefreshing = false;
+					searchEventList.ItemsSource = null;
+					return;
+				}
 				searchEventList.ItemsSource = null;
-				return;
-			}
-			searchEventList.ItemsSource = null;
 
-			//var orderedList = new ObservableCollection<Event>();
-			evelist = evelist.OrderBy(c => c.StartDate).ToList();
+				//var orderedList = new ObservableCollection<Event>();
+				evelist = evelist.OrderBy(c => c.StartDate).ToList();
 
-			//Event itemToAdd = new Event();
-			/*
-			while (evelist.Count != 0)
-			{
-				DateTime Time = evelist[0].StartDate;
-				itemToAdd = evelist[0];
-
-				for (int i = 0; i < evelist.Count; i++)
+				//Event itemToAdd = new Event();
+				/*
+				while (evelist.Count != 0)
 				{
-					if (evelist[i].StartDate < Time)
+					DateTime Time = evelist[0].StartDate;
+					itemToAdd = evelist[0];
+
+					for (int i = 0; i < evelist.Count; i++)
 					{
-						itemToAdd = evelist[i];
-						Time = itemToAdd.StartDate;
+						if (evelist[i].StartDate < Time)
+						{
+							itemToAdd = evelist[i];
+							Time = itemToAdd.StartDate;
+						}
+					}
+					orderedList.Add(itemToAdd);
+					evelist.Remove(itemToAdd);
+				}
+				*/
+
+				List<EventForLists> eveFL = new List<EventForLists>();
+				foreach (Event eve in evelist)
+				{
+					eveFL.Add(new EventForLists(eve));
+				}
+
+				ObservableCollection<GroupedEvents> groupedEvents = new ObservableCollection<GroupedEvents>();
+				if (eveFL.Count > 0)
+				{
+					GroupedEvents monthGroup = null;
+					int month = eveFL[0].eve.StartDate.Month;
+
+					for (int d = 0; d < eveFL.Count; d++)
+					{
+						if (d == 0)
+						{
+							monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
+						}
+						if (month != eveFL[d].eve.StartDate.Month)
+						{
+							month = eveFL[d].eve.StartDate.Month;
+							groupedEvents.Add(monthGroup);
+							monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
+						}
+						monthGroup.Add(eveFL[d]);
+						if (d == eveFL.Count - 1)
+						{
+							groupedEvents.Add(monthGroup);
+						}
 					}
 				}
-				orderedList.Add(itemToAdd);
-				evelist.Remove(itemToAdd);
+
+				searchEventList.IsVisible = true;
+				DataTemplate mt = null;
+				if (listToUpdate != 2 && listToUpdate != 4 && listToUpdate != 5 && listToUpdate != 10) { mt = new DataTemplate(() => { return new ViewCell { View = new SearchEventTemplate() }; }); }
+				else { mt = new DataTemplate(() => { return new ViewCell { View = new ManageEventTemplate() }; }); }
+				//mt = new DataTemplate(() => { return new ViewCell { View = new SearchEventTemplate() }; });
+				searchEventList.ItemTemplate = mt;
+				searchEventList.ItemsSource = groupedEvents;
+				searchEventList.IsRefreshing = false;
 			}
-			*/
+			catch (Exception e) {}
+		} 
 
-			List<EventForLists> eveFL = new List<EventForLists>();
-			foreach (Event eve in evelist)
-			{
-				eveFL.Add(new EventForLists(eve));
-			}
-
-			ObservableCollection<GroupedEvents> groupedEvents = new ObservableCollection<GroupedEvents>();
-			if (eveFL.Count > 0)
-			{
-				GroupedEvents monthGroup = null;
-				int month = eveFL[0].eve.StartDate.Month;
-
-				for (int d = 0; d < eveFL.Count; d++)
-				{
-					if (d == 0)
-					{
-						monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
-					}
-					if (month != eveFL[d].eve.StartDate.Month)
-					{
-						month = eveFL[d].eve.StartDate.Month;
-						groupedEvents.Add(monthGroup);
-						monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
-					}
-					monthGroup.Add(eveFL[d]);
-					if (d == eveFL.Count - 1)
-					{
-						//monthGroup = monthGroup.OrderBy(c => c.Distance);
-						groupedEvents.Add(monthGroup);
-					}
-				}
-			}
-			/*
-			foreach (GroupedEvents groupping in groupedEvents)
-			{
-
-				groupping = groupping.OrderBy(c => c.Distance).ToList();
-			} */
-
-			/*
-			for (int i = 0; i < groupedEvents.Count; i++)
-			{
-				var newList = groupedEvents[i].OrderBy(c => c.Distance);
-				groupedEvents[i] = new GroupedEvents() { Date = (newList.First().eve.StartDate.ToString("MMMMM")) };
-				foreach (EventForLists e in newList)
-				{
-					groupedEvents[i].Add(e);
-				}
-			} */
-
-
-			searchEventList.IsVisible = true;
-			DataTemplate mt = null;
-			if (listToUpdate == 0 || listToUpdate == 1) { mt = new DataTemplate(() => { return new ViewCell { View = new SearchEventTemplate() }; }); }
-			else { mt = new DataTemplate(() => { return new ViewCell { View = new ManageEventTemplate() }; }); }
-			searchEventList.ItemTemplate = mt;
-			searchEventList.ItemsSource = groupedEvents;
-			searchEventList.IsRefreshing = false;
-		}
-
-		public void UpdateList(bool update)
+		public void UpdateList(bool update, string searchText)
 		{
-			UpdateManageList(currentView, update);
+			UpdateManageList(currentView, update, searchText);
 		}
 	}
 }

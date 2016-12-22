@@ -7,10 +7,12 @@ using System.Linq;
 
 namespace HowlOut
 {
-	public partial class ConversationView : ContentView
+	public partial class ConversationView : ContentView, ViewModelInterface
 	{
 		private DataManager _dataManager = new DataManager();
 		public Conversation conversation;
+		string title;
+
 		List<Comment> comments;
 		private StackLayout wallLayout;
 		List<Profile> profilesAdded;
@@ -58,6 +60,7 @@ namespace HowlOut
 			setSize(true);
 
 
+
 			bool scrollDelay = false;
 			commentEntryBottom.Focused += async (sender, e) =>
 			{
@@ -84,8 +87,6 @@ namespace HowlOut
 				conversationList.TranslationY = 0;
 			};
 
-			setTopbar();
-
 			conversationScrollView.Scrolled += (sender, e) =>
 			{
 				System.Diagnostics.Debug.WriteLine(conversationScrollView.ScrollY);
@@ -96,45 +97,108 @@ namespace HowlOut
 
 				if (conversationScrollView.ScrollY < 10 && !scrollDelay)
 				{
-					conversationInfo.IsVisible = true;
+					if (conversation.ModelType != ConversationModelType.Profile)
+					{
+						conversationInfo.IsVisible = true;
+					}
 				}
 			};
-
 			App.coreView.viewdConversation = this;
-
-
 		}
 
-		async void setConversationInfo(Conversation c)
+		public async void viewInFocus(UpperBar bar)
 		{
-			if (c.Profiles != null)
+			if (conversation == null) return;
+
+			title = "";
+
+			if (conversation.Profiles != null)
 			{
-				foreach (Profile p in c.Profiles)
+				foreach (Profile p in conversation.Profiles)
 				{
 					if (p.ProfileId != App.StoredUserFacebookId)
 					{
-						if (c.Profiles.Count > 2)
+						if (conversation.Profiles.Count > 2)
 						{
-							conversationInfoLabel.Text += p.Name.Split(' ')[0] + ", ";
+							title += p.Name.Split(' ')[0] + ", ";
 						}
 						else {
-							conversationInfoLabel.Text += p.Name + ", ";
+							title += p.Name;
 						}
 
-						if (conversationInfoImage.Source == null && c.ModelType == ConversationModelType.Profile)
+						if (conversationInfoImage.Source == null && conversation.ModelType == ConversationModelType.Profile)
 						{
 							conversationInfoImage.Source = p.ImageSource;
 						}
 					}
 				}
+
+				if (conversation.Profiles.Count > 2)
+				{
+					title = title.Substring(0, title.Length-2);
+				}
+			}
+			if (!string.IsNullOrWhiteSpace(conversation.Title))
+			{
+				title = conversation.Title;
 			}
 
+			App.coreView.topBar.setRightButton("ic_menu.png").Clicked += async (sender, e) =>
+			{
+				List<Action> actions = new List<Action>();
+				List<string> titles = new List<string>();
+				List<string> images = new List<string>();
+
+				actions.Add(() => { App.coreView.setContentViewWithQueue(new InviteListView(conversation, false)); });
+				titles.Add("Invite");
+				images.Add("ic_add_profiles.png");
+
+				actions.Add(async() => {
+					editTitleGrid.IsVisible = !editTitleGrid.IsVisible;
+
+				});
+				titles.Add("Change Title");
+				images.Add("ic_title.png");
+
+				actions.Add(async () =>
+				{
+					bool success = await _dataManager.MessageApiManager.leaveConversation(conversation.ConversationID);
+					if (success) { App.coreView.returnToPreviousView(); }
+					else { await App.coreView.displayAlertMessage("Error", "Error", "Ok"); }
+				});
+				titles.Add("Leave");
+				images.Add("ic_settings.png");
+
+				await App.coreView.DisplayOptions(actions, titles, images);
+			};
+
+			bar.setNavigationlabel(title).Clicked += (sender, e) =>
+			{
+				App.coreView.setContentViewWithQueue(new ListsAndButtons(conversation.Profiles, null, false, false));
+			};
+
+			if (type == MessageApiManager.CommentType.Converzation)
+			{
+				try
+				{
+					await Task.Delay(2);
+					conversationList.ScrollTo(conversationList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, true);
+				}
+				catch (Exception e) {}
+			}
+		}
+
+		public void viewExitFocus() { }
+		public ContentView getContentView() { return this; }
+
+		async void setConversationInfo(Conversation c)
+		{
 			TapGestureRecognizer t = new TapGestureRecognizer();
 
-
+			conversationInfo.IsVisible = true;
 			if (c.ModelType == ConversationModelType.Event)
 			{
-				t.Tapped += (sender, e) =>
+				conversationInfoProfilesButton.Clicked += (sender, e) =>
 				{
 					App.coreView.GoToSelectedEvent(c.ModelId);
 				};
@@ -145,7 +209,7 @@ namespace HowlOut
 			}
 			else if (c.ModelType == ConversationModelType.Group)
 			{
-				t.Tapped += (sender, e) =>
+				conversationInfoProfilesButton.Clicked += (sender, e) =>
 				{
 					App.coreView.GoToSelectedGroup(c.ModelId);
 				};
@@ -154,59 +218,28 @@ namespace HowlOut
 				conversationInfoImage.Source = grp.ImageSource;
 				conversationInfoModelLabel.Text = "Group: " + grp.Name;
 			}
-			else if (c.ModelType == ConversationModelType.Organization)
-			{
-				t.Tapped += (sender, e) =>
-				{
-					App.coreView.GoToSelectedOrganization(c.ModelId);
-				};
-
-				Organization org = await _dataManager.OrganizationApiManager.GetOrganization(c.ModelId);
-				conversationInfoImage.Source = org.ImageSource;
-				conversationInfoModelLabel.Text = "Organization: " + org.Name;
-			}
 			else {
-				t.Tapped += (sender, e) =>
-				{
-					App.coreView.setContentViewWithQueue(new ListsAndButtons(c.Profiles, null,null, false, false), "", null);
-				};
+				conversationInfo.IsVisible = false;
+				conversationInfoProfilesButton.IsVisible = false;
 			}
 
-			conversationInfoProfilesButton.Clicked += (sender, e) =>
+			closeEditTitle.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentViewWithQueue(new ListsAndButtons(c.Profiles, null, null, false, false), "", null);
+				editTitleGrid.IsVisible = !editTitleGrid.IsVisible;
+			};
+			editTitleButton.Clicked += async (sender, e) =>
+			{
+				await _dataManager.MessageApiManager.EditConversationTitle(conversation.ConversationID, editTitleEntry.Text);
+				c = await _dataManager.MessageApiManager.GetOneConversation(c.ConversationID);
+				App.coreView.setContentViewReplaceCurrent(new ConversationView(c), 1);
 			};
 
-			conversationInfoImage.GestureRecognizers.Add(t);
-			conversationInfo.IsVisible = true;
-		}
-
-		/*
-		private async Task setInfoBar(Conversation conv)
-		{
-			if (conv.ModelType != ConversationModelType.Profile)
-			{
-				App.coreView.GoToSelectedEvent()
-
-				if (conv.ModelType == ConversationModelType.Event)
-				{
-					ContentView cv = new GroupDesignView(groups[i], height, design);
-				}
-
-				modelTypeView.Children.Add
-			}
-		} */
-
-		private async Task setTopbar()
-		{
-			await Task.Delay(10);
-			App.coreView.topBar.showAddPeopleToConversationButton(true, this);
 		}
 
 		private async Task setSize(bool add)
 		{
 			await Task.Delay(10);
-			outerGrid.HeightRequest = App.coreView.Height - (137);
+			outerGrid.HeightRequest = App.coreView.Height - (135);
 			commentList.HeightRequest = outerGrid.HeightRequest - 80;
 			conversationList.HeightRequest = outerGrid.HeightRequest - 80;
 			commentListLayout.HeightRequest = commentListLayout.Height;
@@ -303,10 +336,10 @@ namespace HowlOut
 				conversationList.ScrollTo(conversationList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, false);
 			}
 			else {
-				commentList.ScrollTo(commentList.ItemsSource.OfType<Comment>().First(), ScrollToPosition.Start, true);
 				commentList.HeightRequest = comments.Count * 120 + 100;
 				listViewRow.Height = comments.Count * 120 + 100;
 				wallLayout.HeightRequest = comments.Count * 120 + 100;
+				commentList.ScrollTo(commentList.ItemsSource.OfType<Comment>().First(), ScrollToPosition.Start, true);
 			}
 			return true;
 		}

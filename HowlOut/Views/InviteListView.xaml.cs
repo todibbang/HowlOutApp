@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace HowlOut
 {
-	public partial class InviteListView : ContentView
+	public partial class InviteListView : ContentView, ViewModelInterface
 	{
 		List<Profile> profilesAdded = new List<Profile>();
 		List<Profile> profilesThatCanBeAdded = App.userProfile.Friends;
@@ -24,10 +24,9 @@ namespace HowlOut
 					Conversation conv = await _dataManager.MessageApiManager.CreateConversations(conversation.ModelType, profilesAdded, conversation.ModelId, "");
 					if (conv != null)
 					{
-						App.coreView.setContentViewWithQueue(new ConversationView(conv), "", null);
+						App.coreView.setContentViewWithQueue(new ConversationView(conv));
 					}
 				};
-				App.coreView.topBar.setNavigationLabel("Create New Conversation", null);
 			}
 			else {
 				addBtn.Clicked += async (sender, e) =>
@@ -36,13 +35,25 @@ namespace HowlOut
 					Conversation newConv = await _dataManager.MessageApiManager.AddProfilesToConversation(conversation.ConversationID, profilesAdded);
 					if (newConv != null)
 					{
-						App.coreView.setContentViewWithQueue(new ConversationView(newConv), "", null);
+						App.coreView.setContentViewWithQueue(new ConversationView(newConv));
 					}
 				};
-				App.coreView.topBar.setNavigationLabel("Add People To Conversation", null);
 			}
 
 		}
+
+		public void viewInFocus(UpperBar bar)
+		{
+			bar.setNavigationLabel("Invite To Organization", null);
+			bar.setNavigationLabel("Invite To Group", null);
+			bar.setNavigationLabel("Invite To Event", null);
+			bar.setNavigationLabel("Add People To Conversation", null);
+			bar.setNavigationLabel("Create New Conversation", null);
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 
 		async void conversationSetup(Conversation conversation)
 		{
@@ -56,12 +67,10 @@ namespace HowlOut
 			{
 				var eve = await _dataManager.EventApiManager.GetEventById(conversation.ModelId);
 				profilesThatCanBeAdded = eve.Attendees;
-				if (eve.ProfileOwner != null && !profilesThatCanBeAdded.Exists(prof => prof.ProfileId == eve.ProfileOwner.ProfileId)) profilesThatCanBeAdded.Add(eve.ProfileOwner);
-				else if (eve.OrganizationOwner != null)
-				{
-					foreach (Profile p in eve.OrganizationOwner.Members)
+				if (eve.ProfileOwners != null) {
+					foreach (Profile p in eve.GroupOwner.ProfileOwners)
 					{
-						if(!profilesThatCanBeAdded.Exists(prof => prof.ProfileId == p.ProfileId))profilesThatCanBeAdded.Add(p);
+						if (!profilesThatCanBeAdded.Exists(prof => prof.ProfileId == p.ProfileId)) profilesThatCanBeAdded.Add(p);
 					}
 				}
 			}
@@ -70,69 +79,109 @@ namespace HowlOut
 			{
 				var grp = await _dataManager.GroupApiManager.GetGroup(conversation.ModelId);
 				profilesThatCanBeAdded = grp.Members;
-				if (grp.ProfileOwner != null && !profilesThatCanBeAdded.Exists(prof => prof.ProfileId == grp.ProfileOwner.ProfileId)) profilesThatCanBeAdded.Add(grp.ProfileOwner);
-				else if (grp.OrganizationOwner != null && grp.OrganizationOwner.Members != null && grp.OrganizationOwner.Members.Count > 0)
+				if (grp.ProfileOwners != null)
 				{
-					foreach (Profile p in grp.OrganizationOwner.Members)
+					foreach (Profile p in grp.ProfileOwners)
 					{
-						if (!profilesThatCanBeAdded.Exists(prof => prof.ProfileId == p.ProfileId))profilesThatCanBeAdded.Add(p);
+						if (!profilesThatCanBeAdded.Exists(prof => prof.ProfileId == p.ProfileId)) profilesThatCanBeAdded.Add(p);
 					}
 				}
 			}
 
-			//Organization Conversation
+			//Organization Conversation 
+			/*
 			if (conversation.ModelType == ConversationModelType.Organization)
 			{
 				var org = await _dataManager.OrganizationApiManager.GetOrganization(conversation.ModelId);
 				profilesThatCanBeAdded = org.Members;
-			}
+			} */
 
 			profilesThatCanBeAdded.RemoveAll(p => p.ProfileId == App.StoredUserFacebookId);
 			setup();
 		}
 
-		public InviteListView(Event eve)
+		public InviteListView(Event eve, bool owner)
 		{
 			InitializeComponent();
-			foreach (Profile p in eve.Attendees)
+			if (owner)
 			{
-				profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				foreach (Profile p in eve.ProfileOwners)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
 			}
+			else {
+				foreach (Profile p in eve.Attendees)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
+			}
+
 			setup();
 			addBtn.Clicked += async (sender, e) =>
 			{
 				if (profilesAdded.Count > 0)
 				{
-					bool success = await _dataManager.EventApiManager.InviteProfilesToEvent(eve.EventId, profilesAdded);
+					bool success = false;
+					if (owner)
+					{
+						success = await _dataManager.EventApiManager.InviteToEventAsOwner(eve.EventId, profilesAdded);
+					}
+					else {
+						success = await _dataManager.EventApiManager.InviteProfilesToEvent(eve.EventId, profilesAdded);
+					}
 					if (success)
 					{
 						App.coreView.returnToPreviousView();
 					}
+					else {
+						App.coreView.displayAlertMessage("Error", "Error inviting.", "Ok");
+					}
 				}
 			};
-			App.coreView.topBar.setNavigationLabel("Invite To Event", null);
 		}
-		public InviteListView(Group grp)
+		public InviteListView(Group grp, bool owner)
 		{
 			InitializeComponent();
-			foreach (Profile p in grp.Members)
+			if (owner)
 			{
-				profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				foreach (Profile p in grp.ProfileOwners)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
 			}
+			else {
+				foreach (Profile p in grp.Members)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
+			}
+
 			setup();
 			addBtn.Clicked += async (sender, e) =>
 			{
 				if (profilesAdded.Count > 0)
 				{
-					bool success = await _dataManager.GroupApiManager.InviteDeclineToGroup(grp.GroupId, true, profilesAdded);
+					bool success = false;
+					if (owner)
+					{
+						await _dataManager.GroupApiManager.InviteToGroupAsOwner(grp.GroupId, profilesAdded);
+					}
+					else {
+						await _dataManager.GroupApiManager.InviteDeclineToGroup(grp.GroupId, true, profilesAdded);
+					}
 					if (success)
 					{
 						App.coreView.returnToPreviousView();
 					}
+					else {
+						App.coreView.displayAlertMessage("Error", "Error inviting.", "Ok");
+					}
 				}
 			};
-			App.coreView.topBar.setNavigationLabel("Invite To Group", null);
+
 		}
+		/*
 		public InviteListView(Organization org)
 		{
 			InitializeComponent();
@@ -149,8 +198,8 @@ namespace HowlOut
 				}
 				App.coreView.returnToPreviousView();
 			};
-			App.coreView.topBar.setNavigationLabel("Invite To Organization", null);
-		}
+
+		} */
 
 		void setup()
 		{

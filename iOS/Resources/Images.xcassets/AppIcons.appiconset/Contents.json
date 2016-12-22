@@ -1,109 +1,128 @@
 {
   "images": [
     {
+      "filename": "29.png",
       "size": "29x29",
       "scale": "1x",
       "idiom": "iphone"
     },
     {
+      "filename": "58.png",
       "size": "29x29",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
+      "filename": "87.png",
       "size": "29x29",
       "scale": "3x",
       "idiom": "iphone"
     },
     {
+      "filename": "80.png",
       "size": "40x40",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
+      "filename": "120.png",
       "size": "40x40",
       "scale": "3x",
       "idiom": "iphone"
     },
     {
-      "filename": "HOLogo_57.png",
+      "filename": "57.png",
       "size": "57x57",
       "scale": "1x",
       "idiom": "iphone"
     },
     {
-      "filename": "HOLogo_114.png",
+      "filename": "114.png",
       "size": "57x57",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
+      "filename": "120.png",
       "size": "60x60",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
+      "filename": "180.png",
       "size": "60x60",
       "scale": "3x",
       "idiom": "iphone"
     },
     {
+      "filename": "29.png",
       "size": "29x29",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "58.png",
       "size": "29x29",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "40.png",
       "size": "40x40",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "80.png",
       "size": "40x40",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "50.png",
       "size": "50x50",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "100.png",
       "size": "50x50",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "167.png",
       "size": "83.5x83.5",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "72.png",
       "size": "72x72",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "144.png",
       "size": "72x72",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "76.png",
       "size": "76x76",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "152.png",
       "size": "76x76",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
       "role": "notificationCenter",
+      "filename": "48.png",
       "size": "24x24",
       "subtype": "38mm",
       "scale": "2x",
@@ -111,6 +130,7 @@
     },
     {
       "role": "notificationCenter",
+      "filename": "55.png",
       "size": "27.5x27.5",
       "subtype": "42mm",
       "scale": "2x",
@@ -118,18 +138,21 @@
     },
     {
       "role": "companionSettings",
+      "filename": "58 15.22.13.png",
       "size": "29x29",
       "scale": "2x",
       "idiom": "watch"
     },
     {
       "role": "companionSettings",
+      "filename": "87 15.22.13.png",
       "size": "29x29",
       "scale": "3x",
       "idiom": "watch"
     },
     {
       "role": "appLauncher",
+      "filename": "80 15.22.13.png",
       "size": "40x40",
       "subtype": "38mm",
       "scale": "2x",
@@ -137,6 +160,7 @@
     },
     {
       "role": "longLook",
+      "filename": "88.png",
       "size": "44x44",
       "subtype": "42mm",
       "scale": "2x",
@@ -144,6 +168,7 @@
     },
     {
       "role": "quickLook",
+      "filename": "172.png",
       "size": "86x86",
       "subtype": "38mm",
       "scale": "2x",
@@ -151,57 +176,68 @@
     },
     {
       "role": "quickLook",
+      "filename": "196.png",
       "size": "98x98",
       "subtype": "42mm",
       "scale": "2x",
       "idiom": "watch"
     },
     {
+      "filename": "16.png",
       "size": "16x16",
       "scale": "1x",
       "idiom": "mac"
     },
     {
+      "filename": "32.png",
       "size": "16x16",
       "scale": "2x",
       "idiom": "mac"
     },
     {
+      "filename": "32.png",
       "size": "32x32",
       "scale": "1x",
       "idiom": "mac"
     },
     {
+      "filename": "64.png",
       "size": "32x32",
       "scale": "2x",
       "idiom": "mac"
     },
     {
+      "filename": "128.png",
       "size": "128x128",
       "scale": "1x",
       "idiom": "mac"
     },
     {
+      "filename": "256.png",
       "size": "128x128",
       "scale": "2x",
       "idiom": "mac"
     },
     {
+      "filename": "256.png",
       "size": "256x256",
       "scale": "1x",
       "idiom": "mac"
     },
     {
+      "filename": "512.png",
       "size": "256x256",
       "scale": "2x",
       "idiom": "mac"
     },
     {
+      "filename": "512.png",
       "size": "512x512",
       "scale": "1x",
       "idiom": "mac"
     },
     {
+      "filename": "1024.png",
       "size": "512x512",
       "scale": "2x",
       "idiom": "mac"

@@ -39,7 +39,7 @@ namespace HowlOut
 						setViewDesign(0);
 						profileGrid.Children.Clear();
 						groupGrid.Children.Clear();
-						organizationGrid.Children.Clear();
+						//organizationGrid.Children.Clear();
 					}
 				}
 				else {
@@ -49,7 +49,7 @@ namespace HowlOut
 					}
 					updateAutoCompleteProfileList(searchBar.Text);
 					updateAutoCompleteGroupList(searchBar.Text);
-					updateAutoCompleteOrganizationsList(searchBar.Text);
+					//updateAutoCompleteOrganizationsList(searchBar.Text);
 				}
 			};
 
@@ -106,22 +106,22 @@ namespace HowlOut
 		{
 			var profileSearchResult = await _dataManager.ProfileApiManager.GetProfilesFromName(input);
 			profileGrid.Children.Clear ();
-			listMaker.createList (profileSearchResult, null, null, null, null, null, false, true);
+			listMaker.createList (profileSearchResult, null, null, null, false, false, false);
 		}
 
 		public async void updateAutoCompleteGroupList(string input)
 		{
 			var groupSearchResult = await _dataManager.GroupApiManager.GetGroupsFromName (input);
 			groupGrid.Children.Clear ();
-			listMaker.createList (null, groupSearchResult, null, null, null, null, false, true);
+			listMaker.createList (null, groupSearchResult, null, null, false, false, false);
 		}
-
+		/*
 		public async void updateAutoCompleteOrganizationsList(string input)
 		{
 			var orgsSearchResult = await _dataManager.OrganizationApiManager.GetOrganizationsFromName(input);
 			organizationGrid.Children.Clear();
 			listMaker.createList(null, null, orgsSearchResult, null, null, null, false, true);
-		}
+		} */
 
 		private void setViewDesign(int number){
 			profileContent.IsVisible = false;

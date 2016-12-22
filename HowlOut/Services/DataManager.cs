@@ -22,7 +22,7 @@ namespace HowlOut
 		public EventApiManager EventApiManager { get; set; }
 		public ProfileApiManager ProfileApiManager { get; set; }
 		public GroupApiManager GroupApiManager { get; set; }
-		public OrganizationApiManager OrganizationApiManager { get; set; }
+		//public OrganizationApiManager OrganizationApiManager { get; set; }
 		public MessageApiManager MessageApiManager { get; set; }
 		public UtilityManager UtilityManager { get; set; }
 
@@ -34,7 +34,7 @@ namespace HowlOut
 			EventApiManager = new EventApiManager (httpClient);
 			ProfileApiManager = new ProfileApiManager (httpClient);
 			GroupApiManager = new GroupApiManager (httpClient);
-			OrganizationApiManager = new OrganizationApiManager(httpClient);
+			//OrganizationApiManager = new OrganizationApiManager(httpClient);
 			MessageApiManager = new MessageApiManager(httpClient);
 			UtilityManager = new UtilityManager ();
 		}
@@ -127,7 +127,7 @@ namespace HowlOut
 			if (success) {
 				App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 				await loadUpdatedProfile(profile);
-				App.coreView.setContentViewReplaceCurrent(new InspectController(profile), "", null, 1);
+				App.coreView.setContentViewReplaceCurrent(new InspectController(profile), 1);
 				App.coreView.updateHomeView();
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
@@ -157,24 +157,18 @@ namespace HowlOut
 				if (attendOrUnattend)
 				{
 					action = "You are about to join an event, continue?";
+					Continue = await App.coreView.displayConfirmMessage("Join", action, "Yes", "No");
 				}
 				else {
 					action = "You are about to leave an event, continue?";
+					Continue = await App.coreView.displayConfirmMessage("Leave", action, "Yes", "No");
 				}
-
 			}
 			else {
-				if (attendOrUnattend)
-				{
-					action = "You are about to follow an event, continue?";
-				}
-				else {
-					action = "You are about to unfollow an event, continue?";
-				}
+				Continue = true;
 			}
 
 
-			Continue = await App.coreView.displayConfirmMessage("Alert", action, "Yes", "No");
 			if (Continue)
 			{
 				bool success = await EventApiManager.AttendOrTrackEvent(eve.EventId, attendOrUnattend, joinOrTrack);
@@ -184,11 +178,15 @@ namespace HowlOut
 					return false;
 				}
 				else {
-					App.coreView.setContentViewReplaceCurrent(new InspectController(eve), "", null, 1);
+					if (App.coreView.contentViews.Count > 1)
+					{
+						App.coreView.setContentViewReplaceCurrent(new InspectController(await App.coreView._dataManager.EventApiManager.GetEventById(eve.EventId)), 1);
+					}
 					App.coreView.updateHomeView();
 					return true;
 				}
 			}
+			App.coreView.GetLoggedInProfile();
 			return Continue;
 		}
 
@@ -215,7 +213,7 @@ namespace HowlOut
 		{
 			App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 			InspectController inspect = new InspectController(profile);
-			App.coreView.setContentViewWithQueue (inspect, "UserProfile", inspect.getScrollView());
+			App.coreView.setContentViewWithQueue (inspect);
 		}
 
 
@@ -267,7 +265,7 @@ namespace HowlOut
 		public bool IsEventYours(Event eve)
 		{
 			bool yours = false;
-			if ((eve.ProfileOwner != null && eve.ProfileOwner.ProfileId == App.StoredUserFacebookId) || (eve.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == eve.OrganizationOwner.OrganizationId)))
+			if ((eve.ProfileOwners != null && eve.ProfileOwners.Exists(p => p.ProfileId == App.StoredUserFacebookId)) || (eve.GroupOwner != null && eve.GroupOwner.ProfileOwners.Exists(p => p.ProfileId == App.StoredUserFacebookId)))
 			{
 				yours = true;
 			}
@@ -277,9 +275,10 @@ namespace HowlOut
 		public bool IsEventJoined(Event eve)
 		{
 			bool yours = false;
+			/*
 			if (IsEventYours (eve)) {
 				return true;
-			} 
+			}  */
 			for (int i = 0; i < eve.Attendees.Count; i++) {
 				if (eve.Attendees[i].ProfileId == App.userProfile.ProfileId) {
 					yours = true;
@@ -291,7 +290,7 @@ namespace HowlOut
 		public bool AreYouGroupOwner(Group group)
 		{
 			bool you = false;
-			if ((group.ProfileOwner != null && group.ProfileOwner.ProfileId == App.userProfile.ProfileId) || (group.OrganizationOwner != null && App.userProfile.Organizations.Exists(o => o.OrganizationId == group.OrganizationOwner.OrganizationId))) {
+			if (group.ProfileOwners != null && group.ProfileOwners.Exists(p => p.ProfileId == App.StoredUserFacebookId)) {
 				you = true;
 			}
 			return you;
@@ -339,7 +338,6 @@ namespace HowlOut
 			NotificationModelType modelType = NotificationModelType.ProfileConversation;
 			if(cType == ConversationModelType.Event ) modelType = NotificationModelType.EventConversation;
 			if (cType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
-			if (cType == ConversationModelType.Organization) modelType = NotificationModelType.OrganizationConversation;
 
 
 			foreach (Notification n in App.coreView.notifications.unseenNotifications)
@@ -366,7 +364,6 @@ namespace HowlOut
 			NotificationModelType modelType = NotificationModelType.ProfileConversation;
 			if (mType == ConversationModelType.Event) modelType = NotificationModelType.EventConversation;
 			if (mType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
-			if (mType == ConversationModelType.Organization) modelType = NotificationModelType.OrganizationConversation;
 			List<Notification> notiToRemove = new List<Notification>();;
 			foreach (Notification n in App.coreView.notifications.unseenNotifications)
 			{
@@ -383,7 +380,8 @@ namespace HowlOut
 			}
 			foreach (Notification n in notiToRemove) App.coreView.notifications.unseenNotifications.Remove(n);
 			//await App.coreView.notifications.UpdateNotifications(false);
-			await App.coreView.conversatios.UpdateConversations(false);
+			await App.coreView.profileConversatios.UpdateConversations(false);
+			await App.coreView.otherConversatios.UpdateConversations(false);
 		}
 
 		public async Task setUpdateSeen(string modelId, NotificationModelType modelType)
@@ -399,8 +397,11 @@ namespace HowlOut
 				}
 			}
 			await App.coreView.notifications.UpdateNotifications(false);
-			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false); }
-			else if (modelType == NotificationModelType.ProfileConversation) { await App.coreView.conversatios.UpdateConversations(false); }
+			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false, ""); }
+			else if (modelType == NotificationModelType.ProfileConversation) { 
+				await App.coreView.profileConversatios.UpdateConversations(false);
+				await App.coreView.otherConversatios.UpdateConversations(false);
+			}
 		}
 
 		public async Task setNotificationSeen(string id)

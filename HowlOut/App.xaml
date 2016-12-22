@@ -12,6 +12,7 @@
 			<Color x:Key="HowlOutFade">#ffa9e4db</Color>
 			<Color x:Key="HowlOutBackground">#fff2f2f2</Color>
 			<Color x:Key="Shadow">#20000000</Color>
+			<Color x:Key="HowlOutRed">#ffe85151</Color>
 			
 			<Color x:Key="ListBackgroundColor">White</Color>
 			<Color x:Key="PlaceHolderColor">#ffd6d6d6</Color>
@@ -19,7 +20,7 @@
 
 			<Color x:Key="IconColor">#ffc8c8c8</Color>
 			<Color x:Key="TitleTextColor">#ff3f3f3f</Color>
-			<Color x:Key="NormalTextColor">#ff808080</Color>
+			<Color x:Key="NormalTextColor">#ff707070</Color>
 			<Color x:Key="LineColor">#ffb8b8b8</Color>
 
 			<!-- Formal Style -->
@@ -90,13 +91,12 @@
 			</Style>
 
 			<Style x:Key="ButtonStyle" TargetType="Button">
-				<Setter Property="TextColor" Value="{DynamicResource HowlOut}"/>
+				<Setter Property="TextColor" Value="White"/>
 				<Setter Property="FontSize" Value="16"/>
-				<Setter Property="BorderWidth" Value="1"/>
 				<Setter Property="BorderColor" Value="{DynamicResource HowlOut}"/>
 				<Setter Property="VerticalOptions" Value="CenterAndExpand"/>
 				<Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
-				<Setter Property="BackgroundColor" Value="White"/>
+				<Setter Property="BackgroundColor" Value="{DynamicResource HowlOut}"/>
 			</Style>
 
 			<Style x:Key="TypeButtonStyle" TargetType="Button">

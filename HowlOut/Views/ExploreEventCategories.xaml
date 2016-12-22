@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ExploreEventCategories" Padding="0,0,0,0">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<SearchBar x:Name="searchBar" HeightRequest="40" BackgroundColor="White" Placeholder="Search For Event" CancelButtonColor="{DynamicResource HowlOut}"/>
+
+			<Grid Grid.Row="1" x:Name="eventList"/>
+			
+			<ListView Grid.Row="1" x:Name="categoryList"
+				HasUnevenRows="false"
+				RowHeight="100"
+				CachingStrategy="RecycleElement"
+				BackgroundColor="{DynamicResource HowlOutBackground}" SeparatorVisibility="None">
+					<ListView.ItemTemplate>
+                     	 <DataTemplate>
+                      		<ViewCell Height="140">
+                      		<Grid HeightRequest="142" Padding="0" RowSpacing="0">
+								<Image Source="{Binding ImageSource}" Aspect="AspectFill" HeightRequest="144"/>
+
+								<Label Text="{Binding Category}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" FontSize="24" TextColor="White"/>
+							</Grid>
+	                  		</ViewCell>
+                      	</DataTemplate>
+                    </ListView.ItemTemplate>
+				<ListView.Footer>
+					<StackLayout HeightRequest="150">
+					</StackLayout>
+				</ListView.Footer>
+                </ListView>
+
+			<Image Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="categoryImage" TranslationY="80"/>
+			
+		</Grid>
+	</ContentView.Content>
+</ContentView>

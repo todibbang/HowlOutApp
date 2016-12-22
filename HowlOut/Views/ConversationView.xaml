@@ -6,7 +6,7 @@
 	<ContentView.Content>
 		<Grid>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="55"/>
+				<RowDefinition Height="40"/>
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 
@@ -21,9 +21,7 @@
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
 
-					<StackLayout x:Name="modelTypeView" HeightRequest="40" BackgroundColor="Aqua" IsVisible="false">
-
-					</StackLayout>
+				<!--	<StackLayout x:Name="modelTypeView" HeightRequest="30" BackgroundColor="Aqua" IsVisible="false"/> -->
 					
 					<StackLayout Grid.Row="1" x:Name="conversationListLayout">
 						<ListView VerticalOptions="Start"
@@ -39,7 +37,7 @@
 		                    <ListView.ItemTemplate>
 		                     	 <DataTemplate>
 		                      		<ViewCell>
-			                      		<local:InspectManageComment />
+			                      		<local:MessageTemplate />
 			                  		</ViewCell>
 		                      	</DataTemplate>
 		                    </ListView.ItemTemplate>
@@ -79,15 +77,12 @@
 
 
 			<StackLayout BackgroundColor="White" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10">
-				<controls:CircleImage WidthRequest="45" x:Name="conversationInfoImage" HeightRequest="45" Aspect="AspectFill"/>
+				<controls:CircleImage WidthRequest="30" x:Name="conversationInfoImage" HeightRequest="25" Aspect="AspectFill"/>
 				<StackLayout>
-					<Label x:Name="conversationInfoModelLabel" VerticalOptions="Center" TextColor="{DynamicResource HowlOut}"/>
-					<Label x:Name="conversationInfoLabel" VerticalOptions="Center" />
+					<Label x:Name="conversationInfoModelLabel" VerticalOptions="CenterAndExpand" TextColor="{DynamicResource NormalTextColor}" FontSize="12"/>
 				</StackLayout>
 			</StackLayout>
-			<Button x:Name="conversationInfoProfilesButton" TranslationX="60" BackgroundColor="Transparent"/>
-
-			
+			<Button x:Name="conversationInfoProfilesButton" BackgroundColor="Transparent"/>
 			
 			<Grid Padding="0" RowSpacing="0" x:Name="commentView" IsVisible="false" Grid.Row="0" Grid.RowSpan="2">
 				<Grid.RowDefinitions>
@@ -110,10 +105,10 @@
 					</Grid.RowDefinitions>
 					
 					<!-- <controls:CircleImage Grid.Row="0" Grid.Column="1" x:Name="usersPhoto"/> -->
-					<Button Grid.Column="2" Grid.Row="1" Text="Post" x:Name="postCommentButtonTop" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontSize="14"/>
+					<Button Grid.Column="2" Grid.Row="1" Text="Post" x:Name="postCommentButtonTop" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" FontSize="14"/>
 					<Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" BackgroundColor="White" BorderRadius="5" BorderWidth="1" BorderColor="White"/>
 					<StackLayout Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-						<local:ConversationEditor Style="{DynamicResource CommentStyle}" x:Name="commentEntryTop" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Placeholder="Write comment...."/>
+						<local:CustomEditor Style="{DynamicResource CommentStyle}" x:Name="commentEntryTop" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Placeholder="Write comment...."/>
 					</StackLayout>
 				</Grid>
 				
@@ -147,6 +142,36 @@
 			</Grid>
 
 
+			<Grid Grid.Row="0" Grid.RowSpan="2" BackgroundColor="#70000000" x:Name="editTitleGrid" IsVisible="false">
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="150"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				
+				<Button Grid.RowSpan="3" WidthRequest="1000" HeightRequest="1000" x:Name="closeEditTitle"/>
+				<Grid Grid.Row="1" Padding="20,0,20,0" VerticalOptions ="Start" HorizontalOptions="Fill" RowSpacing="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="5"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="5"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="5"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Row="0" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" BorderRadius="10" />
+
+					<Label Grid.Row="1" Grid.Column="1" Text="Change Title" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold"/>
+					<local:CustomEntry Grid.Row="2" Grid.Column="1" HorizontalOptions="Fill" x:Name="editTitleEntry" Placeholder="New Title..."/>
+					<Button Grid.Row="3" Grid.Column="1" BackgroundColor="{DynamicResource HowlOut}" BorderWidth="0" BorderRadius="15" HeightRequest="30" x:Name="editTitleButton" Text="Change Name" TextColor="White"/>
+				</Grid>
+			</Grid>
+			
 		</Grid>
 	</ContentView.Content>
 </ContentView>

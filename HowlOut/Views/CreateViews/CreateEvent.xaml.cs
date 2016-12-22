@@ -11,7 +11,7 @@ using System.IO;
 
 namespace HowlOut
 {
-	public partial class CreateEvent : ContentView
+	public partial class CreateEvent : ContentView, ViewModelInterface
 	{
 		public ContentView content { 
 			get { return this; }
@@ -31,7 +31,7 @@ namespace HowlOut
 		bool validAttendingAmount = false;
 		bool isCreate = false;
 
-		Plugin.Media.Abstractions.MediaFile mediaFile;
+		List<byte[]> imageStreams;
 		//Image banner = new Image();
 
 		public CreateEvent(Event givenEvent, bool isCreate)
@@ -40,6 +40,15 @@ namespace HowlOut
 			InitializeComponent();
 			setCreateView(givenEvent, isCreate);
 		}
+
+		public void viewInFocus(UpperBar bar)
+		{
+
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 
 		private void setCreateView(Event givenEvent, bool isCreate)
 		{
@@ -79,36 +88,17 @@ namespace HowlOut
 					mapView = new MapsView(new Position(newEvent.Latitude, newEvent.Longitude));
 				}
 				mapView.createEventView = this;
-				App.coreView.setContentViewWithQueue(mapView, "MapsView", null);
+				App.coreView.setContentViewWithQueue(mapView);
 
 			};
 
-			visibilityPicker.SelectedIndexChanged += async (sender, e) =>
+			visibilityPicker.SelectedIndexChanged += (sender, e) =>
 			{
-				visibilityPicker.Items[1] = "Group";
-				newEvent.GroupSpecific = null;
+				//visibilityPicker.Items[1] = "Group";
+				//newEvent.GroupSpecific = null;
 				System.Diagnostics.Debug.WriteLine(visibilityPicker.SelectedIndex);
-				if (visibilityPicker.SelectedIndex == 0)
-				{
-					newEvent.Visibility = Visibility.Open;
-				}
-				if (visibilityPicker.SelectedIndex == 1)
-				{
-					bool success = await App.coreView.otherFunctions.GroupEventIsFor(SelectSenderLayout, newEvent);
-					if (success)
-					{
-						newEvent.Visibility = Visibility.Closed;
-						await Task.Delay(50);
-						visibilityPicker.Items[1] = "Group: " + newEvent.GroupSpecific.Name;
-					}
-					else {
-						visibilityPicker.SelectedIndex = 0;
-					}
-				}
-				if (visibilityPicker.SelectedIndex == 2)
-				{
-					newEvent.Visibility = Visibility.Secret;
-				}
+				if (visibilityPicker.SelectedIndex == 0) { newEvent.Visibility = EventVisibility.Public; }
+				if (visibilityPicker.SelectedIndex == 1) { newEvent.Visibility = EventVisibility.Private; }
 				visibilityString.Text = visibilityPicker.Items[visibilityPicker.SelectedIndex];
 			};
 			visibilityString.Text = visibilityPicker.Title;
@@ -142,11 +132,7 @@ namespace HowlOut
 			{
 				try
 				{
-					mediaFile = await _dataManager.UtilityManager.TakePicture();
-					if (mediaFile != null)
-					{
-						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					}
+					imageStreams = await _dataManager.UtilityManager.TakePicture(SelectedBannerImage.Source);
 				}
 				catch (Exception ex) { }
 			};
@@ -157,11 +143,7 @@ namespace HowlOut
 			{
 				try
 				{
-					mediaFile = await _dataManager.UtilityManager.PictureFromAlbum();
-					if (mediaFile != null)
-					{
-						SelectedBannerImage.Source = ImageSource.FromStream(mediaFile.GetStream);
-					}
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage.Source);
 				}
 				catch (Exception ex) { }
 			};
@@ -171,14 +153,14 @@ namespace HowlOut
 			{
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
-				App.coreView.setContentViewWithQueue(selectBannerView, "", null);
+				App.coreView.setContentViewWithQueue(selectBannerView);
 			};
 
 			launchButton.Clicked += async (sender, e) =>
 			{
 				if (isCreate && !Launching)
 				{
-					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, newEvent, null);
+					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, newEvent);
 					if (continueCreating)
 					{
 						LaunchEvent(newEvent);
@@ -224,7 +206,7 @@ namespace HowlOut
 		public void setBanner(string banner) {
 			SelectedBannerImage.Source = banner;
 			newEvent.ImageSource = banner;
-			mediaFile = null;
+			imageStreams = null;
 		}
 
 		private void setNewEvent()
@@ -272,13 +254,7 @@ namespace HowlOut
 			locationEntry.Text = newEvent.AddressName;
 			NumberAttendendeesEntry.Text = newEvent.MaxSize+"";
 			validAttendingAmount = true;
-			if (newEvent.GroupSpecific != null)
-			{
-				visibilityPicker.Title = "Group: " + newEvent.GroupSpecific.Name;
-			}
-			else {
-				visibilityPicker.Title = newEvent.Visibility.ToString();
-			}
+			visibilityPicker.Title = newEvent.Visibility.ToString();
 
 			visibilityPicker.IsEnabled = false;
 			SelectedBannerImage.Source = newEvent.ImageSource;
@@ -288,13 +264,13 @@ namespace HowlOut
 		private async void LaunchEvent(Event eventToCreate)
 		{
 			App.coreView.IsLoading(true);
-			if (mediaFile != null)
+			if (imageStreams != null)
 			{
-				eventToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(mediaFile.GetStream(), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
+				eventToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
 			}
-			if (eventToCreate.OrganizationOwner == null)
+			if (eventToCreate.GroupOwner == null)
 			{
-				eventToCreate.ProfileOwner = App.userProfile;
+				eventToCreate.ProfileOwners = new List<Profile> { App.userProfile };
 			}
 
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
@@ -324,11 +300,11 @@ namespace HowlOut
 					InspectController inspect = new InspectController(eventCreated);
 					if (isCreate)
 					{
-						App.coreView.setContentViewWithQueue(inspect, "Event", inspect.getScrollView());
+						App.coreView.setContentViewWithQueue(inspect);
 						App.coreView.updateHomeView();
 					}
 					else {
-						App.coreView.setContentViewReplaceCurrent(inspect, "", null, 2);
+						App.coreView.setContentViewReplaceCurrent(inspect, 2);
 					}
 					//setCreateView(new Event(), true);
 					App.coreView.createEvent = new CreateEvent(new Event(), true);

@@ -74,14 +74,18 @@ namespace HowlOut.iOS
 		{
 			if (previous == null)
 			{
-				var uiImage = new UIImage(Element.Source);
-				uiImage = uiImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
-				Control.TintColor = Element.Foreground.ToUIColor();
-				Control.Image = uiImage;
-				if (!_isDisposed)
+				try
 				{
-					((IVisualElementController)Element).NativeSizeChanged();
+					var uiImage = new UIImage(Element.Source);
+					uiImage = uiImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+					Control.TintColor = Element.Foreground.ToUIColor();
+					Control.Image = uiImage;
+					if (!_isDisposed)
+					{
+						((IVisualElementController)Element).NativeSizeChanged();
+					}
 				}
+				catch (Exception e) { }
 			}
 		}
 	}

@@ -23,12 +23,13 @@ namespace HowlOut
 				App.coreView.returnToPreviousView();
 			};				
 
+			/*
 			var newMessage = new TapGestureRecognizer();
 			newMessage.Tapped += async (sender, e) =>
 			{
 				await newConversationBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await newConversationBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = CVList.modelId, ModelType = CVList.modelType }, true ), "Create Group", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = CVList.modelId, ModelType = CVList.modelType }, true ));
 			};
 			newConversationBtn.GestureRecognizers.Add(newMessage);
 
@@ -37,7 +38,7 @@ namespace HowlOut
 			{
 				await addPeopleToCvBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await addPeopleToCvBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation, false), "Create Group", null);
+				App.coreView.setContentViewWithQueue(new InviteListView(CV.conversation, false));
 			};
 			addPeopleToCvBtn.GestureRecognizers.Add(addPeopleToCv);
 
@@ -52,9 +53,10 @@ namespace HowlOut
 			{
 				await filterSearchBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await filterSearchBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchPreference), "FilterSearch", null);
+				App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchPreference));
 			};
 			filterSearchBtn.GestureRecognizers.Add(createImage);
+			*/
 
 			navigationLabel.Clicked += (sender, e) =>
 			{
@@ -73,19 +75,46 @@ namespace HowlOut
 
 		public void hideAll()
 		{
-			showNewConversationButton(false, null);
-			showFilterSearchButton(false);
 			showBackButton(false);
-			showAddPeopleToConversationButton(false, null);
 			scrollView = null;
-		}
 
+			rightImg.IsVisible = false;
+			rightButton.IsVisible = false;
+
+			setNavigationLabel("", null);
+		} 
+
+		/*
 		public void showNewConversationButton(bool show, YourConversations yc)
 		{
 			newConversationBtn.IsVisible = show;
 			CVList = yc;
 		}
 
+		public void showShareBtn(bool show, Event eve)
+		{
+			shareEventBtn.IsVisible = show;
+			if (show)
+			{
+				TapGestureRecognizer tgr = new TapGestureRecognizer();
+				tgr.Tapped += async (sender, e) =>
+				{
+					//App.coreView.DisplayShare(eve);
+
+					App.coreView._dataManager.AttendTrackEvent(eve, false, true);
+				};
+				shareEventBtn.GestureRecognizers.Add(tgr);
+			}
+			else {
+				for (int i = shareEventBtn.GestureRecognizers.Count - 1; i > -1; i--)
+				{
+					shareEventBtn.GestureRecognizers.RemoveAt(i);
+				}
+			}
+		}
+		*/
+
+		/*
 		public void showAddPeopleToConversationButton(bool show, ConversationView cv)
 		{
 			addPeopleToCvBtn.IsVisible = show;
@@ -96,10 +125,11 @@ namespace HowlOut
 		public void showFilterSearchButton(bool show)
 		{
 			filterSearchBtn.IsVisible = show;
-		}
+		} */
 
 		public void setNavigationLabel(string label, ScrollView s)
 		{
+			
 			navigationLabel.Text = label;
 			scrollView = s;
 
@@ -110,10 +140,31 @@ namespace HowlOut
 			}
 		}
 
+		public Button setRightButton(string imageSource)
+		{
+			rightImg.IsVisible = true;
+			rightButton.IsVisible = true;
+			thisGrid.Children.Remove(rightButton);
+
+			rightButton = new Button();
+			thisGrid.Children.Add(rightButton, 2, 0);
+
+			rightImg.Source = imageSource;
+			return rightButton;
+		}
+
 		public void showBackButton(bool active)
 		{
 			backBtn.IsVisible = active;
 			backButton.IsVisible = active;
+		}
+
+		public Button setNavigationlabel(string label)
+		{
+			thisGrid.Children.Remove(navigationLabel);
+			navigationLabel = new Button() {TextColor = Color.White, FontSize = 18,Text = label};
+			thisGrid.Children.Add(navigationLabel, 1, 0);
+			return navigationLabel;
 		}
 	}
 }

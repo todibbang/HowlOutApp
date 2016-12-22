@@ -5,7 +5,6 @@ namespace HowlOut
 	{
 		Event,
 		Group,
-		Organization,
 		Profile,
 	}
 }

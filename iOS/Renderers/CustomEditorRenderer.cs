@@ -16,7 +16,7 @@
 				{ 					Control.TextColor = App.PlaceHolderColor.ToUIColor();
 					Control.Text = Placeholder; 				}
 				else { 					Control.TextColor = App.NormalTextColor.ToUIColor(); 				}
-				//Control.Layer.BorderColor = Color.White.ToCGColor();
+				Control.Layer.BorderColor = App.HowlOutBackground.ToCGColor();
 				Control.Layer.BorderWidth = 0; 				Control.Layer.CornerRadius = 4; 				Control.TextAlignment = UITextAlignment.Left;
 
 				Control.ShouldBeginEditing += (UITextView textView) =>

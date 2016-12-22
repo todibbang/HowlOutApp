@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
-	public partial class FilterSearch : ContentView
+	public partial class FilterSearch : ContentView, ViewModelInterface
 	{	
 		SearchSettings newSearchSettings;
 		DataManager _dataManager;
@@ -15,62 +15,46 @@ namespace HowlOut
 		public FilterSearch(SearchSettings userSearchSettings)
 		{
 			InitializeComponent();
-			newSearchSettings = userSearchSettings;
-			_dataManager = new DataManager();
 
-			if(newSearchSettings != null) {
+			try
+			{
 
+				newSearchSettings = userSearchSettings;
+				_dataManager = new DataManager();
 
-				distance.Minimum = 0;
-				distance.Maximum = 1000;
-				distance.Value = (int)newSearchSettings.Distance;
-				distanceLabel.Text = "Distance " + ((int)distance.Value) + " km";
-
-				distance.ValueChanged += (sender, e) =>
+				if (newSearchSettings != null)
 				{
-					distanceLabel.Text = "Distance " + ((int)distance.Value + " km");
-					newSearchSettings.Distance = distance.Value;
-				};
 
 
+					distance.Minimum = 0;
+					distance.Maximum = 1000;
+					distance.Value = (int)newSearchSettings.Distance;
+					distanceLabel.Text = "Distance " + ((int)distance.Value) + " km";
 
-				EventCategory.ManageCategories(eventTypeGrid, newSearchSettings.EventTypes, false);
-				/*
-				int row = 0;
-				int column = 1;
-				eventTypeGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-				foreach (EventType en in Enum.GetValues(typeof(EventType)))
-				{
-					if (column == 9)
+					distance.ValueChanged += (sender, e) =>
 					{
-						eventTypeGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-						column = 1;
-						row++;
-					}
-
-					bool selected = false;
-					if (newSearchSettings.EventTypes.Contains(en)) { selected = true; }
-					EventCategoryButton b = new EventCategoryButton(en, selected, 60, null);
-					//typeButtons.Add(b);
-					eventTypeGrid.Children.Add(b, column, row);
-					b.button.Clicked += (sender, e) =>
-					{
-						if (newSearchSettings.EventTypes.Contains(en)) { 
-							newSearchSettings.EventTypes.Remove(en);
-						} else { 
-							newSearchSettings.EventTypes.Add(en);
-						}
+						distanceLabel.Text = "Distance " + ((int)distance.Value + " km");
+						newSearchSettings.Distance = distance.Value;
 					};
-					column += 2;
-				}
-				*/
+					EventCategory.ManageCategories(eventTypeGrid, newSearchSettings.EventTypes, false);
 
-				updateButton.Clicked += (sender, e) =>
-				{
-					UpdateSearch();
-				};
+					updateButton.Clicked += (sender, e) =>
+					{
+						UpdateSearch();
+					};
+				}
 			}
+			catch (Exception e) { }
 		}
+
+		public void viewInFocus(UpperBar bar)
+		{
+			
+		}
+
+		public void viewExitFocus() {  }
+
+		public ContentView getContentView() { return this; }
 
 		private async void UpdateSearch()
 		{

@@ -26,9 +26,9 @@
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>iPhone Developer: Tobias Bang (SSKPRUQV88)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchProfiling>true</MtouchProfiling>
-    <CodesignProvision>11690235-9b73-4779-b0f1-a5da987c50ad</CodesignProvision>
+    <CodesignProvision></CodesignProvision>
     <CodesignEntitlements>Info.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -44,6 +44,7 @@
     <MtouchUseSGen>true</MtouchUseSGen>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <CodesignProvision></CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>full</DebugType>
@@ -78,7 +79,7 @@
     <MtouchProfiling>true</MtouchProfiling>
     <IpaPackageName>
     </IpaPackageName>
-    <CodesignProvision>11690235-9b73-4779-b0f1-a5da987c50ad</CodesignProvision>
+    <CodesignProvision></CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -181,8 +182,37 @@
       <InProject>false</InProject>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\HOLogo_57.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\HOLogo_114.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\29.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\58.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\87.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\120.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\57.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\114.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\180.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\40.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\80.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\50.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\100.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\76.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\72.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\144.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\152.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\167.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\58 15.22.13.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\87 15.22.13.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\80 15.22.13.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\48.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\55.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\88.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\172.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\196.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\16.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\32.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\64.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\128.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\256.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\512.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\1024.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
@@ -212,6 +242,9 @@
     <Compile Include="Renderers\UserNotificationCenterDelegate.cs" />
     <Compile Include="Renderers\FacebookShareButtonRenderer.cs" />
     <Compile Include="Renderers\FacebookSendButtonRenderer.cs" />
+    <Compile Include="Renderers\SocialControllerRenderer.cs" />
+    <Compile Include="Renderers\ListViewCellRenderer.cs" />
+    <Compile Include="Renderers\ImageResizeRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">
@@ -233,15 +266,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <BundleResource Include="Resources\ic_action_search.png" />
-    <BundleResource Include="Resources\ic_chevron_left.png" />
     <BundleResource Include="Resources\howlouticongrown.png" />
-    <BundleResource Include="Resources\ic_chevron.png" />
-    <BundleResource Include="Resources\ic_event.png" />
-    <BundleResource Include="Resources\ic_public.png" />
-    <BundleResource Include="Resources\ic_refresh.png" />
     <BundleResource Include="Resources\ic_explore.png" />
-    <BundleResource Include="Resources\ic_calender.png" />
     <BundleResource Include="Resources\ic_search.png" />
     <BundleResource Include="Resources\ic_add.png" />
     <BundleResource Include="Resources\gradiant_bg.png" />
@@ -265,17 +291,13 @@
     <BundleResource Include="Resources\ic_location.png" />
     <BundleResource Include="Resources\ic_time.png" />
     <BundleResource Include="Resources\ic_description.png" />
-    <BundleResource Include="Resources\is_search.png" />
     <BundleResource Include="Resources\ic_map.png" />
     <BundleResource Include="Resources\ic_social.png" />
-    <BundleResource Include="Resources\ic_group_add.png" />
     <BundleResource Include="Resources\ic_back.png" />
-    <BundleResource Include="ic_camera.png" />
     <BundleResource Include="Resources\ic_settings.png" />
     <BundleResource Include="Resources\ic_manage.png" />
     <BundleResource Include="Resources\ic_me.png" />
     <BundleResource Include="Resources\ic_eye.png" />
-    <BundleResource Include="Resources\white_opac.png" />
     <BundleResource Include="Resources\ic_album.png" />
     <BundleResource Include="Resources\launch_screen.jpeg" />
     <BundleResource Include="Resources\default_icon.png" />
@@ -301,6 +323,15 @@
     <BundleResource Include="Resources\ic_message.png" />
     <BundleResource Include="Resources\ic_organization.png" />
     <BundleResource Include="Resources\ic_group.png" />
+    <BundleResource Include="Resources\ic_share.png" />
+    <BundleResource Include="Resources\ic_messenger.png" />
+    <BundleResource Include="Resources\ic_twitter.png" />
+    <BundleResource Include="Resources\ic_facebook.png" />
+    <BundleResource Include="Resources\login_image.jpeg" />
+    <BundleResource Include="Resources\ic_paw.png" />
+    <BundleResource Include="Resources\ic_leave.png" />
+    <BundleResource Include="Resources\ic_menu.png" />
+    <BundleResource Include="Resources\gradiant_mng.png" />
   </ItemGroup>
   <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\packages\Xamarin.Insights.1.12.3\build\Xamarin.iOS10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.12.3\build\Xamarin.iOS10\Xamarin.Insights.targets')" />

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace HowlOut
 {
-	public partial class YourNotifications : ContentView
+	public partial class YourNotifications : ContentView, ViewModelInterface
 	{
 		private DataManager _dataManager;
 		List<Notification> notiList = new List<Notification>();
@@ -28,6 +28,23 @@ namespace HowlOut
 			updateList.ItemSelected += OnListItemSelected;
 			updateList.Refreshing += async (sender, e) => { await UpdateLists(); };
 		}
+
+		public void viewInFocus(UpperBar bar)
+		{
+			bar.setNavigationLabel("Notifications", null);
+
+			/*
+			bar.setRightButton("ic_share.png").Clicked += async (sender, e) =>
+			{
+				await App.coreView._dataManager.AttendTrackEvent(eve, false, true);
+			};
+
+			bar.showNewConversationButton(true, App.coreView.profileConversatios); */
+		}
+
+		public void viewExitFocus() { }
+
+		public ContentView getContentView() { return this; }
 
 		async Task UpdateLists()
 		{
@@ -54,7 +71,7 @@ namespace HowlOut
 			foreach (Notification c in notiList)
 			{
 				if (!c.Seen && (c.ModelType == NotificationModelType.ProfileConversation || c.ModelType == NotificationModelType.EventConversation || 
-				                c.ModelType == NotificationModelType.GroupConversation || c.ModelType == NotificationModelType.OrganizationConversation))
+				                c.ModelType == NotificationModelType.GroupConversation))
 				{
 					commentNoti.Add(c);
 				}
@@ -111,11 +128,6 @@ namespace HowlOut
 			{
 				await App.coreView.GoToSelectedGroup(selectedNotification.ModelId);
 			}
-			else if (selectedNotification.ModelType == NotificationModelType.Organization ||
-			         selectedNotification.ModelType == NotificationModelType.OrganizationConversation)
-			{
-				await App.coreView.GoToSelectedOrganization(selectedNotification.ModelId);
-			}
 			else if (selectedNotification.ModelType == NotificationModelType.Profile )
 			{
 				await App.coreView.GoToSelectedProfile(selectedNotification.ModelId);
@@ -126,8 +138,7 @@ namespace HowlOut
 			}
 
 			if (selectedNotification.ModelType == NotificationModelType.EventConversation ||
-			    selectedNotification.ModelType == NotificationModelType.GroupConversation ||
-			    selectedNotification.ModelType == NotificationModelType.OrganizationConversation)
+			    selectedNotification.ModelType == NotificationModelType.GroupConversation)
 			{
 				await App.coreView.GoToSelectedConversation(selectedNotification.SecondModelId);
 			}

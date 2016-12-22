@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InviteListView"
-		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,0,0,0" 
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid BackgroundColor="White" Padding="0,10,0,10">
+		<Grid BackgroundColor="{DynamicResource HowlOutBackground}" Padding="0,10,0,10">
 
              <Grid.RowDefinitions>
 				<RowDefinition Height="20"/>
 				<RowDefinition Height="1*"/>
 				<RowDefinition Height="20"/>
-				<RowDefinition Height="2*"/>
+				<RowDefinition Height="3*"/>
 				<RowDefinition Height="50"/>
 			</Grid.RowDefinitions>
 
-			<Label Text="People Added" Grid.Row="0" TextColor="{DynamicResource HowlOut}" HorizontalOptions="Center"/>
+			<Label Text="People Added" Grid.Row="0" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
 			
 			<ListView x:Name="addedToConversationList" Grid.Row="1"
 			HasUnevenRows="true"
 			InputTransparent="false"
-			SeparatorVisibility="None"
 			CachingStrategy="RecycleElement"
-			BackgroundColor="#10000000">
+			BackgroundColor="White">
                 <ListView.ItemTemplate>
                  	 <DataTemplate>
                   		<ViewCell>
@@ -34,11 +33,9 @@
 									<RowDefinition Height="30"/>
 								</Grid.RowDefinitions>
 
-								<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="0,0,0,2" BackgroundColor="{DynamicResource Shadow}">
-									<StackLayout Padding="30,0,0,0" VerticalOptions="FillAndExpand" BackgroundColor="White" Orientation="Horizontal">
-										<Label TextColor="{DynamicResource HowlOut}" Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-										<Label TextColor="{DynamicResource HowlOut}" Text="- " HorizontalOptions="EndAndExpand"/>
-									</StackLayout>
+								<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="30,0,10,0" VerticalOptions="FillAndExpand" Orientation="Horizontal" Spacing="0,0,0,0">
+									<Label TextColor="{DynamicResource NormalTextColor}" Text="{Binding Name}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+									<Label TextColor="{DynamicResource HowlOutRed}" Text="- " HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold"/>
 								</StackLayout>
 								<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ImageSource}" Aspect="AspectFill"/>
 							</Grid>
@@ -47,13 +44,12 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-			<Label Text="Friends" Grid.Row="2" TextColor="{DynamicResource HowlOut}" HorizontalOptions="Center"/>
+			<Label Text="Friends" Grid.Row="2" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
 			<ListView x:Name="profilesToBeAdded" Grid.Row="3"
 			HasUnevenRows="true"
 			InputTransparent="false"
-			SeparatorVisibility="None"
 			CachingStrategy="RecycleElement"
-			BackgroundColor="#10000000">
+			BackgroundColor="White">
                 <ListView.ItemTemplate>
                  	 <DataTemplate>
                   		<ViewCell>
@@ -67,11 +63,9 @@
 									<RowDefinition Height="30"/>
 								</Grid.RowDefinitions>
 
-								<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="0,0,0,2" BackgroundColor="{DynamicResource Shadow}">
-									<StackLayout Padding="30,0,0,0" VerticalOptions="FillAndExpand" BackgroundColor="White" Orientation="Horizontal">
-										<Label TextColor="{DynamicResource HowlOut}" Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-										<Label TextColor="{DynamicResource HowlOut}" Text="+ " HorizontalOptions="EndAndExpand"/>
-									</StackLayout>
+								<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="30,0,10,0" VerticalOptions="FillAndExpand" Orientation="Horizontal" Spacing="0,0,0,0">
+									<Label TextColor="{DynamicResource NormalTextColor}" Text="{Binding Name}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+									<Label TextColor="{DynamicResource HowlOut}" Text="+ " HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold"/>
 								</StackLayout>
 								<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ImageSource}" Aspect="AspectFill"/>
 							</Grid>

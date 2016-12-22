@@ -19,30 +19,51 @@ namespace HowlOut
 				SetInfo(group.ImageSource, group.Name, group.Description, design, ModelType.Group);
 			}
 			catch (Exception ex) { }
-			subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewWithQueue(new InspectController(group), "", null); };
-			setInfo();
+
+			subjBtn.Clicked += (sender, e) => { 
+				if (dims >= 200)
+				{
+					OtherFunctions of = new OtherFunctions();
+					of.ViewImages(new List<string>() { group.ImageSource });
+					//subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1); };
+				}
+				else {
+					App.coreView.setContentViewWithQueue(new InspectController(group));
+				}
+			};
+
+			setInfo(dims);
 		}
 
-		async void setInfo()
+		async void setInfo(int dims)
 		{
 			if(group != null)group = await new DataManager().GroupApiManager.GetGroup(group.GroupId);
 			try
 			{
 				if (App.coreView._dataManager.AreYouGroupOwner(group))
 				{
+					/*
 					editBtn.IsVisible = true;
 					editBtn.Text = "Edit";
 					editBtn.Clicked += (sender, e) =>
 					{
-						App.coreView.setContentViewWithQueue(new CreateGroup(group, false), "", null);
+						App.coreView.setContentViewWithQueue(new CreateGroup(group, false));
 					};
 
 					addBtn.IsVisible = true;
 					addBtn.Text = "Invite";
 					addBtn.Clicked += (sender, e) =>
 					{
-						App.coreView.setContentViewWithQueue(new InviteListView(group), "", null);
+						App.coreView.setContentViewWithQueue(new InviteListView(group, false));
 					};
+
+					removeBtn.IsVisible = true;
+					removeBtn.Text = "Invite as owner";
+					removeBtn.Clicked += (sender, e) =>
+					{
+						App.coreView.setContentViewWithQueue(new InviteListView(group, true));
+					}; */
+					/*
 					if (group.OrganizationOwner != null)
 					{
 						if (group.Members.Exists(p => p.ProfileId == App.StoredUserFacebookId))
@@ -52,7 +73,7 @@ namespace HowlOut
 							removeBtn.Clicked += async (sender, e) =>
 							{
 								await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Leave);
-								App.coreView.setContentViewWithQueue(new InspectController(group), "", null);
+								App.coreView.setContentViewWithQueue(new InspectController(group));
 							};
 						}
 						else {
@@ -61,31 +82,64 @@ namespace HowlOut
 							removeBtn.Clicked += async (sender, e) =>
 							{
 								await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Request);
-								App.coreView.setContentViewWithQueue(new InspectController(group), "", null);
+								App.coreView.setContentViewWithQueue(new InspectController(group));
 							};
 						}
 
 					}
+					*/
 				}
-				else if (App.userProfile.GroupsInviteTo.Exists(g => g.GroupId == group.GroupId))
+				else if (App.userProfile.GroupsInviteTo.Exists(g => g.GroupId == group.GroupId) || App.userProfile.GroupsInviteToAsOwner.Exists(g => g.GroupId == group.GroupId))
 				{
+					bool owner = false;
+					if (App.userProfile.GroupsInviteToAsOwner.Exists(g => g.GroupId == group.GroupId)) { owner = true;}
+
 					addBtn.IsVisible = true;
 					addBtn.Text = "Accept";
 					addBtn.Clicked += async (sender, e) =>
 					{
-						await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Accept);
-						addBtn.IsEnabled = false;
-						removeBtn.IsVisible = false;
+						if (owner)
+						{
+							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroupAsOwner(group.GroupId, OwnerHandlingType.Accept);
+						} else {
+							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Accept);
+						}
+						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+						if (dims >= 200)
+						{
+							App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1);
+						}
+						else {
+							//addBtn.IsEnabled = false;
+							//removeBtn.IsVisible = false;
+							App.coreView.setContentView(4);
+						}
 					};
 					removeBtn.IsVisible = true;
 					removeBtn.Text = "Decline";
 					removeBtn.Clicked += async (sender, e) =>
 					{
-						await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Decline);
-						removeBtn.IsEnabled = false;
-						addBtn.IsVisible = false;
+						if (owner)
+						{
+							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroupAsOwner(group.GroupId, OwnerHandlingType.Decline);
+						}
+						else {
+							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Decline);
+						}
+						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+						if (dims >= 200)
+						{
+							App.coreView.setContentView(4);
+						}
+						else {
+							//removeBtn.IsEnabled = false;
+							//addBtn.IsVisible = false;
+							App.coreView.setContentView(4);
+						}
 					};
+					setPillButtonLayout(new List<Button>() { addBtn, removeBtn });
 				}
+				/*
 				else if (App.userProfile.Groups.Exists(g => g.GroupId == group.GroupId))
 				{
 					removeBtn.IsVisible = true;
@@ -93,34 +147,27 @@ namespace HowlOut
 					removeBtn.Clicked += async (sender, e) =>
 					{
 						await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Leave);
-						removeBtn.IsEnabled = false;
+						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+						App.coreView.setContentView(4);
 					};
-				}
-				else
+				} */
+				else if (!App.userProfile.Groups.Exists(g => g.GroupId == group.GroupId))
 				{
 					addBtn.IsVisible = true;
 					addBtn.Text = "Join";
 					addBtn.Clicked += async (sender, e) =>
 					{
 						await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Request);
-						addBtn.IsEnabled = false;
+						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+						if (dims >= 200)
+						{
+							App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1);
+						}
+						else {
+							App.coreView.setContentView(4);
+						}
 					};
 				}
-
-				if (group.OrganizationOwner != null)
-				{
-					organizationImage.Source = group.OrganizationOwner.ImageSource;
-					subName.Text = "owned by " + group.OrganizationOwner.Name;
-					organizationImage.IsVisible = true;
-					subName.IsVisible = true;
-					var createImage = new TapGestureRecognizer();
-					createImage.Tapped += async (sender, e) =>
-					{
-						App.coreView.GoToSelectedOrganization(group.OrganizationOwner.OrganizationId);
-					};
-					organizationImage.GestureRecognizers.Add(createImage);
-				}
-
 			}
 			catch (Exception ex) {}
 		}

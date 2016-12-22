@@ -121,5 +121,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to photos.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>HowlOut would like to access your calendar</string>
 </dict>
 </plist>

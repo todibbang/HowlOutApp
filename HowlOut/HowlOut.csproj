@@ -145,7 +145,6 @@
     </Compile>
     <Compile Include="Renderers\CustomPicker.cs" />
     <Compile Include="Renderers\CropImage.cs" />
-    <Compile Include="Models\Visibility.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Conversation.cs" />
     <Compile Include="Renderers\FacebookLoginButton.cs" />
@@ -240,6 +239,31 @@
     <Compile Include="Views\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModelInterface.cs" />
+    <Compile Include="Renderers\SocialController.cs" />
+    <EmbeddedResource Include="Views\CoreLayout\HowlOutLogin.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\CoreLayout\HowlOutLogin.xaml.cs">
+      <DependentUpon>HowlOutLogin.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\ExploreEventCategories.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\ExploreEventCategories.xaml.cs">
+      <DependentUpon>ExploreEventCategories.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EventCategoryListItem.cs" />
+    <Compile Include="Enums\OwnerHandlingType.cs" />
+    <Compile Include="Enums\EventVisibility.cs" />
+    <Compile Include="Enums\GroupVisibility.cs" />
+    <EmbeddedResource Include="Views\Components\MessageTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="Views\Components\MessageTemplate.xaml.cs">
+      <DependentUpon>MessageTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ImageResizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />

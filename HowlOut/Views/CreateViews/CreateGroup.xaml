@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.CreateGroup"
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
-			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut">
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut" Padding="0,0,0,0">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0">
 			<Grid.RowDefinitions>
@@ -55,11 +55,11 @@
 							<local:Line Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<local:CustomEntry Grid.Row="4" Grid.Column="2" HorizontalOptions="Fill" x:Name="visibilityString"/>
 							<StackLayout Grid.Row="4" Grid.Column="2" Padding="9,6,0,6" VerticalOptions="Fill">
-								<local:CustomPicker Title="Open" HasBorder="false" TextColor="Transparent" VerticalOptions="CenterAndExpand" x:Name="visibilityPicker" BackgroundColor="Transparent">
+								<local:CustomPicker Title="Public" HasBorder="false" TextColor="Transparent" VerticalOptions="CenterAndExpand" x:Name="visibilityPicker" BackgroundColor="Transparent">
 							        <local:CustomPicker.Items>
-							            <x:String>Open</x:String> 
+							            <x:String>Public</x:String> 
 										<x:String>Closed</x:String>
-										<x:String>Secret</x:String>
+										<x:String>Private</x:String>
 							        </local:CustomPicker.Items>
 							    </local:CustomPicker> 
 							</StackLayout>
@@ -150,7 +150,7 @@
 
 
 			-->
-			<StackLayout Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="SelectSenderLayout" BackgroundColor="#70000000" IsVisible="false" Padding="20,100,20,0"/>
+			<StackLayout Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="SelectSenderLayout" BackgroundColor="#bbffffff" IsVisible="false" Padding="20,100,20,0"/>
 
 		</Grid>
 	</ContentView.Content>

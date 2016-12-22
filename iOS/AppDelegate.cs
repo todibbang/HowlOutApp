@@ -107,6 +107,8 @@ namespace HowlOut.iOS
 		{
 			ProcessNotification(userInfo, notiCheck);
 
+
+
 			NSObject Type;
 			NSObject Id;
 
@@ -114,9 +116,13 @@ namespace HowlOut.iOS
 			if (success)
 			{
 				success = userInfo.TryGetValue(new NSString("id"), out Id);
+				NSDictionary aps = userInfo.ObjectForKey(new NSString("aps")) as NSDictionary;
+				string alert = string.Empty;
+				if (aps.ContainsKey(new NSString("alert"))) 
+					alert = (aps[new NSString("alert")] as NSString).ToString();
 				if (success)
 				{
-					App.notificationController.HandlePushNotification(Type.ToString(), Id.ToString(), notiCheck);
+					App.notificationController.HandlePushNotification(Type.ToString(), Id.ToString(), notiCheck, alert);
 				}
 			}
 		}
@@ -148,8 +154,8 @@ namespace HowlOut.iOS
 					//Manually show an alert
 					if (!string.IsNullOrEmpty(alert))
 					{
-						UIAlertView avAlert = new UIAlertView("Notification", alert, null, "OK", null);
-						avAlert.Show();
+						//UIAlertView avAlert = new UIAlertView("Notification", alert, null, "OK", null);
+						//avAlert.Show();
 					}
 				}
 			}

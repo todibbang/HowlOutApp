@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+
+using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace HowlOut
 {
@@ -10,7 +14,7 @@ namespace HowlOut
 		{
 			this.org = org;
 			SetInfo(org.ImageSource, org.Name, org.Description, design, ModelType.Organization);
-			subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewWithQueue(new InspectController(org), "", null); };
+			subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewWithQueue(new InspectController(org)); };
 			setInfo();
 		}
 
@@ -23,14 +27,14 @@ namespace HowlOut
 				editBtn.Text = "Edit";
 				editBtn.Clicked += (sender, e) =>
 				{
-					App.coreView.setContentViewWithQueue(new CreateOrganization(org, false), "", null);
+					App.coreView.setContentViewWithQueue(new CreateOrganization(org, false));
 				};
 
 				addBtn.IsVisible = true;
 				addBtn.Text = "Invite";
 				addBtn.Clicked += (sender, e) =>
 				{
-					App.coreView.setContentViewWithQueue(new InviteListView(org), "", null);
+					App.coreView.setContentViewWithQueue(new InviteListView(org));
 				};
 
 				removeBtn.IsVisible = true;
@@ -38,7 +42,7 @@ namespace HowlOut
 				removeBtn.Clicked += async (sender, e) =>
 				{
 					await _dataManager.OrganizationApiManager.AcceptDeclineLeaveOrganization(org.OrganizationId, OrganizationApiManager.OrganizationHandlingType.Leave);
-					App.coreView.setContentViewReplaceCurrent(new InspectController(org), "", null, 1);
+					App.coreView.setContentViewReplaceCurrent(new InspectController(org), 1);
 				};
 			}
 			else {
@@ -60,6 +64,7 @@ namespace HowlOut
 						removeBtn.IsEnabled = false;
 						addBtn.IsVisible = false;
 					};
+					setPillButtonLayout(new List<Button>() { addBtn, removeBtn });
 				}
 				else if (App.userProfile.Organizations.Exists(o => o.OrganizationId == org.OrganizationId))
 				{
@@ -74,3 +79,4 @@ namespace HowlOut
 		}
 	}
 }
+*/

@@ -11,15 +11,13 @@
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="20"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			
-			<!-- <Image Source="launch_screen.jpeg" Grid.Row="1" Grid.RowSpan="2" Aspect="AspectFill"/> -->
-			<StackLayout Grid.Row="1" BackgroundColor="Transparent"/>
 
-			<!-- <ContentView Grid.Row="1" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}" /> -->
-			<ContentView Grid.Row="1" x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}" />
+
+
 
 			<StackLayout Grid.Row="0" BackgroundColor="{DynamicResource HowlOut}" Padding="0"  x:Name="topBarLayout">
 				<StackLayout.Padding>
@@ -29,17 +27,45 @@
 				<!-- <local:TopBar/> -->
 			</StackLayout>
 
-			 <StackLayout Grid.Row="2" Padding="0,0,0,2" BackgroundColor="White">
+			<Grid Grid.Row="1" Grid.RowSpan="2" x:Name="mainGrid">
+				<ContentView x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}" />
+			</Grid>
+
+			 <StackLayout Grid.Row="3" Padding="0,0,0,2" BackgroundColor="White">
 				<local:BottomBar x:Name="bottomBar"/> 
 			</StackLayout>
 
-			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="#30000000" Color="White" IsRunning="true" IsVisible="true"/>
+			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="4" BackgroundColor="#30000000" Color="White" IsRunning="true" IsVisible="true"/>
 
+
+			<Grid Grid.Row="0" Grid.RowSpan="4"  x:Name="optionLayout" IsVisible="false">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="200"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="60"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+
+				<Button Grid.RowSpan="3" Grid.ColumnSpan="2" BackgroundColor="#70000000" x:Name="closeOptions"/>
+
+				<StackLayout Grid.Column="1" Grid.Row="1" x:Name="optionLayoutList" BackgroundColor="White" Padding="10,0,0,0" Spacing="0"/>
+			</Grid>
 			
-			<StackLayout Grid.Row="0" Grid.RowSpan="3" BackgroundColor="#70000000" x:Name="WarningLayout" IsVisible="false">
-				
+			
+			<Grid Grid.Row="0" Grid.RowSpan="4" BackgroundColor="#70000000" x:Name="WarningLayout" IsVisible="false">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="150"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
 
-				<Grid Padding="20,150,20,0" VerticalOptions ="Start" HorizontalOptions="Fill" x:Name="optionGrid" RowSpacing="10">
+				<Button Grid.RowSpan="3" WidthRequest="1000" HeightRequest="720" x:Name="closeWarning"/>
+				
+				<Grid Grid.Row="1" Padding="20,0,20,0" HorizontalOptions="Fill" x:Name="optionGrid" RowSpacing="10" HeightRequest="200">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="5"/>
 						<ColumnDefinition Width="*"/>
@@ -49,26 +75,94 @@
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="40"/>
+						<RowDefinition Height="150"/>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="1"/>
+					</Grid.RowDefinitions>
+
+
+					
+					<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="White" BorderRadius="10" />
+
+					<Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningTitle" Text="Title" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold"/>
+
+					<StackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalOptions="Fill">
+						<Label x:Name="WarningDescription" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="{DynamicResource NormalTextColor}" Text="Warning here is a ver long message just for test purposes and i want to see how the text behaves which it so far is doing pretty devently as to be expected"/>
+					</StackLayout>
+
+					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" BackgroundColor="{DynamicResource HowlOut}" BorderWidth="0" BorderRadius="15" HeightRequest="30" />
+					<Button Grid.Row="2" Grid.Column="1" Text="optionOne" x:Name="optionOne" HorizontalOptions="Fill" TextColor="White" FontSize="16" ></Button>
+					<StackLayout Grid.Row="2" Grid.Column="2"  WidthRequest="1" BackgroundColor="White" x:Name="optionsBorder"/>
+					<Button Grid.Row="2" Grid.Column="3"  Text="optionTwo" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
+					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  Text="OK" x:Name="optionOK" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
+
+				</Grid>
+			</Grid>
+
+			<Grid Grid.Row="0" Grid.RowSpan="4" BackgroundColor="#70000000" x:Name="ShareLayout" IsVisible="false">
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="150"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				
+				<Button Grid.RowSpan="3" WidthRequest="1000" HeightRequest="1000" x:Name="closeShare"/>
+				<Grid Grid.Row="1" Padding="20,0,20,0" VerticalOptions ="Start" HorizontalOptions="Fill" RowSpacing="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="5"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="40"/>
 						<RowDefinition Height="auto"/>
 						<RowDefinition Height="30"/>
 						<RowDefinition Height="1"/>
 					</Grid.RowDefinitions>
-					<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="{DynamicResource HowlOut}" BorderColor="{DynamicResource HowlOut}" BorderWidth="1" BorderRadius="10" />
+					<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="White" BorderRadius="10" />
 
-					<Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningTitle" Text="Title" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="White" FontAttributes="Bold"/>
+					<Label Grid.Row="0" Grid.Column="1" Text="Share Event" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold"/>
 
-					<Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningDescription" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="White" Text="Warning here is a ver long message just for test purposes and i want to see how the text behaves which it so far is doing pretty devently ---- as to be expected" />
+					<Grid Grid.Row="1" Grid.Column="1" HeightRequest="130">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="60"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="60"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="60"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="60"/>
+							<RowDefinition Height="10"/>
+							<RowDefinition Height="60"/>
+						</Grid.RowDefinitions>
+
+						<Image Grid.Column="1" Source="ic_messenger.png" WidthRequest="40" HorizontalOptions="CenterAndExpand" TranslationY="1"/>
+						<local:FacebookSendButton Grid.Column="1" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/>
+
+						<Image Grid.Column="3" Source="ic_facebook.png" WidthRequest="60" HorizontalOptions="CenterAndExpand" TranslationY="-7"/>
+						<local:FacebookShareButton Grid.Column="3" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/>
+
+						<!--
+						<Image Grid.Column="5" Source="ic_twitter.png" WidthRequest="60" HorizontalOptions="CenterAndExpand" TranslationY="-7"/>
+						<local:FacebookSendButton Grid.Column="5" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/> -->
+
+						<local:IconView Grid.Column="5" Grid.Row="0" Source="ic_calender.png" WidthRequest="30" HorizontalOptions="CenterAndExpand" TranslationY="0" Foreground="#ffef9d0e"/>
+						<Button Grid.Column="5" Grid.Row="0" WidthRequest="60" HorizontalOptions="CenterAndExpand" BorderRadius="30" BorderWidth="2" BorderColor="#ffef9d0e" x:Name="CalenderBtn"/>
+						
+					</Grid>
 					
-					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" BackgroundColor="White" BorderWidth="0" BorderRadius="15" HeightRequest="30" />
-					<Button Grid.Row="2" Grid.Column="1" Text="optionOne" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="16" ></Button>
-					<StackLayout Grid.Row="2" Grid.Column="2"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOut}" x:Name="optionsBorder"/>
-					<Button Grid.Row="2" Grid.Column="3"  Text="optionTwo" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="16"></Button>
-					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  Text="OK" x:Name="optionOK" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="16"></Button>
 				</Grid>
+			</Grid>
+
+			<StackLayout Grid.Row="0" Grid.RowSpan="2" HeightRequest="60" Padding="10,30,10,0" x:Name="notiLayout" IsVisible="false" TranslationY="-100">
+				<ScrollView x:Name="notiScroll" HeightRequest="50" >
+					<StackLayout x:Name="notiContent"/>
+				</ScrollView>
 			</StackLayout>
-
-
-			
 		</Grid>
 	</ContentPage.Content>
 </ContentPage>

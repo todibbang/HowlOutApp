@@ -13,7 +13,7 @@ namespace HowlOut
 		public string Title { get; set; }
 		public Group Group { get; set; }
 		public Event Event { get; set; }
-		public Organization Organization { get; set; }
+		//public Organization Organization { get; set; }
 		public Comment LastMessage { get; set; }
 
 		public ConversationModelType ModelType { get; set; }
@@ -64,6 +64,8 @@ namespace HowlOut
 								text += p.Name.Split(splitString)[0] + ", ";
 							}
 						}
+
+						text = text.Substring(0, text.Length - 2);
 					}
 					else if (Profiles.Count == 2) {
 						text = Profiles.Find(p => p.ProfileId != App.userProfile.ProfileId).Name;
@@ -111,7 +113,6 @@ namespace HowlOut
 			{
 				if (ModelType == ConversationModelType.Event) return "Event conversation";
 				if (ModelType == ConversationModelType.Group) return "Group conversation";
-				if (ModelType == ConversationModelType.Organization) return "Organization conversation";
 				return "";
 			}
 			set { this.SpecificInfo = value; }

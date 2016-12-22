@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.FindNewFriendsView"
-		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" Padding="0,0,0,0">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,0,0,10">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
-				<RowDefinition Height="40"/>
-				<RowDefinition Height="40"/>
+				<!-- <RowDefinition Height="40"/>
+				<RowDefinition Height="40"/> -->
 			</Grid.RowDefinitions>
 
-			<SearchBar Grid.Row="0" x:Name="searchBar" HeightRequest="40" BackgroundColor="{DynamicResource HowlOutFade}" IsVisible="true" Placeholder="Find new friends"/>
+			<SearchBar Grid.Row="0" x:Name="searchBar" HeightRequest="40" BackgroundColor="{DynamicResource HowlOutFade}" IsVisible="true" Placeholder="Find new friends" CancelButtonColor="{DynamicResource HowlOut}"/>
 
 			<ContentView Grid.Row="1" x:Name="carouselView"/>
 
+			<!--
 			<Label Grid.Row="2" Text="Message friends on facebook and invite them to join HowlOut" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="{DynamicResource HowlOut}"/>
-			<local:FacebookSendButton Grid.Row="3" WidthRequest="100" HorizontalOptions="CenterAndExpand"/>
+			<local:FacebookSendButton Grid.Row="3" WidthRequest="100" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/> -->
 		</Grid>
 	</ContentView.Content>
 </ContentView>

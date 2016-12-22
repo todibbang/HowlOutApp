@@ -34,12 +34,11 @@
 
 					<controls:CircleImage Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" Aspect="AspectFill"
 						Source="{Binding ProfileImageSource}" x:Name="ProfileImage"/>
-					<Button Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" 
-						x:Name="MainButton" IsVisible="false" BorderColor="{DynamicResource HowlOut}" BackgroundColor="#40000000" TextColor="White" FontAttributes="Bold"/>
-					<local:IconView Grid.Column="1" Grid.Row="3" Source="ic_organization.png" Foreground="{DynamicResource Shadow}" x:Name="modelTypeIcon" VerticalOptions="End" IsVisible="false" TranslationX="2" TranslationY="2"/> 
-					<local:IconView Grid.Column="1" Grid.Row="3" Source="ic_organization.png" Foreground="White" x:Name="modelTypeIcon2" VerticalOptions="End" IsVisible="false"/> 
+					<Button Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0" Grid.RowSpan="5" 
+						x:Name="MainButton" IsVisible="true" BorderColor="{DynamicResource HowlOut}" />
 					<Button Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="0" Grid.RowSpan="5" x:Name="SubjectButton" BackgroundColor="Transparent" />
-					<controls:CircleImage Grid.Column="4" Grid.Row="3" Aspect="AspectFill" x:Name="organizationOwnerImage" IsVisible="false"/>
+					<!-- <controls:CircleImage Grid.Column="4" Grid.Row="3" Aspect="AspectFill" x:Name="organizationOwnerImage" IsVisible="false"/> -->
+					<Button Grid.Column="4" Grid.Row="3" x:Name="organizationOwnerBtn" BackgroundColor="Transparent"  IsVisible="false"/>
 				</Grid>
 			</Grid>
 
@@ -70,8 +69,6 @@
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeButton" Text="remove" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="decline" BorderRadius="10" IsVisible="false"/>
 			</StackLayout>
-			
-
 			<!-- </Grid> -->
 		</Grid>
 	</ContentView.Content>

@@ -16,7 +16,8 @@ namespace HowlOut
             // Page is Rendered in CustomRenderer for IOS and Android
         }
 
-        public static event EventHandler LoginSucceeded;
+        public static event EventHandler FacebookLoginSucceeded;
+		public static event EventHandler HowlOutLoginAttempted;
         public static event EventHandler LoginCancelled;
         public static Object sender;
         public static void LoginSuccess()
@@ -24,9 +25,14 @@ namespace HowlOut
 
 
             //Invoked and then sent to the App.cs
-            LoginSucceeded(sender, EventArgs.Empty);
+            FacebookLoginSucceeded(sender, EventArgs.Empty);
 
         }
+
+		public static void HowlOutLogin()
+		{
+			HowlOutLoginAttempted(sender, EventArgs.Empty);
+		}
 
         public static void LoginCancel()
         {
