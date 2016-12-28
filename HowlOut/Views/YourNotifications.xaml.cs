@@ -70,8 +70,8 @@ namespace HowlOut
 			List<Notification> commentNoti = new List<Notification>();
 			foreach (Notification c in notiList)
 			{
-				if (!c.Seen && (c.ModelType == NotificationModelType.ProfileConversation || c.ModelType == NotificationModelType.EventConversation || 
-				                c.ModelType == NotificationModelType.GroupConversation))
+				if (c.ModelType == NotificationModelType.ProfileConversation || c.ModelType == NotificationModelType.EventConversation || 
+				                c.ModelType == NotificationModelType.GroupConversation)
 				{
 					commentNoti.Add(c);
 				}
@@ -79,7 +79,10 @@ namespace HowlOut
 				{
 					n++;
 				}
-				unseenNotifications.Add(c);
+				if (!c.Seen)
+				{
+					unseenNotifications.Add(c);
+				}
 			}
 
 			foreach (Notification c in commentNoti)

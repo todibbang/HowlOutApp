@@ -1,13 +1,13 @@
 ﻿using System;
 using Xamarin.Forms.Maps;
 
+
 namespace HowlOut
 {
 	public class ExtMap : Map
 	{
 		public Position tapPosition;
 		public bool pressed;
-
 		/// <summary>
 		/// Event thrown when the user taps on the map
 		/// </summary>

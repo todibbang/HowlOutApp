@@ -3,14 +3,22 @@
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
 			<Grid.RowDefinitions>
+				<RowDefinition Height="20"/>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<SearchBar x:Name="searchBar" HeightRequest="40" BackgroundColor="White" Placeholder="Search For Event" CancelButtonColor="{DynamicResource HowlOut}"/>
 
-			<Grid Grid.Row="1" x:Name="eventList"/>
+			<Grid Grid.RowSpan="3" x:Name="eventList"/>
+			<!-- <Grid Grid.RowSpan="3" x:Name="scrollBackground" BackgroundColor="{DynamicResource HowlOutBackground}"/> -->
+
+			<ScrollView x:Name="HorizontalScrollView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" BackgroundColor="{DynamicResource HowlOutBackground}">
+				<StackLayout x:Name="categoryList" Spacing="0" Padding="0" VerticalOptions="Fill" />
+			</ScrollView>
 			
+			<SearchBar Grid.Row="1" x:Name="searchBar" HeightRequest="40" BackgroundColor="#90000000" Placeholder="Search For Event" CancelButtonColor="{DynamicResource HowlOut}"/>
+
+			<!--
 			<ListView Grid.Row="1" x:Name="categoryList"
 				HasUnevenRows="false"
 				RowHeight="100"
@@ -31,9 +39,9 @@
 					<StackLayout HeightRequest="150">
 					</StackLayout>
 				</ListView.Footer>
-                </ListView>
+               </ListView> -->
 
-			<Image Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="categoryImage" TranslationY="80"/>
+			<!-- <Image Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="categoryImage" TranslationY="80"/> -->
 			
 		</Grid>
 	</ContentView.Content>

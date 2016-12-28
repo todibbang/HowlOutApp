@@ -28,7 +28,6 @@ namespace HowlOut.Droid
 		{
 			global::ModernHttpClient.Resource.String.library_name = global::HowlOut.Droid.Resource.String.library_name;
 			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::HowlOut.Droid.Resource.Drawable.plugin_lc_smallicon;
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::HowlOut.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Attribute

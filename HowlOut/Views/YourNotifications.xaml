@@ -50,13 +50,16 @@
 					
                     <ListView.GroupHeaderTemplate>
                     	<DataTemplate>
-	                      <ViewCell Height="20">
-		                        <StackLayout Padding="0,0,0,0" BackgroundColor="{DynamicResource HowlOutBackground}" >
-					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" TranslationX="20"/>
+	                      <ViewCell>
+		                        <StackLayout Padding="0,0,0,4" BackgroundColor="{DynamicResource HowlOutBackground}" VerticalOptions="EndAndExpand" HeightRequest="40">
+					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="EndAndExpand" HorizontalOptions="Fill" TranslationX="10"/>
 					    		</StackLayout>
 		              		</ViewCell>
                       </DataTemplate>
                     </ListView.GroupHeaderTemplate>
+					<ListView.Footer>
+						<StackLayout HeightRequest="100"/>
+					</ListView.Footer>
                 </ListView>
 
              </Grid>

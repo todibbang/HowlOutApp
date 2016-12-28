@@ -332,6 +332,22 @@
     <BundleResource Include="Resources\ic_leave.png" />
     <BundleResource Include="Resources\ic_menu.png" />
     <BundleResource Include="Resources\gradiant_mng.png" />
+    <BundleResource Include="Resources\img1.jpg" />
+    <BundleResource Include="Resources\img2.jpeg" />
+    <BundleResource Include="Resources\img3.jpeg" />
+    <BundleResource Include="Resources\img4.jpeg" />
+    <BundleResource Include="Resources\img5.jpeg" />
+    <BundleResource Include="Resources\img6.jpeg" />
+    <BundleResource Include="Resources\img7.jpg" />
+    <BundleResource Include="Resources\img8.jpg" />
+    <BundleResource Include="Resources\img9.jpg" />
+    <BundleResource Include="Resources\img10.jpeg" />
+    <BundleResource Include="Resources\img11.jpeg" />
+    <BundleResource Include="Resources\img12.jpeg" />
+    <BundleResource Include="Resources\img13.jpg" />
+    <BundleResource Include="Resources\img14.jpg" />
+    <BundleResource Include="Resources\img15.jpg" />
+    <BundleResource Include="Resources\img16.jpg" />
   </ItemGroup>
   <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\packages\Xamarin.Insights.1.12.3\build\Xamarin.iOS10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.12.3\build\Xamarin.iOS10\Xamarin.Insights.targets')" />

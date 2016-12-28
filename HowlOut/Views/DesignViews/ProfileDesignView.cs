@@ -10,6 +10,7 @@ namespace HowlOut
 		Profile profile;
 		Design design = Design.ShowAll;
 		List<byte[]> imageStreams;
+		int dimentions = 100;
 
 		public ProfileDesignView(Profile profile, Event eveInvitingTo, int dims) : base(dims)
 		{
@@ -69,6 +70,7 @@ namespace HowlOut
 		{
 			this.profile = profile;
 			this.design = design;
+			dimentions = dims;
 			SetupButtons(clickable);
 			if (profile.ProfileId != App.StoredUserFacebookId)
 			{
@@ -149,94 +151,100 @@ namespace HowlOut
 
 		public async void SetupButtons(bool clickable)
 		{
-
-			profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
-
-			subjBtn.Clicked += (sender, e) =>
-			{
-				if (clickable)
-				{
-					_dataManager.setUpdateSeen(profile.ProfileId, NotificationModelType.Profile);
-					App.coreView.setContentViewWithQueue(new InspectController(profile));
-				}
-				else {
-					OtherFunctions of = new OtherFunctions();
-					of.ViewImages(new List<string>() { profile.ImageSource });
-				}
-			};
-
-			Profile updateProfile = App.userProfile;
-			bool edit = false;
-
-			editBtn.Text = "Edit";
-			editBtn.Clicked += (sender, e) => { 
-				ShowHideEditLayout(!edit);
-				if (edit)
-				{
-					SetInfo(profile.ImageSource, profile.Name, profile.Description, design, ModelType.Profile);
-				}
-				edit = !edit;
-			};
-
-			var pictureImage = new TapGestureRecognizer();
-			pictureImage.Tapped += async (sender, e) =>
-			{
-				imageStreams = await _dataManager.UtilityManager.TakePicture(profileImage.Source);
-			};
-			pictureButton.GestureRecognizers.Add(pictureImage);
-
-			var albumImage = new TapGestureRecognizer();
-			albumImage.Tapped += async (SenderOfEvent, e) =>
-			{
-				imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(profileImage.Source);
-			};
-			albumButton.GestureRecognizers.Add(albumImage);
-
-			fbImageButton.Clicked += (sender, e) =>
-			{
-				updateProfile.SmallImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=50&width=50";
-				updateProfile.ImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=100&width=100";
-				updateProfile.LargeImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=300&width=300";
-				profileImage.Source = updateProfile.ImageSource;
-				imageStreams = null;
-			};
-
-			updateProfileBtn.Clicked += async  (sender, e) =>
-			{
-				App.coreView.IsLoading(true);
-				if (imageStreams != null)
-				{
-					updateProfile.SmallImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[0]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".small");
-					updateProfile.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+".medium");
-					updateProfile.LargeImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".large");
-				}
-				updateProfile.Description = descriptionEdit.Text;
-				bool success = await _dataManager.ProfileApiManager.CreateUpdateProfile(updateProfile, false);
-				if (success)
-				{
-					//App.coreView.homeView = new HomeView();
-					await App.coreView.updateHomeView();
-					App.coreView.setContentView(4);
-				}
-				App.coreView.IsLoading(false);
-
-				ShowHideEditLayout(false);
-				edit = false;
-			};
-
-			profileLogOutBtn.Clicked += async (sender, e) =>
-			{
-				await App.storeToken("","","");
-				await Navigation.PushModalAsync(new LoginPage());
-			};
-
 			try
 			{
-				//profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
-				string d = profile.Description != null ? profile.Description : "";
-				SetInfo(profile.ImageSource, profile.Name, d, design, ModelType.Profile);
+				profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
+
+				subjBtn.Clicked += (sender, e) =>
+				{
+					if (clickable)
+					{
+						_dataManager.setUpdateSeen(profile.ProfileId, NotificationModelType.Profile);
+						App.coreView.setContentViewWithQueue(new InspectController(profile));
+					}
+					else {
+						OtherFunctions of = new OtherFunctions();
+						of.ViewImages(new List<string>() { profile.ImageSource });
+					}
+				};
+
+				Profile updateProfile = App.userProfile;
+				bool edit = false;
+
+				editBtn.Text = "Edit";
+				editBtn.Clicked += (sender, e) =>
+				{
+					ShowHideEditLayout(!edit);
+					if (edit)
+					{
+						SetInfo(profile.ImageSource, profile.Name, profile.Description, design, ModelType.Profile);
+					}
+					edit = !edit;
+				};
+
+				var pictureImage = new TapGestureRecognizer();
+				pictureImage.Tapped += async (sender, e) =>
+				{
+					imageStreams = await _dataManager.UtilityManager.TakePicture(profileImage.Source);
+				};
+				pictureButton.GestureRecognizers.Add(pictureImage);
+
+				var albumImage = new TapGestureRecognizer();
+				albumImage.Tapped += async (SenderOfEvent, e) =>
+				{
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(profileImage.Source);
+				};
+				albumButton.GestureRecognizers.Add(albumImage);
+
+				fbImageButton.Clicked += (sender, e) =>
+				{
+					updateProfile.SmallImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=50&width=50";
+					updateProfile.ImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=100&width=100";
+					updateProfile.LargeImageSource = "https://graph.facebook.com/v2.5/" + App.userProfile.ProfileId + "/picture?height=300&width=300";
+					profileImage.Source = updateProfile.ImageSource;
+					imageStreams = null;
+				};
+
+				updateProfileBtn.Clicked += async (sender, e) =>
+				{
+					App.coreView.IsLoading(true);
+					if (imageStreams != null)
+					{
+						updateProfile.SmallImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[0]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".small");
+						updateProfile.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".medium");
+						updateProfile.LargeImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".large");
+					}
+					updateProfile.Description = descriptionEdit.Text;
+					bool success = await _dataManager.ProfileApiManager.CreateUpdateProfile(updateProfile, false);
+					if (success)
+					{
+						//App.coreView.homeView = new HomeView();
+						await App.coreView.updateHomeView();
+						App.coreView.setContentView(4);
+					}
+					App.coreView.IsLoading(false);
+
+					ShowHideEditLayout(false);
+					edit = false;
+				};
+
+				profileLogOutBtn.Clicked += async (sender, e) =>
+				{
+					await App.storeToken("", "", "");
+					await Navigation.PushModalAsync(new LoginPage());
+				};
+
+				try
+				{
+					//profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
+					string d = profile.Description != null ? profile.Description : "";
+					string imgs = dimentions == 200 ? profile.LargeImageSource : profile.ImageSource;
+					string name = dimentions == 200 ? "" : profile.Name;
+					SetInfo(imgs, name, d, design, ModelType.Profile);
+				}
+				catch (Exception e) { }
 			}
-			catch (Exception e) {}
+		catch(Exception exe) {}
 		}
 	}
 }

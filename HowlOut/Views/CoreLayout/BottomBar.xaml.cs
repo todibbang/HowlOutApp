@@ -56,7 +56,7 @@ namespace HowlOut
 				await Task.Delay(60);
 				await exploreImg.ScaleTo(1, 50, Easing.Linear);
 				unselectAll();
-				exploreBG.BackgroundColor = App.HowlOut;
+				exploreImg.Foreground = App.HowlOut;
 			};
 
 			var friendsImage = new TapGestureRecognizer();
@@ -87,11 +87,11 @@ namespace HowlOut
 
 		void unselectAll()
 		{
-			create.Foreground = App.HowlOutFade;
-			manage.Foreground = App.HowlOutFade;
-			exploreBG.BackgroundColor = App.HowlOutFade;
-			howls.Foreground = App.HowlOutFade;
-			me.Foreground = App.HowlOutFade;
+			create.Foreground = Color.White;
+			manage.Foreground = Color.White;
+			exploreImg.Foreground = Color.White;
+			howls.Foreground = Color.White;
+			me.Foreground = Color.White;
 		}
 	}
 }

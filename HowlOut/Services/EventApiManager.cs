@@ -51,7 +51,11 @@ namespace HowlOut
 					newLonSplit[0] + "." + newLonSplit[1] + "&currentTime=" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt", new CultureInfo("en-US"));
 			}
 
-			if(!string.IsNullOrWhiteSpace(searchWord)) uri += "&searchWord=" + searchWord;
+			if (!string.IsNullOrWhiteSpace(searchWord))
+			{
+				searchWord = searchWord.Replace("#", "%23");
+				uri += "&searchWord=" + searchWord;
+			}
 
 			events = await GetEventsServerCall(uri);
 			return events;

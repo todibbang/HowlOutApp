@@ -35,11 +35,33 @@ namespace HowlOut
 			{
 				lastCarouselView = carousel.Position;
 				DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+				if (viewType == ViewType.Home)
+				{
+					if (lastCarouselView == 0)
+					{
+						App.coreView.topBar.setNavigationlabel(App.userProfile.Name);
+					}
+					else {
+						App.coreView.topBar.hideAll();
+					}
+				}
 			};
 		}
 
 		public void viewInFocus(UpperBar bar)
 		{
+			if (viewType == ViewType.Home)
+			{
+				if (lastCarouselView == 0)
+				{
+					App.coreView.topBar.setNavigationlabel(App.userProfile.Name);
+				}
+				else {
+					App.coreView.topBar.hideAll();
+				}
+			}
+
+			/*
 			if (viewType == ViewType.Conversations)
 			{
 				bar.setNavigationLabel("Conversations", null);
@@ -47,12 +69,6 @@ namespace HowlOut
 			else if (viewType == ViewType.SearchEvents)
 			{
 				bar.setNavigationLabel("Explore Events", null);
-				/*
-				bar.setRightButton("ic_settings.png").Clicked += (sender, e) =>
-				{
-					if (App.userProfile != null && App.userProfile.SearchPreference != null)
-						App.coreView.setContentViewWithQueue(new FilterSearch(App.userProfile.SearchPreference));
-				};*/
 			}
 			else if (viewType == ViewType.JoinedEvents)
 			{
@@ -65,7 +81,8 @@ namespace HowlOut
 			else if (viewType == ViewType.Home)
 			{
 				bar.setNavigationLabel("Home", null);
-			}
+			} */
+
 			setCarousel(veryLastCarouselView);
 		}
 

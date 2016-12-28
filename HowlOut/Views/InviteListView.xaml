@@ -3,7 +3,7 @@
 		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,0,0,0" 
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid BackgroundColor="{DynamicResource HowlOutBackground}" Padding="0,10,0,10">
+		<Grid BackgroundColor="{DynamicResource HowlOutBackground}" Padding="0,65,0,72">
 
              <Grid.RowDefinitions>
 				<RowDefinition Height="20"/>

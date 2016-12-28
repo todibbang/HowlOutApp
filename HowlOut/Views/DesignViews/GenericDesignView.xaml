@@ -53,15 +53,17 @@
 				<Label  x:Name="subNameLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
 			</StackLayout>
 			
-			<StackLayout Grid.Row="3" Padding="0" x:Name="descriptionLayout" IsVisible="false" BackgroundColor="White">
-				<local:Line x:Name="descriptionLineOne" IsVisible="false"/>
-				<Label x:Name="descriptionLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
-				<local:CustomEditor x:Name="descriptionLabelEdit" VerticalOptions="StartAndExpand" Placeholder="Description..." IsVisible="false" BackgroundColor="White" HeightRequest="100"/> 
-				<StackLayout Grid.Row="4" x:Name="editProfileButtons" IsVisible="false" Orientation="Horizontal" Padding="0,10,0,0">
-					<Button Style="{DynamicResource ButtonStyle}" Text="Update" x:Name="updateProfileButton" BorderRadius="10" WidthRequest="190" ></Button>
-					<Button Style="{DynamicResource ButtonStyle}" Text="Log out" x:Name="logOutButton" BorderRadius="10" WidthRequest="190" ></Button>
-				</StackLayout>
-				<local:Line x:Name="descriptionLineTwo" IsVisible="false"/>
+			<StackLayout Grid.Row="3" Padding="0,4,0,0" x:Name="descriptionLayout" IsVisible="false" >
+				<StackLayout BackgroundColor="White">
+					<local:Line x:Name="descriptionLineOne" IsVisible="false"/>
+					<Label x:Name="descriptionLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
+					<local:CustomEditor x:Name="descriptionLabelEdit" VerticalOptions="StartAndExpand" Placeholder="Description..." IsVisible="false" BackgroundColor="White" HeightRequest="100"/> 
+					<StackLayout Grid.Row="4" x:Name="editProfileButtons" IsVisible="false" Orientation="Horizontal" Padding="0,10,0,0">
+						<Button Style="{DynamicResource ButtonStyle}" Text="Update" x:Name="updateProfileButton" BorderRadius="10" WidthRequest="190" ></Button>
+						<Button Style="{DynamicResource ButtonStyle}" Text="Log out" x:Name="logOutButton" BorderRadius="10" WidthRequest="190" ></Button>
+					</StackLayout>
+					<local:Line x:Name="descriptionLineTwo" IsVisible="false"/>
+					</StackLayout>
 			</StackLayout>
 
 			<StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,8,0,0" >

@@ -15,10 +15,13 @@ namespace HowlOut
 
 		List<string> avaliableBanners;
 
-		List<string> partyBanners = new List<string>{"banner_blade.png", "banner_controller.png", "banner_donut.png", "banner_fodbold.png", "banner_golf.png", "banner_gravid.png", "banner_hjort.png", 
+		List<string> partyBanners = new List<string>{"img1.jpg", "img2.jpeg", "img3.jpeg", "img4.jpeg", "img5.jpeg", "img6.jpeg", "img7.jpg", "img8.jpg", "img9.jpg", "img10.jpeg", "img11.jpeg", "img12.jpeg", "img13.jpg", "img14.jpg", "img15.jpg", "img16.jpg",
+			"banner_blade.png", "banner_controller.png", "banner_donut.png", "banner_fodbold.png", "banner_golf.png", "banner_gravid.png", "banner_hjort.png", 
 			"banner_kaffe.png", "banner_marked.png", "banner_publikum.png", "banner_scrabble.png", "banner_skak.png", "banner_skater.png", "banner_skovsoe.png", "banner_surf.png", "banner_vinglas.png",}; // "Blade.jpg", "Donut.jpg", "Fotografiapparat.jpg", "Gadelys.jpg",
 			//"Grøntmarked.jpg", "Kaffebønner.jpg", "Kaffemaskine.jpg", "Motor.jpg", "Publikum koncert.jpg", "RebPaaStol.jpg", "Sejl.jpg",
 			//"Skovsø.jpg", "Snedker.jpg", "surf tunnel.jpg", "Vinglas.jpg", "Zigaret.jpg"};
+		
+		//List<string> partyBanners = new List<string>{"img1.jpg", "img2.jpeg", "img3.jpeg", "img4.jpeg", "img5.jpeg", "img6.jpeg", "img7.jpg", "img8.jpg", "img9.jpg", "img10.jpeg", "img11.jpeg", "img12.jpeg", "img13.jpg", "img14.jpg", "img15.jpg", "img16.jpg"};
 
 		public SelectBannerView ()
 		{

@@ -2,7 +2,7 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.UpperBar"
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid BackgroundColor="Transparent" RowSpacing="0" x:Name="thisGrid">
+		<Grid BackgroundColor="#70000000" RowSpacing="0" x:Name="thisGrid" IsVisible="true" Padding="0,10,0,0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="50"/>
 						<ColumnDefinition Width="*"/>
@@ -10,14 +10,14 @@
 					</Grid.ColumnDefinitions>
 
 					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="2"/>
+						<RowDefinition Height="45"/>
 					</Grid.RowDefinitions>
 
 					<Image Grid.Column="0" x:Name="backBtn" Source="ic_back.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"></Image>
 					<Button Grid.Column="0" x:Name="backButton" BackgroundColor="Transparent"/>
-			
-					<Button Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="18" IsVisible="true" BackgroundColor="Transparent" BorderColor="Transparent"/>
+
+					<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="16" IsVisible="true" BackgroundColor="Transparent"/>
+					<Button Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationButton" TextColor="White" Text="HowlOut" FontSize="14" IsVisible="true" BackgroundColor="Transparent" BorderColor="Transparent"/>
 
 					<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 

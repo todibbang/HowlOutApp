@@ -22,15 +22,18 @@
                     </ListView.ItemTemplate>
                     <ListView.GroupHeaderTemplate>
                     	<DataTemplate>
-	                      <ViewCell Height="20">
-		                        <StackLayout Padding="0,0,0,0" BackgroundColor="{DynamicResource HowlOutBackground}" >
-					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" TranslationX="10"/>
+	                      <ViewCell>
+		                        <StackLayout Padding="0,0,0,4" BackgroundColor="{DynamicResource HowlOutBackground}" VerticalOptions="EndAndExpand" HeightRequest="40">
+					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="EndAndExpand" HorizontalOptions="Fill" TranslationX="10"/>
 					    		</StackLayout>
 		              		</ViewCell>
                       </DataTemplate>
                     </ListView.GroupHeaderTemplate>
+				<ListView.Footer>
+					<StackLayout HeightRequest="100" x:Name="footer"/>
+				</ListView.Footer>
                 </ListView>
-			<Button x:Name="exploreSettings" IsVisible="false" WidthRequest="50" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" BorderRadius="30" FontSize="30" HeightRequest="50" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-20" Image="ic_settings.png"/>
+			<Button x:Name="exploreSettings" Text="Q" IsVisible="false" WidthRequest="60" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" BorderRadius="30" FontSize="30" HeightRequest="60" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-100"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

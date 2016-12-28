@@ -33,9 +33,10 @@
 				<Image Grid.Row="1" Grid.RowSpan="2" Source="gradiant_bg.png" VerticalOptions="StartAndExpand" x:Name="bannerElementBackground"></Image>
 				<Button Grid.Row="1" Grid.RowSpan="2" BackgroundColor="Transparent" x:Name="BannerImage"/>
 
+				<!--
 				<StackLayout Grid.Row="1" Padding="10">
 					<Label Style="{DynamicResource TitleStyle}" FontSize="18" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="White"/>
-				</StackLayout>
+				</StackLayout> -->
 				
 				<StackLayout Grid.Row="3" Grid.RowSpan="4"  BackgroundColor="{DynamicResource HowlOutBackground}" />
 				

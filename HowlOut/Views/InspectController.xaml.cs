@@ -37,7 +37,8 @@ namespace HowlOut
 
 		public void viewInFocus(UpperBar bar)
 		{
-			//bar.setNavigationLabel(Title, scrollView);
+			App.coreView.topBar.setNavigationlabel(Title);
+
 			if (eve != null)
 			{
 				addEventMenu(eve);
@@ -46,6 +47,7 @@ namespace HowlOut
 			{
 				addGroupMenu(grp);
 			}
+			scrollView.ScrollToAsync(0, scrollView.ScrollY + 1, false);
 		}
 
 		public void viewExitFocus() { }
@@ -64,7 +66,7 @@ namespace HowlOut
 					userProfile = await _dataManager.ProfileApiManager.GetProfile(userProfile.ProfileId); 
 				}
 				infoView.Content = new ProfileDesignView(userProfile, 200, false, GenericDesignView.Design.ShowAll);
-				infoView.Padding = new Thickness(0, 10, 0, 0);
+				infoView.Padding = new Thickness(0, 70, 0, 0);
 
 				if (userProfile.ProfileId == App.userProfile.ProfileId)
 				{
@@ -150,7 +152,7 @@ namespace HowlOut
 				addGroupMenu(userGroup);
 
 				infoView.Content = new GroupDesignView(userGroup, 200, GenericDesignView.Design.ShowAll);
-				infoView.Padding = new Thickness(0, 10, 0, 0);
+				infoView.Padding = new Thickness(0, 70, 0, 0);
 
 				if (_dataManager.AreYouGroupMember(userGroup))
 				{
@@ -263,6 +265,7 @@ namespace HowlOut
 
 		async void addEventMenu(Event eve)
 		{
+			
 			App.coreView.topBar.setRightButton("ic_menu.png").Clicked += async (sender, e) =>
 			{
 				List<Action> actions = new List<Action>();

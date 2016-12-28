@@ -15,23 +15,27 @@ namespace HowlOut
 			{
 				b.FontAttributes = FontAttributes.None;
 				b.FontSize = 12;
-				b.TextColor = App.PlaceHolderColor;
+				b.TextColor = Color.White;
 			}
 			selected.FontAttributes = FontAttributes.Bold;
 			selected.FontSize = 12;
-			selected.TextColor = App.NormalTextColor;
+			selected.TextColor = App.HowlOut;
 
 		}
 
 		public void setOptionsGrid(Grid buttonGrid, List<string> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)
 		{
+			buttonGrid.BackgroundColor = Color.FromHex("#cc000000");
+
+
+
 			List<Button> buttons = new List<Button>();
 			List<Action> clickButtonAction = new List<Action>();
 			if (buttonText != null)
 			{
 				foreach (String s in buttonText)
 				{
-					Button b = new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = App.PlaceHolderColor, FontSize = 12 };
+					Button b = new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = Color.White, FontSize = 16 };
 					buttons.Add(b);
 					clickButtonAction.Add(() => selectButton(buttons, b));
 				}
@@ -42,12 +46,14 @@ namespace HowlOut
 			selectButton(buttons, buttons[0]);
 
 			int bNumber = 0;
-			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(28, GridUnitType.Absolute) });
 			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Absolute) });
+			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30, GridUnitType.Absolute) });
+			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Absolute) });
+			buttonGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(62, GridUnitType.Absolute) });
 			buttonGrid.RowSpacing = 0;
 
 			StackLayout selectedBar = new StackLayout() { BackgroundColor = App.HowlOut };
-			buttonGrid.Children.Add(selectedBar, 0, 1);
+			buttonGrid.Children.Add(selectedBar, 0, 0);
 
 			for (int i = 0; i < (buttons.Count * 2 - 1); i++)
 			{
@@ -61,7 +67,7 @@ namespace HowlOut
 
 				if (i == (buttons.Count * 2 - 1) - 1)
 				{
-					buttonGrid.Children.Add(new Button() { BorderColor = App.LineColor, BorderWidth = 0.0, BorderRadius = 0, BackgroundColor = Color.White }, 0, i + 1, 0, 1);
+					buttonGrid.Children.Add(new Button() { BorderColor = App.LineColor, BorderWidth = 0.0, BorderRadius = 0, BackgroundColor = Color.Transparent }, 0, i + 1, 1, 2);
 				}
 			}
 
@@ -69,7 +75,7 @@ namespace HowlOut
 			{
 				if (i % 2 == 0)
 				{
-					buttonGrid.Children.Add(buttons[bNumber], i, 0);
+					buttonGrid.Children.Add(buttons[bNumber], i, 1);
 					bNumber++;
 				}
 				else {
@@ -84,7 +90,7 @@ namespace HowlOut
 					if (clickButtonAction[carousel.Position] != null) { 
 						clickButtonAction[carousel.Position].Invoke(); 
 					}
-					buttonGrid.Children.Add(selectedBar, carousel.Position * 2, 1);
+					buttonGrid.Children.Add(selectedBar, carousel.Position * 2, 0);
 				};
 			}
 

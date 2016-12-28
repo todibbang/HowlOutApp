@@ -155,6 +155,8 @@ namespace HowlOut
 				}
 			}
 
+			if (name == "") { nameLayout.IsVisible = false;}
+
 			if (modelType == ModelType.Group)
 			{
 				/*

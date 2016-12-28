@@ -21,6 +21,7 @@ namespace HowlOut
 		int currentView = 0;
 		Profile profile;
 		Group group;
+		string searchString = "";
 		//Organization organization;
 		//string ID;
 
@@ -62,7 +63,7 @@ namespace HowlOut
 			UpdateList( true, "");
 			searchEventList.ItemSelected += OnItemSelected;
 			searchEventList.IsPullToRefreshEnabled = true;
-			searchEventList.Refreshing += (sender, e) => { UpdateList(true, ""); };
+			searchEventList.Refreshing += (sender, e) => { UpdateList(true, searchString); };
 			exploreSettings.Clicked += (sender, e) =>
 			{
 				if (App.userProfile != null && App.userProfile.SearchPreference != null)
@@ -143,24 +144,22 @@ namespace HowlOut
 					else if (listToUpdate == 4)
 					{
 						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { profile });
-						HeightRequest = evelist.Count * 130;
-						HeightRequest += 30;
+						HeightRequest = evelist.Count * 150;
+						HeightRequest += 50;
+						footer.HeightRequest = 0;
 					}
 					else if (listToUpdate == 5)
 					{
 						evelist = await _dataManager.EventApiManager.GetEventsForGroups(new List<Group> { group });
-						HeightRequest = evelist.Count * 130;
-						HeightRequest += 30;
+						HeightRequest = evelist.Count * 150;
+						HeightRequest += 50;
 						//if (HeightRequest > 200) HeightRequest = 200;
 					}
-					/*
+
 					else if (listToUpdate == 6)
 					{
-						evelist = await _dataManager.EventApiManager.GetEventsForOrgs(new List<Organization> { organization });
-						HeightRequest = evelist.Count * 90;
-						HeightRequest += 20;
-						if (HeightRequest > 200) HeightRequest = 200;
-					} */
+						evelist = await _dataManager.EventApiManager.SearchEvents(searchText);
+					} 
 				}
 				if (listToUpdate == 2 || listToUpdate == 10)
 				{
@@ -282,7 +281,8 @@ namespace HowlOut
 
 		public void UpdateList(bool update, string searchText)
 		{
-			UpdateManageList(currentView, update, searchText);
+			searchString = searchText;
+			UpdateManageList(currentView, update, searchString);
 		}
 	}
 }

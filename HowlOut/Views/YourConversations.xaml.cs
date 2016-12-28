@@ -50,6 +50,11 @@ namespace HowlOut
 
 		public void viewInFocus(UpperBar bar)
 		{
+			if (conversationListType != 2)
+			{
+				CreateButton(modelType, modelId);
+			}
+			/*
 			if (modelType == ConversationModelType.Event)
 			{
 				bar.setNavigationLabel("Event Conversations", null);
@@ -57,7 +62,7 @@ namespace HowlOut
 			else if (modelType == ConversationModelType.Group)
 			{
 				bar.setNavigationLabel("Group Conversations", null);
-			}
+			} */
 		}
 
 		public void viewExitFocus() { }
@@ -69,18 +74,20 @@ namespace HowlOut
 			if (type != ConversationModelType.Profile)
 			{
 				listHeaderHeight.HeightRequest = 50;
-				conversationInfo.IsVisible = true;
+				//conversationInfo.IsVisible = true;
 				if (type == ConversationModelType.Event)
 				{
 					Event eve = await _dataManager.EventApiManager.GetEventById(id);
-					conversationInfoImage.Source = eve.ImageSource;
-					conversationInfoModelLabel.Text = eve.Title;
+					App.coreView.topBar.setNavigationLabel(eve.Title, null);
+					//conversationInfoImage.Source = eve.ImageSource;
+					//conversationInfoModelLabel.Text = eve.Title;
 				}
 				else if (type == ConversationModelType.Group)
 				{
 					Group grp = await _dataManager.GroupApiManager.GetGroup(id);
-					conversationInfoImage.Source = grp.ImageSource;
-					conversationInfoModelLabel.Text = grp.Name;
+					//conversationInfoImage.Source = grp.ImageSource;
+					//conversationInfoModelLabel.Text = grp.Name;
+					App.coreView.topBar.setNavigationLabel(grp.Name, null);
 				}
 
 			}

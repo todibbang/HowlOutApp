@@ -12,7 +12,7 @@ namespace HowlOut
 	{
 		public List <ViewModelInterface> contentViews = new List<ViewModelInterface> ();
 
-		public StackLayout TopBarLayout { get { return topBarLayout; } }
+		public Grid TopBarLayout { get { return topBarLayout; } }
 		public Grid MainGrid { get { return mainGrid; } }
 
 		bool hideNotiLayout = false;
@@ -50,6 +50,7 @@ namespace HowlOut
 		public EventListView friendsEvents;
 
 		public bool topBarHidden;
+		public double viewLastChanged = DateTime.Now.Ticks;
 
 		public List<ConversationView> activeConversationViews = new List<ConversationView>();
 
@@ -63,7 +64,7 @@ namespace HowlOut
 			_dataManager = new DataManager ();
 			topBar = new UpperBar();
 			topBarLayout.Children.Add (topBar);
-			topBar.hideAll();
+			//topBar.hideAll();
 
  			notiScroll.Scrolled += (sender, e) =>
 			{
@@ -182,7 +183,7 @@ namespace HowlOut
 
 			searchEventView = new CarouselList(
 				new List<VisualElement>() { exploreEventCategories, exploreEvents, friendsEvents, trackedEvents },
-				new List<string>() { "Explore", "Explore", "Friends", "Followed" },
+				new List<string>() { "Explore", "Search", "Friends", "Followed" },
 				CarouselList.ViewType.SearchEvents
 			);
 
@@ -241,6 +242,13 @@ namespace HowlOut
 
 		public async void setContentView (int type)
 		{
+			int timeDif = (int)((DateTime.Now.Ticks - viewLastChanged)/10000);
+			if (timeDif < 1000)
+			{
+				await Task.Delay(1000 - timeDif);
+			}
+			viewLastChanged = DateTime.Now.Ticks;
+
 			topBar.hideAll();
 			if(contentViews.Count > 0) contentViews[contentViews.Count-1].viewExitFocus();
 			//await Task.Delay(2);

@@ -239,11 +239,11 @@ namespace HowlOut
 		private async Task setSize(bool add)
 		{
 			await Task.Delay(10);
-			outerGrid.HeightRequest = App.coreView.Height - (135);
-			commentList.HeightRequest = outerGrid.HeightRequest - 80;
-			conversationList.HeightRequest = outerGrid.HeightRequest - 80;
-			commentListLayout.HeightRequest = commentListLayout.Height;
-			conversationListLayout.HeightRequest = conversationListLayout.Height;
+			outerGrid.HeightRequest = App.coreView.Height;// - (62);
+			//commentList.HeightRequest = outerGrid.HeightRequest - 80;
+			//conversationList.HeightRequest = outerGrid.HeightRequest - 80;
+			//commentListLayout.HeightRequest = commentListLayout.Height;
+			//conversationListLayout.HeightRequest = conversationListLayout.Height;
 
 			//listHeight = commentList.HeightRequest;
 			//listHeight = commentList.HeightRequest;

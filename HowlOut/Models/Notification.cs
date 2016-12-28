@@ -90,12 +90,6 @@ namespace HowlOut
 					return "Profile Wants To Join Your Group";
 				}
 
-				//Organizations
-				if (NotificationType == NotificationType.InvitedToOrganization)
-				{
-					return "Organization Invite";
-				}
-
 				//Communication
 				if (NotificationType == NotificationType.WrittenToEventComments)
 				{
@@ -105,10 +99,6 @@ namespace HowlOut
 				{
 					return "New Group Comment";
 				}
-				if (NotificationType == NotificationType.WrittenToOrganizationComments)
-				{
-					return "New Organization Comment";
-				}
 				if (NotificationType == NotificationType.WrittenToEventConversation)
 				{
 					return "New Event Message";
@@ -116,10 +106,6 @@ namespace HowlOut
 				if (NotificationType == NotificationType.WrittenToGroupConversation)
 				{
 					return "New Group Message";
-				}
-				if (NotificationType == NotificationType.WrittenToOrganizationConversation)
-				{
-					return "New Organization Message";
 				}
 
 

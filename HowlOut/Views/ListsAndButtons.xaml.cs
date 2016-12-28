@@ -32,6 +32,7 @@ namespace HowlOut
 		public ListsAndButtons(List<Profile> profiles, List<Group> groups, bool preview, bool buttons)
 		{
 			InitializeComponent();
+			if (!preview) { Padding = new Thickness(0, 60, 0, 0);}
 			createList(profiles, groups, null, null, preview, buttons, false);
 		}
 

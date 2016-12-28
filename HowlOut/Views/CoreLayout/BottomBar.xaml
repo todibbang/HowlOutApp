@@ -5,7 +5,7 @@
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 		xmlns:controls="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid Padding="0,0,0,3" RowSpacing="0" ColumnSpacing="0"> 
+		<Grid Padding="0,0,0,5" RowSpacing="0" ColumnSpacing="0"> 
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="30"/>
@@ -26,31 +26,32 @@
 			</Grid.ColumnDefinitions>
 
 			<Grid.RowDefinitions>
-				<RowDefinition Height="3"/>
+				<RowDefinition Height="1"/>
+				<RowDefinition Height="2"/>
 				<RowDefinition Height="16"/>
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="8"/>
 			</Grid.RowDefinitions>
 			
-			<!-- <local:Line Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" VerticalOptions="StartAndExpand"/> -->
+			<local:Line Grid.ColumnSpan="16"/>
 
-			<controls:IconView Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" x:Name="create" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="50" Foreground="{DynamicResource HowlOutFade}"/>
-			<Button Grid.Column="2" Grid.Row="1" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_0" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
+			<controls:IconView Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" x:Name="create" Source="ic_add.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="50" Foreground="White"/>
+			<Button Grid.Column="2" Grid.Row="2" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_0" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
 
-			<controls:IconView Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" x:Name="manage" Source="ic_manage.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="36" Foreground="{DynamicResource HowlOutFade}"/>
-			<Button Grid.Column="5" Grid.Row="1" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_1" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
+			<controls:IconView Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" x:Name="manage" Source="ic_manage.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="36" Foreground="White"/>
+			<Button Grid.Column="5" Grid.Row="2" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_1" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
 			
-			<Button Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" x:Name="exploreBG" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="22" VerticalOptions="Fill" HorizontalOptions="Fill"/>
-			<Image Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" x:Name="exploreImg" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="26"/>
-			<StackLayout Grid.Column="6" Grid.ColumnSpan="4" Grid.Row="0" Grid.RowSpan="4" x:Name="EventButtonLayout" WidthRequest="55" HorizontalOptions="CenterAndExpand"/>
-			<Button Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="4" x:Name="explore" BackgroundColor="Transparent"/>
-			<Button Grid.Column="8" Grid.Row="1" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_2" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
+			<Button Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" x:Name="exploreBG" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+			<controls:IconView Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" x:Name="exploreImg" Source="howlouticongrown.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="26"/>
+			<StackLayout Grid.Column="6" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="4" x:Name="EventButtonLayout" WidthRequest="55" HorizontalOptions="CenterAndExpand"/>
+			<Button Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="4" x:Name="explore" BackgroundColor="Transparent"/>
+			<Button Grid.Column="8" Grid.Row="2" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_2" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
 			
-			<controls:IconView Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" x:Name="howls" Source="ic_message.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="32" Foreground="{DynamicResource HowlOutFade}"/>
-			<Button Grid.Column="11" Grid.Row="1" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_3" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
+			<controls:IconView Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" x:Name="howls" Source="ic_message.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="32" Foreground="White"/>
+			<Button Grid.Column="11" Grid.Row="2" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_3" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
 			
-			<controls:IconView Grid.Column="13" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" x:Name="me" Source="ic_me.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="40" Foreground="{DynamicResource HowlOutFade}"/>
-			<Button Grid.Column="14" Grid.Row="1" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_4" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
+			<controls:IconView Grid.Column="13" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" x:Name="me" Source="ic_me.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" WidthRequest="40" Foreground="White"/>
+			<Button Grid.Column="14" Grid.Row="2" BackgroundColor="#ffc65539" BorderRadius="8" x:Name="noti_4" IsVisible="false" FontSize="8" TextColor="White" Text="0"/>
 
 			 
 			<!--
@@ -61,11 +62,11 @@
 			
 			<!-- <Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" x:Name="knapOne" BackgroundColor="Transparent"></Button>
 			<Button Grid.Column="1" Style="{DynamicResource ButtonStyle}" x:Name="knapTwo" BackgroundColor="Transparent"></Button> -->
-			<Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Text="Create" FontSize="8" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			<Label Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="3" Text="Joined" FontSize="8" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			<Label Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="3" Text="Explore" FontSize="8" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			<Label Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="3" Text="Message" FontSize="8" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-			<Label Grid.Column="13" Grid.ColumnSpan="2" Grid.Row="3" Text="Me" FontSize="8" TextColor="{DynamicResource TextColor}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Text="Create" FontSize="8" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="4" Text="Joined" FontSize="8" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="4" Text="Explore" FontSize="8" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="4" Text="Message" FontSize="8" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			<Label Grid.Column="13" Grid.ColumnSpan="2" Grid.Row="4" Text="Me" FontSize="8" TextColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

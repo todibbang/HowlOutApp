@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
@@ -13,22 +14,88 @@ namespace HowlOut
 			set { this.content = value; }
 		}
 
-		List<string> partyBanners = new List<string>{"banner_blade.png", "banner_controller.png", "banner_donut.png", "banner_fodbold.png", "banner_golf.png", "banner_gravid.png", "banner_hjort.png",
-			"banner_kaffe.png", "banner_marked.png", "banner_publikum.png", "banner_scrabble.png", "banner_skak.png", "banner_skater.png", "banner_skovsoe.png", "banner_surf.png"};
+		List<string> avaliableBanners = new List<string> { "img1.jpg", "img2.jpeg", "img3.jpeg", "img4.jpeg", "img5.jpeg", "img6.jpeg", "img7.jpg", "img8.jpg", "img9.jpg", "img10.jpeg", "img11.jpeg", "img12.jpeg", "img13.jpg", "img14.jpg", "img15.jpg", "img16.jpg" };
+		ObservableCollection<Button> bannerButtons = new ObservableCollection<Button>();
 
 		public ExploreEventCategories()
 		{
 			InitializeComponent();
-			List<EventCategoryListItem> CategoryItems = new List<EventCategoryListItem>();
-			for (int i = 0; i < partyBanners.Count; i++)
+
+			for (int i = 0; i < avaliableBanners.Count; i++)
 			{
-				CategoryItems.Add(new EventCategoryListItem() {ImageSource = partyBanners[i], Category = (EventCategory.Category) i });
+				Grid newGrid = new Grid()
+				{
+					RowSpacing = 0,
+					ColumnSpacing = 0,
+					Padding = 0,
+					WidthRequest = App.coreView.Width,
+					HeightRequest = App.coreView.Width * 0.56
+				};
+				newGrid.RowDefinitions.Add(new RowDefinition { Height = App.coreView.Width * 0.563 });
+				newGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = App.coreView.Width });
+
+				Button newBannerButton = new Button()
+				{
+					//Text = ((EventCategory.Category) i).ToString() ,
+					TextColor = Color.White,
+					HeightRequest = App.coreView.Width * 0.563,
+					BackgroundColor = Color.Transparent,
+				};
+
+				string cat = ((EventCategory.Category)i).ToString();
+
+				newBannerButton.Clicked += (sender, e) =>
+				{
+					HorizontalScrollView.IsVisible = false;
+					//scrollBackground.IsVisible = false;
+					searchBar.Text = "#" + cat;
+				};
+
+				Image newImage = new Image()
+				{
+					Source = avaliableBanners[i],
+					Aspect = Aspect.AspectFill,
+				};
+
+				Label labelBg = new Label()
+				{
+					//BackgroundColor = Color.FromHex("#90000000"),
+					Text = cat,
+					TextColor = Color.FromHex("#70000000"),
+					FontSize = 24,
+					HorizontalOptions = LayoutOptions.FillAndExpand,
+					VerticalOptions = LayoutOptions.CenterAndExpand,
+					HorizontalTextAlignment = TextAlignment.Center,
+					TranslationX = 2,
+					TranslationY = 1,
+				};
+
+				Label label = new Label()
+				{
+					//BackgroundColor = Color.FromHex("#90000000"),
+					Text = cat,
+					TextColor = Color.White,
+					FontSize = 24,
+					HorizontalOptions = LayoutOptions.FillAndExpand,
+					VerticalOptions = LayoutOptions.CenterAndExpand,
+					HorizontalTextAlignment = TextAlignment.Center,
+				};
+
+				newImage.Source = avaliableBanners[i];
+
+				newGrid.Children.Add(newImage, 0, 0);
+				newGrid.Children.Add(labelBg, 0, 0);
+				newGrid.Children.Add(label, 0, 0);
+				newGrid.Children.Add(newBannerButton, 0, 0);
+
+
+
+				categoryList.Children.Add(newGrid);
+				bannerButtons.Add(newBannerButton);
+				//bannerList.Children.Add (new StackLayout(){Padding=5});
 			}
-
-			categoryList.ItemsSource = CategoryItems;
-			categoryList.ItemSelected += OnListItemSelected;
-
-			EventListView eventListView = new EventListView(0);
+			categoryList.Children.Add(new StackLayout() {HeightRequest= 93 });
+			EventListView eventListView = new EventListView(6);
 
 			eventList.Children.Add(eventListView);
 
@@ -36,50 +103,22 @@ namespace HowlOut
 			{
 				if (string.IsNullOrWhiteSpace(searchBar.Text))
 				{
-					categoryList.IsVisible = true;
-					categoryList.ItemsSource = CategoryItems;
+					HorizontalScrollView.IsVisible = true;
 					await Task.Delay(10);
 					DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 				}
 				else {
-					categoryList.IsVisible = false;
+					HorizontalScrollView.IsVisible = false;
+					//scrollBackground.IsVisible = false;
 					eventListView.UpdateList(true, searchBar.Text);
 				}
 			};
+
 			categoryList.Focused += async (sender, e) =>
 			{
 				await Task.Delay(10);
 				DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			};
-		}
-
-		public async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
-			System.Diagnostics.Debug.WriteLine("hmm");
-
-			try
-			{
-				categoryList.ScrollTo(categoryList.SelectedItem, ScrollToPosition.Center, true);
-				EventCategoryListItem selectedCategory = categoryList.SelectedItem as EventCategoryListItem;
-				categoryImage.Source = selectedCategory.ImageSource;
-				await Task.Delay(500);
-				categoryImage.IsVisible = true;
-				categoryImage.FadeTo(0, 300, null);
-				await categoryImage.ScaleTo(2, 150, null);
-				categoryList.IsVisible = false;
-				await categoryImage.ScaleTo(4, 150, null);
-				categoryImage.Scale = 1;
-				categoryImage.Opacity = 1;
-				categoryImage.IsVisible = false;
-				searchBar.Text = "#" + selectedCategory.Category;
-				categoryList.SelectedItem = null;
-			}
-			catch (Exception ex)
-			{
-
-			}
-
-
 		}
 	}
 }

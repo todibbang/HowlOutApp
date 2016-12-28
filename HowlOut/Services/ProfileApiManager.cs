@@ -44,7 +44,7 @@ namespace HowlOut
 		public async Task<bool> CreateUpdateProfile(Profile pro, bool create)
 		{
 			var uri = "?create="+create;
-			Profile newPro = new Profile() { Name = pro.Name, Description = pro.Description, ProfileId = pro.ProfileId, ImageSource = pro.ImageSource };
+			Profile newPro = new Profile() { Name = pro.Name, Description = pro.Description, ProfileId = pro.ProfileId, ImageSource = pro.ImageSource, SmallImageSource = pro.SmallImageSource, LargeImageSource = pro.LargeImageSource };
 			var content = JsonConvert.SerializeObject(newPro);
 
 			var recievedContent = "";

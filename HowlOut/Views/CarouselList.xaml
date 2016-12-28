@@ -4,22 +4,24 @@
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" BackgroundColor="{DynamicResource HowlOutBackground}">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<StackLayout Grid.Row="0" BackgroundColor="Transparent" Padding="0,0,0,0">
-				<Grid Padding="0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="Transparent"/>
-			</StackLayout>
-			<cv:CarouselView Grid.Row="1" x:Name="carousel" HeightRequest="300">
+
+			<cv:CarouselView Grid.RowSpan="2" x:Name="carousel" HeightRequest="300">
 			    <cv:CarouselView.ItemTemplate>
 			      <DataTemplate>
 			        <ContentView Content="{Binding content}"/>
 			      </DataTemplate>
 			    </cv:CarouselView.ItemTemplate>
 			</cv:CarouselView>
+
+			<StackLayout Grid.Row="1" BackgroundColor="Transparent" Padding="0,0,0,62">
+				<Grid Padding="0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="Transparent"/>
+			</StackLayout>
 		</Grid> 
 	</ContentView.Content>
 </ContentView>

@@ -20,6 +20,8 @@ namespace HowlOut
 		ExtMap map = new ExtMap () { IsShowingUser = true, VerticalOptions = LayoutOptions.FillAndExpand };
 		Button selectButton = new Button() { BackgroundColor = App.HowlOut, TextColor=Color.White, BorderRadius=10, HeightRequest=40 };
 
+		bool create = false;
+
 		bool searching = false;
 		bool searchingQQ = false;
 
@@ -29,6 +31,7 @@ namespace HowlOut
 		public MapsView (Position position)
 		{
 			InitializeComponent ();
+			create = true;
 
 			mapLayout.VerticalOptions = LayoutOptions.FillAndExpand;
 			utilityManager.setMapForEvent(position, map, mapLayout);
@@ -87,7 +90,9 @@ namespace HowlOut
 			searchList.ItemSelected += OnItemSelected;
 		}
 
-		public void viewInFocus(UpperBar bar) { }
+		public void viewInFocus(UpperBar bar) { 
+			if(create)App.coreView.topBar.setNavigationlabel("Select location for event");
+		}
 
 		public void viewExitFocus() { }
 
@@ -100,7 +105,7 @@ namespace HowlOut
 			utilityManager.setPin(new Position(eve.Latitude, eve.Longitude), map, eve.Title, eve.AddressName);
 			this.eve = eve;
 			searchList.IsVisible = false;
-			searchList.HeightRequest=0;
+			searchList.HeightRequest = 0;
 			selectButton.IsVisible = false;
 			searchBar.IsVisible = false;
 		}

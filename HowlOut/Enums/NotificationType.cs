@@ -6,10 +6,8 @@ namespace HowlOut
 		WrittenToProfileConversation,
 		WrittenToEventConversation,
 		WrittenToGroupConversation,
-		WrittenToOrganizationConversation,
 		WrittenToEventComments,
 		WrittenToGroupComments,
-		WrittenToOrganizationComments,
 		JoinedYourEvent,
 		InvitedToEvent,
 		EventCancelled,
@@ -18,9 +16,10 @@ namespace HowlOut
 		AcceptedToFriend,
 		InvitedToGroup,
 		RequestedToJoinGroup,
-		InvitedToOrganization,
 		FriendJoinedEvent,
 		FriendCreatedEvent,
-		GroupInvitedToEvent
+		GroupInvitedToEvent,
+		InvitedToEventAsOwner,
+		InvitedToGroupAsOwner
 	}
 }

@@ -53,6 +53,7 @@ namespace HowlOut
 			try
 			{
 				var response = await httpClient.GetAsync(new Uri(uri));
+				System.Diagnostics.Debug.WriteLine(await response.Content.ReadAsStringAsync());
 				if (response.IsSuccessStatusCode) { 
 					var recievedContent = await response.Content.ReadAsStringAsync(); 
 					return conversations = JsonConvert.DeserializeObject<List<Conversation>>(recievedContent);

@@ -58,7 +58,7 @@ namespace HowlOut
 			filterSearchBtn.GestureRecognizers.Add(createImage);
 			*/
 
-			navigationLabel.Clicked += (sender, e) =>
+			navigationButton.Clicked += (sender, e) =>
 			{
 				if (scrollView == null)
 				{
@@ -75,13 +75,20 @@ namespace HowlOut
 
 		public void hideAll()
 		{
+			thisGrid.IsVisible = false;
 			showBackButton(false);
 			scrollView = null;
-
+			App.coreView.TopBarLayout.IsVisible = false;
 			rightImg.IsVisible = false;
 			rightButton.IsVisible = false;
+			navigationLabel.Text = "";
+			try
+			{
+				thisGrid.Children.Remove(navigationButton);
+			}
+			catch (Exception e) {}
 
-			setNavigationLabel("", null);
+			//setNavigationLabel("", null);
 		} 
 
 		/*
@@ -127,10 +134,12 @@ namespace HowlOut
 			filterSearchBtn.IsVisible = show;
 		} */
 
+
 		public void setNavigationLabel(string label, ScrollView s)
 		{
 			
 			navigationLabel.Text = label;
+			App.coreView.TopBarLayout.IsVisible = true;
 			scrollView = s;
 
 			System.Diagnostics.Debug.WriteLine("label " + label );
@@ -138,12 +147,14 @@ namespace HowlOut
 			{
 				System.Diagnostics.Debug.WriteLine("ScrollView is null ");
 			}
-		}
+		} 
 
 		public Button setRightButton(string imageSource)
 		{
+			thisGrid.IsVisible = true;
 			rightImg.IsVisible = true;
 			rightButton.IsVisible = true;
+			App.coreView.TopBarLayout.IsVisible = true;
 			thisGrid.Children.Remove(rightButton);
 
 			rightButton = new Button();
@@ -155,16 +166,21 @@ namespace HowlOut
 
 		public void showBackButton(bool active)
 		{
+			App.coreView.TopBarLayout.IsVisible = active;
 			backBtn.IsVisible = active;
 			backButton.IsVisible = active;
+			thisGrid.IsVisible = active;
 		}
 
 		public Button setNavigationlabel(string label)
 		{
-			thisGrid.Children.Remove(navigationLabel);
-			navigationLabel = new Button() {TextColor = Color.White, FontSize = 18,Text = label};
-			thisGrid.Children.Add(navigationLabel, 1, 0);
-			return navigationLabel;
+			App.coreView.TopBarLayout.IsVisible = true;
+			thisGrid.IsVisible = true;
+			thisGrid.Children.Remove(navigationButton);
+			navigationLabel.Text = label;
+			navigationButton = new Button() {HorizontalOptions= LayoutOptions.FillAndExpand};
+			thisGrid.Children.Add(navigationButton, 1, 0);
+			return navigationButton;
 		}
 	}
 }

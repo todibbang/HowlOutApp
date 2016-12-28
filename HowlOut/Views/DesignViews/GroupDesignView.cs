@@ -16,7 +16,8 @@ namespace HowlOut
 			this.group = group;
 			try
 			{
-				SetInfo(group.ImageSource, group.Name, group.Description, design, ModelType.Group);
+				string name = dims == 200 ? "" : group.Name;
+				SetInfo(group.ImageSource, name, group.Description, design, ModelType.Group);
 			}
 			catch (Exception ex) { }
 

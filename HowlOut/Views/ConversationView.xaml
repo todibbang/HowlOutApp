@@ -56,7 +56,7 @@
 
 
 					<BoxView Grid.Row="2" BackgroundColor="White" />
-					<Grid Grid.Row="2" VerticalOptions="End" Padding="4,4,4,4" BackgroundColor="{DynamicResource PlaceHolderColor}" x:Name="entryBottom" IsVisible="false" RowSpacing="0"> 
+					<Grid Grid.Row="2" VerticalOptions="End" Padding="4,4,4,64" BackgroundColor="{DynamicResource PlaceHolderColor}" x:Name="entryBottom" IsVisible="false" RowSpacing="0"> 
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
@@ -76,13 +76,13 @@
 			</ScrollView>
 
 
-			<StackLayout BackgroundColor="White" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10">
+			<StackLayout BackgroundColor="#70000000" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10" TranslationY="55">
 				<controls:CircleImage WidthRequest="30" x:Name="conversationInfoImage" HeightRequest="25" Aspect="AspectFill"/>
 				<StackLayout>
-					<Label x:Name="conversationInfoModelLabel" VerticalOptions="CenterAndExpand" TextColor="{DynamicResource NormalTextColor}" FontSize="12"/>
+					<Label x:Name="conversationInfoModelLabel" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="12"/>
 				</StackLayout>
 			</StackLayout>
-			<Button x:Name="conversationInfoProfilesButton" BackgroundColor="Transparent"/>
+			<Button x:Name="conversationInfoProfilesButton" BackgroundColor="Transparent" TranslationY="55"/>
 			
 			<Grid Padding="0" RowSpacing="0" x:Name="commentView" IsVisible="false" Grid.Row="0" Grid.RowSpan="2">
 				<Grid.RowDefinitions>

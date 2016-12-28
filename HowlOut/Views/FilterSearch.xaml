@@ -3,11 +3,7 @@
 			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common" BackgroundColor="{DynamicResource HowlOutBackground}"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid RowSpacing="0" ColumnSpacing="0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
-
+		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,55,0,0">
 			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
 				<StackLayout Spacing="0">
 
