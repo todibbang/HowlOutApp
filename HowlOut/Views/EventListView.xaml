@@ -13,6 +13,9 @@
 				CachingStrategy="RecycleElement"
 				BackgroundColor="Transparent"
 				IsGroupingEnabled="true">
+				<ListView.Header>
+					<StackLayout x:Name="headerLayout"/>
+				</ListView.Header>
                     <ListView.ItemTemplate>
                      	 <DataTemplate>
                       		<ViewCell>
@@ -30,10 +33,12 @@
                       </DataTemplate>
                     </ListView.GroupHeaderTemplate>
 				<ListView.Footer>
-					<StackLayout HeightRequest="100" x:Name="footer"/>
+					<StackLayout HeightRequest="0" x:Name="footer"/>
 				</ListView.Footer>
                 </ListView>
-			<Button x:Name="exploreSettings" Text="Q" IsVisible="false" WidthRequest="60" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" BorderRadius="30" FontSize="30" HeightRequest="60" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-100"/>
+			<Button x:Name="exploreBg" IsVisible="false" WidthRequest="60" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="30" FontSize="30" HeightRequest="60" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-100"/>
+			<Image x:Name="explorePng" IsVisible="false" Source="ic_search.png" WidthRequest="30" HeightRequest="30" VerticalOptions="End" HorizontalOptions="End" TranslationX="-35" TranslationY="-115"/>
+			<Button x:Name="exploreSettings" IsVisible="false" WidthRequest="60" BackgroundColor="Transparent" BorderRadius="30" FontSize="30" HeightRequest="60" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-100"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

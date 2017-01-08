@@ -17,6 +17,10 @@ namespace HowlOut
 		public DateTime SendTime { get; set; }
 		public virtual Profile Profile { get; set; }
 		public string SecondModelId { get; set; }
+		public bool Footer { get; set; }
+		public double screenHeight { get { 
+				return (App.coreView.Height-10); 
+			} set { } }
 
 		public FontAttributes fontAttributes 
 		{ 

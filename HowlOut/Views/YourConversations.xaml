@@ -11,7 +11,7 @@
 			</Grid.RowDefinitions>
 
 			<Label Grid.Row="0" Grid.RowSpan="3" Text="No Conversations to load" x:Name="nothingToLoad" IsVisible="false" HorizontalOptions="Center" VerticalOptions="Center"/>
-			<Grid Grid.Row="0" Grid.RowSpan="3" Padding="10,0,0,0">
+			<Grid Grid.Row="0" Grid.RowSpan="3" Padding="0,0,0,0">
 				<ListView x:Name="updateList" Grid.Row="0" IsVisible="true"
 				HasUnevenRows="true"
 				InputTransparent="false"
@@ -25,8 +25,8 @@
 					</ListView.Header>
                     <ListView.ItemTemplate>
                      	 <DataTemplate>
-                      		<ViewCell Height="100">
-	                      		<Grid RowSpacing="0" ColumnSpacing="0" Padding="10,10,0,2" IsVisible="{Binding isVisible}">
+                      		<ViewCell Height="82">
+	                      		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,0,0,2" IsVisible="{Binding isVisible}" BackgroundColor="{DynamicResource Shadow}">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="40" />
 										<ColumnDefinition Width="40" />
@@ -36,8 +36,8 @@
 										<RowDefinition Height="80"/>
 									</Grid.RowDefinitions>
 
-									<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="0,0,0,0" BackgroundColor="{DynamicResource Shadow}">
-										<StackLayout Padding="50,2,10,5" VerticalOptions="FillAndExpand" BackgroundColor="White" Spacing="1">
+									<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,0" BackgroundColor="White">
+										<StackLayout Padding="75,2,10,5" VerticalOptions="FillAndExpand" Spacing="1">
 											<Label Text="{Binding SpecificInfo}" VerticalOptions="Center" TextColor="{DynamicResource HowlOut}" IsVisible="{Binding ShowSpecificInfo}"/>
 											<Label x:Name="Title" TextColor="{Binding textColor}" Text="{Binding Header}" FontAttributes="{Binding fontAttributes}"/>
 											<Label x:Name="Message" FontSize="12" TextColor="{DynamicResource NormalTextColor}" Text="{Binding Content}"  FontAttributes="{Binding fontAttributes}"/>
@@ -45,7 +45,10 @@
 
 										</StackLayout>
 									</StackLayout>
-									<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ContentImageSource}" Aspect="AspectFill"/>
+									<Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Padding="5,10,15,10">
+										<controls:CircleImage x:Name="image" Source="{Binding ContentImageSource}" Aspect="AspectFill"/>
+									</Grid>
+
 								</Grid>
 	                  		</ViewCell>
                       	</DataTemplate>

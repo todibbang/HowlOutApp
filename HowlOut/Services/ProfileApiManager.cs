@@ -130,7 +130,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					//await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)

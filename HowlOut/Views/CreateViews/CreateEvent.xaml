@@ -9,9 +9,9 @@
 			</Grid.RowDefinitions>
 
 
-			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand">
+			<ScrollView Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand" Padding="0,30,0,0">
 				<StackLayout >
-					<Grid>
+					<Grid Padding="0,0,0,250">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="100"/>
 							<RowDefinition Height="auto"/>
@@ -92,7 +92,7 @@
 							<Button Grid.Row="6" Grid.Column="2" x:Name="locationButton" BackgroundColor="Transparent"/>
 							<local:Line Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<StackLayout Grid.Row="8" Grid.Column="2" Orientation="Horizontal">
-								<local:CustomEntry Placeholder="Attendendees needed..." x:Name="NumberAttendendeesEntry" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>
+								<local:CustomEntry Placeholder="Number of attendendees needed..." x:Name="NumberAttendendeesEntry" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>
 							</StackLayout>
 							<local:Line Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"/>
 							<local:CustomEntry Grid.Row="10" Grid.Column="2" HorizontalOptions="Fill" x:Name="visibilityString"/>
@@ -124,10 +124,7 @@
 							</Grid.ColumnDefinitions>
 						</Grid>
 
-						<StackLayout Grid.Row="5" Padding="20">
-							<Button Text="Create Event" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-							<Button Text="Cancel Event" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-						</StackLayout>
+
 						<StackLayout Grid.Row="6" Padding="20" IsVisible="false">
 							<local:Line/>
 							<Label Text="Age" Style="{DynamicResource TextStyle}"></Label>
@@ -137,18 +134,21 @@
 							<Label Text="Size" Style="{DynamicResource TextStyle}"></Label>
 							<Picker x:Name="minSize"></Picker>
 							<Picker x:Name="maxSize">></Picker>
-							<local:Line />
-
-
+							<local:Line/>
 						</StackLayout>
-
 					</Grid>
 				</StackLayout>
 			</ScrollView>
 
+			<StackLayout Padding="20,0,20,100" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+				<Button Text="Create Event" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button Text="Cancel Event" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="180" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+			</StackLayout>
+
 			<StackLayout Grid.Row="0" Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="SelectSenderLayout" BackgroundColor="{DynamicResource HowlOutBackground}" IsVisible="false" Padding="10,20,10,20"/>
 
-
+			<ContentView x:Name="OtherViews" IsVisible="false" Padding="0,0,0,40"/>
+			
 		</Grid>
 	</ContentView.Content>
 </ContentView>

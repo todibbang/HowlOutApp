@@ -9,6 +9,30 @@ namespace HowlOut
 		public string SenderId {get; set;}
 		public DateTime DateAndTime { get; set; }
 
+		public string MessageText { 
+			get
+			{
+				
+				return Content;
+			}
+			set { } 
+		}
+
+		public string ImageText
+		{
+			get
+			{
+				if (Content.Contains(".IMAGESTART.") && Content.Contains(".IMAGEEND."))
+				{
+					int startIndex = Content.IndexOf(".IMAGESTART.") + ".IMAGESTART.".Length;
+					int endIndex = Content.IndexOf(".IMAGEEND.", startIndex);
+					return Content.Substring(startIndex, endIndex - startIndex);
+				}
+
+				return "";
+			}
+			set { }
+		}
 
 		public string ImageSource
 		{
@@ -60,15 +84,14 @@ namespace HowlOut
 				return App.HowlOut;
 			}
 		}
-		/*
-		public Color txtColor
+
+		public bool displayMessageImage
 		{
 			get
 			{
-				if (SenderId == App.userProfile.ProfileId) { return Color.Gray; }
-				return LayoutOptions.StartAndExpand;
+				return true;
 			}
-		}*/
+		}
 
 		public Comment ()
 		{

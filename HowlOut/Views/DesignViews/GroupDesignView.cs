@@ -17,7 +17,8 @@ namespace HowlOut
 			try
 			{
 				string name = dims == 200 ? "" : group.Name;
-				SetInfo(group.ImageSource, name, group.Description, design, ModelType.Group);
+				string imgs = dims == 200 ? group.LargeImageSource : group.ImageSource;
+				SetInfo(imgs, name, group.Description, design, ModelType.Group);
 			}
 			catch (Exception ex) { }
 
@@ -25,7 +26,7 @@ namespace HowlOut
 				if (dims >= 200)
 				{
 					OtherFunctions of = new OtherFunctions();
-					of.ViewImages(new List<string>() { group.ImageSource });
+					of.ViewImages(new List<string>() { group.LargeImageSource });
 					//subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1); };
 				}
 				else {
@@ -41,7 +42,7 @@ namespace HowlOut
 			if(group != null)group = await new DataManager().GroupApiManager.GetGroup(group.GroupId);
 			try
 			{
-				if (App.coreView._dataManager.AreYouGroupOwner(group))
+				if (App.coreView._dataManager.AreYouGroupOwner(group) || App.coreView._dataManager.AreYouGroupMember(group))
 				{
 					/*
 					editBtn.IsVisible = true;
@@ -152,7 +153,7 @@ namespace HowlOut
 						App.coreView.setContentView(4);
 					};
 				} */
-				else if (!App.userProfile.Groups.Exists(g => g.GroupId == group.GroupId))
+				else if (!group.ProfilesRequestingToJoin.Exists(p => p.ProfileId == App.userProfile.ProfileId))
 				{
 					addBtn.IsVisible = true;
 					addBtn.Text = "Join";

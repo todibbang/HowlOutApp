@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ExploreEventCategories" Padding="0,0,0,0">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ExploreEventCategories" Padding="0,0,0,0">
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
 			<Grid.RowDefinitions>
@@ -16,33 +17,21 @@
 				<StackLayout x:Name="categoryList" Spacing="0" Padding="0" VerticalOptions="Fill" />
 			</ScrollView>
 			
-			<SearchBar Grid.Row="1" x:Name="searchBar" HeightRequest="40" BackgroundColor="#90000000" Placeholder="Search For Event" CancelButtonColor="{DynamicResource HowlOut}"/>
-
-			<!--
-			<ListView Grid.Row="1" x:Name="categoryList"
-				HasUnevenRows="false"
-				RowHeight="100"
-				CachingStrategy="RecycleElement"
-				BackgroundColor="{DynamicResource HowlOutBackground}" SeparatorVisibility="None">
-					<ListView.ItemTemplate>
-                     	 <DataTemplate>
-                      		<ViewCell Height="140">
-                      		<Grid HeightRequest="142" Padding="0" RowSpacing="0">
-								<Image Source="{Binding ImageSource}" Aspect="AspectFill" HeightRequest="144"/>
-
-								<Label Text="{Binding Category}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" FontSize="24" TextColor="White"/>
-							</Grid>
-	                  		</ViewCell>
-                      	</DataTemplate>
-                    </ListView.ItemTemplate>
-				<ListView.Footer>
-					<StackLayout HeightRequest="150">
+			<StackLayout Grid.RowSpan="2" BackgroundColor="#cc000000">
+					<!-- <Image Source="ic_back.png"/> -->
+				<Grid VerticalOptions="EndAndExpand" Padding="40,25,5,5">
+					<Button BackgroundColor="White" BorderRadius="18"/>
+					<Entry  x:Name="searchBar" Placeholder="Search For Event"/>
+					
+					<StackLayout HorizontalOptions="EndAndExpand" WidthRequest="20" Padding="2,2,6,2" VerticalOptions="CenterAndExpand">
+						<Button x:Name="searchBarDelete" BackgroundColor="#90000000" Text="x" FontSize="12" HeightRequest="20" BorderRadius="10" TextColor="White"/>
 					</StackLayout>
-				</ListView.Footer>
-               </ListView> -->
 
-			<!-- <Image Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="false" x:Name="categoryImage" TranslationY="80"/> -->
-			
+					
+					<!-- <SearchBar x:Name="searchBar" HeightRequest="40" BackgroundColor="Transparent" Placeholder="Search For Event" CancelButtonColor="{DynamicResource HowlOut}"/> -->
+				</Grid>
+			</StackLayout>
+			<Image Source="ic_back.png" Grid.Row="1" HorizontalOptions="StartAndExpand" x:Name="returnButton" IsVisible="false"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

@@ -13,6 +13,8 @@ namespace HowlOut
 		List<Notification> notiList = new List<Notification>();
 		public List<Notification> unseenNotifications = new List<Notification>();
 
+		//ContentView ProfileFooter;
+
 		public ContentView content
 		{
 			get { return this; }
@@ -23,15 +25,24 @@ namespace HowlOut
 		{
 			InitializeComponent();
 			_dataManager = new DataManager();
+
+			//ProfileFooter = new ContentView() {Padding = new Thickness(0,(App.coreView.Height)*-1,0,0) };
+			//ProfileFooter.Content = new InspectController(App.userProfile);
+			//updateList.Footer = ProfileFooter;
+
 			UpdateNotifications(true);
 
 			updateList.ItemSelected += OnListItemSelected;
 			updateList.Refreshing += async (sender, e) => { await UpdateLists(); };
+
+
 		}
 
 		public void viewInFocus(UpperBar bar)
 		{
-			bar.setNavigationLabel("Notifications", null);
+			App.coreView.topBar.setNavigationlabel("Notifications");
+
+			//bar.setNavigationLabel("Notifications", null);
 
 			/*
 			bar.setRightButton("ic_share.png").Clicked += async (sender, e) =>
@@ -42,6 +53,7 @@ namespace HowlOut
 			bar.showNewConversationButton(true, App.coreView.profileConversatios); */
 		}
 
+		public void reloadView() { }
 		public void viewExitFocus() { }
 
 		public ContentView getContentView() { return this; }
@@ -64,6 +76,7 @@ namespace HowlOut
 			}
 			unseenNotifications.Clear();
 
+			//notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
 			notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
 
 			int n = 0;
@@ -107,11 +120,18 @@ namespace HowlOut
 						monthGroup = new GroupedNotifications() { Date = (notiList[d].SendTime.ToString("MMMMM")) };
 					}
 					monthGroup.Add(notiList[d]);
-					if (d == notiList.Count - 1) { groupedNotifications.Add(monthGroup); }
+					if (d == notiList.Count - 1) { 
+						//monthGroup.Add(new Notification() { Footer = true });
+						groupedNotifications.Add(monthGroup); 
+					}
 				}
 			}
 			updateList.ItemsSource = groupedNotifications;
-			updateList.IsRefreshing = false;
+			updateList.IsRefreshing = false;	
+
+
+			//updateList.ScrollTo(groupedNotifications[groupedNotifications.Count - 1][groupedNotifications[groupedNotifications.Count - 1].Count-1], groupedNotifications[groupedNotifications.Count-1], ScrollToPosition.End, true);
+			//updateList.ScrollTo(updateList.Footer, ScrollToPosition.Start, true);
 		}
 
 		public async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)

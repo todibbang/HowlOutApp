@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>HowlOut</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -39,17 +39,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
-	</array>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>MKDirectionsRequest</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.apple.maps.directionsrequest</string>
-			</array>
-		</dict>
+		<string>remote-notification</string>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Can we use your location</string>
@@ -123,5 +113,10 @@
 	<string>This app needs access to photos.</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>HowlOut would like to access your calendar</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:www.api.howlout.net</string>
+		<string>applinks:api.howlout.net</string>
+	</array>
 </dict>
 </plist>

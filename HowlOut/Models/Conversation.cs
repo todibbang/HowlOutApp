@@ -11,8 +11,9 @@ namespace HowlOut
 		public List <Profile> Profiles { get; set; }
 		public List <Comment> Messages { get; set; }
 		public string Title { get; set; }
-		public Group Group { get; set; }
-		public Event Event { get; set; }
+		public string eventGroupName { get; set; }
+		//public Group Group { get; set; }
+		//public Event Event { get; set; }
 		//public Organization Organization { get; set; }
 		public Comment LastMessage { get; set; }
 
@@ -111,8 +112,22 @@ namespace HowlOut
 		{
 			get
 			{
-				if (ModelType == ConversationModelType.Event) return "Event conversation";
-				if (ModelType == ConversationModelType.Group) return "Group conversation";
+				if (ModelType == ConversationModelType.Event)
+				{
+					if (!string.IsNullOrWhiteSpace(eventGroupName))
+					{
+						return "Event: "+eventGroupName;
+					}
+					return "Event: ";
+				}
+				if (ModelType == ConversationModelType.Group)
+				{
+					if (!string.IsNullOrWhiteSpace(eventGroupName))
+					{
+						return "Group: " + eventGroupName;
+					}
+					return "Group: ";
+				}
 				return "";
 			}
 			set { this.SpecificInfo = value; }

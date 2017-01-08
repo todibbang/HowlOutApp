@@ -55,6 +55,7 @@ namespace HowlOut
 		public string SpecificGroupText { get; set; }
 		public string SpecificGroupImageSource { get; set; }
 
+		public Color newOrOldColor { get; set; }
 		/*
 		public bool isOrganizationOwner { get
 			{
@@ -69,7 +70,13 @@ namespace HowlOut
 			eve = theGivenEvent;
 			Banner = eve.ImageSource;
 
-
+			if (eve.EndDate < DateTime.Now)
+			{
+				newOrOldColor = Color.FromHex("#ffd3d3d3");
+			}
+			else {
+				newOrOldColor = Color.White;
+			}
 
 			if (eve.ProfileOwners != null)
 			{
@@ -139,13 +146,17 @@ namespace HowlOut
 				label.Text = addressList[i];
 				label.FontSize = 14;
 			}
-			if (addressList.Length == 2)
+			try
 			{
-				bottomDist = addressList[0].Substring(5).Trim();
+				if (addressList.Length == 2)
+				{
+					bottomDist = addressList[0].Substring(5).Trim();
+				}
+				else {
+					bottomDist = addressList[1].Substring(5).Trim();
+				}
 			}
-			else {
-				bottomDist = addressList[1].Substring(5).Trim();
-			}
+			catch (Exception exc) {}
 
 			if (eve.EventTypes.Count != 0) {
 				EventType1 = eve.EventTypes [0] + "";

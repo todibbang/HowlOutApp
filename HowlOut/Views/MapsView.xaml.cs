@@ -58,8 +58,10 @@ namespace HowlOut
 				{
 					await getResults(position, map);
 				}
+
+				createEventView.otherViews.IsVisible = false;
 				//App.coreView.setContentView (createEventView, "CreateEvent");
-				App.coreView.returnToPreviousView();
+				//App.coreView.returnToPreviousView();
 			};
 
 			searchBar.TextChanged += (sender, e) => {
@@ -95,6 +97,7 @@ namespace HowlOut
 		}
 
 		public void viewExitFocus() { }
+		public void reloadView() { }
 
 		public ContentView getContentView() { return this; }
 

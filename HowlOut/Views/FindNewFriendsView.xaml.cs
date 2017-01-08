@@ -80,7 +80,7 @@ namespace HowlOut
 			}
 			catch (Exception e) {}
 		}
-
+		public void reloadView() { }
 		public void viewExitFocus() {
 			cv.viewExitFocus();
 		}

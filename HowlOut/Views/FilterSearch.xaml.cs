@@ -52,6 +52,11 @@ namespace HowlOut
 			
 		}
 
+		public void reloadView()
+		{
+
+		}
+
 		public void viewExitFocus() {  }
 
 		public ContentView getContentView() { return this; }

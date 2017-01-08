@@ -3,26 +3,42 @@
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid BackgroundColor="#70000000" RowSpacing="0" x:Name="thisGrid" IsVisible="true" Padding="0,10,0,0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="50"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="50"/>
-					</Grid.ColumnDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="50"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="50"/>
+			</Grid.ColumnDefinitions>
 
-					<Grid.RowDefinitions>
-						<RowDefinition Height="45"/>
-					</Grid.RowDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="45"/>
+			</Grid.RowDefinitions>
 
-					<Image Grid.Column="0" x:Name="backBtn" Source="ic_back.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"></Image>
-					<Button Grid.Column="0" x:Name="backButton" BackgroundColor="Transparent"/>
+			<Image Grid.Column="0" x:Name="backBtn" Source="ic_back.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="true"></Image>
+			<Button Grid.Column="0" x:Name="backButton" BackgroundColor="Transparent"/>
 
-					<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="HowlOut" FontSize="16" IsVisible="true" BackgroundColor="Transparent"/>
-					<Button Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationButton" TextColor="White" Text="HowlOut" FontSize="14" IsVisible="true" BackgroundColor="Transparent" BorderColor="Transparent"/>
+			<Label Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationLabel" TextColor="White" Text="" FontSize="16" IsVisible="true" BackgroundColor="Transparent"/>
+			<Button Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="navigationButton" TextColor="White" Text="" FontSize="14" IsVisible="true" BackgroundColor="Transparent" BorderColor="Transparent"/>
 
-					<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
+			<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 
-					<local:IconView Grid.Column="2" x:Name="rightImg" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true" Foreground="White"/>
-					<Button Grid.Column="2" x:Name="rightButton" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
-				</Grid>
+			<local:IconView Grid.Column="2" x:Name="rightImg" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true" Foreground="White"/>
+			<Button Grid.Column="2" x:Name="rightButton" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
+
+			<Grid Grid.Column="2" x:Name="notiLayout" Padding="0,6,6,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="16"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="16"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				
+				<local:IconView Source="ic_explore.png" Grid.RowSpan="2" Grid.ColumnSpan="2" Foreground="White"/>
+				<Grid x:Name="notiBadg" Grid.Column="1" Grid.Row="0" HeightRequest="20" WidthRequest="20"/>
+				<Button x:Name="notiButton" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+			</Grid>
+			
+		</Grid>
 	</ContentView.Content>
 </ContentView>

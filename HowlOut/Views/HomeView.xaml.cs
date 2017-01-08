@@ -14,7 +14,6 @@ namespace HowlOut
 
 		DataManager _dataManager = new DataManager ();
 		ListsAndButtons listMaker = new ListsAndButtons();
-
 		InspectController inspect;
 
 		int currentView = 0;

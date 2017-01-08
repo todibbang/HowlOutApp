@@ -13,16 +13,21 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="0"/>
 				<RowDefinition Height="auto"/>
+				<RowDefinition Height="20"/>
 				<RowDefinition Height="15"/>
 			</Grid.RowDefinitions>
 
-			<Button Grid.Column="{Binding column}" Grid.Row="1" BorderRadius="15" BackgroundColor="{Binding bgColor}" />
-			<StackLayout Grid.Column="{Binding column}" Grid.Row="1" Padding="10">
-				<Label Text="{Binding Content}" VerticalTextAlignment="Start" LineBreakMode="WordWrap" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="14"/>
+			<Button Grid.Column="{Binding column}" Grid.Row="1" Grid.RowSpan="2" BorderRadius="15" BackgroundColor="{Binding bgColor}" />
+			<StackLayout Grid.Column="{Binding column}" Grid.Row="1" Grid.RowSpan="2" Padding="10">
+				<Label Text="{Binding MessageText}" VerticalTextAlignment="Start" LineBreakMode="WordWrap" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="14"/>
+				<Image Source="{Binding ImageText}" />
 			</StackLayout>
-			<Label Grid.Row="2" Grid.ColumnSpan="4" Text="{Binding Time}" FontSize="8" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="{Binding horizontal}" VerticalOptions="CenterAndExpand"/>
+			<Label Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Time}" FontSize="8" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="{Binding horizontal}" VerticalOptions="CenterAndExpand"/>
 
-			<controls:CircleImage Grid.Row="1" Grid.Column="0" Source="{Binding ImageSource}" Aspect="AspectFill" VerticalOptions="EndAndExpand" HeightRequest="20" IsVisible="{Binding displayImage}"/> 
+			<StackLayout Grid.Row="2" Grid.Column="0" VerticalOptions="EndAndExpand" HeightRequest="20" WidthRequest="20">
+				<controls:CircleImage Source="{Binding ImageSource}" Aspect="AspectFill" IsVisible="{Binding displayImage}" HeightRequest="20" WidthRequest="20"/> 
+			</StackLayout>
+
 			
 		</Grid>
 	</ContentView.Content>

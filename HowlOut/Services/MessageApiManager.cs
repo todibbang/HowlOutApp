@@ -62,8 +62,6 @@ namespace HowlOut
 			catch (Exception ex)
 			{
 				await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
-				System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message);
-				await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 			}
 			return null;
 		}

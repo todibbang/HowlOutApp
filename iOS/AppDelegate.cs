@@ -96,6 +96,8 @@ namespace HowlOut.iOS
 			notiCheck = check;
 		}
 
+
+
 		public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 		{
 			Hub = new SBNotificationHub(ConnectionString, NotificationHubPath);
@@ -159,6 +161,23 @@ namespace HowlOut.iOS
 					}
 				}
 			}
+		}
+
+		public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+		{
+			System.Diagnostics.Debug.WriteLine("ContinueUserActivity method has been called...");
+			System.Diagnostics.Debug.WriteLine(userActivity.WebPageUrl);
+
+			string Content = userActivity.WebPageUrl.ToString();
+
+			if (Content.Contains("event"))
+			{
+				int startIndex = Content.IndexOf("event") + "event".Length;
+				System.Diagnostics.Debug.WriteLine(Content.Substring(startIndex));
+				App.coreView.GoToSelectedEvent(Content.Substring(startIndex));
+			}
+			    
+			return true;
 		}
 
 		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)

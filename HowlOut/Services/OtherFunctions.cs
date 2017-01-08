@@ -26,7 +26,7 @@ namespace HowlOut
 		public void setOptionsGrid(Grid buttonGrid, List<string> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)
 		{
 			buttonGrid.BackgroundColor = Color.FromHex("#cc000000");
-
+			buttonGrid.ColumnSpacing = 0;
 
 
 			List<Button> buttons = new List<Button>();
@@ -38,6 +38,7 @@ namespace HowlOut
 					Button b = new Button { Text = s, BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.Fill, TextColor = Color.White, FontSize = 16 };
 					buttons.Add(b);
 					clickButtonAction.Add(() => selectButton(buttons, b));
+
 				}
 			}
 
@@ -62,7 +63,8 @@ namespace HowlOut
 					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 				}
 				else {
-					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 1 });
+					buttonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 0.5 });
+
 				}
 
 				if (i == (buttons.Count * 2 - 1) - 1)
@@ -75,11 +77,21 @@ namespace HowlOut
 			{
 				if (i % 2 == 0)
 				{
+					if (buttons[bNumber].Text.Contains("Notifications"))
+					{
+						Grid notBtnGrid = new Grid() { Padding = new Thickness(0,4,4,0) };
+						notBtnGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+						notBtnGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = 16 });
+						notBtnGrid.RowDefinitions.Add(new RowDefinition { Height = 16 });
+						notBtnGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+						notBtnGrid.Children.Add(App.coreView.notiButton, 1,0);
+						buttonGrid.Children.Add(notBtnGrid, i, 1);
+					}
 					buttonGrid.Children.Add(buttons[bNumber], i, 1);
 					bNumber++;
 				}
 				else {
-					//buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = App.LineColor }, i, 0);
+					buttonGrid.Children.Add(new StackLayout() { BackgroundColor = Color.FromHex("#60ffffff") }, i, i+1, 0, 2);
 				}
 			}
 
@@ -139,12 +151,14 @@ namespace HowlOut
 		public async Task<bool> SenderOfEvent(StackLayout SelectEventSenderLayout, Event eve)
 		{
 			bool continueCreating = true;
+			await App.coreView._dataManager.ProfileApiManager.GetLoggedInProfile();
 
 			if (App.userProfile.GroupsOwned != null && App.userProfile.GroupsOwned.Count > 0)
 			{
 				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 				SelectEventSenderLayout.Children.Clear();
 				SelectEventSenderLayout.IsVisible = true;
+				SelectEventSenderLayout.Padding = new Thickness(10, 40, 10, 100);
 
 				SelectEventSenderLayout.Children.Add(new Label()
 				{
@@ -154,8 +168,8 @@ namespace HowlOut
 					HorizontalOptions = LayoutOptions.CenterAndExpand,
 				});
 
-				Grid uGrid = new Grid() { HeightRequest = 120, WidthRequest = 120, Padding = new Thickness(0,0,0,10) };
-				uGrid.Children.Add(new ProfileDesignView(App.userProfile,120,false, GenericDesignView.Design.OnlyImage),0,0);
+				Grid uGrid = new Grid() { HeightRequest = 120, WidthRequest = 120, Padding = new Thickness(0, 0, 0, 10) };
+				uGrid.Children.Add(new ProfileDesignView(App.userProfile, 120, false, GenericDesignView.Design.OnlyImage), 0, 0);
 				Button youBtn = new Button()
 				{
 					HeightRequest = 150,
@@ -166,7 +180,7 @@ namespace HowlOut
 				youBtn.Clicked += async (sender, e) =>
 				{
 					bool success = await App.coreView.displayConfirmMessage("Continue ?", "You have selected yourself to be the owner of this event. Continue creating the event ?", "Confirm", "Cancel");
-					if(success)tcs.TrySetResult(true);
+					if (success) tcs.TrySetResult(true);
 				};
 				StackLayout labLayout = new StackLayout();
 				ListsAndButtons lab = new ListsAndButtons();
@@ -190,6 +204,7 @@ namespace HowlOut
 				cancleBtn.Clicked += (sender, e) =>
 				{
 					continueCreating = false;
+					eve.GroupOwner = null;
 					tcs.TrySetResult(true);
 				};
 				testEvent += async (sender, e) =>
@@ -197,6 +212,7 @@ namespace HowlOut
 					bool success = await App.coreView.displayConfirmMessage("Continue ?", "Continue creating the event with the selected group as owner ?", "Confirm", "Cancel");
 					if (success) tcs.TrySetResult(true);
 					else {
+						eve.GroupOwner = null;
 						labLayout.Children.Clear();
 						labLayout.Children.Add(lab = new ListsAndButtons());
 						getGroupClicked(lab, eve);

@@ -48,25 +48,24 @@
 				<local:IconView x:Name="albumPictureButton" Source="ic_album.png" IsVisible="false" WidthRequest="40" HorizontalOptions="EndAndExpand" Foreground="White"/> 
 			</StackLayout>  
 			
-			<StackLayout Grid.Row="2" x:Name="nameLayout" VerticalOptions="CenterAndExpand" IsVisible="false" Spacing="0" Padding="0,0,0,5">
-				<Label  x:Name="nameLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
-				<Label  x:Name="subNameLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
+			<StackLayout Grid.Row="2" x:Name="nameLayout" VerticalOptions="CenterAndExpand" IsVisible="false" Spacing="0" Padding="0,0,0,0">
+				<Label  x:Name="nameLabel" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
 			</StackLayout>
 			
-			<StackLayout Grid.Row="3" Padding="0,4,0,0" x:Name="descriptionLayout" IsVisible="false" >
+			<StackLayout Grid.Row="3" Padding="0,4,0,0" x:Name="descriptionLayout" IsVisible="false">
 				<StackLayout BackgroundColor="White">
 					<local:Line x:Name="descriptionLineOne" IsVisible="false"/>
 					<Label x:Name="descriptionLabel" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Center" IsVisible="false"/>
 					<local:CustomEditor x:Name="descriptionLabelEdit" VerticalOptions="StartAndExpand" Placeholder="Description..." IsVisible="false" BackgroundColor="White" HeightRequest="100"/> 
-					<StackLayout Grid.Row="4" x:Name="editProfileButtons" IsVisible="false" Orientation="Horizontal" Padding="0,10,0,0">
-						<Button Style="{DynamicResource ButtonStyle}" Text="Update" x:Name="updateProfileButton" BorderRadius="10" WidthRequest="190" ></Button>
-						<Button Style="{DynamicResource ButtonStyle}" Text="Log out" x:Name="logOutButton" BorderRadius="10" WidthRequest="190" ></Button>
-					</StackLayout>
 					<local:Line x:Name="descriptionLineTwo" IsVisible="false"/>
-					</StackLayout>
+				</StackLayout>
+				<StackLayout Grid.Row="4" x:Name="editProfileButtons" IsVisible="false" Orientation="Horizontal" Padding="0,10,0,0">
+					<Button Style="{DynamicResource ButtonStyle}" Text="Update" x:Name="updateProfileButton" BorderRadius="10" WidthRequest="190" ></Button>
+					<Button Style="{DynamicResource ButtonStyle}" Text="Log out" x:Name="logOutButton" BorderRadius="10" WidthRequest="190" ></Button>
+				</StackLayout>
 			</StackLayout>
 
-			<StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,8,0,0" >
+			<StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,2,0,0" >
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="addButton" Text="add" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeButton" Text="remove" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="decline" BorderRadius="10" IsVisible="false"/>

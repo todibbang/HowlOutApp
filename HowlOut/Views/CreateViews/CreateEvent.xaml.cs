@@ -17,6 +17,7 @@ namespace HowlOut
 			get { return this; }
 			set { this.content = value; }
 		}
+		public ContentView otherViews { get { return OtherViews; } set { } }
 
 		MapsView mapView;
 		DataManager _dataManager;
@@ -47,7 +48,7 @@ namespace HowlOut
 		}
 
 		public void viewExitFocus() { }
-
+		public void reloadView() { }
 		public ContentView getContentView() { return this; }
 
 		private void setCreateView(Event givenEvent, bool isCreate)
@@ -88,8 +89,10 @@ namespace HowlOut
 					mapView = new MapsView(new Position(newEvent.Latitude, newEvent.Longitude));
 				}
 				mapView.createEventView = this;
-				App.coreView.setContentViewWithQueue(mapView);
 
+				OtherViews.Content = mapView;
+				OtherViews.IsVisible = true;
+				//App.coreView.setContentViewWithQueue(mapView);
 			};
 
 			visibilityPicker.SelectedIndexChanged += (sender, e) =>
@@ -132,7 +135,7 @@ namespace HowlOut
 			{
 				try
 				{
-					imageStreams = await _dataManager.UtilityManager.TakePicture(SelectedBannerImage.Source);
+					imageStreams = await _dataManager.UtilityManager.TakePicture(SelectedBannerImage);
 				}
 				catch (Exception ex) { }
 			};
@@ -143,7 +146,7 @@ namespace HowlOut
 			{
 				try
 				{
-					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage.Source);
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage);
 				}
 				catch (Exception ex) { }
 			};
@@ -153,27 +156,20 @@ namespace HowlOut
 			{
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createEventView = this;
-				App.coreView.setContentViewWithQueue(selectBannerView);
+
+				OtherViews.Content = selectBannerView;
+				OtherViews.IsVisible = true;
+				//App.coreView.setContentViewWithQueue(selectBannerView);
 			};
 
-			launchButton.Clicked += async (sender, e) =>
+			launchButton.Clicked += (sender, e) =>
 			{
-				if (isCreate && !Launching)
-				{
-					bool continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, newEvent);
-					if (continueCreating)
-					{
-						LaunchEvent(newEvent);
-						Launching = true;
-					}
-				}
-				else if (!isCreate && !Launching)
+				if (!Launching)
 				{
 					LaunchEvent(newEvent);
 					Launching = true;
 				}
 			};
-
 			cancelButton.Clicked += (sender, e) => { CancelTheEvent(); };
 		}
 
@@ -263,16 +259,6 @@ namespace HowlOut
 			
 		private async void LaunchEvent(Event eventToCreate)
 		{
-			App.coreView.IsLoading(true);
-			if (imageStreams != null)
-			{
-				eventToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
-			}
-			if (eventToCreate.GroupOwner == null)
-			{
-				eventToCreate.ProfileOwners = new List<Profile> { App.userProfile };
-			}
-
 			if (String.IsNullOrWhiteSpace (eventToCreate.Title)) {
 				await App.coreView.displayAlertMessage ("Title Missing", "Title is missing", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.Description)) {
@@ -283,35 +269,58 @@ namespace HowlOut
 				await App.coreView.displayAlertMessage ("EventTypes Missing", "No Event Type has been selected", "Ok");
 			} else if (String.IsNullOrWhiteSpace (eventToCreate.AddressName) || eventToCreate.Latitude == 0) {
 				await App.coreView.displayAlertMessage ("Address Missing", "No valid address has been selected", "Ok");
-			} else if (String.IsNullOrWhiteSpace (eventToCreate.ImageSource)) {
+			} else if (String.IsNullOrWhiteSpace (eventToCreate.ImageSource) && imageStreams == null) {
 				await App.coreView.displayAlertMessage ("Banner Missing", "No banner has been selected", "Ok");
-			}else {
-				
-				eventToCreate.MinAge = 0;
-				eventToCreate.MaxAge = 100;
-				eventToCreate.MinSize = 1;
-
-
-				Event eventCreated = await _dataManager.EventApiManager.CreateEditEvent(eventToCreate);
-
-				if (eventCreated != null) {
-					eventCreated.Attendees = new List<Profile> ();
-					eventCreated.Followers = new List<Profile> ();
-					InspectController inspect = new InspectController(eventCreated);
+			} else {
+				bool continueCreating = true;
+				if (isCreate)
+				{
+					continueCreating = await App.coreView.otherFunctions.SenderOfEvent(SelectSenderLayout, eventToCreate);
+				}
+				else {
+					continueCreating = true;
+				}
+				App.coreView.IsLoading(true);
+				if (continueCreating)
+				{
+					
+					if (imageStreams != null)
+					{
+						eventToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
+					}
 					if (isCreate)
 					{
-						App.coreView.setContentViewWithQueue(inspect);
-						App.coreView.updateHomeView();
+						if (eventToCreate.GroupOwner == null)
+						{
+							eventToCreate.ProfileOwners = new List<Profile> { App.userProfile };
+						}
+						eventToCreate.MinAge = 0;
+						eventToCreate.MaxAge = 100;
+						eventToCreate.MinSize = 1;
+					}
+
+					Event eventCreated = await _dataManager.EventApiManager.CreateEditEvent(eventToCreate);
+
+					if (eventCreated != null)
+					{
+						App.coreView.joinedEvents.UpdateList(true, "");
+						eventCreated.Attendees = new List<Profile>();
+						eventCreated.Followers = new List<Profile>();
+						InspectController inspect = new InspectController(eventCreated);
+						if (isCreate)
+						{
+							App.coreView.setContentViewWithQueue(inspect);
+							App.coreView.updateHomeView();
+						}
+						else {
+							App.coreView.setContentViewReplaceCurrent(inspect, 2);
+						}
+						App.coreView.createEvent = new CreateEvent(new Event(), true);
+						App.coreView.updateCreateViews();
 					}
 					else {
-						App.coreView.setContentViewReplaceCurrent(inspect, 2);
+						await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");
 					}
-					//setCreateView(new Event(), true);
-					App.coreView.createEvent = new CreateEvent(new Event(), true);
-					App.coreView.updateCreateViews();
-
-				} else {
-					await App.coreView.displayAlertMessage ("Error", "Event not created, try again", "Ok");
 				}
 			}
 			Launching = false;

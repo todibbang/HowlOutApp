@@ -6,22 +6,35 @@ using System.Collections.ObjectModel;
 
 namespace HowlOut
 {
-	public partial class ExploreEventCategories : ContentView
+	public partial class ExploreEventCategories : ContentView, ViewModelInterface
 	{
 		public ContentView content
 		{
 			get { return this; }
 			set { this.content = value; }
 		}
+		public void reloadView() { }
+		public void viewInFocus(UpperBar bar) { }
+		public void viewExitFocus() { }
+		public ContentView getContentView() { return this; }
 
-		List<string> avaliableBanners = new List<string> { "img1.jpg", "img2.jpeg", "img3.jpeg", "img4.jpeg", "img5.jpeg", "img6.jpeg", "img7.jpg", "img8.jpg", "img9.jpg", "img10.jpeg", "img11.jpeg", "img12.jpeg", "img13.jpg", "img14.jpg", "img15.jpg", "img16.jpg" };
+		List<string> ab = new List<string> { "img1.jpg", "img2.jpeg", "img3.jpeg", "img4.jpeg", "img5.jpeg", "img6.jpeg", "img7.jpg", "img8.jpg", "img9.jpg", "img10.jpeg", "img11.jpeg", "img12.jpeg", "img13.jpg", "img14.jpg", "img15.jpg", "img16.jpg" };
 		ObservableCollection<Button> bannerButtons = new ObservableCollection<Button>();
+		EventListView eventListView;
 
 		public ExploreEventCategories()
 		{
 			InitializeComponent();
 
-			for (int i = 0; i < avaliableBanners.Count; i++)
+			List<string> avaliableBanners = new List<string>();
+			avaliableBanners.Add(App.userProfile.LargeImageSource);
+			avaliableBanners.Add("friends_and_followed.jpg");
+			avaliableBanners.AddRange(ab);
+
+			categoryList.Children.Add(new StackLayout() { HeightRequest = 60 });
+
+			for (int i = 0; i < 0; i++)
+				//for (int i = 0; i < avaliableBanners.Count; i++)
 			{
 				Grid newGrid = new Grid()
 				{
@@ -29,26 +42,47 @@ namespace HowlOut
 					ColumnSpacing = 0,
 					Padding = 0,
 					WidthRequest = App.coreView.Width,
-					HeightRequest = App.coreView.Width * 0.56
+					HeightRequest = App.coreView.Width * 0.45
 				};
-				newGrid.RowDefinitions.Add(new RowDefinition { Height = App.coreView.Width * 0.563 });
+				newGrid.RowDefinitions.Add(new RowDefinition { Height = App.coreView.Width * 0.45 });
 				newGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = App.coreView.Width });
 
 				Button newBannerButton = new Button()
 				{
-					//Text = ((EventCategory.Category) i).ToString() ,
 					TextColor = Color.White,
-					HeightRequest = App.coreView.Width * 0.563,
+					HeightRequest = App.coreView.Width * 0.45,
 					BackgroundColor = Color.Transparent,
 				};
-
-				string cat = ((EventCategory.Category)i).ToString();
+				string cat = "";
+				if (i != 0 && i != 1)
+				{
+					cat = ((EventCategory.Category)(i - 2)).ToString();
+				}
+				else if (i == 0) { cat = "My Search Preferences"; }
+				else if (i == 1) { cat = "Friends & Followed"; }
 
 				newBannerButton.Clicked += (sender, e) =>
 				{
-					HorizontalScrollView.IsVisible = false;
-					//scrollBackground.IsVisible = false;
-					searchBar.Text = "#" + cat;
+					try
+					{
+						eventList.Children.Remove(eventListView);
+					}
+					catch (Exception ex) {}
+
+					if (cat == "My Search Preferences")
+					{
+						App.coreView.setContentViewWithQueue(new EventListView(0));
+					}
+					else if (cat == "Friends & Followed")
+					{
+						App.coreView.setContentViewWithQueue(new EventListView(1));
+					}
+					else {
+						HorizontalScrollView.IsVisible = false;
+						eventListView = new EventListView(6);
+						eventList.Children.Add(eventListView);
+						searchBar.Text = "#" + cat;
+					}
 				};
 
 				Image newImage = new Image()
@@ -95,8 +129,7 @@ namespace HowlOut
 				//bannerList.Children.Add (new StackLayout(){Padding=5});
 			}
 			categoryList.Children.Add(new StackLayout() {HeightRequest= 93 });
-			EventListView eventListView = new EventListView(6);
-
+			eventListView = new EventListView(6);
 			eventList.Children.Add(eventListView);
 
 			searchBar.TextChanged += async (sender, e) =>
@@ -106,13 +139,26 @@ namespace HowlOut
 					HorizontalScrollView.IsVisible = true;
 					await Task.Delay(10);
 					DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+					returnButton.IsVisible = false;
 				}
 				else {
 					HorizontalScrollView.IsVisible = false;
 					//scrollBackground.IsVisible = false;
 					eventListView.UpdateList(true, searchBar.Text);
+					returnButton.IsVisible = true;
 				}
 			};
+
+			searchBarDelete.Clicked += (sender, e) =>
+			{
+				searchBar.Text = "";
+			};
+			TapGestureRecognizer returnGesture = new TapGestureRecognizer();
+			returnGesture.Tapped += (sender, e) =>
+			{
+				searchBar.Text = "";
+			};
+			returnButton.GestureRecognizers.Add(returnGesture);
 
 			categoryList.Focused += async (sender, e) =>
 			{

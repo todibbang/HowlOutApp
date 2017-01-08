@@ -41,7 +41,7 @@ namespace HowlOut
 			}
 
 		}
-
+		public void reloadView() { }
 		public void viewInFocus(UpperBar bar)
 		{
 			bar.setNavigationLabel("Invite To Organization", null);
@@ -60,14 +60,32 @@ namespace HowlOut
 			//Normal Conversation
 			if (conversation.ModelType == ConversationModelType.Profile)
 			{
-				profilesThatCanBeAdded = App.userProfile.Friends;
+				try
+				{
+					List<string> fbf = await DependencyService.Get<SocialController>().getFacebookFriends();
+					List<Profile> fbp = new List<Profile>();
+					foreach (string s in fbf)
+					{
+						fbp.Add(new Profile() { ProfileId = s });
+					}
+					profilesThatCanBeAdded.AddRange(fbp);
+				}
+				catch (Exception exc) { }
 			}
 			//Event Conversation
 			if (conversation.ModelType == ConversationModelType.Event)
 			{
 				var eve = await _dataManager.EventApiManager.GetEventById(conversation.ModelId);
 				profilesThatCanBeAdded = eve.Attendees;
-				if (eve.ProfileOwners != null) {
+				if (eve.ProfileOwners != null)
+				{
+					foreach (Profile p in eve.ProfileOwners)
+					{
+						if (!profilesThatCanBeAdded.Exists(prof => prof.ProfileId == p.ProfileId)) profilesThatCanBeAdded.Add(p);
+					}
+				}
+				else if (eve.GroupOwner != null && eve.GroupOwner.ProfileOwners != null)
+				{
 					foreach (Profile p in eve.GroupOwner.ProfileOwners)
 					{
 						if (!profilesThatCanBeAdded.Exists(prof => prof.ProfileId == p.ProfileId)) profilesThatCanBeAdded.Add(p);
@@ -88,14 +106,6 @@ namespace HowlOut
 				}
 			}
 
-			//Organization Conversation 
-			/*
-			if (conversation.ModelType == ConversationModelType.Organization)
-			{
-				var org = await _dataManager.OrganizationApiManager.GetOrganization(conversation.ModelId);
-				profilesThatCanBeAdded = org.Members;
-			} */
-
 			profilesThatCanBeAdded.RemoveAll(p => p.ProfileId == App.StoredUserFacebookId);
 			setup();
 		}
@@ -103,21 +113,8 @@ namespace HowlOut
 		public InviteListView(Event eve, bool owner)
 		{
 			InitializeComponent();
-			if (owner)
-			{
-				foreach (Profile p in eve.ProfileOwners)
-				{
-					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
-				}
-			}
-			else {
-				foreach (Profile p in eve.Attendees)
-				{
-					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
-				}
-			}
+			findPeopleToAddToEvent(eve, owner);
 
-			setup();
 			addBtn.Clicked += async (sender, e) =>
 			{
 				if (profilesAdded.Count > 0)
@@ -140,24 +137,55 @@ namespace HowlOut
 				}
 			};
 		}
-		public InviteListView(Group grp, bool owner)
+
+		private async void findPeopleToAddToEvent(Event eve, bool owner)
 		{
-			InitializeComponent();
+			try
+			{
+				List<string> fbf = await DependencyService.Get<SocialController>().getFacebookFriends();
+				List<Profile> fbp = new List<Profile>();
+				foreach (string s in fbf)
+				{
+					if (!profilesThatCanBeAdded.Exists(p => p.ProfileId == s))
+					{
+						try
+						{
+							Profile pro = await _dataManager.ProfileApiManager.GetProfile(s);
+							if (pro != null)
+							{
+								fbp.Add(pro);
+							}
+						}
+						catch (Exception otherexc) { }
+					}
+				}
+				profilesThatCanBeAdded.AddRange(fbp);
+			}
+			catch (Exception exc) { }
+			
+
 			if (owner)
 			{
-				foreach (Profile p in grp.ProfileOwners)
+				foreach (Profile p in eve.ProfileOwners)
 				{
 					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
 				}
 			}
 			else {
-				foreach (Profile p in grp.Members)
+				foreach (Profile p in eve.Attendees)
 				{
 					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
 				}
 			}
-
 			setup();
+		}
+
+
+		public InviteListView(Group grp, bool owner)
+		{
+			InitializeComponent();
+			findPeopleToAddToGroup(grp, owner);
+
 			addBtn.Clicked += async (sender, e) =>
 			{
 				if (profilesAdded.Count > 0)
@@ -179,29 +207,51 @@ namespace HowlOut
 					}
 				}
 			};
-
 		}
-		/*
-		public InviteListView(Organization org)
+
+		private async void findPeopleToAddToGroup(Group grp, bool owner)
 		{
-			InitializeComponent();
-			foreach (Profile p in org.Members)
+			try
 			{
-				profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				List<string> fbf = await DependencyService.Get<SocialController>().getFacebookFriends();
+				List<Profile> fbp = new List<Profile>();
+				foreach (string s in fbf)
+				{
+					if (!profilesThatCanBeAdded.Exists(p => p.ProfileId == s))
+					{
+						try
+						{
+							Profile pro = await _dataManager.ProfileApiManager.GetProfile(s);
+							if (pro != null)
+							{
+								fbp.Add(pro);
+							}
+						}
+						catch (Exception otherexc) { }
+					}
+				}
+				profilesThatCanBeAdded.AddRange(fbp);
+			}
+			catch (Exception exc) { }
+
+
+			if (owner)
+			{
+				foreach (Profile p in grp.ProfileOwners)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
+			}
+			else {
+				foreach (Profile p in grp.Members)
+				{
+					profilesThatCanBeAdded.Remove(profilesThatCanBeAdded.Find(r => r.ProfileId == p.ProfileId));
+				}
 			}
 			setup();
-			addBtn.Clicked += async (sender, e) =>
-			{
-				foreach (Profile p in profilesAdded)
-				{
-					await _dataManager.OrganizationApiManager.InviteToOrganization(org.OrganizationId, p);
-				}
-				App.coreView.returnToPreviousView();
-			};
+		}
 
-		} */
-
-		void setup()
+		async void setup()
 		{
 			profilesToBeAdded.ItemsSource = profilesThatCanBeAdded;
 			profilesToBeAdded.ItemSelected += OnPeopleToAddListItemSelected;

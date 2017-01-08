@@ -150,7 +150,7 @@ namespace HowlOut.iOS.Renderers
 
 
 			View.AddSubview(loginView);
-			View.AddSubview(continueBtn);
+			//View.AddSubview(continueBtn);
 
 
 			View.AddSubview(b);

@@ -12,6 +12,7 @@ namespace HowlOut
 			get { return this; }
 			set { this.content = value; }
 		}
+		public ContentView otherViews { get { return OtherViews; } set { } }
 
 		public Group newGroup;
 		List<byte[]> imageStreams;
@@ -22,7 +23,7 @@ namespace HowlOut
 		{
 			
 		}
-
+		public void reloadView() { }
 		public void viewExitFocus() { }
 
 		public ContentView getContentView() { return this; }
@@ -58,7 +59,7 @@ namespace HowlOut
 			{
 				try
 				{
-					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage.Source);
+					imageStreams = await _dataManager.UtilityManager.TakePicture(SelectedBannerImage);
 				}
 				catch (Exception ex) { }
 			};
@@ -69,7 +70,7 @@ namespace HowlOut
 			{
 				try
 				{
-					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage.Source);
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(SelectedBannerImage);
 				}
 				catch (Exception ex) { }
 			};
@@ -78,7 +79,8 @@ namespace HowlOut
 			selectBannerButton.Clicked += (sender, e) => {
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createGroupView = this;
-				App.coreView.setContentViewWithQueue(selectBannerView);
+				OtherViews.Content = selectBannerView;
+				OtherViews.IsVisible = true;
 			};
 
 
@@ -114,11 +116,6 @@ namespace HowlOut
 		private async void LaunchGroup(Group groupToCreate)
 		{
 			App.coreView.IsLoading(true);
-			if (imageStreams != null)
-			{
-				groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G"));
-			}
-			groupToCreate.ProfileOwners = new List<Profile> {  new Profile() { ProfileId = App.userProfile.ProfileId, } };
 
 			if (String.IsNullOrWhiteSpace(groupToCreate.Name))
 			{
@@ -128,12 +125,20 @@ namespace HowlOut
 			{
 				await App.coreView.displayAlertMessage("Description Missing", "Description is missing", "Ok");
 			}
-			else if (String.IsNullOrWhiteSpace(groupToCreate.ImageSource))
+			else if (String.IsNullOrWhiteSpace(groupToCreate.ImageSource) && imageStreams == null)
 			{
 				await App.coreView.displayAlertMessage("Banner Missing", "No banner has been selected", "Ok");
 			}
 			else {
-				
+				if (imageStreams != null)
+				{
+					groupToCreate.SmallImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[0]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+".small");
+					groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+ ".medium");
+					groupToCreate.LargeImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+ ".large");
+				}
+				groupToCreate.ProfileOwners = new List<Profile> { new Profile() { ProfileId = App.userProfile.ProfileId, } };
+
+
 				var groupCreated = await _dataManager.GroupApiManager.CreateEditGroup(groupToCreate);
 
 				if (groupCreated != null)
@@ -190,7 +195,9 @@ namespace HowlOut
 		{
 			selectBannerButton.BackgroundColor = Color.Transparent;
 			SelectedBannerImage.Source = banner;
+
 			newGroup.ImageSource = banner;
+			newGroup.LargeImageSource = banner;
 			imageStreams = null;
 		}
 	}

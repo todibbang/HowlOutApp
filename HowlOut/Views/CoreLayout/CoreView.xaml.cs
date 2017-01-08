@@ -21,19 +21,23 @@ namespace HowlOut
 
 		ContentView newContentView;
 
+		public CarouselList MainCarouselList;
+
 		public UpperBar topBar;
+		public BottomBar btmBar { get { return bottomBar; } }
 		public DataManager _dataManager;
 		public OtherFunctions otherFunctions = new OtherFunctions();
 
 		public CarouselList createView;
-		public CarouselList searchEventView;
-		public CarouselList joinedEventView;
-		public CarouselList conversatios;
-		public CarouselList myProfile;
-		public InspectController homeView;
-		public YourConversations profileConversatios;
-		public YourConversations otherConversatios;
+		//public CarouselList searchEventView;
+		public EventListView joinedEventView;
+		//public CarouselList conversatios;
 		public YourNotifications notifications;
+		public InspectController homeView;
+
+		public YourConversations yourConversatios;
+		//public YourConversations otherConversatios;
+		//public YourNotifications notifications;
 
 		public CreateEvent createEvent;
 		public CreateGroup createGroup;
@@ -42,19 +46,22 @@ namespace HowlOut
 		public ExploreEventCategories exploreEventCategories;
 
 		public EventListView joinedEvents;
-		public EventListView endedEvents;
+		//public EventListView endedEvents;
 
-		public EventListView trackedEvents;
+		//public EventListView trackedEvents;
 
-		public EventListView exploreEvents;
-		public EventListView friendsEvents;
+		//public EventListView exploreEvents;
+		//public EventListView friendsEvents;
+
+		public Button notiButton = new Button() { BackgroundColor = Color.FromHex("#ffc65539"), BorderRadius = 8, FontSize = 10, TextColor = Color.White, Text = "0" };
+
 
 		public bool topBarHidden;
 		public double viewLastChanged = DateTime.Now.Ticks;
 
 		public List<ConversationView> activeConversationViews = new List<ConversationView>();
 
-		int lastCoreView = 2;
+		public int lastCoreView = 2;
 
 		public string token = "";
 
@@ -107,14 +114,17 @@ namespace HowlOut
 		public async void ShowNotification(Action a, string s)
 		{
 			notiContent.Children.Clear();
-			Button b = new Button()
-			{
-				Text = s,
-				BackgroundColor = Color.FromHex("#90000000"),
-				HeightRequest = 51,
-				TextColor = Color.White
-			};
+			Grid g = new Grid();
+			StackLayout sl = new StackLayout() {Padding = new Thickness(10,0,10,0), VerticalOptions = LayoutOptions.CenterAndExpand };
+			sl.Children.Add(new Label() { TextColor = Color.White, Text = s, VerticalOptions = LayoutOptions.CenterAndExpand });
 
+			g.Children.Add(new Button() {HeightRequest = 51, BackgroundColor = Color.FromHex("#cc000000"), BorderRadius = 5, });
+
+			g.Children.Add(sl);
+
+			Button b = new Button() ;
+
+			g.Children.Add(b);
 
 			b.Clicked += (sender, e) =>
 			{
@@ -123,7 +133,7 @@ namespace HowlOut
 			};
 
 
-			notiContent.Children.Add(b);
+			notiContent.Children.Add(g);
 
 			notiLayout.IsVisible = true;
 
@@ -153,28 +163,28 @@ namespace HowlOut
 
 		public async void startCoreView()
 		{
-			notifications = new YourNotifications();
+			//notifications = new YourNotifications();
 			homeView = new InspectController(App.userProfile);
 
-			profileConversatios = new YourConversations(ConversationModelType.Profile, App.StoredUserFacebookId, 1);
-			otherConversatios = new YourConversations(ConversationModelType.Profile, App.StoredUserFacebookId, 2);
+			yourConversatios = new YourConversations(ConversationModelType.Profile, App.StoredUserFacebookId, 1);
+			//otherConversatios = new YourConversations(ConversationModelType.Profile, App.StoredUserFacebookId, 2);
 			createEvent = new CreateEvent(new Event(), true);
 			createGroup = new CreateGroup(new Group(), true);
 			//createOrganization = new CreateOrganization(new Organization(), true);
 
 			exploreEventCategories = new ExploreEventCategories();
-			exploreEvents = new EventListView(0);
+			//exploreEvents = new EventListView(0);
 			joinedEvents = new EventListView(2);
-			endedEvents = new EventListView(10);
-			trackedEvents = new EventListView(3);
-			friendsEvents = new EventListView(1);
+			//endedEvents = new EventListView(10);
+			//trackedEvents = new EventListView(1);
+			//friendsEvents = new EventListView(1);
 
 			createView = new CarouselList(
 				new List<VisualElement>() { createEvent, createGroup },
 				new List<string>() { "Event", "Group" },
 				CarouselList.ViewType.Create
 			);
-
+			/*
 			conversatios = new CarouselList(
 				new List<VisualElement>() { profileConversatios, otherConversatios },
 				new List<string>() { "Yours", "Others" },
@@ -182,40 +192,38 @@ namespace HowlOut
 			);
 
 			searchEventView = new CarouselList(
-				new List<VisualElement>() { exploreEventCategories, exploreEvents, friendsEvents, trackedEvents },
-				new List<string>() { "Explore", "Search", "Friends", "Followed" },
+				new List<VisualElement>() { exploreEventCategories, trackedEvents },
+				new List<string>() { "Explore", "Friends & Followed" },
 				CarouselList.ViewType.SearchEvents
+			); */
+
+
+
+
+			joinedEventView = new EventListView(2);
+
+			notifications = new YourNotifications();
+
+
+			MainCarouselList = new CarouselList(new List<VisualElement>() {
+				createEvent, joinedEvents, exploreEventCategories, yourConversatios, homeView},
+				new List<string>() { "Create", "Joine", "Explore", "Conversations", "Home" }, CarouselList.ViewType.Main
 			);
 
-			joinedEventView = new CarouselList(
-				new List<VisualElement>() { joinedEvents, endedEvents},
-				new List<string>() { "Joined", "Old"},
-				CarouselList.ViewType.JoinedEvents
-			);
-
-			myProfile = new CarouselList(
-				new List<VisualElement>() { homeView, notifications },
-				new List<string>() { "Me", "Notifications" },
-				CarouselList.ViewType.Home
-			);
-
-
+			//mainView.Content = MainCarouselList;
+			//MainCarouselList.setCarousel(2);
 			setContentView(2);
+
 			await _dataManager.update();
 			loading.IsVisible = false;
 
-			if(token.Length > 15) displayAlertMessage("token", token, "ok");
+			//if(token.Length > 15) displayAlertMessage("token", token, "ok");
 		}
 
 		public async Task updateHomeView()
 		{
 			App.userProfile = await GetLoggedInProfile();
 			homeView = new InspectController(App.userProfile);
-			myProfile = new CarouselList(
-				new List<VisualElement>() { homeView, notifications },
-				new List<string>() { "Me", "Notifications" },
-				CarouselList.ViewType.Home
-			);
 		}
 
 		public void updateCreateViews()
@@ -249,22 +257,29 @@ namespace HowlOut
 			}
 			viewLastChanged = DateTime.Now.Ticks;
 
+
+			extraGrid.IsVisible = false;
+			extraView.Content = null;
+
 			topBar.hideAll();
 			if(contentViews.Count > 0) contentViews[contentViews.Count-1].viewExitFocus();
-			//await Task.Delay(2);
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			ViewModelInterface view = null;
 			viewdConversation = null;
 
-			updateHomeView();
+			//updateHomeView();
 
-			if (type == 0) { view = createView; 
-			} else if (type == 1) {  view = joinedEventView;
-			} else if (type == 2) {  view = searchEventView; 
-			} else if (type == 3) { view = conversatios; 
+			if (type == 0) { 
+				view = createView; 
+				goToCCreateView();
+			} else if (type == 1) { 
+				view = joinedEventView;
+				if(lastCoreView == type) joinedEventView.UpdateList(true, "");
+			} else if (type == 2) {  view = exploreEventCategories; 
+			} else if (type == 3) {  view = yourConversatios; 
 			} else if (type == 4) { 
-				//await updateHomeView();
-				view = myProfile; 
+				if (lastCoreView == type) await updateHomeView();
+				view = homeView; 
 			}
 
 			if ((type == 1 || type == 2))
@@ -283,13 +298,28 @@ namespace HowlOut
 			activeConversationViews.Clear();
 			contentViews.Clear ();
 			contentViews.Add (view);
-			//changeView(view);
+
 			mainView.Content = view.getContentView();
+
 			view.viewInFocus(topBar);
+		}
+
+		public async void goToCCreateView()
+		{
+			bool createEvent = await App.coreView.displayConfirmMessage("Event or Group", "Would you like to create an event or a group ?", "Group", "Event");
+			if (!createEvent)
+			{
+				//createView.setCarousel(0);
+			}
+			else {
+				setContentViewWithQueue(new CreateGroup(new Group(), true));
+				//createView.setCarousel(1);
+			}
 		}
 
 		public async void setContentViewWithQueue(ViewModelInterface view)
 		{
+			extraGrid.IsVisible = true;
 			topBar.hideAll();
 			if (topBarHidden)
 				hideTopBar(1);
@@ -299,12 +329,13 @@ namespace HowlOut
 			contentViews.Add (view);
 			topBar.showBackButton (true);
 			//changeView(view);
-			mainView.Content = view.getContentView();
+			extraView.Content = view.getContentView();
 			view.viewInFocus(topBar);
 		}
 
 		public async void setContentViewReplaceCurrent(ViewModelInterface view, int amount)
 		{
+			extraGrid.IsVisible = true;
 			topBar.hideAll();
 			if (topBarHidden)
 				hideTopBar(1);
@@ -315,13 +346,27 @@ namespace HowlOut
 			contentViews.Add(view);
 			if(contentViews.Count > 1) topBar.showBackButton(true);
 			//changeView(view);
-			mainView.Content = view.getContentView();
+			extraView.Content = view.getContentView();
 			view.viewInFocus(topBar);
 		}
 
 		public void addConversationViewToActiveList(ConversationView convView)
 		{
 			activeConversationViews.Add(convView);
+		}
+
+		public void reloadCurrentView()
+		{
+			IsLoading(true);
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+			if (contentViews.Count == 1)
+			{
+				App.coreView.setContentView(lastCoreView);
+			}
+			else {
+				contentViews[contentViews.Count - 1].reloadView();
+			}
+			IsLoading(false);
 		}
 
 		public void returnToPreviousView()
@@ -342,7 +387,14 @@ namespace HowlOut
 					}
 					else if (count == 2)
 					{
-						App.coreView.setContentView(lastCoreView);
+						extraGrid.IsVisible = false;
+						extraView.Content = null;
+
+						//App.coreView.setContentView(lastCoreView);
+
+						topBar.hideAll();
+						if (contentViews.Count > 0) contentViews[contentViews.Count - 1].viewExitFocus();
+						DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 					}
 				}
 				catch (Exception e) {}
@@ -485,6 +537,11 @@ namespace HowlOut
 			bool answer = false;
 			ShareLayout.IsVisible = true;
 
+			/*
+			messengerShareButton = new FacebookSendButton() {WidthRequest = 60, HorizontalOptions = LayoutOptions.CenterAndExpand, Link = "https://api.howlout.net/redirect2?type=event" + eve.EventId };
+			facebookShareButton = new FacebookShareButton() { WidthRequest = 60, HorizontalOptions = LayoutOptions.CenterAndExpand, Link = "https://api.howlout.net/redirect2?type=event" + eve.EventId };
+			shareGrid.Children.Add(messengerShareButton, 1, 0);
+			shareGrid.Children.Add(facebookShareButton, 3, 0); */
 
 			closeShare.Clicked += (sender, e) =>
 			{
@@ -501,6 +558,17 @@ namespace HowlOut
 					if (!success) await App.coreView.displayAlertMessage("Error", "An error occured and event was not added to calendar", "ok");
 				}
 			};
+
+			MailBtn.Clicked += (sender, e) =>
+			{
+				Device.OpenUri(new Uri(String.Format("mailto:howlout@howlout.com?subject="+App.userProfile.Name+" has invited you to a HowlOut Event&body=\n https://api.howlout.net/redirect2?type=event" + eve.EventId)));
+			};
+
+			SmsBtn.Clicked += (sender, e) =>
+			{
+				Device.OpenUri(new Uri(String.Format("sms:&body=api.howlout.net/redirect2?type=event" + eve.EventId)));
+			};
+
 			await tcs.Task;
 			ShareLayout.IsVisible = false;
 			return answer;
@@ -590,15 +658,24 @@ namespace HowlOut
 			{
 				bottomBar.homeNoti.IsVisible = true;
 				bottomBar.homeNoti.Text = i + "";
+
+				notiButton.IsVisible = true;
+				notiButton.Text = i + "";
 			}
 			else if (i < 0)
 			{
 				bottomBar.homeNoti.IsVisible = true;
 				bottomBar.homeNoti.Text = int.Parse(bottomBar.homeNoti.Text) + 1 + "";
+
+				notiButton.IsVisible = true;
+				notiButton.Text = int.Parse(bottomBar.homeNoti.Text) + 1 + "";
 			}
 			else {
 				bottomBar.homeNoti.IsVisible = false;
 				bottomBar.homeNoti.Text = 0 + "";
+
+				notiButton.IsVisible = false;
+				notiButton.Text = 0 + "";
 			}
 		}
 

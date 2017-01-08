@@ -47,7 +47,7 @@
 					</Grid.ColumnDefinitions>
 
 					<controls:CircleImage Grid.RowSpan="2" Source="{Binding ProfileImageSource}" HeightRequest="60" WidthRequest="60" HorizontalOptions="StartAndExpand" Aspect="AspectFill" />
-					<StackLayout Spacing="0" Grid.Row="2">
+					<StackLayout Spacing="0" Grid.Row="2" IsVisible="{Binding GroupOwner}">
 						<Label Text="Group" FontSize="10" HorizontalOptions="CenterAndExpand"/>
 						<Label Text="owned" FontSize="10" HorizontalOptions="CenterAndExpand"/>
 					</StackLayout>

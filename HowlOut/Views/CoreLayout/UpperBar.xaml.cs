@@ -21,7 +21,15 @@ namespace HowlOut
 				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await backBtn.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.returnToPreviousView();
-			};				
+			};
+
+			notiButton.Clicked += (sender, e) =>
+			{
+				App.coreView.setContentViewWithQueue(new YourNotifications());
+			};
+
+			lateSetup();
+
 
 			/*
 			var newMessage = new TapGestureRecognizer();
@@ -73,6 +81,12 @@ namespace HowlOut
 
 		}
 
+		async void lateSetup()
+		{
+			await Task.Delay(100);
+			notiBadg.Children.Add(App.coreView.notiButton);
+		}
+
 		public void hideAll()
 		{
 			thisGrid.IsVisible = false;
@@ -82,6 +96,9 @@ namespace HowlOut
 			rightImg.IsVisible = false;
 			rightButton.IsVisible = false;
 			navigationLabel.Text = "";
+
+			notiLayout.IsVisible = false;
+
 			try
 			{
 				thisGrid.Children.Remove(navigationButton);
@@ -89,7 +106,7 @@ namespace HowlOut
 			catch (Exception e) {}
 
 			//setNavigationLabel("", null);
-		} 
+		}
 
 		/*
 		public void showNewConversationButton(bool show, YourConversations yc)
@@ -134,6 +151,10 @@ namespace HowlOut
 			filterSearchBtn.IsVisible = show;
 		} */
 
+		public void displayNotiLayout()
+		{
+			notiLayout.IsVisible = true;
+		}
 
 		public void setNavigationLabel(string label, ScrollView s)
 		{

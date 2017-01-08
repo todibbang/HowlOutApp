@@ -45,9 +45,26 @@ namespace HowlOut
 						App.coreView.topBar.hideAll();
 					}
 				}
+
+				if (viewType == ViewType.Main)
+				{
+					if (lastCarouselView == 0)
+					{
+						App.coreView.goToCCreateView();
+					}
+					else if (lastCarouselView == 4)
+					{
+						App.coreView.topBar.setNavigationlabel(App.userProfile.Name);
+					}
+					else {
+						App.coreView.topBar.hideAll();
+					}
+					App.coreView.lastCoreView = carousel.Position;
+					App.coreView.btmBar.selectButton(carousel.Position);
+				}
 			};
 		}
-
+		public void reloadView() { }
 		public void viewInFocus(UpperBar bar)
 		{
 			if (viewType == ViewType.Home)
@@ -59,6 +76,10 @@ namespace HowlOut
 				else {
 					App.coreView.topBar.hideAll();
 				}
+			}
+			else if (viewType == ViewType.Create)
+			{
+				
 			}
 
 			/*
@@ -111,7 +132,8 @@ namespace HowlOut
 			JoinedEvents,
 			SearchEvents,
 			Other,
-			Home
+			Home,
+			Main
 		}
 	}
 }

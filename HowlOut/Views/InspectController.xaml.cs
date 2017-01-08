@@ -26,6 +26,7 @@ namespace HowlOut
 		public ConversationView conversationView = null;
 		bool userProfilerBeingViewed = false;
 		string Title;
+		Profile pro;
 		Event eve;
 		Group grp;
 
@@ -47,19 +48,42 @@ namespace HowlOut
 			{
 				addGroupMenu(grp);
 			}
+			else if (pro != null && pro.ProfileId == App.userProfile.ProfileId)
+			{
+				App.coreView.topBar.displayNotiLayout();
+			}
 			scrollView.ScrollToAsync(0, scrollView.ScrollY + 1, false);
 		}
 
 		public void viewExitFocus() { }
+		public void reloadView() {
+			infoLayout.Children.Clear();
+			message.IsVisible = false;
+			infoView.Content = null;
+			if (pro != null)
+			{
+				SetProfileInspect(pro);
+			}
+			else if (eve != null)
+			{
+				SetEventInspect(eve);
+			}
+			else if (grp != null)
+			{
+				SetGroupInspect(grp);
+			}
+		}
 
 		public ContentView getContentView() { return this; }
 
 		async void SetProfileInspect(Profile userProfile)
 		{
+			pro = userProfile;
 			try {
 				System.Diagnostics.Debug.WriteLine("ID: " + userProfile.ProfileId);
 				Title = userProfile.Name;
-				if (userProfile.ProfileId == App.StoredUserFacebookId) { 
+				if (userProfile.ProfileId == App.StoredUserFacebookId) {
+					await _dataManager.ProfileApiManager.GetLoggedInProfile();
 					userProfile = App.userProfile; 
 				}
 				else { 
@@ -265,7 +289,6 @@ namespace HowlOut
 
 		async void addEventMenu(Event eve)
 		{
-			
 			App.coreView.topBar.setRightButton("ic_menu.png").Clicked += async (sender, e) =>
 			{
 				List<Action> actions = new List<Action>();
@@ -365,10 +388,6 @@ namespace HowlOut
 
 					await App.coreView.DisplayOptions(actions, titles, images);
 				}
-
-
-
-
 			};
 		}
 
@@ -389,7 +408,7 @@ namespace HowlOut
 			Label lb = new Label() { Text = title, VerticalTextAlignment = TextAlignment.Center, TranslationY = 5, HorizontalOptions = LayoutOptions.StartAndExpand, FontAttributes = FontAttributes.Bold };
 			sll.Children.Add(lb);
 
-			StackLayout slb = new StackLayout() { Orientation = StackOrientation.Horizontal };
+			StackLayout slb = new StackLayout() { Orientation = StackOrientation.Horizontal, HorizontalOptions = LayoutOptions.FillAndExpand};
 			Button k = new Button() { BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.FillAndExpand, VerticalOptions = LayoutOptions.EndAndExpand };
 			slb.Children.Add(k);
 			k.Clicked += (sender, e) =>
@@ -413,7 +432,6 @@ namespace HowlOut
 						App.coreView.setContentViewWithQueue(new FindNewFriendsView(i));
 				};
 				slb.Children.Add(b);
-
 			}
 			grid.Children.Add(sll, 0, 1);
 			grid.Children.Add(slb, 0, 1);
@@ -441,8 +459,6 @@ namespace HowlOut
 			{
 				App.coreView.setContentViewWithQueue(new YourConversations(conversationtype, conversationID, 0));
 			};
-
-
 
 			sl.Children.Add(b);
 			grid.Children.Add(sl, 0, 1);

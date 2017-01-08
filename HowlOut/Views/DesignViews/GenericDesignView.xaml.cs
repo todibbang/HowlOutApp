@@ -25,7 +25,7 @@ namespace HowlOut
 
 		//public Image organizationImage { get { return organizationOwnerImage; } }
 		public Button organizationBtn{ get { return organizationOwnerBtn; } }
-		public Label subName { get { return subNameLabel; } }
+		//public Label subName { get { return subNameLabel; } }
 
 		public GenericDesignView(int dimentions)
 		{
@@ -46,7 +46,7 @@ namespace HowlOut
 			//buttonLayoutEdit.HeightRequest = dimentions * 0.16;
 
 			nameLabel.FontSize = 4 + (dimentions * 0.06);
-			subNameLabel.FontSize = 3 + (dimentions * 0.05);
+			//subNameLabel.FontSize = 3 + (dimentions * 0.05);
 			descriptionLabel.FontSize = dimentions * 0.055;
 			//nameLabelEdit.FontSize = dimentions * 0.115;
 			descriptionLabelEdit.FontSize = dimentions * 0.055;
@@ -74,8 +74,8 @@ namespace HowlOut
 
 		void setButtonDimentions(Button b, int dimentions)
 		{
-			b.BorderRadius = (int) (buttonLayout.HeightRequest / 2.0);
-			b.WidthRequest = (dimentions * 0.4);
+			b.BorderRadius = (int) (buttonLayout.HeightRequest / 5.0);
+			b.WidthRequest = (dimentions * 0.5);
 			b.FontSize = 3 + (int)(0.05 * dimentions);
 			b.Clicked += async (sender, e) =>
 			{
@@ -113,6 +113,7 @@ namespace HowlOut
 			{
 				if (i % 2 == 0)
 				{
+					buttons[bNumber].WidthRequest = buttons[bNumber].WidthRequest * 0.7;
 					buttonGrid.Children.Add(buttons[bNumber], i+1, 0);
 					bNumber++;
 				}
@@ -192,7 +193,7 @@ namespace HowlOut
 			}
 		}
 
-		public void HandleButtonRequests(Func<Task<bool>> a, Button b, string text, string clickedText)
+		public void HandleButtonRequests(Func<Task<bool>> a, Button b, string text)
 		{
 			b.IsVisible = true;
 			b.Text = text;
@@ -200,12 +201,9 @@ namespace HowlOut
 			{
 				await b.ScaleTo(0.7, 50, Easing.Linear);
 				await b.ScaleTo(1, 50, Easing.Linear);
-				bool success = await a.Invoke();
-				if (success)
-				{
-					b.IsEnabled = false;
-					b.Text = clickedText;
-				}
+				await a.Invoke();
+				await Task.Delay(10);
+				App.coreView.reloadCurrentView();
 			};
 		}
 

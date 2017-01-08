@@ -8,5 +8,6 @@ namespace HowlOut
 		void viewInFocus(UpperBar bar);
 		ContentView getContentView();
 		void viewExitFocus();
+		void reloadView();
 	}
 }

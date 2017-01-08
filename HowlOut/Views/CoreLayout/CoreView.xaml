@@ -25,6 +25,10 @@
 				<ContentView x:Name="mainView" BackgroundColor="{DynamicResource HowlOutBackground}" />
 			</Grid>
 
+			<Grid Grid.Row="0" Grid.RowSpan="4" x:Name="extraGrid" IsVisible="false">
+				<ContentView x:Name="extraView" BackgroundColor="{DynamicResource HowlOutBackground}" />
+			</Grid>
+
 			<Grid Grid.Row="0" Padding="0" x:Name="topBarLayout"/>
 
 			 <StackLayout Grid.Row="3" Padding="0,0,0,0" BackgroundColor="#cc000000">
@@ -78,17 +82,17 @@
 
 
 					
-					<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="White" BorderRadius="10" />
+					<Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="#cc000000" BorderRadius="10" />
 
-					<Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningTitle" Text="Title" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold"/>
+					<Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" x:Name="WarningTitle" Text="Title" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="White" FontAttributes="Bold"/>
 
 					<StackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalOptions="Fill">
-						<Label x:Name="WarningDescription" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="{DynamicResource NormalTextColor}" Text="Warning here is a ver long message just for test purposes and i want to see how the text behaves which it so far is doing pretty devently as to be expected"/>
+						<Label x:Name="WarningDescription" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" TextColor="White" Text="Warning here is a ver long message just for test purposes and i want to see how the text behaves which it so far is doing pretty devently as to be expected"/>
 					</StackLayout>
 
 					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" BackgroundColor="{DynamicResource HowlOut}" BorderWidth="0" BorderRadius="15" HeightRequest="30" />
 					<Button Grid.Row="2" Grid.Column="1" Text="optionOne" x:Name="optionOne" HorizontalOptions="Fill" TextColor="White" FontSize="16" ></Button>
-					<StackLayout Grid.Row="2" Grid.Column="2"  WidthRequest="1" BackgroundColor="White" x:Name="optionsBorder"/>
+					<StackLayout Grid.Row="2" Grid.Column="2"  WidthRequest="1" BackgroundColor="#cc000000" x:Name="optionsBorder"/>
 					<Button Grid.Row="2" Grid.Column="3"  Text="optionTwo" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
 					<Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  Text="OK" x:Name="optionOK" HorizontalOptions="Fill" TextColor="White" FontSize="16"></Button>
 
@@ -120,7 +124,7 @@
 
 					<Label Grid.Row="0" Grid.Column="1" Text="Share Event" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" TextColor="{DynamicResource NormalTextColor}" FontAttributes="Bold"/>
 
-					<Grid Grid.Row="1" Grid.Column="1" HeightRequest="130">
+					<Grid Grid.Row="1" Grid.Column="1" HeightRequest="130" x:Name="shareGrid">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="60"/>
@@ -136,18 +140,24 @@
 							<RowDefinition Height="60"/>
 						</Grid.RowDefinitions>
 
-						<Image Grid.Column="1" Source="ic_messenger.png" WidthRequest="40" HorizontalOptions="CenterAndExpand" TranslationY="1"/>
-						<local:FacebookSendButton Grid.Column="1" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/>
+						<Image Grid.Column="1" Source="ic_messenger.png" WidthRequest="40" HorizontalOptions="CenterAndExpand" TranslationY="1" IsVisible="false"/>
+						<local:FacebookSendButton Grid.Column="1" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net" IsVisible="false" x:Name="messengerShareButton"/>
 
-						<Image Grid.Column="3" Source="ic_facebook.png" WidthRequest="60" HorizontalOptions="CenterAndExpand" TranslationY="-7"/>
-						<local:FacebookShareButton Grid.Column="3" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/>
+						<Image Grid.Column="3" Source="ic_facebook.png" WidthRequest="60" HorizontalOptions="CenterAndExpand" TranslationY="-7" IsVisible="false"/>
+						<local:FacebookShareButton Grid.Column="3" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net" IsVisible="false" x:Name="facebookShareButton"/>
 
 						<!--
 						<Image Grid.Column="5" Source="ic_twitter.png" WidthRequest="60" HorizontalOptions="CenterAndExpand" TranslationY="-7"/>
 						<local:FacebookSendButton Grid.Column="5" WidthRequest="60" HorizontalOptions="CenterAndExpand" Link="https://www.howlout.net"/> -->
 
-						<local:IconView Grid.Column="5" Grid.Row="0" Source="ic_calender.png" WidthRequest="30" HorizontalOptions="CenterAndExpand" TranslationY="0" Foreground="#ffef9d0e"/>
+						<local:IconView Grid.Column="5" Grid.Row="0" Source="ic_manage.png" WidthRequest="30" HorizontalOptions="CenterAndExpand" TranslationY="0" Foreground="#ffef9d0e"/>
 						<Button Grid.Column="5" Grid.Row="0" WidthRequest="60" HorizontalOptions="CenterAndExpand" BorderRadius="30" BorderWidth="2" BorderColor="#ffef9d0e" x:Name="CalenderBtn"/>
+
+						<local:IconView Grid.Column="1" Grid.Row="0" Source="ic_manage.png" WidthRequest="30" HorizontalOptions="CenterAndExpand" TranslationY="0" Foreground="Red"/>
+						<Button Grid.Column="1" Grid.Row="0" WidthRequest="60" HorizontalOptions="CenterAndExpand" BorderRadius="30" BorderWidth="2" BorderColor="Red" x:Name="MailBtn"/>
+
+						<local:IconView Grid.Column="3" Grid.Row="0" Source="ic_manage.png" WidthRequest="30" HorizontalOptions="CenterAndExpand" TranslationY="0" Foreground="Yellow"/>
+						<Button Grid.Column="3" Grid.Row="0" WidthRequest="60" HorizontalOptions="CenterAndExpand" BorderRadius="30" BorderWidth="2" BorderColor="Yellow" x:Name="SmsBtn"/>
 						
 					</Grid>
 					

@@ -380,8 +380,8 @@ namespace HowlOut
 			}
 			foreach (Notification n in notiToRemove) App.coreView.notifications.unseenNotifications.Remove(n);
 			//await App.coreView.notifications.UpdateNotifications(false);
-			await App.coreView.profileConversatios.UpdateConversations(false);
-			await App.coreView.otherConversatios.UpdateConversations(false);
+			await App.coreView.yourConversatios.UpdateConversations(false);
+			//await App.coreView.otherConversatios.UpdateConversations(false);
 		}
 
 		public async Task setUpdateSeen(string modelId, NotificationModelType modelType)
@@ -399,8 +399,8 @@ namespace HowlOut
 			await App.coreView.notifications.UpdateNotifications(false);
 			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false, ""); }
 			else if (modelType == NotificationModelType.ProfileConversation) { 
-				await App.coreView.profileConversatios.UpdateConversations(false);
-				await App.coreView.otherConversatios.UpdateConversations(false);
+				await App.coreView.yourConversatios.UpdateConversations(false);
+				//await App.coreView.otherConversatios.UpdateConversations(false);
 			}
 		}
 

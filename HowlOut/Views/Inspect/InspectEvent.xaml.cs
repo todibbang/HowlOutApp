@@ -106,7 +106,7 @@ namespace HowlOut
 				};
 			} */
 
-			if (!_dataManager.IsEventJoined(eve))
+			if (!_dataManager.IsEventJoined(eve) && (eve.ProfileOwners == null || (eve.ProfileOwners != null && !eve.ProfileOwners.Exists(p => p.ProfileId == App.userProfile.ProfileId))))
 			{
 				JoinLeaveButton.Clicked += (sender, e) =>
 				{

@@ -85,6 +85,28 @@ namespace HowlOut
 			me.GestureRecognizers.Add(socialImage);
 		}
 
+		public void selectButton(int b)
+		{
+			unselectAll();
+			if (b == 0)
+			{
+				create.Foreground = App.HowlOut;
+			} else if (b == 1)
+			{
+				manage.Foreground = App.HowlOut;
+			} else if (b == 2)
+			{
+				exploreImg.Foreground = App.HowlOut;
+			} else if (b == 3)
+			{
+				howls.Foreground = App.HowlOut;
+			} else if (b == 4)
+			{
+				me.Foreground = App.HowlOut;
+			}
+
+		}
+
 		void unselectAll()
 		{
 			create.Foreground = Color.White;

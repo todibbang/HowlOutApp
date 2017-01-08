@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
-	public partial class EventListView : ContentView
+	public partial class EventListView : ContentView, ViewModelInterface
 	{
 		public ContentView content
 		{
 			get { return this; }
 			set { this.content = value; }
 		}
+		public void reloadView() { }
+		public void viewInFocus(UpperBar bar){ }
+		public void viewExitFocus() { }
+		public ContentView getContentView() { return this; }
 
 		public List<Event> evelist;
+		List<Event> oldEvelist;
+
+		string newestEveId;
+		EventForLists newestEFL;
+		GroupedEvents newestEFLGroup;
+
 		private DataManager _dataManager;
 		private StandardButton standardButton = new StandardButton();
 		bool beingRepositioned = false;
@@ -58,8 +69,18 @@ namespace HowlOut
 
 		void setUp()
 		{
+			if (currentView == 0 || currentView == 6 || currentView == 1)
+			{
+				headerLayout.HeightRequest = 50;
+			}
+
 			_dataManager = new DataManager();
-			if (currentView == 0) exploreSettings.IsVisible = true;
+			if (currentView == 0)
+			{
+				exploreSettings.IsVisible = true;
+				exploreBg.IsVisible = true;
+				explorePng.IsVisible = true;
+			}
 			UpdateList( true, "");
 			searchEventList.ItemSelected += OnItemSelected;
 			searchEventList.IsPullToRefreshEnabled = true;
@@ -130,11 +151,31 @@ namespace HowlOut
 					{
 						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, App.userProfile.Friends);
 
+						var extraEvents = new List<Event>();
+						extraEvents = await _dataManager.EventApiManager.GetEventsProfilesAttending(false, new List<Profile> { App.userProfile });
+						if (extraEvents != null && extraEvents.Count > 0)
+						{
+							if (evelist != null)
+							{
+								foreach (Event exeve in extraEvents)
+								{
+									if (!evelist.Exists(xe => xe.EventId == exeve.EventId))
+									{
+										evelist.Add(exeve);
+									}
+								}
+							}
+							else {
+								evelist = extraEvents;
+							}
+						}
+
 					}
 					else if (listToUpdate == 2)
 					{
 						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { App.userProfile });
-
+						oldEvelist = await _dataManager.EventApiManager.GetEndedEvents();
+						footer.HeightRequest = App.coreView.Height;
 					}
 					else if (listToUpdate == 3)
 					{
@@ -144,15 +185,16 @@ namespace HowlOut
 					else if (listToUpdate == 4)
 					{
 						evelist = await _dataManager.EventApiManager.GetEventsProfilesAttending(true, new List<Profile> { profile });
-						HeightRequest = evelist.Count * 150;
-						HeightRequest += 50;
+						HeightRequest = evelist.Count * 160;
+						HeightRequest += 60;
 						footer.HeightRequest = 0;
 					}
 					else if (listToUpdate == 5)
 					{
 						evelist = await _dataManager.EventApiManager.GetEventsForGroups(new List<Group> { group });
-						HeightRequest = evelist.Count * 150;
-						HeightRequest += 50;
+						HeightRequest = evelist.Count * 160;
+						HeightRequest += 60;
+						footer.HeightRequest = 0;
 						//if (HeightRequest > 200) HeightRequest = 200;
 					}
 
@@ -196,24 +238,40 @@ namespace HowlOut
 				var time = second - first;
 				System.Diagnostics.Debug.WriteLine("Time to load: " + (time.Milliseconds) + " ms");
 
-				if (evelist == null)
+				if (evelist == null || evelist.Count == 0)
 				{
-					nothingToLoad.IsVisible = true;
-					searchEventList.IsRefreshing = false;
-					searchEventList.ItemsSource = null;
-					return;
+					if (oldEvelist == null || oldEvelist.Count == 0)
+					{
+						nothingToLoad.IsVisible = true;
+						searchEventList.IsRefreshing = false;
+						searchEventList.ItemsSource = null;
+						return;
+					}
 				}
-				else if (evelist.Count == 0)
-				{
-					nothingToLoad.IsVisible = true;
-					searchEventList.IsRefreshing = false;
-					searchEventList.ItemsSource = null;
-					return;
-				}
+
 				searchEventList.ItemsSource = null;
 
 				//var orderedList = new ObservableCollection<Event>();
-				evelist = evelist.OrderBy(c => c.StartDate).ToList();
+				if (evelist != null && evelist.Count > 0)
+				{
+					evelist = evelist.OrderBy(c => c.StartDate).ToList();
+					newestEveId = evelist[0].EventId;
+				}
+
+
+				if (oldEvelist != null && oldEvelist.Count > 0)
+				{
+					oldEvelist = oldEvelist.OrderByDescending(c => c.StartDate).ToList();
+					oldEvelist.AddRange(evelist);
+					if (evelist == null || evelist.Count == 0)
+					{
+						newestEveId = oldEvelist[0].EventId;
+					}
+
+					evelist = oldEvelist;
+				}
+
+
 
 				//Event itemToAdd = new Event();
 				/*
@@ -260,6 +318,12 @@ namespace HowlOut
 							monthGroup = new GroupedEvents() { Date = (eveFL[d].eve.StartDate.ToString("MMMMM")) };
 						}
 						monthGroup.Add(eveFL[d]);
+						if (eveFL[d].eve.EventId == newestEveId)
+						{
+							newestEFL = eveFL[d];
+							newestEFLGroup = monthGroup;
+						}
+
 						if (d == eveFL.Count - 1)
 						{
 							groupedEvents.Add(monthGroup);
@@ -275,6 +339,20 @@ namespace HowlOut
 				searchEventList.ItemTemplate = mt;
 				searchEventList.ItemsSource = groupedEvents;
 				searchEventList.IsRefreshing = false;
+
+				foreach(GroupedEvents efl in groupedEvents)
+				{
+					if (efl.ToList().Exists(newEve => newEve.eve.EventId == newestEveId))
+					{
+						newestEFLGroup = efl;
+					}
+				}
+				/*
+				if (listToUpdate == 2)
+				{
+					await Task.Delay(1000);
+				} */
+				searchEventList.ScrollTo(newestEFL, newestEFLGroup , ScrollToPosition.Start, true);
 			}
 			catch (Exception e) {}
 		} 

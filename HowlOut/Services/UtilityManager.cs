@@ -24,7 +24,8 @@ namespace HowlOut
 
 		public async void updateLastKnownPosition()
 		{
-			if (CrossGeolocator.Current.IsGeolocationEnabled && CrossGeolocator.Current.IsGeolocationAvailable) {
+			if (CrossGeolocator.Current.IsGeolocationEnabled && CrossGeolocator.Current.IsGeolocationAvailable)
+			{
 				try
 				{
 					var locator = CrossGeolocator.Current;
@@ -37,6 +38,9 @@ namespace HowlOut
 				{
 
 				}
+			}
+			else {
+				App.lastKnownPosition = new Position(55.679802, 12.585466);
 			}
 		}
 
@@ -169,7 +173,7 @@ namespace HowlOut
 
 		}*/
 
-		public async Task<List<byte[]>> TakePicture(ImageSource imgSrc)
+		public async Task<List<byte[]>> TakePicture(Image imgSrc)
 		{
 			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
 			{
@@ -195,7 +199,7 @@ namespace HowlOut
 					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 100),
 					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 300)
 				};
-				if (imgSrc != null) imgSrc = ImageSource.FromStream(() => new MemoryStream(mStream[2]));
+				if (imgSrc != null) imgSrc.Source = ImageSource.FromStream(() => new MemoryStream(mStream[2]));
 
 				await Task.Delay(10);
 				file.Dispose();
@@ -203,7 +207,7 @@ namespace HowlOut
 			}
 		}
 
-		public async Task<List<byte[]>> PictureFromAlbum(ImageSource imgSrc)
+		public async Task<List<byte[]>> PictureFromAlbum(Image imgSrc)
 		{
 			if (!CrossMedia.Current.IsPickPhotoSupported)
 			{
@@ -227,7 +231,7 @@ namespace HowlOut
 					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 100),
 					DependencyService.Get<ImageResizer>().ResizeImage(memoryStream.ToArray(), 300)
 				};
-				if (imgSrc != null) imgSrc = ImageSource.FromStream(() => new MemoryStream(mStream[2]));
+				if (imgSrc != null) imgSrc.Source = ImageSource.FromStream(() => new MemoryStream(mStream[2]));
 				await Task.Delay(10);
 				file.Dispose();
 				return mStream;

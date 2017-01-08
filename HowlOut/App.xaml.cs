@@ -182,8 +182,8 @@ namespace HowlOut
 		public static async void UpdateLiveConversations()
 		{
 			if(coreView.viewdConversation != null)coreView.viewdConversation.conversation = await coreView._dataManager.MessageApiManager.GetOneConversation(coreView.viewdConversation.ConversationId);
-			await coreView.profileConversatios.UpdateConversations(true);
-			await coreView.otherConversatios.UpdateConversations(true);
+			await coreView.yourConversatios.UpdateConversations(true);
+			//await coreView.otherConversatios.UpdateConversations(true);
 			foreach (ConversationView cv in coreView.activeConversationViews)
 			{
 				cv.UpdateList(true);

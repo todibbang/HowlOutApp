@@ -42,6 +42,7 @@ namespace HowlOut
 		}
 
 		public void viewExitFocus() { }
+		public void reloadView() { }
 
 		public ContentView getContentView() { return this; }
 
@@ -70,7 +71,7 @@ namespace HowlOut
 				newRowValue = 4;
 				height = 75;
 			}
-			float rowHeight = height * 1.3f;
+			float rowHeight = height * 1.4f;
 			int column = 0;
 			int row = 0;
 			int count = 0;

@@ -22,7 +22,7 @@ namespace HowlOut
 				HandleButtonRequests(delegate ()
 				{
 					return _dataManager.EventApiManager.InviteProfilesToEvent(eveInvitingTo.EventId, new List<Profile> { profile });
-				}, addBtn, "Invite", "Invited");
+				}, addBtn, "Invite");
 			}
 		}
 
@@ -36,17 +36,17 @@ namespace HowlOut
 				HandleButtonRequests(delegate ()
 				{
 					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, true, new List<Profile> { profile });
-				}, addBtn, "Accept", "Acceptd");
+				}, addBtn, "Accept");
 				HandleButtonRequests(delegate ()
 				{
 					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, false, new List<Profile> { profile });
-				}, removeBtn, "Decline", "Declined");
+				}, removeBtn, "Decline");
 			} else  if (!grpInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
 			{
 				HandleButtonRequests(delegate ()
 				{
 					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, true, new List<Profile> { profile });
-				}, addBtn, "Invite", "Invited");
+				}, addBtn, "Invite");
 			}
 			setPillButtonLayout(new List<Button>() {addBtn, removeBtn });
 		}
@@ -76,6 +76,20 @@ namespace HowlOut
 			{
 				if (App.userProfile.RecievedFriendRequests != null && App.userProfile.RecievedFriendRequests.Exists(p => p.ProfileId == profile.ProfileId))
 				{
+
+					HandleButtonRequests(delegate ()
+					{
+						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, true);
+					}, addBtn, "Accepts");
+
+					HandleButtonRequests(delegate ()
+					{
+						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, false);
+					}, removeBtn, "Decline");
+
+
+					/*
+					addBtn.Text = "Accept";
 					addBtn.Clicked += async (sender, e) =>
 					{
 						await _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, true);
@@ -88,36 +102,41 @@ namespace HowlOut
 							App.coreView.setContentViewWithQueue(new InspectController(profile));
 						}
 					};
-
-
-					HandleButtonRequests(delegate ()
+					removeBtn.Text = "Decline";
+					removeBtn.Clicked += async (sender, e) =>
 					{
-						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, true);
-					}, addBtn, "Accept", "Accepted");
-					HandleButtonRequests(delegate ()
-					{
-						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, false);
-					}, removeBtn, "Decline", "Declined");
+						await _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, false);
+						if (clickable)
+						{
+							await App.coreView.updateHomeView();
+							App.coreView.setContentView(4);
+						}
+						else {
+							App.coreView.setContentViewWithQueue(new InspectController(profile));
+						}
+					}; */
+
+					setPillButtonLayout(new List<Button>() { addBtn, removeBtn });
 				}
 				else if (App.userProfile.SentFriendRequests != null && App.userProfile.SentFriendRequests.Exists(p => p.ProfileId == profile.ProfileId))
 				{
 					HandleButtonRequests(delegate ()
 					{
 						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, false);
-					}, addBtn, "Cancel Request", "Canceled");
+					}, addBtn, "Cancel Request");
 				}
 				else if (App.userProfile.Friends.Exists(p => p.ProfileId == profile.ProfileId))
 				{
 					HandleButtonRequests(delegate ()
 					{
 						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, false);
-					}, removeBtn, "Remove", "Removed");
+					}, removeBtn, "Remove");
 				}
 				else {
 					HandleButtonRequests(delegate ()
 					{
 						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, true);
-					}, addBtn, "Add", "RequestSent");
+					}, addBtn, "Add");
 				}
 			} else {
 				if (profile.ProfileId == App.userProfile.ProfileId && dims >= 200)
@@ -154,7 +173,7 @@ namespace HowlOut
 			try
 			{
 				profile = await _dataManager.ProfileApiManager.GetProfile(profile.ProfileId);
-
+				if (profile == null) return;
 				subjBtn.Clicked += (sender, e) =>
 				{
 					if (clickable)
@@ -164,7 +183,7 @@ namespace HowlOut
 					}
 					else {
 						OtherFunctions of = new OtherFunctions();
-						of.ViewImages(new List<string>() { profile.ImageSource });
+						of.ViewImages(new List<string>() { profile.LargeImageSource });
 					}
 				};
 
@@ -185,14 +204,14 @@ namespace HowlOut
 				var pictureImage = new TapGestureRecognizer();
 				pictureImage.Tapped += async (sender, e) =>
 				{
-					imageStreams = await _dataManager.UtilityManager.TakePicture(profileImage.Source);
+					imageStreams = await _dataManager.UtilityManager.TakePicture(profileImage);
 				};
 				pictureButton.GestureRecognizers.Add(pictureImage);
 
 				var albumImage = new TapGestureRecognizer();
 				albumImage.Tapped += async (SenderOfEvent, e) =>
 				{
-					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(profileImage.Source);
+					imageStreams = await _dataManager.UtilityManager.PictureFromAlbum(profileImage);
 				};
 				albumButton.GestureRecognizers.Add(albumImage);
 

@@ -32,7 +32,7 @@
 						CachingStrategy="RecycleElement"
 						BackgroundColor="Transparent">
 							<ListView.Header>
-									<StackLayout HeightRequest="300"/>
+									<StackLayout HeightRequest="500"/>
 							</ListView.Header>
 		                    <ListView.ItemTemplate>
 		                     	 <DataTemplate>
@@ -71,6 +71,8 @@
 						<StackLayout Grid.Column="0" Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 							<local:ConversationEditor Style="{DynamicResource CommentStyle}" x:Name="commentEntryBottom" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Placeholder="Write message...."/>
 						</StackLayout>
+						<local:IconView x:Name="takePictureButton" HorizontalOptions="EndAndExpand" HeightRequest="40" Source="ic_camera.png" WidthRequest="40" TranslationY="-20" IsVisible="false"/>
+						<local:IconView x:Name="albumPictureButton" HorizontalOptions="EndAndExpand" HeightRequest="40" Source="ic_album.png" WidthRequest="40" TranslationY="30" IsVisible="false"/> 
 					</Grid>
 				</Grid>
 			</ScrollView>

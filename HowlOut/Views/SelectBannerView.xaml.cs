@@ -29,7 +29,7 @@ namespace HowlOut
 
 
 			avaliableBanners = new List<string>();
-			if (App.userProfile.Banners.Count > 0)
+			if (App.userProfile != null && App.userProfile.Banners.Count > 0)
 			{
 				foreach (Banner b in App.userProfile.Banners)
 				{
@@ -83,11 +83,17 @@ namespace HowlOut
 				button.Clicked += (sender, e) => {
 					System.Diagnostics.Debug.WriteLine(button.Text + " ");
 					//createEventView.newEvent.BannerName = button.Text;
-					if (createEventView != null) { createEventView.setBanner(button.Text); }
-					else if (createGroupView != null) { createGroupView.setBanner(button.Text); }
+					if (createEventView != null) { 
+						createEventView.setBanner(button.Text);
+						createEventView.otherViews.IsVisible = false;
+					}
+					else if (createGroupView != null) { 
+						createGroupView.setBanner(button.Text);
+						createGroupView.otherViews.IsVisible = false;
+					}
 					//else if (createOrganizationView != null) { createOrganizationView.setBanner(button.Text); }
 					//App.coreView.setContentView (createEventView, "CreateEvent");
-					App.coreView.returnToPreviousView();
+					//App.coreView.returnToPreviousView();
 				};
 			}
 
@@ -97,6 +103,8 @@ namespace HowlOut
 		{
 			
 		}
+
+		public void reloadView() { }
 
 		public void viewExitFocus() { }
 

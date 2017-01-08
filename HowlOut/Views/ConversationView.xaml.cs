@@ -23,6 +23,8 @@ namespace HowlOut
 			set { this.content = value; }
 		}
 
+		bool viewInFocusNow = false;
+
 		private double listHeight;
 
 		public MessageApiManager.CommentType type;
@@ -104,10 +106,19 @@ namespace HowlOut
 				}
 			};
 			App.coreView.viewdConversation = this;
+
+			TapGestureRecognizer takePictureGesture = new TapGestureRecognizer();
+			takePictureGesture.Tapped += (sender, e) =>
+			{
+				PostNewComment(".IMAGESTART.img1.jpg.IMAGEEND.");
+			};
+			takePictureButton.GestureRecognizers.Add(takePictureGesture);
 		}
 
 		public async void viewInFocus(UpperBar bar)
 		{
+			viewInFocusNow = true;
+			autoUpdater();
 			if (conversation == null) return;
 
 			title = "";
@@ -187,8 +198,8 @@ namespace HowlOut
 				catch (Exception e) {}
 			}
 		}
-
-		public void viewExitFocus() { }
+		public void reloadView() { }
+		public void viewExitFocus() { viewInFocusNow = false; }
 		public ContentView getContentView() { return this; }
 
 		async void setConversationInfo(Conversation c)
@@ -312,6 +323,7 @@ namespace HowlOut
 				if (type == MessageApiManager.CommentType.Converzation)
 				{
 					conversation = await _dataManager.MessageApiManager.GetOneConversation(ConversationId);
+					if (conversation.Messages.Count > 0 && comments != null && comments.Count == conversation.Messages.Count) return true;
 					comments = conversation.Messages;
 				}
 				else {
@@ -349,6 +361,16 @@ namespace HowlOut
 			commentList.SelectedItem = null;
 			conversationList.SelectedItem = null;
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+		}
+
+		private async Task autoUpdater()
+		{
+			await Task.Delay(5000);
+			UpdateList(true);
+			if (viewInFocusNow)
+			{
+				autoUpdater();
+			}
 		}
 	}
 }

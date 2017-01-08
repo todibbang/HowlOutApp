@@ -75,6 +75,7 @@ namespace HowlOut
 
 		public async Task<Event> GetEventById(string eventId)
 		{
+			if (string.IsNullOrWhiteSpace(eventId)) return null;
 			var uri = "/" + eventId;
 			List<Event> events = await GetEventsServerCall(uri);
 			if (events == null || events.Count == 0 || events[0] == null) return null;
