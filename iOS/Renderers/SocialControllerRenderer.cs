@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UIKit;
 using HowlOut.iOS;
 using Foundation;
+//using MessageUI;
 
 using Facebook.LoginKit;
 using Facebook.ShareKit;
@@ -15,7 +16,7 @@ using Facebook.ShareKit;
 
 namespace HowlOut.iOS
 {
-	public class SocialControllerRenderer : SocialController
+	public partial class SocialControllerRenderer : SocialController
 	{
 		EKEventStore eventStore;
 		List<string> readPermissions = new List<string> { "public_profile", "user_events", "read_custom_friendlists", "user_friends" };
@@ -126,6 +127,39 @@ namespace HowlOut.iOS
 			if (date.Kind == DateTimeKind.Unspecified)
 				date = DateTime.SpecifyKind(date, DateTimeKind.Local);// or DateTimeKind.Utc, this depends on each app */)
 			return (NSDate)date;
+		}
+
+		/*
+		public async Task<bool> openEmail(string subject, string body)
+		{
+			MFMailComposeViewController mailController;
+			if (MFMailComposeViewController.CanSendMail)
+			{
+				mailController = new MFMailComposeViewController();
+
+				mailController.SetToRecipients(new string[] { "john@doe.com" });
+				mailController.SetSubject("mail test");
+				mailController.SetMessageBody("this is a test", false);
+
+				mailController.Finished += (object s, MFComposeResultEventArgs args) =>
+				{
+					Console.WriteLine(args.Result.ToString());
+					args.Controller.DismissViewController(true, null);
+				};
+
+				mailController.
+
+				this.PresentViewController(mailController, true, null);
+
+				return true;
+			}
+			return false;
+		} */
+
+		public void setNotificationBadge(int nr)
+		{
+			UILocalNotification notification = new UILocalNotification();
+			notification.ApplicationIconBadgeNumber = nr;
 		}
 	}
 }

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HowlOut.NewExpenseView" xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid>
+			<Grid Padding="0,60,0,0" x:Name="firstGrid">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="50"/>
+					<RowDefinition Height="50"/>
+					<RowDefinition Height="50"/>
+					<RowDefinition Height="50"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="50"/>
+				</Grid.RowDefinitions>
+				
+				<StackLayout Spacing="0">
+					<Label HorizontalOptions="CenterAndExpand" FontSize="20" x:Name="secondGridTitle"/>
+				</StackLayout>
+
+
+
+				<StackLayout Grid.Row="1" Padding="10,5,10,5" Orientation="Horizontal">
+					<Label Text="Paid by" WidthRequest="100" VerticalOptions="Center"/>
+					<local:CustomPicker Title="I am paying" HasBorder="true" TextColor="Black" VerticalOptions="CenterAndExpand" x:Name="whoIsPayingPicker" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" />
+				</StackLayout>
+				<StackLayout Grid.Row="2" Padding="10,5,10,5" Orientation="Horizontal">
+					<Label Text="Amount paid" WidthRequest="100" VerticalOptions="Center"/>
+					<local:CustomEntry Keyboard="Numeric" Placeholder="Amount paid" HorizontalTextAlignment="Center" x:Name="totalExpenseEntry" HorizontalOptions="FillAndExpand"/>
+				</StackLayout>
+				<StackLayout Grid.Row="3" Padding="10,5,10,5" Orientation="Horizontal">
+					<Label Text="Description" WidthRequest="100" VerticalOptions="Center"/>
+					<local:CustomEntry Placeholder="Descripe expense" HorizontalTextAlignment="Center" x:Name="desciption" HorizontalOptions="FillAndExpand"/>
+				</StackLayout>
+
+				
+
+				<ScrollView Grid.Row="4">
+					<StackLayout x:Name="specialSettingsGrid" Padding="10,0,10,0"/>
+				</ScrollView>
+				<StackLayout Grid.RowSpan="5" IsVisible="false" x:Name="displayingOldExpense"/>
+
+				<StackLayout Grid.Row="5" Padding="30,5,30,5">
+					<Button BackgroundColor="{DynamicResource HowlOut}" Text="Finish" TextColor="White" x:Name="finishBtn"/>
+				</StackLayout>
+				
+			</Grid>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

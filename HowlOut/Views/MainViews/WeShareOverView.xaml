@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.WeShareOverView">
+	<ContentView.Content>
+		<ScrollView VerticalOptions="Fill">
+			<Grid >
+				<Grid Padding="0,70,0,0" IsVisible="true" x:Name="firstGrid" VerticalOptions="Fill">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<StackLayout Spacing="0">
+						<Label HorizontalOptions="CenterAndExpand" FontSize="20" x:Name="firstGridTitle"/>
+					</StackLayout>
+
+					<StackLayout Grid.Row="1" x:Name="balanceGrid" Padding="10,0,10,0"/>
+					
+					<StackLayout Grid.Row="2" Padding="30,5,30,5">
+						<Button x:Name="payRequestMyShare" Text="Pay my share" BackgroundColor="{DynamicResource HowlOut}" TextColor="White"/>
+					</StackLayout>
+					
+				</Grid>
+
+				<Grid Padding="0,70,0,0" IsVisible="false" x:Name="secondGrid" VerticalOptions="Fill">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="50"/>
+					</Grid.RowDefinitions>
+					<StackLayout Spacing="0" Grid.Row="0">
+						<Label HorizontalOptions="CenterAndExpand" FontSize="20" x:Name="secondGridTitle"/>
+					</StackLayout>
+					<StackLayout Grid.Row="1" x:Name="payGrid" Padding="10,0,10,0"/>
+					
+				</Grid>
+				
+			</Grid>
+		</ScrollView>
+	</ContentView.Content>
+</ContentView>

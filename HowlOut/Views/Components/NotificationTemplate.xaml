@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" 
+		x:Class="HowlOut.NotificationTemplate" xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,0,0,2" HeightRequest="100">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="40" />
+				<ColumnDefinition Width="40" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+
+			<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2" HeightRequest="80" BackgroundColor="{DynamicResource Shadow}">
+				<StackLayout Padding="10,2,10,5" VerticalOptions="FillAndExpand" BackgroundColor="White" HeightRequest="130">
+					<Label x:Name="Title" TextColor="{Binding textColor}" Text="{Binding Header}" FontAttributes="{Binding fontAttributes}"/>
+					<Label x:Name="Message" FontSize="12" TextColor="{DynamicResource NormalTextColor}" Text="{Binding Content}"/>
+
+					<StackLayout Orientation="Horizontal">
+						<Label x:Name="time" FontSize="8" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="EndAndExpand" Text="{Binding Time}"/>
+						<Grid x:Name="BtnLayout" HorizontalOptions="EndAndExpand" IsVisible="false">
+							<StackLayout Orientation="Horizontal" HeightRequest="30">
+								<Button Text="Accept"  BackgroundColor="{DynamicResource HowlOut}" TextColor="White" WidthRequest="60"/>
+								<Button Text="Decline" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" WidthRequest="60"/>
+							</StackLayout>
+							<StackLayout Orientation="Horizontal" HeightRequest="30">
+								<local:IconView Source="ic_settings.png" Foreground="Transparent" WidthRequest="60" HeightRequest="30" x:Name="AcceptBtn"/>
+								<local:IconView Source="ic_settings.png" Foreground="Transparent" WidthRequest="60" HeightRequest="30" x:Name="DeclineBtn"/>
+							</StackLayout>
+						</Grid>
+
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+			<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ContentImageSource}" Aspect="AspectFill"/>
+			<Grid Grid.ColumnSpan="3" HeightRequest="{Binding screenHeight}" IsVisible="{Binding Footer}"/>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

@@ -6,10 +6,9 @@ namespace HowlOut
 {
 	public partial class Line : ContentView
 	{
-		public Line ()
+		public Line()
 		{
-			InitializeComponent ();
+			InitializeComponent();
 		}
 	}
 }
-

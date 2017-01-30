@@ -27,8 +27,6 @@
 			<StackLayout Grid.Row="2" Grid.Column="0" VerticalOptions="EndAndExpand" HeightRequest="20" WidthRequest="20">
 				<controls:CircleImage Source="{Binding ImageSource}" Aspect="AspectFill" IsVisible="{Binding displayImage}" HeightRequest="20" WidthRequest="20"/> 
 			</StackLayout>
-
-			
 		</Grid>
 	</ContentView.Content>
 </ContentView>

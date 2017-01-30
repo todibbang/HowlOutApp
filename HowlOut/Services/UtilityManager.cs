@@ -24,7 +24,16 @@ namespace HowlOut
 
 		public async void updateLastKnownPosition()
 		{
-			if (CrossGeolocator.Current.IsGeolocationEnabled && CrossGeolocator.Current.IsGeolocationAvailable)
+			while (true)
+			{
+				await getGeoLocation();
+				await Task.Delay(10000);
+			}
+		}
+
+		public async Task getGeoLocation()
+		{
+			if (CrossGeolocator.Current.IsGeolocationEnabled && CrossGeolocator.Current.IsGeolocationAvailable && !App.setPositionManually)
 			{
 				try
 				{
@@ -39,16 +48,27 @@ namespace HowlOut
 
 				}
 			}
-			else {
-				App.lastKnownPosition = new Position(55.679802, 12.585466);
+			else if (!App.setPositionManually && !App.alreadyAskedToSetPositionManually)
+			{
+				if (!CrossGeolocator.Current.IsGeolocationEnabled || !CrossGeolocator.Current.IsGeolocationAvailable)
+				{
+					App.alreadyAskedToSetPositionManually = true;
+
+					bool setManually = await App.coreView.displayConfirmMessage("Location Error", "Error getting location, would you like to set it manually so that you can explore events near you? \nYou can change your location permissions in your phones settings ", "OK", "Not Now");
+					if (setManually)
+					{
+						App.coreView.setContentViewWithQueue(new MapsView(App.lastKnownPosition, true));
+					}
+
+				}
 			}
 		}
 
-		public async void setMapForEvent(Position pos, ExtMap map, StackLayout mapLayout)
+		public async void setMapForEvent(Position pos, ExtMap map, StackLayout mapLayout, double distance)
 		{
 			map.MoveToRegion (
 				MapSpan.FromCenterAndRadius (
-					new Position (pos.Latitude, pos.Longitude), Distance.FromKilometers (1.2)));
+					new Position (pos.Latitude, pos.Longitude), Distance.FromKilometers (distance)));
 			mapLayout.Children.Add(map);
 		}
 

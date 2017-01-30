@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.GenericDesignView"
 		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" xmlns:controlsTwo="clr-namespace:HowlOut;assembly=HowlOut" Padding="0">
 	<ContentView.Content>
 		<Grid x:Name="profileLayout" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" RowSpacing="0" Padding="0">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
@@ -36,10 +37,26 @@
 						Source="{Binding ProfileImageSource}" x:Name="ProfileImage"/>
 					<Button Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0" Grid.RowSpan="5" 
 						x:Name="MainButton" IsVisible="true" BorderColor="{DynamicResource HowlOut}" />
+
+					<Grid Grid.RowSpan="5" Grid.ColumnSpan="6" Padding="0,4,4,0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="3*"/>
+							<RowDefinition Height="8*"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="8*"/>
+							<ColumnDefinition Width="3*"/>
+						</Grid.ColumnDefinitions>
+						<Button Grid.Column="1" Text="!" BackgroundColor="#ffc65539" TextColor="White" x:Name="notiBtn" IsVisible="false"/>
+					</Grid>
+
+					
 					<Button Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="0" Grid.RowSpan="5" x:Name="SubjectButton" BackgroundColor="Transparent" />
 					<!-- <controls:CircleImage Grid.Column="4" Grid.Row="3" Aspect="AspectFill" x:Name="organizationOwnerImage" IsVisible="false"/> -->
 					<Button Grid.Column="4" Grid.Row="3" x:Name="organizationOwnerBtn" BackgroundColor="Transparent"  IsVisible="false"/>
 				</Grid>
+				
+
 			</Grid>
 
 			<StackLayout Grid.Row="1" x:Name="selectFromBannerList" IsVisible="false" Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="40" Spacing="15" Padding="80,2,80,2">
@@ -65,7 +82,15 @@
 				</StackLayout>
 			</StackLayout>
 
-			<StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,2,0,0" >
+			<StackLayout Grid.Row="4" IsVisible="false" x:Name="groupOwnerInvitedButtons" Padding="5">
+				<Label Text="You have been invited to become an owner of this group" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="20"/>
+			</StackLayout>
+
+			<StackLayout Grid.Row="4" IsVisible="false" x:Name="groupInvitedButtons" Padding="5">
+				<Label Text="You have been invited to join this group" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="20"/>
+			</StackLayout>
+
+			<StackLayout Grid.Row="5" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" x:Name="buttonLayout" IsVisible="false" Padding="0,2,0,0" >
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="addButton" Text="add" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="removeButton" Text="remove" BorderRadius="10" IsVisible="false"/>
 				<Button Style="{DynamicResource ButtonStyle}" x:Name="editButton" Text="decline" BorderRadius="10" IsVisible="false"/>

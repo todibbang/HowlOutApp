@@ -112,14 +112,7 @@ namespace HowlOut
 			List<Event> events = await PostEventServerCall(uri, content);
 			if (events != null && events.Count > 0)
 			{
-				if (events[0].StartDate > DateTime.Now.AddHours(2).AddMinutes(1))
-				{
-					CrossLocalNotifications.Current.Show("Event: " + events[0].Title, events[0].Title + " is starting in 2 hours!", (int.Parse(events[0].EventId) * 2), events[0].StartDate.ToLocalTime().AddHours(-2));
-				}
-				if (events[0].StartDate > DateTime.Now.AddDays(1).AddMinutes(1))
-				{
-					CrossLocalNotifications.Current.Show("Event: " + events[0].Title, events[0].Title + " is starting in 1 day!", (int.Parse(events[0].EventId) * 2) + 1, events[0].StartDate.ToLocalTime().AddDays(-1));
-				}
+				App.notificationController.updateLocalEventNotifications(events[0], true);
 				return events[0];
 			}
 			return null;
@@ -132,6 +125,7 @@ namespace HowlOut
 				var response = await httpClient.DeleteAsync(uri);
 				if (response.IsSuccessStatusCode) 
 				{ 
+					App.notificationController.updateLocalEventNotifications(new Event() {EventId = eventId}, false);
 					return true; 
 				}
 				else { 
@@ -163,7 +157,7 @@ namespace HowlOut
 		public async Task<bool> AcceptDeclineLeaveEventAsOwner(string id, OwnerHandlingType handlingType)
 		{
 			var uri = "/AcceptDeclineLeaveEventAsOwner?eventId=" + id + "&handlingType=" + handlingType;
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
 			return await PutEventServerCall(uri);
 		}
 
@@ -174,7 +168,7 @@ namespace HowlOut
 			{
 				uri += "&profileIds=" + p.ProfileId;
 			}
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
 			return await PutEventServerCall(uri);
 		}
 

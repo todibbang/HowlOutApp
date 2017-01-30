@@ -23,7 +23,7 @@ namespace HowlOut
 
 		}
 
-		public void setOptionsGrid(Grid buttonGrid, List<string> buttonText, List<VisualElement> grids, List<Action> actions, CarouselView carousel)
+		public void setOptionsGrid(Grid buttonGrid, List<string> buttonText, List<VisualElement> grids, List<Action> actions)
 		{
 			buttonGrid.BackgroundColor = Color.FromHex("#cc000000");
 			buttonGrid.ColumnSpacing = 0;
@@ -94,7 +94,7 @@ namespace HowlOut
 					buttonGrid.Children.Add(new StackLayout() { BackgroundColor = Color.FromHex("#60ffffff") }, i, i+1, 0, 2);
 				}
 			}
-
+			/*
 			if (carousel != null)
 			{
 				carousel.PositionSelected += (sender, e) =>
@@ -104,7 +104,7 @@ namespace HowlOut
 					}
 					buttonGrid.Children.Add(selectedBar, carousel.Position * 2, 0);
 				};
-			}
+			}*/
 
 			foreach (Button b in buttons)
 			{
@@ -121,6 +121,7 @@ namespace HowlOut
 					if (clickButtonAction[buttons.IndexOf(b)] != null) { clickButtonAction[buttons.IndexOf(b)].Invoke(); }
 					if (grids != null && grids[buttons.IndexOf(b)] != null) { grids[buttons.IndexOf(b)].IsVisible = true; }
 					if (actions != null && actions[buttons.IndexOf(b)] != null) { actions[buttons.IndexOf(b)].Invoke(); }
+					//if (carousel != null) carousel.SetCurrentPage(buttons.IndexOf(b));
 					//scrollTo(b);
 				};
 			}
@@ -326,10 +327,10 @@ namespace HowlOut
 				st.Add("Image");
 			}
 
+			//TODO
+			//CarouselList cl = new CarouselList(ve, st, CarouselList.ViewType.Other );
 
-			CarouselList cl = new CarouselList(ve, st, CarouselList.ViewType.Other );
-
-			App.coreView.setContentViewWithQueue(cl);
+			//App.coreView.setContentViewWithQueue(cl);
 		}
 	}
 }

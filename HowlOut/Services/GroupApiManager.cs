@@ -49,6 +49,7 @@ namespace HowlOut
 				var response = await httpClient.DeleteAsync(uri);
 				if (response.IsSuccessStatusCode) 
 				{ 
+					await App.coreView.updateMainViews(4);
 					return true; 
 				}
 				else { 
@@ -65,7 +66,7 @@ namespace HowlOut
 		public async Task<bool> RequestAcceptDeclineLeaveGroup(string id, GroupHandlingType handlingType)
 		{
 			var uri = "/requestAcceptDeclineLeaveGroup?groupId=" + id + "&handlingType=" + handlingType;
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
 			return await PutGroupServerCall(uri);
 		}
 
@@ -76,14 +77,14 @@ namespace HowlOut
 			{
 				uri += "&profileIds=" + p.ProfileId;
 			}
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
 			return await PutGroupServerCall(uri);
 		}
 
 		public async Task<bool> RequestAcceptDeclineLeaveGroupAsOwner(string id, OwnerHandlingType handlingType)
 		{
 			var uri = "/AcceptDeclineLeaveGroupAsOwner?groupId=" + id + "&handlingType=" + handlingType;
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
 			return await PutGroupServerCall(uri);
 		}
 
@@ -94,7 +95,7 @@ namespace HowlOut
 			{
 				uri += "&profileIds=" + p.ProfileId;
 			}
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
 			return await PutGroupServerCall(uri);
 		}
 

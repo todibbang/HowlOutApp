@@ -41,7 +41,7 @@ namespace HowlOut
 					{
 						if (selected > 1) selected = 0;
 
-						if (list.Count == 3 && selected == 1)
+						if (list.Count == 2 && selected == 1)
 						{
 							selected = 0;
 						}

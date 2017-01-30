@@ -128,7 +128,7 @@ namespace HowlOut
 				App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 				await loadUpdatedProfile(profile);
 				App.coreView.setContentViewReplaceCurrent(new InspectController(profile), 1);
-				App.coreView.updateHomeView();
+				App.coreView.updateMainViews(4);
 			} else {
 				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
 			}
@@ -152,6 +152,7 @@ namespace HowlOut
 		{
 			var Continue = false;
 			string action = "";
+
 			if (joinOrTrack)
 			{
 				if (attendOrUnattend)
@@ -178,11 +179,18 @@ namespace HowlOut
 					return false;
 				}
 				else {
-					if (App.coreView.contentViews.Count > 1)
+					
+					if (!joinOrTrack)
 					{
-						App.coreView.setContentViewReplaceCurrent(new InspectController(await App.coreView._dataManager.EventApiManager.GetEventById(eve.EventId)), 1);
+						if (attendOrUnattend) App.coreView.displayAlertMessage("Followed", "Event followed", "OK");
+						else App.coreView.displayAlertMessage("Unfollowed", "Event unfollowed", "OK");
 					}
-					App.coreView.updateHomeView();
+
+					App.coreView.reloadCurrentView();
+
+					App.coreView.updateMainViews(1);
+					App.coreView.updateMainViews(2);
+					App.coreView.updateMainViews(4);
 					return true;
 				}
 			}
@@ -321,94 +329,5 @@ namespace HowlOut
 			return you;
 		}
 
-		public bool checkIfUnseen(string modelId, NotificationModelType modelType)
-		{
-			foreach (Notification n in App.coreView.notifications.unseenNotifications)
-			{
-				if (n.ModelId == modelId && !n.Seen && n.ModelType == modelType)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		public bool chechIfConversationUnseen(ConversationModelType cType, string cId)
-		{
-			NotificationModelType modelType = NotificationModelType.ProfileConversation;
-			if(cType == ConversationModelType.Event ) modelType = NotificationModelType.EventConversation;
-			if (cType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
-
-
-			foreach (Notification n in App.coreView.notifications.unseenNotifications)
-			{
-				if (modelType == NotificationModelType.ProfileConversation)
-				{
-					if (n.ModelId == cId && !n.Seen && n.ModelType == modelType)
-					{
-						return true;
-					}
-				}
-				else {
-					if (n.SecondModelId == cId && !n.Seen && n.ModelType == modelType)
-					{
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-
-		public async Task setConversationSeen(string modelId, ConversationModelType mType)
-		{
-			NotificationModelType modelType = NotificationModelType.ProfileConversation;
-			if (mType == ConversationModelType.Event) modelType = NotificationModelType.EventConversation;
-			if (mType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
-			List<Notification> notiToRemove = new List<Notification>();;
-			foreach (Notification n in App.coreView.notifications.unseenNotifications)
-			{
-				System.Diagnostics.Debug.WriteLine(n.ModelId + ", " + n.ModelType);
-
-				if (((n.SecondModelId == modelId && modelType != NotificationModelType.ProfileConversation) || 
-				     (n.ModelId == modelId && modelType == NotificationModelType.ProfileConversation)) 
-				    && !n.Seen && n.ModelType == modelType)
-				{
-					n.Seen = true;
-					notiToRemove.Add(n);
-					await MessageApiManager.SetNotificationSeen(n.InAppNotificationId);
-				}
-			}
-			foreach (Notification n in notiToRemove) App.coreView.notifications.unseenNotifications.Remove(n);
-			//await App.coreView.notifications.UpdateNotifications(false);
-			await App.coreView.yourConversatios.UpdateConversations(false);
-			//await App.coreView.otherConversatios.UpdateConversations(false);
-		}
-
-		public async Task setUpdateSeen(string modelId, NotificationModelType modelType)
-		{
-			foreach (Notification n in App.coreView.notifications.unseenNotifications)
-			{
-				System.Diagnostics.Debug.WriteLine(n.ModelId + ", " + n.ModelType);
-
-				if (n.ModelId == modelId && !n.Seen && n.ModelType == modelType)
-				{
-					n.Seen = true;
-					await MessageApiManager.SetNotificationSeen(n.InAppNotificationId);
-				}
-			}
-			await App.coreView.notifications.UpdateNotifications(false);
-			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false, ""); }
-			else if (modelType == NotificationModelType.ProfileConversation) { 
-				await App.coreView.yourConversatios.UpdateConversations(false);
-				//await App.coreView.otherConversatios.UpdateConversations(false);
-			}
-		}
-
-		public async Task setNotificationSeen(string id)
-		{
-			App.coreView.notifications.unseenNotifications.Find(n => n.InAppNotificationId == id).Seen = true;
-			await App.coreView.notifications.UpdateNotifications(false);   
-			await MessageApiManager.SetNotificationSeen(id);
-		}
 	}
 }

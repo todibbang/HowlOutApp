@@ -8,5 +8,7 @@ namespace HowlOut
 	{
 		Task<bool> addEventToCalendar(Event eve);
 		Task<List<string>> getFacebookFriends();
+		void setNotificationBadge(int nr);
+		//Task<bool> openEmail(string subject, string body);
 	}
 }

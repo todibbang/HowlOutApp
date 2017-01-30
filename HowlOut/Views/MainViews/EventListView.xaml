@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.EventListView"
+		 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" Padding="0,0,0,0"
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" >
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="60"/>
+			</Grid.RowDefinitions>
+			
+			<Label Text="No Events to load" x:Name="nothingToLoad" IsVisible="false" HorizontalOptions="Center" VerticalOptions="Center"/>
+			<ListView x:Name="searchEventList" Grid.RowSpan="2" 
+				HasUnevenRows="true"
+				InputTransparent="false"
+				SeparatorVisibility="None"
+				CachingStrategy="RecycleElement"
+				BackgroundColor="Transparent"
+				IsGroupingEnabled="true">
+				<ListView.Header>
+					<StackLayout>
+						<Grid Grid.Row="2" RowSpacing="0" x:Name="manageGroupsGrid" IsVisible="false" Padding="0,65,0,0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1"/>
+								<RowDefinition Height="40"/>
+								<RowDefinition Height="1"/>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="1"/>
+								<RowDefinition Height="40"/>
+								<RowDefinition Height="1"/>
+							</Grid.RowDefinitions>
+							<StackLayout Grid.RowSpan="3" BackgroundColor="White"/>
+							<local:Line Grid.Row="0" />
+							<Button Grid.Row="1" Text="  Your Groups" FontAttributes="Bold" HeightRequest="38" HorizontalOptions="StartAndExpand" TextColor="{DynamicResource NormalTextColor}" x:Name="groupsLabel"/>
+							<Button Grid.Row="1" Text="Explore more  " FontAttributes="Bold" HeightRequest="38" HorizontalOptions="EndAndExpand" TextColor="{DynamicResource HowlOut}" x:Name="exploreMoreGroups"/>
+							<local:Line Grid.Row="2" />
+
+							<StackLayout Grid.Row="3" x:Name="manageGroupsLayout" Padding="10,0,10,-10"/>
+
+							<StackLayout Grid.Row="4" Grid.RowSpan="3" BackgroundColor="White"/>
+							<local:Line Grid.Row="4" />
+							<Button Grid.Row="5" Text="  Your Events" FontAttributes="Bold" HeightRequest="38" HorizontalOptions="StartAndExpand" TextColor="{DynamicResource NormalTextColor}" x:Name="eventsLabel"/>
+							<Button Grid.Row="5" Text="Explore more  " FontAttributes="Bold" x:Name="exploreMoreEvents" HeightRequest="38" HorizontalOptions="EndAndExpand" TextColor="{DynamicResource HowlOut}"/>
+							<local:Line Grid.Row="6" />
+						</Grid>
+						<StackLayout x:Name="headerLayout"/>
+					</StackLayout>
+				</ListView.Header>
+                    <ListView.ItemTemplate>
+                     	 <DataTemplate>
+                      		<ViewCell>
+	                      		<local:SearchEventTemplate/>
+	                  		</ViewCell>
+                      	</DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupHeaderTemplate>
+                    	<DataTemplate>
+	                      <ViewCell>
+		                        <StackLayout Padding="0,0,0,4" BackgroundColor="{DynamicResource HowlOutBackground}" VerticalOptions="EndAndExpand" HeightRequest="40">
+					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="EndAndExpand" HorizontalOptions="Fill" TranslationX="10"/>
+					    		</StackLayout>
+		              		</ViewCell>
+                      </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+				<ListView.Footer>
+					<StackLayout HeightRequest="0" x:Name="footer"/>
+				</ListView.Footer>
+            </ListView>
+			
+			<Button x:Name="exploreBg" IsVisible="false" WidthRequest="60" BackgroundColor="{DynamicResource HowlOut}" BorderRadius="30" FontSize="30" HeightRequest="60" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-100"/>
+			<Image x:Name="explorePng" IsVisible="false" Source="ic_search.png" WidthRequest="30" HeightRequest="30" VerticalOptions="End" HorizontalOptions="End" TranslationX="-35" TranslationY="-115"/>
+			<Button x:Name="exploreSettings" IsVisible="false" WidthRequest="60" BackgroundColor="Transparent" BorderRadius="30" FontSize="30" HeightRequest="60" VerticalOptions="End" HorizontalOptions="End" TranslationX="-20" TranslationY="-100"/>
+			<!--
+			<StackLayout x:Name="joinedEventsGrid" BackgroundColor="#90000000" IsVisible="false" Padding="20,22,20,6" Orientation="Horizontal">
+				<Button Text="  View Old Events  " TextColor="White" HorizontalOptions="CenterAndExpand" x:Name="viewOldEvents" FontSize="16" BorderWidth="1" BorderColor="White" HeightRequest="30" WidthRequest="200"/>
+			</StackLayout> -->
+			<Button Grid.Row="1" Text="+" x:Name="createBtn" WidthRequest="60" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" BorderRadius="30" FontSize="30" HeightRequest="60" HorizontalOptions="End" TranslationX="-20" TranslationY="-90" IsVisible="false"/>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

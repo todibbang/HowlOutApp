@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.ExploreEventCategories" Padding="0,0,0,0">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0"  x:Name="contentTest" Padding="0,0,0,0" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+
+
+			<!-- <Grid Grid.RowSpan="3" x:Name="scrollBackground" BackgroundColor="{DynamicResource HowlOutBackground}"/> -->
+
+			<!-- 
+			<ScrollView x:Name="HorizontalScrollView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" BackgroundColor="{DynamicResource HowlOutBackground}">
+				<StackLayout x:Name="categoryList" Spacing="0" Padding="0" VerticalOptions="Fill" />
+			</ScrollView> -->
+
+			<Grid Grid.RowSpan="3" x:Name="eventList" BackgroundColor="{DynamicResource HowlOutBackground}" IsVisible="true"/>
+			
+			<StackLayout Grid.RowSpan="2" BackgroundColor="#90000000">
+					<!-- <Image Source="ic_back.png"/> -->
+				<Grid VerticalOptions="EndAndExpand" Padding="5,25,5,5" ColumnSpacing="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="40"/>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="24"/>
+						<ColumnDefinition Width="16"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="16"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					
+					<Image Source="ic_settings.png" Grid.RowSpan="2" HorizontalOptions="StartAndExpand" x:Name="settingsButton" IsVisible="true"/>
+					
+					<Button Grid.RowSpan="2" Grid.Column="2" BackgroundColor="White" BorderRadius="18"/>
+					<Entry Grid.RowSpan="2" Grid.Column="2" x:Name="searchBar" Placeholder="Search For Event"/>
+					
+					<StackLayout Grid.RowSpan="2" Grid.Column="2" HorizontalOptions="EndAndExpand" WidthRequest="20" Padding="2,2,6,2" VerticalOptions="CenterAndExpand">
+						<Button x:Name="searchBarDelete" BackgroundColor="#90000000" Text="x" FontSize="12" HeightRequest="20" BorderRadius="10" TextColor="White"/>
+					</StackLayout>
+
+					<local:IconView Source="ic_explore.png" Grid.RowSpan="2" Grid.Column="4" Grid.ColumnSpan="2" Foreground="White"/>
+					<Grid x:Name="notiBadg" Grid.Column="5" Grid.Row="0" HeightRequest="20" WidthRequest="20"/>
+					<Button x:Name="notiButton" Grid.RowSpan="2" Grid.Column="4" Grid.ColumnSpan="2"/>
+					
+					<!-- <SearchBar x:Name="searchBar" HeightRequest="40" BackgroundColor="Transparent" Placeholder="Search For Event" CancelButtonColor="{DynamicResource HowlOut}"/> -->
+				</Grid>
+			</StackLayout>
+
+		</Grid>
+	</ContentView.Content>
+</ContentView>

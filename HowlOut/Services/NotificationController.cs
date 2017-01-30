@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace HowlOut
 {
@@ -85,7 +86,133 @@ namespace HowlOut
 				}
 			}
 
-			App.coreView.updateHomeView();
+			App.coreView.updateMainViews(4);
+		}
+
+		public bool checkIfUnseen(string modelId, NotificationModelType modelType)
+		{
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				if (n.ModelId == modelId && !n.Seen && n.ModelType == modelType)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public bool chechIfConversationUnseen(ConversationModelType cType, string cId)
+		{
+			NotificationModelType modelType = NotificationModelType.ProfileConversation;
+			if (cType == ConversationModelType.Event) modelType = NotificationModelType.EventConversation;
+			if (cType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
+
+
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				if (modelType == NotificationModelType.ProfileConversation)
+				{
+					if (n.ModelId == cId && !n.Seen && n.ModelType == modelType)
+					{
+						return true;
+					}
+				}
+				else {
+					if (n.SecondModelId == cId && !n.Seen && n.ModelType == modelType)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public async Task setConversationSeen(string modelId, ConversationModelType mType)
+		{
+			NotificationModelType modelType = NotificationModelType.ProfileConversation;
+			if (mType == ConversationModelType.Event) modelType = NotificationModelType.EventConversation;
+			if (mType == ConversationModelType.Group) modelType = NotificationModelType.GroupConversation;
+			List<Notification> notiToRemove = new List<Notification>(); ;
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				System.Diagnostics.Debug.WriteLine(n.ModelId + ", " + n.ModelType);
+
+				if (((n.SecondModelId == modelId && modelType != NotificationModelType.ProfileConversation) ||
+					 (n.ModelId == modelId && modelType == NotificationModelType.ProfileConversation))
+					&& !n.Seen && n.ModelType == modelType)
+				{
+					n.Seen = true;
+					notiToRemove.Add(n);
+					await App.coreView._dataManager.MessageApiManager.SetNotificationSeen(n.InAppNotificationId);
+				}
+			}
+			foreach (Notification n in notiToRemove) App.coreView.notifications.unseenNotifications.Remove(n);
+			//await App.coreView.notifications.UpdateNotifications(false);
+			await App.coreView.yourConversatios.UpdateConversations(false);
+			//await App.coreView.otherConversatios.UpdateConversations(false);
+		}
+
+		public async Task setUpdateSeen(string modelId, NotificationModelType modelType)
+		{
+			foreach (Notification n in App.coreView.notifications.unseenNotifications)
+			{
+				System.Diagnostics.Debug.WriteLine(n.ModelId + ", " + n.ModelType);
+
+				if (n.ModelId == modelId && !n.Seen && n.ModelType == modelType)
+				{
+					n.Seen = true;
+					await App.coreView._dataManager.MessageApiManager.SetNotificationSeen(n.InAppNotificationId);
+				}
+			}
+			await App.coreView.notifications.UpdateNotifications(false);
+			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false, ""); }
+			else if (modelType == NotificationModelType.ProfileConversation)
+			{
+				await App.coreView.yourConversatios.UpdateConversations(false);
+				//await App.coreView.otherConversatios.UpdateConversations(false);
+			}
+		}
+
+		public async Task setNotificationSeen(string id)
+		{
+			App.coreView.notifications.unseenNotifications.Find(n => n.InAppNotificationId == id).Seen = true;
+			await App.coreView.notifications.UpdateNotifications(false);
+			await App.coreView._dataManager.MessageApiManager.SetNotificationSeen(id);
+		}
+
+
+
+
+		public async void updateLocalEventNotifications(string eveID)
+		{
+			Event e = await App.coreView._dataManager.EventApiManager.GetEventById(eveID);
+			updateLocalEventNotifications(e, true);
+		}
+
+		public void updateLocalEventNotifications(Event eve, bool update)
+		{
+			try
+			{
+				Plugin.LocalNotifications.CrossLocalNotifications.Current.Cancel((int.Parse(eve.EventId) * 2) + 1);
+			}
+			catch (Exception ecx) { }
+			try
+			{
+				Plugin.LocalNotifications.CrossLocalNotifications.Current.Cancel((int.Parse(eve.EventId) * 2));
+			}
+			catch (Exception ecx) { }
+
+			if (update)
+			{
+				if (eve.StartDate > DateTime.Now.AddHours(2).AddMinutes(1))
+				{
+					Plugin.LocalNotifications.CrossLocalNotifications.Current.Show("Event: " + eve.Title, eve.Title + " is starting in 2 hours!", (int.Parse(eve.EventId) * 2), eve.StartDate.ToLocalTime().AddHours(-2));
+				}
+				if (eve.StartDate > DateTime.Now.AddDays(1).AddMinutes(1))
+				{
+					Plugin.LocalNotifications.CrossLocalNotifications.Current.Show("Event: " + eve.Title, eve.Title + " is starting in 1 day!", (int.Parse(eve.EventId) * 2) + 1, eve.StartDate.ToLocalTime().AddDays(-1));
+				}
+			}
 		}
 	}
 }

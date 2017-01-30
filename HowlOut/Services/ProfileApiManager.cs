@@ -104,7 +104,7 @@ namespace HowlOut
 		{
 			var uri = "/requestDeclineAcceptUnfriend?profileSignedInId=" + App.StoredUserFacebookId + "&profileFriendId=" + profileFriendId + "&acceptOrRequest=" + acceptOrDecline;
 			bool response = await PutProfileServerCall(uri);
-			if (response) App.coreView.updateHomeView();
+			if (response) App.coreView.updateMainViews(4);
 			return response;
 		}
 

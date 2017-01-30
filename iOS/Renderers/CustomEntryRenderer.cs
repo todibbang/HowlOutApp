@@ -7,7 +7,7 @@
 
 			if (this.Control != null)
 			{
-				this.Control.Layer.BorderWidth = 1; 				this.Control.Layer.BorderColor = App.HowlOutBackground.ToCGColor(); 				this.Control.TextAlignment = UITextAlignment.Left;
+				this.Control.Layer.BorderWidth = 0; 				this.Control.Layer.BorderColor = App.HowlOutBackground.ToCGColor(); 				this.Control.TextAlignment = UITextAlignment.Left;
 			}
 		}
 	} }

@@ -1,15 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FFA7ED09-7997-48AB-9894-827D29B22AB5}</ProjectGuid>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{62A7208D-6077-44D9-89E5-297E21E01A44}</ProjectGuid>
+    <UseMSBuildEngine>true</UseMSBuildEngine>
     <OutputType>Library</OutputType>
     <RootNamespace>HowlOut</RootNamespace>
     <AssemblyName>HowlOut</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,339 +20,16 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\Event.cs" />
-    <Compile Include="Models\Profile.cs" />
-    <Compile Include="Services\DataManager.cs" />
-    <Compile Include="Views\Components\InspectManageComment.xaml.cs">
-      <DependentUpon>InspectManageComment.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Components\Line.xaml.cs">
-      <DependentUpon>Line.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Components\ManageEventTemplate.xaml.cs">
-      <DependentUpon>ManageEventTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Components\SearchEventTemplate.xaml.cs">
-      <DependentUpon>SearchEventTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FilterSearch.xaml.cs">
-      <DependentUpon>FilterSearch.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FacebookUserObject.cs" />
-    <Compile Include="Services\UtilityManager.cs" />
-    <Compile Include="Services\ExtMap.cs" />
-    <Compile Include="Views\MapsView.xaml.cs">
-      <DependentUpon>MapsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\EventForLists.cs" />
-    <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\Data.cs" />
-    <Compile Include="Services\ProfileApiManager.cs" />
-    <Compile Include="Services\GroupApiManager.cs" />
-    <Compile Include="Services\EventApiManager.cs" />
-    <Compile Include="Views\ListsAndButtons.xaml.cs">
-      <DependentUpon>ListsAndButtons.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SearchSettings.cs" />
-    <Compile Include="Views\Inspect\InspectEvent.xaml.cs">
-      <DependentUpon>InspectEvent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InspectController.xaml.cs">
-      <DependentUpon>InspectController.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CoreLayout\BottomBar.xaml.cs">
-      <DependentUpon>BottomBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CoreLayout\CoreView.xaml.cs">
-      <DependentUpon>CoreView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CoreLayout\LoginPage.cs" />
-    <Compile Include="Views\CoreLayout\SignIn.xaml.cs">
-      <DependentUpon>SignIn.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\CoreLayout\UpperBar.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\CoreLayout\UpperBar.xaml.cs">
-      <DependentUpon>UpperBar.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\HomeView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\HomeView.xaml.cs">
-      <DependentUpon>HomeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NewsMessage.cs" />
-    <EmbeddedResource Include="Views\SelectBannerView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\SelectBannerView.xaml.cs">
-      <DependentUpon>SelectBannerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Components\StandardButton.cs" />
-    <EmbeddedResource Include="Views\Campfinder\MapTest.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Campfinder\MapTest.xaml.cs">
-      <DependentUpon>MapTest.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\Campfinder\PinchToZoomContainer.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Campfinder\PinchToZoomContainer.xaml.cs">
-      <DependentUpon>PinchToZoomContainer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Renderers\IconView.cs" />
-    <EmbeddedResource Include="TestViews\TestView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="TestViews\TestView.xaml.cs">
-      <DependentUpon>TestView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Renderers\CustomEntry.cs" />
-    <Compile Include="Renderers\CustomEditor.cs" />
-    <Compile Include="Renderers\CustomDatePicker.cs" />
-    <Compile Include="Renderers\CustomTimePicker.cs" />
-    <Compile Include="Renderers\ForceCloseKeyboard.cs" />
-    <Compile Include="Models\Notification.cs" />
-    <EmbeddedResource Include="Views\Components\NotificationView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Components\NotificationView.xaml.cs">
-      <DependentUpon>NotificationView.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\YourNotifications.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\YourNotifications.xaml.cs">
-      <DependentUpon>YourNotifications.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Renderers\CustomPicker.cs" />
-    <Compile Include="Renderers\CropImage.cs" />
-    <Compile Include="Models\Organization.cs" />
-    <Compile Include="Models\Conversation.cs" />
-    <Compile Include="Renderers\FacebookLoginButton.cs" />
-    <EmbeddedResource Include="Views\ConversationView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\ConversationView.xaml.cs">
-      <DependentUpon>ConversationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Grouped\GroupedConversations.cs" />
-    <Compile Include="Models\Grouped\GroupedEvents.cs" />
-    <Compile Include="Models\Grouped\GroupedNotifications.cs" />
-    <EmbeddedResource Include="Views\CreateViews\CreateEvent.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\CreateViews\CreateEvent.xaml.cs">
-      <DependentUpon>CreateEvent.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\CreateViews\CreateGroup.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\CreateViews\CreateGroup.xaml.cs">
-      <DependentUpon>CreateGroup.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\EventListView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\EventListView.xaml.cs">
-      <DependentUpon>EventListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FaceBookEvent.cs" />
-    <Compile Include="Models\FacebookPlace.cs" />
-    <Compile Include="Models\FacebookLocation.cs" />
-    <Compile Include="Views\DesignViews\OrganizationDesignView.cs" />
-    <EmbeddedResource Include="Views\DesignViews\GenericDesignView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\DesignViews\GenericDesignView.xaml.cs">
-      <DependentUpon>GenericDesignView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DesignViews\ProfileDesignView.cs" />
-    <Compile Include="Views\DesignViews\GroupDesignView.cs" />
-    <Compile Include="Services\OrganizationApiManager.cs" />
-    <Compile Include="Services\MessageApiManager.cs" />
-    <EmbeddedResource Include="Views\CreateViews\CreateOrganization.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\CreateViews\CreateOrganization.xaml.cs">
-      <DependentUpon>CreateOrganization.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EventCategory.cs" />
-    <Compile Include="Models\EventCategoryButton.cs" />
-    <Compile Include="Models\EventType.cs" />
-    <EmbeddedResource Include="Views\CarouselList.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\CarouselList.xaml.cs">
-      <DependentUpon>CarouselList.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\InviteListView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\InviteListView.xaml.cs">
-      <DependentUpon>InviteListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Services\OtherFunctions.cs" />
-    <Compile Include="Models\NotificationToken.cs" />
-    <Compile Include="Renderers\ConversationEditor.cs" />
-    <Compile Include="Renderers\FacebookShareButton.cs" />
-    <Compile Include="Renderers\FacebookSendButton.cs" />
-    <EmbeddedResource Include="Views\FindNewFriendsView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\FindNewFriendsView.xaml.cs">
-      <DependentUpon>FindNewFriendsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Enums\NotificationModelType.cs" />
-    <Compile Include="Enums\NotificationType.cs" />
-    <Compile Include="Enums\ConversationModelType.cs" />
-    <EmbeddedResource Include="Views\YourConversations.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\YourConversations.xaml.cs">
-      <DependentUpon>YourConversations.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Services\NotificationController.cs" />
-    <Compile Include="Models\Banner.cs" />
-    <Compile Include="Enums\ModelType.cs" />
-    <EmbeddedResource Include="Views\ImageView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\ImageView.xaml.cs">
-      <DependentUpon>ImageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ViewModelInterface.cs" />
-    <Compile Include="Renderers\SocialController.cs" />
-    <EmbeddedResource Include="Views\CoreLayout\HowlOutLogin.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\CoreLayout\HowlOutLogin.xaml.cs">
-      <DependentUpon>HowlOutLogin.xaml</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Views\ExploreEventCategories.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\ExploreEventCategories.xaml.cs">
-      <DependentUpon>ExploreEventCategories.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EventCategoryListItem.cs" />
-    <Compile Include="Enums\OwnerHandlingType.cs" />
-    <Compile Include="Enums\EventVisibility.cs" />
-    <Compile Include="Enums\GroupVisibility.cs" />
-    <EmbeddedResource Include="Views\Components\MessageTemplate.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="Views\Components\MessageTemplate.xaml.cs">
-      <DependentUpon>MessageTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Services\ImageResizer.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />
-  <Import Project="..\packages\Xamarin.Forms.2.0.1.6505\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.0.1.6505\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
-  <ItemGroup>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net45+win8+wpa81\System.Net.Http.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net45+win8+wpa81\System.Net.Http.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\packages\modernhttpclient.2.4.2\lib\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Geolocator.Abstractions">
-      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Geolocator.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Geolocator">
-      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Geolocator.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Media.Abstractions">
-      <HintPath>..\packages\Xam.Plugin.Media.2.5.1-beta60\lib\portable-net45+wp80+win8+wpa81\Plugin.Media.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Media">
-      <HintPath>..\packages\Xam.Plugin.Media.2.5.1-beta60\lib\portable-net45+wp80+win8+wpa81\Plugin.Media.dll</HintPath>
-    </Reference>
-    <Reference Include="ImageCircle.Forms.Plugin.Abstractions">
-      <HintPath>..\packages\Xam.Plugins.Forms.ImageCircle.1.8.0.5\lib\portable-net45+wp80+win8+wpa81\ImageCircle.Forms.Plugin.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.LocalNotifications.Abstractions">
-      <HintPath>..\packages\Xam.Plugins.Notifier.2.0.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.LocalNotifications.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.LocalNotifications">
-      <HintPath>..\packages\Xam.Plugins.Notifier.2.0.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.LocalNotifications.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\packages\Xamarin.Forms.2.3.2.127\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\packages\Xamarin.Forms.2.3.2.127\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\packages\Xamarin.Forms.2.3.2.127\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Maps">
-      <HintPath>..\packages\Xamarin.Forms.Maps.2.3.2.127\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.12.3\lib\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Edm">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\portable-net45+wp8+win8+wpa\Microsoft.Data.Edm.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Spatial">
-      <HintPath>..\packages\System.Spatial.5.6.4\lib\portable-net45+wp8+win8+wpa\System.Spatial.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData">
-      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\portable-net45+wp8+win8+wpa\Microsoft.Data.OData.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage">
-      <HintPath>..\packages\WindowsAzure.Storage.7.1.3-preview\lib\portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1\Microsoft.WindowsAzure.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.CarouselView">
-      <HintPath>..\packages\Xamarin.Forms.CarouselView.2.3.0-pre2\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.CarouselView.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Campfinder\" />
-    <Folder Include="Renderers\" />
-    <Folder Include="TestViews\" />
-    <Folder Include="Models\Grouped\" />
-    <Folder Include="Views\CreateViews\" />
-    <Folder Include="Views\DesignViews\" />
-    <Folder Include="Enums\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="App.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Components\InspectManageComment.xaml">
+    <EmbeddedResource Include="App.xaml" />
+    <EmbeddedResource Include="Views\Components\CommentTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Components\Line.xaml">
@@ -360,22 +38,10 @@
     <EmbeddedResource Include="Views\Components\ManageEventTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\MessageTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Components\SearchEventTemplate.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FilterSearch.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\MapsView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ListsAndButtons.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Inspect\InspectEvent.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\InspectController.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CoreLayout\BottomBar.xaml">
@@ -384,18 +50,361 @@
     <EmbeddedResource Include="Views\CoreLayout\CoreView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\HowlOutLogin.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CoreLayout\SignIn.xaml">
-      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\UpperBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CreateViews\CreateEvent.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CreateViews\CreateGroup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CreateViews\CreateView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DesignViews\GenericDesignView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\InspectEvent.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\ConversationView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\EventListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\ExploreEventCategories.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\FilterSearch.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\FindNewFriendsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\HomeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\ImageView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\InspectController.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\InviteListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\ListsAndButtons.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\MapsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\SelectBannerView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\YourConversationer.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\YourNotifications.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\IntroSlides.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\EventMapView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\WeShareMessageTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\NewExpenseView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\WeShareOverView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\DoodleView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\NewVoteView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\ToDoListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\NotificationTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
-  <ItemGroup />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
-  <Import Project="..\packages\Xamarin.Insights.1.12.3\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.12.3\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Enums\ConversationModelType.cs" />
+    <Compile Include="Enums\EventVisibility.cs" />
+    <Compile Include="Enums\GroupVisibility.cs" />
+    <Compile Include="Enums\ModelType.cs" />
+    <Compile Include="Enums\NotificationModelType.cs" />
+    <Compile Include="Enums\NotificationType.cs" />
+    <Compile Include="Enums\OwnerHandlingType.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\Banner.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Conversation.cs" />
+    <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventCategory.cs" />
+    <Compile Include="Models\EventCategoryButton.cs" />
+    <Compile Include="Models\EventCategoryListItem.cs" />
+    <Compile Include="Models\EventType.cs" />
+    <Compile Include="Models\FaceBookEvent.cs" />
+    <Compile Include="Models\FacebookLocation.cs" />
+    <Compile Include="Models\FacebookPlace.cs" />
+    <Compile Include="Models\FacebookUserObject.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\NewsMessage.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\NotificationToken.cs" />
+    <Compile Include="Models\Organization.cs" />
+    <Compile Include="Models\Profile.cs" />
+    <Compile Include="Models\SearchSettings.cs" />
+    <Compile Include="Models\ViewModelInterface.cs" />
+    <Compile Include="Models\Grouped\GroupedConversations.cs" />
+    <Compile Include="Models\Grouped\GroupedEvents.cs" />
+    <Compile Include="Models\Grouped\GroupedNotifications.cs" />
+    <Compile Include="Renderers\ConversationEditor.cs" />
+    <Compile Include="Renderers\CropImage.cs" />
+    <Compile Include="Renderers\CustomDatePicker.cs" />
+    <Compile Include="Renderers\CustomEditor.cs" />
+    <Compile Include="Renderers\CustomEntry.cs" />
+    <Compile Include="Renderers\CustomPicker.cs" />
+    <Compile Include="Renderers\CustomTimePicker.cs" />
+    <Compile Include="Renderers\FacebookLoginButton.cs" />
+    <Compile Include="Renderers\FacebookSendButton.cs" />
+    <Compile Include="Renderers\FacebookShareButton.cs" />
+    <Compile Include="Renderers\ForceCloseKeyboard.cs" />
+    <Compile Include="Renderers\IconView.cs" />
+    <Compile Include="Renderers\SocialController.cs" />
+    <Compile Include="Services\DataManager.cs" />
+    <Compile Include="Services\EventApiManager.cs" />
+    <Compile Include="Services\ExtMap.cs" />
+    <Compile Include="Services\GroupApiManager.cs" />
+    <Compile Include="Services\ImageResizer.cs" />
+    <Compile Include="Services\MessageApiManager.cs" />
+    <Compile Include="Services\NotificationController.cs" />
+    <Compile Include="Services\OrganizationApiManager.cs" />
+    <Compile Include="Services\OtherFunctions.cs" />
+    <Compile Include="Services\ProfileApiManager.cs" />
+    <Compile Include="Services\UtilityManager.cs" />
+    <Compile Include="ViewModels\EventForLists.cs" />
+    <Compile Include="Views\Components\CommentTemplate.xaml.cs">
+      <DependentUpon>CommentTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\Line.xaml.cs">
+      <DependentUpon>Line.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\ManageEventTemplate.xaml.cs">
+      <DependentUpon>ManageEventTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\MessageTemplate.xaml.cs">
+      <DependentUpon>MessageTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\SearchEventTemplate.xaml.cs">
+      <DependentUpon>SearchEventTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\BottomBar.xaml.cs">
+      <DependentUpon>BottomBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\CoreView.xaml.cs">
+      <DependentUpon>CoreView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\HowlOutLogin.xaml.cs">
+      <DependentUpon>HowlOutLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\LoginPage.cs" />
+    <Compile Include="Views\CoreLayout\SignIn.xaml.cs">
+      <DependentUpon>SignIn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\UpperBar.xaml.cs">
+      <DependentUpon>UpperBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateViews\CreateEvent.xaml.cs">
+      <DependentUpon>CreateEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateViews\CreateGroup.xaml.cs">
+      <DependentUpon>CreateGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateViews\CreateView.xaml.cs">
+      <DependentUpon>CreateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DesignViews\GenericDesignView.xaml.cs">
+      <DependentUpon>GenericDesignView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DesignViews\GroupDesignView.cs" />
+    <Compile Include="Views\DesignViews\ProfileDesignView.cs" />
+    <Compile Include="Views\MainViews\InspectEvent.xaml.cs">
+      <DependentUpon>InspectEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\ConversationView.xaml.cs">
+      <DependentUpon>ConversationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\EventListView.xaml.cs">
+      <DependentUpon>EventListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\ExploreEventCategories.xaml.cs">
+      <DependentUpon>ExploreEventCategories.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\FilterSearch.xaml.cs">
+      <DependentUpon>FilterSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\FindNewFriendsView.xaml.cs">
+      <DependentUpon>FindNewFriendsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\InspectController.xaml.cs">
+      <DependentUpon>InspectController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\InviteListView.xaml.cs">
+      <DependentUpon>InviteListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\ListsAndButtons.xaml.cs">
+      <DependentUpon>ListsAndButtons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\MapsView.xaml.cs">
+      <DependentUpon>MapsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\SelectBannerView.xaml.cs">
+      <DependentUpon>SelectBannerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\YourConversationer.xaml.cs">
+      <DependentUpon>YourConversationer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\YourNotifications.xaml.cs">
+      <DependentUpon>YourNotifications.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CoreLayout\IntroSlides.xaml.cs">
+      <DependentUpon>IntroSlides.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\CustomMap.cs" />
+    <Compile Include="Renderers\CustomPin.cs" />
+    <Compile Include="Views\MainViews\EventMapView.xaml.cs">
+      <DependentUpon>EventMapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\WeShareMessageTemplate.xaml.cs">
+      <DependentUpon>WeShareMessageTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\NewExpenseView.xaml.cs">
+      <DependentUpon>NewExpenseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\WeShareOverView.xaml.cs">
+      <DependentUpon>WeShareOverView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\DoodleView.xaml.cs">
+      <DependentUpon>DoodleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\NewVoteView.xaml.cs">
+      <DependentUpon>NewVoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViews\ToDoListView.xaml.cs">
+      <DependentUpon>ToDoListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\NotificationTemplate.xaml.cs">
+      <DependentUpon>NotificationTemplate.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>..\packages\Xamarin.Forms.2.3.3.180\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+      <HintPath>..\packages\Xamarin.Forms.2.3.3.180\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>..\packages\Xamarin.Forms.2.3.3.180\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Maps">
+      <HintPath>..\packages\Xamarin.Forms.Maps.2.3.3.180\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.LocalNotifications.Abstractions">
+      <HintPath>..\packages\Xam.Plugins.Notifier.2.0.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.LocalNotifications.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.LocalNotifications">
+      <HintPath>..\packages\Xam.Plugins.Notifier.2.0.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.LocalNotifications.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageCircle.Forms.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugins.Forms.ImageCircle.1.8.1\lib\portable-net45+wp80+win8+wpa81\ImageCircle.Forms.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Media.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Media.2.6.2\lib\portable-net45+wp80+win8+wpa81\Plugin.Media.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Media">
+      <HintPath>..\packages\Xam.Plugin.Media.2.6.2\lib\portable-net45+wp80+win8+wpa81\Plugin.Media.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Geolocator.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Geolocator.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Geolocator">
+      <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Geolocator.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\packages\modernhttpclient.2.4.2\lib\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.7.0\lib\portable-net45+wp8+win8+wpa\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial">
+      <HintPath>..\packages\System.Spatial.5.7.0\lib\portable-net45+wp8+win8+wpa\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData">
+      <HintPath>..\packages\Microsoft.Data.OData.5.7.0\lib\portable-net45+wp8+win8+wpa\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.7.0\lib\portable-net45+wp8+win8+wpa\Microsoft.Data.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage">
+      <HintPath>..\packages\WindowsAzure.Storage.8.0.1\lib\netstandard1.0\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Components\" />
+    <Folder Include="Views\CoreLayout\" />
+    <Folder Include="Views\CreateViews\" />
+    <Folder Include="Views\DesignViews\" />
+    <Folder Include="Views\MainViews\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
 </Project>

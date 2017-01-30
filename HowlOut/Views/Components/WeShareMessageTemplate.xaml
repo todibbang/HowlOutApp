@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.WeShareMessageTemplate"
+		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
+	<ContentView.Content>
+		<Grid Padding="10,6,10,0" RowSpacing="0" ColumnSpacing="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="15"/>
+			</Grid.RowDefinitions>
+
+			<Label Text="{Binding SenderName}" Grid.ColumnSpan="4" HorizontalOptions="{Binding horizontal}"/>
+			<Button Grid.Column="{Binding column}" Grid.Row="1" Grid.RowSpan="2" BorderRadius="15" BackgroundColor="{Binding bgColor}" />
+			<StackLayout Grid.Column="{Binding column}" Grid.Row="1" Grid.RowSpan="2" Padding="10" IsVisible="true" Spacing="2">
+				<StackLayout Spacing="2" IsVisible="{Binding weShareComment}">
+					<StackLayout Padding="0,4,0,4" Spacing="3">
+						<StackLayout Orientation="Horizontal" Spacing="0">
+							<Label Text="Paied by: " FontSize="12" TextColor="White"/>
+							<Label Text="{Binding expensePaiedByName}" FontSize="12" TextColor="White"/>
+						</StackLayout>
+						<StackLayout Orientation="Horizontal" Spacing="0">
+							<Label Text="{Binding totalAmount}" FontSize="30" TextColor="White"/>
+							<Label Text=",-" FontSize="30" TextColor="White"/>
+						</StackLayout>
+
+						<StackLayout Orientation="Horizontal" Spacing="0">
+							<Label Text="My share: " FontSize="10" TextColor="White"/>
+							<Label Text="{Binding myShare}" FontSize="10" TextColor="White"/>
+							<Label Text=",-" FontSize="10" TextColor="White"/>
+						</StackLayout>
+						<StackLayout HeightRequest="1" BackgroundColor="White"/>
+					</StackLayout>
+				</StackLayout>
+
+				<Label Text="{Binding MessageText}" VerticalTextAlignment="Start" LineBreakMode="WordWrap" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="14"/>
+				<Image Source="{Binding ImageText}" />
+			</StackLayout>
+			
+			<Label Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Time}" FontSize="8" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="{Binding horizontal}" VerticalOptions="CenterAndExpand"/>
+
+			<StackLayout Grid.Row="2" Grid.Column="0" VerticalOptions="EndAndExpand" HeightRequest="20" WidthRequest="20">
+				<controls:CircleImage Source="{Binding ImageSource}" Aspect="AspectFill" IsVisible="{Binding displayImage}" HeightRequest="20" WidthRequest="20"/> 
+			</StackLayout>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

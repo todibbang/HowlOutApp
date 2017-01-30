@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InviteListView"
+		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,0,0,0" 
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid BackgroundColor="{DynamicResource HowlOutBackground}" Padding="0,65,0,72">
+
+             <Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="3*"/>
+				<RowDefinition Height="50"/>
+			</Grid.RowDefinitions>
+
+			<StackLayout IsVisible="false" x:Name="titleOptionLayout" Padding="10,0,10,0" Orientation="Horizontal">
+				<Label Text="Title:" WidthRequest="100" VerticalOptions="Center"/>
+				<local:CustomEntry Placeholder="Title..." HorizontalOptions="FillAndExpand" Text="" x:Name="titleOption"/>
+			</StackLayout>
+
+			<StackLayout Grid.Row="1" IsVisible="false" x:Name="toolBoxOptionsLayout" Padding="10,0,10,0" Orientation="Horizontal">
+				<Label Text="Creating:" WidthRequest="100" VerticalOptions="Center"/>
+				<local:CustomPicker Title="Conversation" HasBorder="true" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="CenterAndExpand" x:Name="toolBoxOptions" HorizontalOptions="FillAndExpand">
+					<local:CustomPicker.Items>
+			            <x:String>Conversation</x:String> 
+						<x:String>ExpenShare</x:String>
+						<x:String>Vote</x:String>
+						<x:String>To Do List</x:String>
+			        </local:CustomPicker.Items>
+				</local:CustomPicker>
+			</StackLayout>
+			
+			<Label Text="People Added" Grid.Row="2" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
+			<ListView x:Name="addedToConversationList" Grid.Row="3"
+			HasUnevenRows="true"
+			InputTransparent="false"
+			CachingStrategy="RecycleElement"
+			BackgroundColor="White">
+                <ListView.ItemTemplate>
+                 	 <DataTemplate>
+                  		<ViewCell>
+                      		<Grid RowSpacing="0" ColumnSpacing="0" Padding="10,2,0,2" >
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="15" />
+									<ColumnDefinition Width="15" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+								</Grid.RowDefinitions>
+
+								<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="30,0,10,0" VerticalOptions="FillAndExpand" Orientation="Horizontal" Spacing="0,0,0,0">
+									<Label TextColor="{DynamicResource NormalTextColor}" Text="{Binding Name}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+									<Label TextColor="{DynamicResource HowlOutRed}" Text="- " HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold"/>
+								</StackLayout>
+								<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+							</Grid>
+                  		</ViewCell>
+                  	</DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+			<Label Text="Friends" Grid.Row="4" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
+			<ListView x:Name="profilesToBeAdded" Grid.Row="5"
+			HasUnevenRows="true"
+			InputTransparent="false"
+			CachingStrategy="RecycleElement"
+			BackgroundColor="White">
+                <ListView.ItemTemplate>
+                 	 <DataTemplate>
+                  		<ViewCell>
+                      		<Grid RowSpacing="0" ColumnSpacing="0" Padding="10,2,0,2" >
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="15" />
+									<ColumnDefinition Width="15" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30"/>
+								</Grid.RowDefinitions>
+
+								<StackLayout Grid.Column="1" Grid.ColumnSpan="2" Padding="30,0,10,0" VerticalOptions="FillAndExpand" Orientation="Horizontal" Spacing="0,0,0,0">
+									<Label TextColor="{DynamicResource NormalTextColor}" Text="{Binding Name}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+									<Label TextColor="{DynamicResource HowlOut}" Text="+ " HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold"/>
+								</StackLayout>
+								<controls:CircleImage Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="image" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+							</Grid>
+                  		</ViewCell>
+                  	</DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackLayout Grid.Row="6" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
+				<Button x:Name="cancelBtn" Text="Cancel" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button x:Name="addBtn" Text="Invite" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<!-- <local:FacebookSendButton WidthRequest="100" BackgroundColor="Blue"/> -->
+			</StackLayout>
+			
+
+		</Grid>
+	</ContentView.Content>
+</ContentView>

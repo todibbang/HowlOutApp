@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.SearchEventTemplate"
  			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
@@ -27,6 +27,18 @@
 
 				<Button Grid.RowSpan="4" BorderRadius="6" BorderWidth="3" BorderColor="White" />
 				<StackLayout Grid.RowSpan="4"/>
+
+				<Grid IsVisible="{Binding unseenUpdate}" Padding="0,4,4,0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="20"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="20"/>
+					</Grid.ColumnDefinitions>
+					<Button Grid.Column="1" Text="!" BackgroundColor="#ffc65539" TextColor="White" BorderRadius="10"/>
+				</Grid>
 				
 				<!-- Her tegnes ca tid og afstand som vises i toppen af skærmen -->
 				<StackLayout Grid.Row="0" Padding="10">
@@ -74,7 +86,7 @@
 						<StackLayout HorizontalOptions="StartAndExpand" Spacing="0" VerticalOptions="StartAndExpand" Orientation="Horizontal">
 							<local:IconView Source="ic_location" Foreground="{DynamicResource HowlOut}" WidthRequest="25" HeightRequest="12"/>
 							<Label Text="{Binding topDist}" x:Name="topDist" FontSize="11" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-							<Label Text=": " FontSize="11" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+							<Label Text=" " FontSize="11" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 							<Label Text="{Binding bottomDist}" FontSize="11" x:Name="bottomDist" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
 						</StackLayout>
 
@@ -89,19 +101,9 @@
 						<local:IconView Source="ic_paw.png" x:Name="trackImg" HeightRequest="30" WidthRequest="30" Foreground="{DynamicResource HowlOutFade}"/>
 					</StackLayout>
 				</Grid>
-				<!--
-				<StackLayout Grid.Row="4" Padding="30,6,0,0">
-					<Label Text="{Binding EventHolder}" FontSize="10" VerticalTextAlignment="Start" VerticalOptions="Start"/>
-				</StackLayout> 
 
-				<StackLayout Grid.Row="3" HeightRequest="40" x:Name="GroupSpecificEvent" IsVisible="{Binding ForSpecificGroup}" Padding="0,5,0,0">
-					<local:Line/>
-					<StackLayout Padding="10,0,0,0" Orientation="Horizontal">
-						<controls:CircleImage Source="{Binding SpecificGroupImageSource}" HeightRequest="30" WidthRequest="30" Aspect="AspectFill"/>
-						<Label Text="{Binding SpecificGroupText}" TextColor="{DynamicResource HowlOut}" VerticalOptions="Center"/>
-						<Label Text="members only." VerticalOptions="Center"/>
-					</StackLayout>
-				</StackLayout>-->
+
+				
 			</Grid>
 		</Grid>
 	</ContentView.Content>

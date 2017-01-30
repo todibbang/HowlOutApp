@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.HomeView"
+			 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
+	<ContentView.Content>
+		<Grid RowSpacing="0" ColumnSpacing="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<SearchBar Grid.Column="0" x:Name="searchBar" HeightRequest="40" BackgroundColor="{DynamicResource HowlOutFade}" IsVisible="true"/>
+
+			<StackLayout Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
+				<ContentView x:Name="profileContent"/>
+
+				<Grid x:Name="findContent" IsVisible="false"> 
+					<Grid.RowDefinitions>
+						<!-- <RowDefinition Height="auto"/>-->
+						<RowDefinition Height="auto"/> 
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+
+					<Grid Grid.Row="0" Padding="5,5,5,5" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" BackgroundColor="Transparent" >
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="1"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="1"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Button Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="White" BorderColor="{DynamicResource HowlOutFade}" BorderWidth="1" BorderRadius="10" HeightRequest="30" />
+						<Button Grid.Column="0" Text="People" x:Name="optionOne" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOut}" FontSize="18" FontAttributes="Bold"></Button>
+						<StackLayout Grid.Column="1"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOutFade}" />
+						<Button Grid.Column="2"  Text="Groups" x:Name="optionTwo" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
+						<StackLayout Grid.Column="3"  WidthRequest="1" BackgroundColor="{DynamicResource HowlOutFade}" />
+						<Button Grid.Column="4"  Text="Organization" x:Name="optionThree" HorizontalOptions="Fill" TextColor="{DynamicResource HowlOutFade}" FontSize="16"></Button>
+					</Grid>
+
+					<ScrollView Grid.Row="1" VerticalOptions="FillAndExpand" x:Name="scrollView">
+						<Grid RowSpacing="0"> 
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<Grid Grid.Row="0" x:Name="groupGrid" IsVisible="false"></Grid>
+							<Grid Grid.Row="0" x:Name="profileGrid" IsVisible="true"></Grid>
+							<Grid Grid.Row="0" x:Name="organizationGrid" IsVisible="false"></Grid>
+						</Grid>
+					</ScrollView>
+
+
+				</Grid>
+			</StackLayout>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

@@ -7,12 +7,13 @@ using Facebook.LoginKit;
 using Foundation;
 using UIKit;
 using ImageCircle.Forms.Plugin.iOS;
+//using CarouselView.FormsPlugin.iOS;
 using HowlOut;
 using UserNotifications;
 
 namespace HowlOut.iOS
 {
-	[Register ("AppDelegate")]
+	[Register("AppDelegate")]
 	public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
 	{
 		private SBNotificationHub Hub { get; set; }
@@ -28,16 +29,18 @@ namespace HowlOut.iOS
 		string appId = "651141215029165";
 		string appName = "HowlOut";
 
-		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+		SocialControllerRenderer socia = new SocialControllerRenderer();
+
+		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
-			global::Xamarin.Forms.Forms.Init ();
+			global::Xamarin.Forms.Forms.Init();
 
 
 			if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
 			{
 				UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
 				{
-					
+
 				});
 				var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
 					   UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
@@ -45,7 +48,7 @@ namespace HowlOut.iOS
 
 				UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
 				UIApplication.SharedApplication.RegisterForRemoteNotifications();
-			} 
+			}
 			else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
 			{
 				var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
@@ -57,13 +60,12 @@ namespace HowlOut.iOS
 			}
 			else
 			{
-
 				UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
 				UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
 			}
 
-			height = (int) UIScreen.MainScreen.Bounds.Height;
-			width = (int) UIScreen.MainScreen.Bounds.Width;
+			height = (int)UIScreen.MainScreen.Bounds.Height;
+			width = (int)UIScreen.MainScreen.Bounds.Width;
 
 			Facebook.CoreKit.Profile.EnableUpdatesOnAccessTokenChange(true);
 			Settings.AppID = appId;
@@ -71,11 +73,11 @@ namespace HowlOut.iOS
 
 
 
-
-			ImageCircleRenderer.Init ();
+			//CarouselViewRenderer.Init();
+			ImageCircleRenderer.Init();
 			LoadApplication(new App());
 
-			return base.FinishedLaunching (app, options);
+			return base.FinishedLaunching(app, options);
 			//return ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
 		}
 
@@ -110,6 +112,7 @@ namespace HowlOut.iOS
 			ProcessNotification(userInfo, notiCheck);
 
 
+			socia.setNotificationBadge(1);
 
 			NSObject Type;
 			NSObject Id;
@@ -120,7 +123,7 @@ namespace HowlOut.iOS
 				success = userInfo.TryGetValue(new NSString("id"), out Id);
 				NSDictionary aps = userInfo.ObjectForKey(new NSString("aps")) as NSDictionary;
 				string alert = string.Empty;
-				if (aps.ContainsKey(new NSString("alert"))) 
+				if (aps.ContainsKey(new NSString("alert")))
 					alert = (aps[new NSString("alert")] as NSString).ToString();
 				if (success)
 				{
@@ -176,13 +179,27 @@ namespace HowlOut.iOS
 				System.Diagnostics.Debug.WriteLine(Content.Substring(startIndex));
 				App.coreView.GoToSelectedEvent(Content.Substring(startIndex));
 			}
-			    
+
 			return true;
 		}
 
 		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
 		{
 			return ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
+		}
+
+		public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+		{
+			UIApplication.SharedApplication.ApplicationIconBadgeNumber++;
+
+			// show an alert
+			/*
+			UIAlertController okayAlertController = UIAlertController.Create(notification.AlertAction, notification.AlertBody, UIAlertControllerStyle.Alert);
+			okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+			viewController.PresentViewController(okayAlertController, true, null);
+
+			// reset our badge
+			UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0; */
 		}
 	}
 }

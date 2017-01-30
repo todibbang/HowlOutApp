@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -18,27 +19,31 @@ namespace HowlOut
 		List<byte[]> imageStreams;
 		DataManager _dataManager;
 		private bool Launching = false;
+		public bool IsCreate = false;
 
 		public void viewInFocus(UpperBar bar)
 		{
-			
+
 		}
 		public void reloadView() { }
 		public void viewExitFocus() { }
 
 		public ContentView getContentView() { return this; }
 
-		public CreateGroup (Group group, bool isCreate)
+		public CreateGroup(Group group, bool isCreate)
 		{
-			_dataManager = new DataManager ();
-			InitializeComponent ();
+			_dataManager = new DataManager();
+			IsCreate = isCreate;
+			InitializeComponent();
 			newGroup = group;
-			if (isCreate) {
+			if (isCreate)
+			{
 				cancelButton.IsVisible = false;
 				newGroup.GroupId = "0";
 			}
 			else {
 				setEditEvent();
+				mainGrid.Padding = new Thickness(0, 55, 0, 250);
 			}
 
 			title.TextChanged += (sender, e) => { newGroup.Name = title.Text; };
@@ -76,16 +81,27 @@ namespace HowlOut
 			};
 			albumPictureButton.GestureRecognizers.Add(albumImage);
 
-			selectBannerButton.Clicked += (sender, e) => {
+			selectBannerButton.Clicked += async (sender, e) =>
+			{
 				SelectBannerView selectBannerView = new SelectBannerView();
 				selectBannerView.createGroupView = this;
 				OtherViews.Content = selectBannerView;
 				OtherViews.IsVisible = true;
+				App.coreView.IsLoading(true);
+				await Task.Delay(100);
+				if (isCreate) 
+				{ 
+					App.coreView.createView.displayBackButton(true, 2);
+					App.coreView.setContentView(0);
+				}
+				await Task.Delay(500);
+				App.coreView.IsLoading(false);
 			};
 
 
 
-			launchButton.Clicked += (sender, e) => {
+			launchButton.Clicked += (sender, e) =>
+			{
 				if (isCreate && !Launching)
 				{
 					LaunchGroup(newGroup);
@@ -97,7 +113,8 @@ namespace HowlOut
 				}
 			};
 
-			cancelButton.Clicked += (sender, e) => {
+			cancelButton.Clicked += (sender, e) =>
+			{
 				DeleteGroup(group);
 			};
 		}
@@ -132,9 +149,9 @@ namespace HowlOut
 			else {
 				if (imageStreams != null)
 				{
-					groupToCreate.SmallImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[0]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+".small");
-					groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+ ".medium");
-					groupToCreate.LargeImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G")+ ".large");
+					groupToCreate.SmallImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[0]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".small");
+					groupToCreate.ImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[1]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".medium");
+					groupToCreate.LargeImageSource = await _dataManager.UtilityManager.UploadImageToStorage(new MemoryStream(imageStreams[2]), App.StoredUserFacebookId + "." + DateTime.Now.ToString("G") + ".large");
 				}
 				groupToCreate.ProfileOwners = new List<Profile> { new Profile() { ProfileId = App.userProfile.ProfileId, } };
 
@@ -143,17 +160,19 @@ namespace HowlOut
 
 				if (groupCreated != null)
 				{
+					await App.coreView.updateMainViews(4);
+					App.coreView.setContentView(4);
+
 					InspectController inspect = new InspectController(groupCreated);
 					App.coreView.setContentViewWithQueue(inspect);
-					App.coreView.updateHomeView();
-					App.coreView.createGroup = new CreateGroup(new Group(), true);
-					App.coreView.updateCreateViews();
+
+					App.coreView.updateMainViews(0);
 				}
 				else {
 					await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");
 				}
 			}
-			Launching = false; 
+			Launching = false;
 			App.coreView.IsLoading(false);
 		}
 
@@ -178,17 +197,22 @@ namespace HowlOut
 
 		public async void DeleteGroup(Group groupToDelete)
 		{
-			bool confirmDelete = await App.coreView.displayConfirmMessage ("Warning", "You are about to delete this group permanently, would you like to continue", "Yes", "No");
-
-			if (confirmDelete) {
-				bool groupDeleted = await _dataManager.GroupApiManager.DeleteGroup (groupToDelete.GroupId);
-				if (groupDeleted) {
-					await App.coreView.displayAlertMessage ("Group Deleted", "The group was successfully deleted", "Ok");
-					App.coreView.setContentView (2);
-				} else {
-					App.coreView.displayAlertMessage ("Group Not Deleted", "The group was not deleted, try again", "Ok");
+			bool confirmDelete = await App.coreView.displayConfirmMessage("Warning", "You are about to delete this group permanently, would you like to continue", "Yes", "No");
+			App.coreView.IsLoading(true);
+			if (confirmDelete)
+			{
+				bool groupDeleted = await _dataManager.GroupApiManager.DeleteGroup(groupToDelete.GroupId);
+				if (groupDeleted)
+				{
+					await App.coreView.displayAlertMessage("Group Deleted", "The group was successfully deleted", "Ok");
+					await App.coreView.updateMainViews(4);
+					App.coreView.setContentView(4);
+				}
+				else {
+					App.coreView.displayAlertMessage("Group Not Deleted", "The group was not deleted, try again", "Ok");
 				}
 			}
+			App.coreView.IsLoading(false);
 		}
 
 		public void setBanner(string banner)

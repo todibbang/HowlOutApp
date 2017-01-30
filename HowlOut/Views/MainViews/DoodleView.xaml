@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.DoodleView">
+	<ContentView.Content>
+		<Grid>
+			<ScrollView Orientation="Both">
+
+				<Grid Padding="10,60,10,150" x:Name="firstGrid">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="0"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="50"/>
+					</Grid.RowDefinitions>
+
+
+					<Grid Grid.Row="1" x:Name="DoodleGrid" RowSpacing="0" ColumnSpacing="0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="20"/>
+							<RowDefinition Height="60"/>
+						</Grid.RowDefinitions>
+					</Grid>
+
+
+				</Grid>
+			</ScrollView>
+
+			<StackLayout VerticalOptions="End" Padding="30,5,30,75">
+				<Button BackgroundColor="{DynamicResource HowlOut}" Text="Update" TextColor="White" x:Name="updateBtn"/>
+			</StackLayout>
+		</Grid>
+
+	</ContentView.Content>
+</ContentView>

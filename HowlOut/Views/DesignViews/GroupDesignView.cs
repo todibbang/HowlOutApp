@@ -18,16 +18,16 @@ namespace HowlOut
 			{
 				string name = dims == 200 ? "" : group.Name;
 				string imgs = dims == 200 ? group.LargeImageSource : group.ImageSource;
-				SetInfo(imgs, name, group.Description, design, ModelType.Group);
+				SetInfo(imgs, name, group.Description, design, ModelType.Group, group.GroupId);
 			}
 			catch (Exception ex) { }
 
-			subjBtn.Clicked += (sender, e) => { 
+			subjBtn.Clicked += (sender, e) =>
+			{
 				if (dims >= 200)
 				{
 					OtherFunctions of = new OtherFunctions();
 					of.ViewImages(new List<string>() { group.LargeImageSource });
-					//subjBtn.Clicked += (sender, e) => { App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1); };
 				}
 				else {
 					App.coreView.setContentViewWithQueue(new InspectController(group));
@@ -39,7 +39,7 @@ namespace HowlOut
 
 		async void setInfo(int dims)
 		{
-			if(group != null)group = await new DataManager().GroupApiManager.GetGroup(group.GroupId);
+			if (group != null) group = await new DataManager().GroupApiManager.GetGroup(group.GroupId);
 			try
 			{
 				if (App.coreView._dataManager.AreYouGroupOwner(group) || App.coreView._dataManager.AreYouGroupMember(group))
@@ -94,33 +94,43 @@ namespace HowlOut
 				else if (App.userProfile.GroupsInviteTo.Exists(g => g.GroupId == group.GroupId) || App.userProfile.GroupsInviteToAsOwner.Exists(g => g.GroupId == group.GroupId))
 				{
 					bool owner = false;
-					if (App.userProfile.GroupsInviteToAsOwner.Exists(g => g.GroupId == group.GroupId)) { owner = true;}
+					if (App.userProfile.GroupsInviteToAsOwner.Exists(g => g.GroupId == group.GroupId)) { owner = true; }
+
+					if (dims == 200)
+					{
+						displayGroupInvitedButtons(owner);
+					}
 
 					addBtn.IsVisible = true;
 					addBtn.Text = "Accept";
 					addBtn.Clicked += async (sender, e) =>
 					{
+						App.coreView.IsLoading(true);
 						if (owner)
 						{
 							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroupAsOwner(group.GroupId, OwnerHandlingType.Accept);
-						} else {
+						}
+						else {
 							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Accept);
 						}
 						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+
+						App.coreView.reloadCurrentView();
+						/*
 						if (dims >= 200)
 						{
 							App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1);
 						}
 						else {
-							//addBtn.IsEnabled = false;
-							//removeBtn.IsVisible = false;
 							App.coreView.setContentView(4);
-						}
+						} */
+						App.coreView.IsLoading(false);
 					};
 					removeBtn.IsVisible = true;
 					removeBtn.Text = "Decline";
 					removeBtn.Clicked += async (sender, e) =>
 					{
+						App.coreView.IsLoading(true);
 						if (owner)
 						{
 							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroupAsOwner(group.GroupId, OwnerHandlingType.Decline);
@@ -129,15 +139,16 @@ namespace HowlOut
 							await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Decline);
 						}
 						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+						App.coreView.reloadCurrentView();
+						/*
 						if (dims >= 200)
 						{
 							App.coreView.setContentView(4);
 						}
 						else {
-							//removeBtn.IsEnabled = false;
-							//addBtn.IsVisible = false;
 							App.coreView.setContentView(4);
-						}
+						}*/
+						App.coreView.IsLoading(false);
 					};
 					setPillButtonLayout(new List<Button>() { addBtn, removeBtn });
 				}
@@ -161,17 +172,19 @@ namespace HowlOut
 					{
 						await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(group.GroupId, GroupApiManager.GroupHandlingType.Request);
 						await _dataManager.ProfileApiManager.GetLoggedInProfile();
+						App.coreView.reloadCurrentView();
+						/*
 						if (dims >= 200)
 						{
 							App.coreView.setContentViewReplaceCurrent(new InspectController(group), 1);
 						}
 						else {
 							App.coreView.setContentView(4);
-						}
+						}*/
 					};
 				}
 			}
-			catch (Exception ex) {}
+			catch (Exception ex) { }
 		}
 	}
 }

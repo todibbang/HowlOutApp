@@ -10,9 +10,9 @@ namespace HowlOut
 	public partial class SearchEventTemplate : ContentView
 	{
 		DataManager _dataManager = new DataManager();
-		public SearchEventTemplate ()
+		public SearchEventTemplate()
 		{
-			InitializeComponent ();
+			InitializeComponent();
 
 			TapGestureRecognizer tgr = new TapGestureRecognizer();
 			tgr = new TapGestureRecognizer();
@@ -43,17 +43,22 @@ namespace HowlOut
 
 		public async void setFollowButton()
 		{
-			await Task.Delay(2);
-			EventForLists eveFL = (EventForLists)this.BindingContext;
-			Event eve = eveFL.eve;
-			if (App.userProfile.EventsFollowed.Exists(ef => ef == eve.EventId))
+			try
 			{
-				trackImg.Foreground = App.HowlOut;
+				await Task.Delay(2);
+				EventForLists eveFL = (EventForLists)this.BindingContext;
+				Event eve = eveFL.eve;
+				if (App.userProfile.EventsFollowed.Exists(ef => ef == eve.EventId))
+				{
+					trackImg.Foreground = App.HowlOut;
+				}
 			}
+			catch (Exception exc) { }
 		}
-		public SearchEventTemplate (Event eve)
+		/*
+		public SearchEventTemplate(Event eve)
 		{
-			InitializeComponent ();
+			InitializeComponent();
 			EventForLists efl = new EventForLists(eve);
 			BindingContext = efl;
 
@@ -79,16 +84,8 @@ namespace HowlOut
 			else {
 				bottomDist.Text = addressList[1].Substring(5).Trim();
 			}
-
-
-
-			/*
-			SubjectButton.Clicked += (sender, e) => {
-				InspectController inspect = new InspectController(null, null, eve);
-				App.coreView.setContentViewWithQueue(inspect, "", inspect.getScrollView());
-			};
-			*/
 		}
+		*/
 	}
 }
 

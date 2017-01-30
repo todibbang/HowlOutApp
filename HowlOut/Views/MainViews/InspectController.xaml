@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.InspectController"
+		 	 xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" BackgroundColor="{DynamicResource HowlOutBackground}"
+			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+		xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView" Padding="0,0,0,0">	
+	<ContentView.Content>
+
+		<ScrollView Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="scrollView">
+
+				<Grid RowSpacing="0" Padding="0,0,0,120"> 
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+
+					<ContentView Grid.Row="0" VerticalOptions="CenterAndExpand" Padding="0,0,0,0" x:Name="infoView" BackgroundColor="{DynamicResource HowlOutBackground}"></ContentView>
+					<StackLayout Grid.Row="1" Grid.RowSpan="2" />
+
+					<local:IconView x:Name="message" Source="ic_message.png" HorizontalOptions="EndAndExpand" Foreground="{DynamicResource HowlOut}" WidthRequest="35" IsVisible="false" TranslationX="-20" TranslationY="-80"/>
+				
+
+					
+					<!-- <Grid Grid.Row="2" Padding="10,0,10,0" VerticalOptions ="CenterAndExpand" HorizontalOptions="Fill" x:Name="optionGrid" HeightRequest="30" /> -->
+
+					<StackLayout Grid.Row="1" Spacing="0" IsVisible="false" x:Name="infoLayout" Padding="0,5,0,0"/>
+
+				</Grid>
+			</ScrollView>
+	</ContentView.Content>
+</ContentView>

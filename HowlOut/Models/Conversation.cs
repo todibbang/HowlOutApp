@@ -24,7 +24,7 @@ namespace HowlOut
 		{
 			get
 			{
-				if (App.coreView._dataManager.chechIfConversationUnseen(ModelType, ConversationID ))
+				if (App.notificationController.chechIfConversationUnseen(ModelType, ConversationID ))
 				{
 					return FontAttributes.Bold;
 				} 
@@ -36,7 +36,7 @@ namespace HowlOut
 		{
 			get
 			{
-				if (App.coreView._dataManager.chechIfConversationUnseen(ModelType, ConversationID))
+				if (App.notificationController.chechIfConversationUnseen(ModelType, ConversationID))
 				{
 					return App.HowlOut;
 				}
@@ -71,7 +71,10 @@ namespace HowlOut
 					else if (Profiles.Count == 2) {
 						text = Profiles.Find(p => p.ProfileId != App.userProfile.ProfileId).Name;
 					}
-					else { text = Profiles[0].Name; } 
+					else if(Profiles.Count == 1) { 
+						text = Profiles[0].Name; 
+					} 
+					        
 				} 
 				return text;
 			} set { this.Header = value; }
@@ -84,19 +87,27 @@ namespace HowlOut
 		}
 
 		public string Content { get {
-				if (LastMessage != null) { return LastMessage.Content; } 
+				if (LastMessage != null) { return LastMessage.MessageText; } 
 				return "";
 			} set { this.Content = value; }
 		}
 
 		public string Time {
-			get { return LastUpdated.ToString("dddd HH:mm - dd MMMMM yyyy"); }
+			get {
+				if (LastUpdated != null)
+				{
+					return LastUpdated.ToString("dddd HH:mm - dd MMMMM yyyy");
+				}
+				return "";
+				}
 			set { this.Time = value; }
 		}
 
 		public string ContentImageSource{
 			get
 			{
+				if (Profiles == null) return "empty";
+
 				if (Messages != null && Messages.Count > 0) { 
 					string id = Messages.OrderByDescending(c => c.DateAndTime).ToList()[0].SenderId;
 					//string id = Messages.OrderByDescending(c => c.DateAndTime).ToList().Find(c => c.SenderId != App.StoredUserFacebookId).SenderId;
@@ -146,6 +157,41 @@ namespace HowlOut
 
 		public Conversation()
 		{
+			
 		}
+
+		public ConversationSubType SubType { get; set; }
+
+		// ExpenShare: Dictionary<senderId, List<Tuple<ReceiverId, amount, MoneySentDescription, status>>> subTypeDictionary { get; set; }
+		// ToDoList: Dictionary<"ToDoList", List<Tuple<ResponsibleId, deadlineInTicks, Description, status>>> subTypeDictionary { get; set; }
+		// Doodle1: Dictionary<"Options", List<Tuple<OptionId, deadlineInTicks, Description, status>>> subTypeDictionary { get; set; }
+		// Doodle2: Dictionary<profileId, List<Tuple<OptionId, -, Description, status>>> subTypeDictionary { get; set; }
+		public Dictionary<string, List<Tuple<string, string, string, StatusOptions>>> subTypeDictionary { get; set; }
+
+
+
+		// Tuple<OptionId, double, string, StatusOptions>
+		public List<Tuple<string, double, string, StatusOptions>> DoodleList { get; set; }
+		//public Dictionary<string, List<Tuple<string, double, string, StatusOptions>>> subTypeDictionary { get; set; }
+	}
+
+	public enum StatusOptions
+	{
+		MoneyRequestSent,
+		MoneyReceivedConfirmationSent,
+		Confirmed,
+		Declined,
+
+		NotStarted,
+		InProgress,
+		Completed
+	}
+
+	public enum ConversationSubType
+	{
+		None,
+		ExpenShare,
+		Doodle,
+		ToDoList
 	}
 }

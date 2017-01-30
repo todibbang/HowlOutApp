@@ -12,20 +12,26 @@ namespace HowlOut
 		YourConversations CVList;
 		ConversationView CV;
 
-		public UpperBar ()
+		public UpperBar()
 		{
-			InitializeComponent ();
+			InitializeComponent();
 
-			backButton.Clicked += async (sender, e) => 
+			backButton.Clicked += async (sender, e) =>
 			{
 				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
 				await backBtn.ScaleTo(1, 50, Easing.Linear);
 				App.coreView.returnToPreviousView();
 			};
 
+
 			notiButton.Clicked += (sender, e) =>
 			{
-				App.coreView.setContentViewWithQueue(new YourNotifications());
+				App.coreView.setContentViewWithQueue(App.coreView.notifications);
+			};
+
+			searchBarDelete.Clicked += (sender, e) =>
+			{
+				searchBar.Text = "";
 			};
 
 			lateSetup();
@@ -85,6 +91,7 @@ namespace HowlOut
 		{
 			await Task.Delay(100);
 			notiBadg.Children.Add(App.coreView.notiButton);
+			hideAll();
 		}
 
 		public void hideAll()
@@ -95,15 +102,16 @@ namespace HowlOut
 			App.coreView.TopBarLayout.IsVisible = false;
 			rightImg.IsVisible = false;
 			rightButton.IsVisible = false;
-			navigationLabel.Text = "";
 
 			notiLayout.IsVisible = false;
 
+			searchBarLayout.IsVisible = false;
+
 			try
 			{
-				thisGrid.Children.Remove(navigationButton);
+				navigationButtonLayout.Children.Remove(navigationButton);
 			}
-			catch (Exception e) {}
+			catch (Exception e) { }
 
 			//setNavigationLabel("", null);
 		}
@@ -156,20 +164,6 @@ namespace HowlOut
 			notiLayout.IsVisible = true;
 		}
 
-		public void setNavigationLabel(string label, ScrollView s)
-		{
-			
-			navigationLabel.Text = label;
-			App.coreView.TopBarLayout.IsVisible = true;
-			scrollView = s;
-
-			System.Diagnostics.Debug.WriteLine("label " + label );
-			if (s == null)
-			{
-				System.Diagnostics.Debug.WriteLine("ScrollView is null ");
-			}
-		} 
-
 		public Button setRightButton(string imageSource)
 		{
 			thisGrid.IsVisible = true;
@@ -197,11 +191,39 @@ namespace HowlOut
 		{
 			App.coreView.TopBarLayout.IsVisible = true;
 			thisGrid.IsVisible = true;
-			thisGrid.Children.Remove(navigationButton);
-			navigationLabel.Text = label;
-			navigationButton = new Button() {HorizontalOptions= LayoutOptions.FillAndExpand};
-			thisGrid.Children.Add(navigationButton, 1, 0);
+			navigationButtonLayout.Children.Remove(navigationButton);
+			navigationButton = new Button() { HorizontalOptions = LayoutOptions.FillAndExpand, Text = label, TextColor= Color.White, HeightRequest = 30, BorderColor = Color.White };
+			navigationButtonLayout.Children.Add(navigationButton);
 			return navigationButton;
+		}
+
+		public Entry getSearchBar()
+		{
+			App.coreView.TopBarLayout.IsVisible = true;
+			thisGrid.IsVisible = true;
+			searchBarLayout.IsVisible = true;
+			return searchBar;
+		}
+
+		public async void hideTopbarOnScroll(ScrollView sv)
+		{
+			scrollView = sv;
+			var lastPosition = scrollView.ScrollY;
+			while (scrollView != null)
+			{
+				await Task.Delay(500);
+				if (scrollView.ScrollY > lastPosition + 5)
+				{
+					this.IsVisible = false;
+				}
+				else if (scrollView.ScrollY < lastPosition - 5)
+				{
+					this.IsVisible = true;
+				}
+
+
+				lastPosition = scrollView.ScrollY;
+			}
 		}
 	}
 }

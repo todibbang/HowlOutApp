@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.IntroSlides">
+	<CarouselPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="{DynamicResource NormalTextColor}" />
+            </Style>
+
+			<Style TargetType="Grid">
+                <Setter Property="ColumnSpacing" Value="0" />
+                <Setter Property="RowSpacing" Value="0" />
+            </Style>
+
+			<Style TargetType="Button">
+                <Setter Property="BorderColor" Value="{DynamicResource HowlOut}" />
+                <Setter Property="BorderWidth" Value="0.5" />
+				<Setter Property="BorderRadius" Value="10" />
+                <Setter Property="TextColor" Value="{DynamicResource HowlOut}" />
+				<Setter Property="WidthRequest" Value="200" />
+            </Style>
+        </ResourceDictionary>
+    </CarouselPage.Resources>
+	
+	<ContentPage x:Name="page1">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="270"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="2*"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="10"/>
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="310"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid Grid.Column="1">
+				<StackLayout Padding="0,0,0,0">
+					<Button HeightRequest="300" BackgroundColor="Black" TranslationY="-30" BorderRadius="30" BorderWidth="0"/>
+				</StackLayout>
+				<StackLayout Padding="10,0,10,0">
+					<Button HeightRequest="300" BackgroundColor="{DynamicResource HowlOutBackground}" TranslationY="-110" BorderRadius="0"/>
+				</StackLayout>
+
+				
+				<StackLayout Padding="10,0,10,10" Spacing="10">
+					
+					<Grid WidthRequest="50">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="300"/>
+							<RowDefinition Height="50"/>
+						</Grid.RowDefinitions>
+						
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<Image Grid.ColumnSpan="3" Source="is_bb_create.png" Aspect="AspectFill" TranslationY="-100"/>
+						<StackLayout Padding="-5,-10,225,-10" Grid.ColumnSpan="3" TranslationY="147">
+							<Button BorderRadius="35" BorderWidth="6" WidthRequest="70" HeightRequest="70" />
+						</StackLayout>
+						<Button Grid.Row="1" Grid.Column="1" HeightRequest="50" WidthRequest="50" BorderRadius="25" BackgroundColor="#ff262626" BorderWidth="0" TranslationY="-90"/>
+					</Grid>
+				</StackLayout>
+			</Grid>
+			
+
+
+			<StackLayout Grid.Row="2" Grid.ColumnSpan="3" Padding="20,30,20,0" Spacing="20">
+				<Label Text="Create" FontSize="30" TextColor="{DynamicResource HowlOut}"/>
+				<Label Text="Create events yourself and make them known!" />
+			</StackLayout>
+
+			<Grid Grid.Row="3" Grid.Column="1" Padding="125,5,125,5" ColumnSpacing="20">
+				<Button WidthRequest="20" Grid.Column="0" BackgroundColor="{DynamicResource HowlOut}"/>
+				<Button WidthRequest="20" Grid.Column="1" />
+			</Grid>
+
+			<StackLayout Grid.Row="4" Grid.Column="1" Padding="20,0,20,0">
+				<Button Text="Next" x:Name="next1" FontSize="24"/>
+			</StackLayout>
+
+		</Grid>
+	</ContentPage>
+	
+	<ContentPage x:Name="page2">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="270"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="2*"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="10"/>
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="310"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid Grid.Column="1">
+				<StackLayout Padding="0,0,0,0">
+					<Button HeightRequest="300" BackgroundColor="Black" TranslationY="-30" BorderRadius="30" BorderWidth="0"/>
+				</StackLayout>
+				<StackLayout Padding="10,0,10,0">
+					<Button HeightRequest="300" BackgroundColor="{DynamicResource HowlOutBackground}" TranslationY="-110" BorderRadius="0"/>
+				</StackLayout>
+
+				
+				<StackLayout Padding="10,0,10,10" Spacing="10">
+					
+					<Grid WidthRequest="50">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="300"/>
+							<RowDefinition Height="50"/>
+						</Grid.RowDefinitions>
+						
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<Image Grid.ColumnSpan="3" Source="is_bb_explore.png" Aspect="AspectFill" TranslationY="-100"/>
+						<StackLayout Padding="-5,-10,225,-10" Grid.ColumnSpan="3" TranslationY="147">
+							<Button BorderRadius="35" BorderWidth="6" WidthRequest="70" HeightRequest="70" TranslationX="114"/>
+						</StackLayout>
+						<Button Grid.Row="1" Grid.Column="1" HeightRequest="50" WidthRequest="50" BorderRadius="25" BackgroundColor="#ff262626" BorderWidth="0" TranslationY="-90"/>
+					</Grid>
+				</StackLayout>
+			</Grid>
+			
+
+
+			<StackLayout Grid.Row="2" Grid.ColumnSpan="3" Padding="20,30,20,0" Spacing="20">
+				<Label Text="Explore" FontSize="30" TextColor="{DynamicResource HowlOut}"/>
+				<Label Text="Explore events, set up preferences and invite your friends!" />
+			</StackLayout>
+
+			<Grid Grid.Row="3" Grid.Column="1" Padding="125,5,125,5" ColumnSpacing="20">
+				<Button WidthRequest="20" Grid.Column="0"/>
+				<Button WidthRequest="20" Grid.Column="1" BackgroundColor="{DynamicResource HowlOut}"/>
+			</Grid>
+
+			<StackLayout Grid.Row="4" Grid.Column="1" Padding="20,0,20,0">
+				<Button Text="Next" x:Name="next2" FontSize="24"/>
+			</StackLayout>
+
+		</Grid>
+	</ContentPage>
+</CarouselPage>

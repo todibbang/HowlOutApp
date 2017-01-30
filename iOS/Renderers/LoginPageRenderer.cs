@@ -1,6 +1,6 @@
 ﻿using System;
 using HowlOut.iOS.Renderers;
-using Xamarin.Auth;
+//using Xamarin.Auth;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using System.IO;

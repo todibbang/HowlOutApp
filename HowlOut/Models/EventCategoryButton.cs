@@ -66,9 +66,10 @@ namespace HowlOut
 				{
 					if (selectedState > 1) selectedState = 0;
 
-					if (eventCategoriesList.Count == 3 && selectedState == 1)
+					if (eventCategoriesList.Count == 2 && selectedState == 1)
 					{
 						selectedState = 0;
+						App.coreView.displayAlertMessage("Max 2 Event Categories", "An event can have 2 categories max", "OK");
 					}
 				}
 				else {

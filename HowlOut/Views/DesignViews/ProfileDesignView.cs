@@ -41,14 +41,15 @@ namespace HowlOut
 				{
 					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, false, new List<Profile> { profile });
 				}, removeBtn, "Decline");
-			} else  if (!grpInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
+			}
+			else if (!grpInvitingTo.Members.Exists(p => p.ProfileId == profile.ProfileId))
 			{
 				HandleButtonRequests(delegate ()
 				{
 					return _dataManager.GroupApiManager.InviteDeclineToGroup(grpInvitingTo.GroupId, true, new List<Profile> { profile });
 				}, addBtn, "Invite");
 			}
-			setPillButtonLayout(new List<Button>() {addBtn, removeBtn });
+			setPillButtonLayout(new List<Button>() { addBtn, removeBtn });
 		}
 
 		/*
@@ -138,7 +139,8 @@ namespace HowlOut
 						return _dataManager.ProfileApiManager.RequestDeclineAcceptUnfriend(profile.ProfileId, true);
 					}, addBtn, "Add");
 				}
-			} else {
+			}
+			else {
 				if (profile.ProfileId == App.userProfile.ProfileId && dims >= 200)
 				{
 					editBtn.IsVisible = true;
@@ -178,7 +180,7 @@ namespace HowlOut
 				{
 					if (clickable)
 					{
-						_dataManager.setUpdateSeen(profile.ProfileId, NotificationModelType.Profile);
+						App.notificationController.setUpdateSeen(profile.ProfileId, NotificationModelType.Profile);
 						App.coreView.setContentViewWithQueue(new InspectController(profile));
 					}
 					else {
@@ -196,7 +198,7 @@ namespace HowlOut
 					ShowHideEditLayout(!edit);
 					if (edit)
 					{
-						SetInfo(profile.ImageSource, profile.Name, profile.Description, design, ModelType.Profile);
+						SetInfo(profile.ImageSource, profile.Name, profile.Description, design, ModelType.Profile, "");
 					}
 					edit = !edit;
 				};
@@ -238,7 +240,7 @@ namespace HowlOut
 					if (success)
 					{
 						//App.coreView.homeView = new HomeView();
-						await App.coreView.updateHomeView();
+						await App.coreView.updateMainViews(4);
 						App.coreView.setContentView(4);
 					}
 					App.coreView.IsLoading(false);
@@ -259,11 +261,11 @@ namespace HowlOut
 					string d = profile.Description != null ? profile.Description : "";
 					string imgs = dimentions == 200 ? profile.LargeImageSource : profile.ImageSource;
 					string name = dimentions == 200 ? "" : profile.Name;
-					SetInfo(imgs, name, d, design, ModelType.Profile);
+					SetInfo(imgs, name, d, design, ModelType.Profile, "");
 				}
 				catch (Exception e) { }
 			}
-		catch(Exception exe) {}
+			catch (Exception exe) { }
 		}
 	}
 }

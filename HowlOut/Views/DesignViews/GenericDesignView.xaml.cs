@@ -17,14 +17,14 @@ namespace HowlOut
 		public Button updateProfileBtn { get { return updateProfileButton; } }
 		public Button profileLogOutBtn { get { return logOutButton; } }
 
-		public IconView pictureButton  { get { return takePictureButton; } }
+		public IconView pictureButton { get { return takePictureButton; } }
 		public IconView albumButton { get { return albumPictureButton; } }
 		public Button fbImageButton { get { return selectBannerButton; } }
 		public Image profileImage { get { return ProfileImage; } }
 		public CustomEditor descriptionEdit { get { return descriptionLabelEdit; } }
 
 		//public Image organizationImage { get { return organizationOwnerImage; } }
-		public Button organizationBtn{ get { return organizationOwnerBtn; } }
+		public Button organizationBtn { get { return organizationOwnerBtn; } }
 		//public Label subName { get { return subNameLabel; } }
 
 		public GenericDesignView(int dimentions)
@@ -54,6 +54,8 @@ namespace HowlOut
 			MainButton.BorderRadius = (int)(0.5 * dimentions);
 			MainButton.BorderWidth = (int)(0.06 * dimentions);
 
+			notiBtn.BorderRadius = (int)(0.12 * dimentions);
+
 			organizationOwnerBtn.BorderRadius = (int)(0.18 * dimentions);
 			organizationOwnerBtn.BorderWidth = (int)(0.02 * dimentions);
 
@@ -62,19 +64,11 @@ namespace HowlOut
 			setButtonDimentions(removeButton, dimentions);
 			setButtonDimentions(updateProfileButton, dimentions);
 			setButtonDimentions(logOutButton, dimentions);
-
-			/*
-			if (dimentions < 100)
-			{
-				buttonLayout.Children.Add(setPillButtonLayout(new List<Button>() {addBtn, editButton, removeBtn }));
-				buttonLayout.IsVisible = true;
-			}
-			*/
 		}
 
 		void setButtonDimentions(Button b, int dimentions)
 		{
-			b.BorderRadius = (int) (buttonLayout.HeightRequest / 5.0);
+			b.BorderRadius = (int)(buttonLayout.HeightRequest / 5.0);
 			b.WidthRequest = (dimentions * 0.5);
 			b.FontSize = 3 + (int)(0.05 * dimentions);
 			b.Clicked += async (sender, e) =>
@@ -114,17 +108,17 @@ namespace HowlOut
 				if (i % 2 == 0)
 				{
 					buttons[bNumber].WidthRequest = buttons[bNumber].WidthRequest * 0.7;
-					buttonGrid.Children.Add(buttons[bNumber], i+1, 0);
+					buttonGrid.Children.Add(buttons[bNumber], i + 1, 0);
 					bNumber++;
 				}
 				else {
-					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = App.HowlOutBackground }, i+1, 0);
+					buttonGrid.Children.Add(new StackLayout() { WidthRequest = 1, BackgroundColor = App.HowlOutBackground }, i + 1, 0);
 				}
 			}
 			buttonLayout.Children.Add(buttonGrid);
 		}
 
-		public void SetInfo(string source, string name, string description, Design design, ModelType modelType)
+		public void SetInfo(string source, string name, string description, Design design, ModelType modelType, string id)
 		{
 			//Image img = new Image() { Source = source };
 
@@ -156,10 +150,16 @@ namespace HowlOut
 				}
 			}
 
-			if (name == "") { nameLayout.IsVisible = false;}
+			if (name == "") { nameLayout.IsVisible = false; }
 
 			if (modelType == ModelType.Group)
 			{
+				notiBtn.IsVisible = App.notificationController.checkIfUnseen(id, NotificationModelType.Group);
+				if (!notiBtn.IsVisible)
+				{
+					notiBtn.IsVisible = App.notificationController.checkIfUnseen(id, NotificationModelType.GroupConversation);
+				}
+
 				/*
 				modelTypeIcon.IsVisible = true;
 				modelTypeIcon.Source = "ic_group.png";
@@ -207,7 +207,19 @@ namespace HowlOut
 			};
 		}
 
-		public enum Design {
+		public void displayGroupInvitedButtons(bool owner)
+		{
+			if (owner)
+			{
+				groupOwnerInvitedButtons.IsVisible = true;
+			}
+			else {
+				groupInvitedButtons.IsVisible = true;
+			}
+		}
+
+		public enum Design
+		{
 			OnlyImage,
 			Name,
 			NameAndButtons,
