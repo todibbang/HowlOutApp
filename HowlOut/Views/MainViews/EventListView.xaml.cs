@@ -29,7 +29,9 @@ namespace HowlOut
 				{
 					App.coreView.setContentViewWithQueue(new EventListView(3));
 				};
-				bar.displayNotiLayout();
+				//bar.displayNotiLayout();
+
+				SetMainViewTopBar();
 			}
 
 			if (currentView == 0)
@@ -581,6 +583,28 @@ namespace HowlOut
 			catch (Exception exc) {}
 			searchString = searchText;
 			UpdateManageList(currentView, update, searchString);
+		}
+
+		async void SetMainViewTopBar()
+		{
+			App.coreView.topBar.setRightButton("ic_menu.png").Clicked += async (sender, e) =>
+			{
+				List<Action> actions = new List<Action>();
+				List<string> titles = new List<string>();
+				List<string> images = new List<string>();
+
+				actions.Add(() => { App.coreView.GoToSelectedProfile(App.userProfile.ProfileId); });
+				titles.Add("View My Profile");
+				images.Add("ic_me.png");
+
+				actions.Add(async () => { 
+					await App.storeToken("", "", "");
+					await Navigation.PushModalAsync(new LoginPage()); });
+				titles.Add("Log Out");
+				images.Add("ic_settings.png");
+
+				await App.coreView.DisplayOptions(actions, titles, images);
+			};
 		}
 	}
 }

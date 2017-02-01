@@ -61,7 +61,7 @@ namespace HowlOut
 			if (eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId)) followOptionBg.BackgroundColor = App.HowlOut;
 			followOption.Clicked += (sender, e) =>
 			{
-				_dataManager.AttendTrackEvent(eve, !eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId), false);
+				_dataManager.AttendTrackEvent(eve.EventId, !eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId), false);
 			};
 
 			PayButton.Clicked += (sender, e) =>
@@ -78,7 +78,7 @@ namespace HowlOut
 			{
 				JoinLeaveButton.Clicked += (sender, e) =>
 				{
-					_dataManager.AttendTrackEvent(eve, true, true);
+					_dataManager.AttendTrackEvent(eve.EventId, true, true);
 				};
 			}
 			else {

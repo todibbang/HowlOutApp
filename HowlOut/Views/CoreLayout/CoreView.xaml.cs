@@ -19,7 +19,7 @@ namespace HowlOut
 		public DataManager _dataManager;
 		public OtherFunctions otherFunctions = new OtherFunctions();
 		public YourNotifications notifications;
-		public InspectController homeView;
+		//public InspectController homeView;
 		public YourConversations yourConversatios;
 		public CreateView createView;
 		//public ExploreEventCategories exploreEventCategories;
@@ -149,7 +149,7 @@ namespace HowlOut
 		public async void startCoreView()
 		{
 			await _dataManager.UtilityManager.getGeoLocation();
-			homeView = new InspectController(App.userProfile);
+			//homeView = new InspectController(App.userProfile);
 			yourConversatios = new YourConversations(ConversationModelType.Profile, App.StoredUserFacebookId, 1);
 			//exploreEventCategories = new ExploreEventCategories();
 			exploreEvents = new EventListView(0);
@@ -182,7 +182,8 @@ namespace HowlOut
 			}
 			else if (i == 4)
 			{
-				homeView.reloadView();
+				//homeView.reloadView();
+				notifications.UpdateNotifications(true);
 			}
 		}
 
@@ -228,7 +229,7 @@ namespace HowlOut
 			{
 				view = yourConversatios;
 			}
-			else if (type == 4) { view = homeView; }
+			else if (type == 4) { view = notifications; }
 
 			lastCoreView = type;
 			bottomBar.selectButton(type);
@@ -247,7 +248,7 @@ namespace HowlOut
 				else if (lastCoreView == 1) { joinedEvents.viewExitFocus(); }
 				else if (lastCoreView == 2) { exploreEvents.viewExitFocus(); }
 				else if (lastCoreView == 3) { yourConversatios.viewExitFocus(); }
-				else if (lastCoreView == 4) { homeView.viewExitFocus(); }
+				else if (lastCoreView == 4) { notifications.viewExitFocus(); }
 			}
 			extraGrid.IsVisible = true;
 			topBar.hideAll();

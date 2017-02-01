@@ -33,7 +33,7 @@ namespace HowlOut
 			UpdateNotifications(true);
 
 			updateList.ItemSelected += OnListItemSelected;
-			updateList.Refreshing += async (sender, e) => { await UpdateLists(); };
+			updateList.Refreshing += async (sender, e) => { await UpdateNotifications(true); };
 
 
 		}
@@ -58,19 +58,21 @@ namespace HowlOut
 
 		public ContentView getContentView() { return this; }
 
+
 		async Task UpdateLists()
 		{
 			await UpdateNotifications(true);
-		}
+		} 
 
 		public async Task UpdateNotifications(bool update)
 		{
 			nothingToLoad.IsVisible = false;
+			System.Diagnostics.Debug.WriteLine("Noti - update");
 			//TODO add correct servercall
 			if (update)
 			{
 				notiList = await _dataManager.MessageApiManager.GetNotifications();
-				App.coreView.updateMainViews(4);
+				//App.coreView.updateMainViews(4);
 			}
 			if (notiList == null || notiList.Count == 0)
 			{

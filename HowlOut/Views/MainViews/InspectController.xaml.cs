@@ -293,7 +293,7 @@ namespace HowlOut
 				List<string> titles = new List<string>();
 				List<string> images = new List<string>();
 
-				actions.Add(() => { _dataManager.AttendTrackEvent(eve, !eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId), false); });
+				actions.Add(() => { _dataManager.AttendTrackEvent(eve.EventId, !eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId), false); });
 				titles.Add(eve.Followers.Exists(p => p.ProfileId == App.StoredUserFacebookId) == true ? "Unfollow" : "Follow");
 				images.Add("ic_paw.png");
 
@@ -332,7 +332,7 @@ namespace HowlOut
 					{
 						actions.Add(async () =>
 						{
-							await App.coreView._dataManager.AttendTrackEvent(eve, false, true);
+							await App.coreView._dataManager.AttendTrackEvent(eve.EventId, false, true);
 						});
 						titles.Add("Leave Event");
 						images.Add("ic_manage.png");
@@ -346,7 +346,7 @@ namespace HowlOut
 						titles.Add("Invite Attendees");
 						images.Add("ic_add_profiles.png");
 
-						actions.Add(() => { App.coreView._dataManager.AttendTrackEvent(eve, false, true); });
+						actions.Add(() => { App.coreView._dataManager.AttendTrackEvent(eve.EventId, false, true); });
 						titles.Add("Leave Event");
 						images.Add("ic_manage.png");
 					}

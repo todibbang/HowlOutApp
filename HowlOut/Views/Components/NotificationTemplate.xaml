@@ -13,21 +13,21 @@
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 
-			<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2" HeightRequest="80" BackgroundColor="{DynamicResource Shadow}">
-				<StackLayout Padding="10,2,10,5" VerticalOptions="FillAndExpand" BackgroundColor="White" HeightRequest="130">
+			<StackLayout Grid.Column="0" Grid.ColumnSpan="3" Padding="0,0,0,2" HeightRequest="100" BackgroundColor="{DynamicResource Shadow}">
+				<StackLayout Padding="10,2,10,5" VerticalOptions="FillAndExpand" BackgroundColor="White" HeightRequest="100">
 					<Label x:Name="Title" TextColor="{Binding textColor}" Text="{Binding Header}" FontAttributes="{Binding fontAttributes}"/>
 					<Label x:Name="Message" FontSize="12" TextColor="{DynamicResource NormalTextColor}" Text="{Binding Content}"/>
 
-					<StackLayout Orientation="Horizontal">
+					<StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
 						<Label x:Name="time" FontSize="8" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="EndAndExpand" Text="{Binding Time}"/>
-						<Grid x:Name="BtnLayout" HorizontalOptions="EndAndExpand" IsVisible="false">
-							<StackLayout Orientation="Horizontal" HeightRequest="30">
-								<Button Text="Accept"  BackgroundColor="{DynamicResource HowlOut}" TextColor="White" WidthRequest="60"/>
-								<Button Text="Decline" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" WidthRequest="60"/>
+						<Grid x:Name="BtnLayout" HorizontalOptions="EndAndExpand" IsVisible="{Binding displayButtons}" HeightRequest="30">
+							<StackLayout Orientation="Horizontal" HeightRequest="30" HorizontalOptions="EndAndExpand">
+								<Button Text="{Binding acceptButtonText}"  BackgroundColor="{DynamicResource HowlOut}" TextColor="White" WidthRequest="60" x:Name="AcceptBtn"/>
+								<Button Text="Decline" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" WidthRequest="60" x:Name="DeclineBtn" IsVisible="{Binding displayDeclineButton}"/>
 							</StackLayout>
-							<StackLayout Orientation="Horizontal" HeightRequest="30">
-								<local:IconView Source="ic_settings.png" Foreground="Transparent" WidthRequest="60" HeightRequest="30" x:Name="AcceptBtn"/>
-								<local:IconView Source="ic_settings.png" Foreground="Transparent" WidthRequest="60" HeightRequest="30" x:Name="DeclineBtn"/>
+							<StackLayout Orientation="Horizontal" HeightRequest="30" HorizontalOptions="EndAndExpand">
+								<local:IconView Source="ic_settings.png" Foreground="Transparent" WidthRequest="60" HeightRequest="30" x:Name="AcceptImg"/>
+								<local:IconView Source="ic_settings.png" Foreground="Transparent" WidthRequest="60" HeightRequest="30" x:Name="DeclineImg" IsVisible="{Binding displayDeclineButton}"/>
 							</StackLayout>
 						</Grid>
 

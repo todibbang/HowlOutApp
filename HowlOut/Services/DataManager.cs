@@ -148,7 +148,7 @@ namespace HowlOut
 			}
 		}
 
-		public async Task<bool> AttendTrackEvent(Event eve, bool attendOrUnattend, bool joinOrTrack)
+		public async Task<bool> AttendTrackEvent(string id, bool attendOrUnattend, bool joinOrTrack)
 		{
 			var Continue = false;
 			string action = "";
@@ -172,7 +172,7 @@ namespace HowlOut
 
 			if (Continue)
 			{
-				bool success = await EventApiManager.AttendOrTrackEvent(eve.EventId, attendOrUnattend, joinOrTrack);
+				bool success = await EventApiManager.AttendOrTrackEvent(id, attendOrUnattend, joinOrTrack);
 				if (!success)
 				{
 					await App.coreView.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");

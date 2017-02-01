@@ -31,9 +31,9 @@
 			<!--<Button Grid.Column="1" BackgroundColor="Transparent" x:Name="howlOut"/> -->
 
 			<local:IconView Grid.Column="2" x:Name="rightImg" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true" Foreground="White"/>
-			<Button Grid.Column="2" x:Name="rightButton" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
+			<Button Grid.Column="2" x:Name="rightButton" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand" HeightRequest="25" IsVisible="true"/>
 
-			<Grid Grid.Column="2" x:Name="notiLayout" Padding="4,10,6,0" IsVisible="false">
+			<Grid Grid.Column="0" x:Name="notiLayout" Padding="4,10,6,0" IsVisible="false">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="16"/>

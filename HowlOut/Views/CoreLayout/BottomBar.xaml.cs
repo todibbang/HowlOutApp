@@ -14,7 +14,7 @@ namespace HowlOut
 		public Button conversationNoti { get { return noti_3; } }
 		//public Button eventNoti { get { return noti_2; } }
 		//public Button howlsNoti { get { return noti_3; } }
-		public Button homeNoti { get { return noti_2; } }
+		public Button homeNoti { get { return noti_4; } }
 
 		public BottomBar()
 		{

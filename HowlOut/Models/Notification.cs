@@ -22,6 +22,50 @@ namespace HowlOut
 				return (App.coreView.Height-10); 
 			} set { } }
 
+		public bool displayButtons
+		{
+			get
+			{
+				if (
+					NotificationType == NotificationType.InvitedToEvent ||
+					NotificationType == NotificationType.InvitedToEventAsOwner ||
+					NotificationType == NotificationType.InvitedToGroup ||
+					NotificationType == NotificationType.InvitedToGroupAsOwner ||
+					NotificationType == NotificationType.RequestedToFriend)
+					return true;
+				return false;
+			}
+			set { }
+		}
+
+		public bool displayDeclineButton
+		{
+			get
+			{
+				if (
+					NotificationType == NotificationType.InvitedToEventAsOwner ||
+					NotificationType == NotificationType.InvitedToGroupAsOwner ||
+					NotificationType == NotificationType.RequestedToFriend)
+					return true;
+				return false;
+			}
+			set { }
+		}
+
+		public string acceptButtonText
+		{
+			get
+			{
+				if (
+					NotificationType == NotificationType.InvitedToEventAsOwner ||
+					NotificationType == NotificationType.InvitedToGroupAsOwner ||
+					NotificationType == NotificationType.RequestedToFriend)
+					return "Accept";
+				return "Join";
+			}
+			set { }
+		}
+
 		public FontAttributes fontAttributes 
 		{ 
 			get 

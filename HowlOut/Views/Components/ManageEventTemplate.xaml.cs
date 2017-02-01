@@ -21,14 +21,14 @@ namespace HowlOut
 				bool success = false;
 				if (App.userProfile.EventsFollowed.Exists(ef => ef == eve.EventId))
 				{
-					success = await _dataManager.AttendTrackEvent(eve, false, false);
+					success = await _dataManager.AttendTrackEvent(eve.EventId, false, false);
 					if (success)
 					{
 						trackImg.Foreground = App.HowlOutFade;
 					}
 				}
 				else {
-					success = await _dataManager.AttendTrackEvent(eve, true, false);
+					success = await _dataManager.AttendTrackEvent(eve.EventId, true, false);
 					if (success)
 					{
 						trackImg.Foreground = App.HowlOut;
