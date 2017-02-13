@@ -53,7 +53,7 @@ namespace HowlOut
 					return true; 
 				}
 				else { 
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
 				}
 			}
 			catch (Exception ex)
@@ -120,7 +120,7 @@ namespace HowlOut
 					}
 				}
 				else {
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)
@@ -140,7 +140,7 @@ namespace HowlOut
 					return true; 
 				}
 				else { 
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
 				}
 			}
 			catch (Exception ex) 
@@ -170,7 +170,7 @@ namespace HowlOut
 					}
 				}
 				else { 
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK"); 
 				}
 			}
 			catch (Exception ex)

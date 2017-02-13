@@ -8,10 +8,9 @@ namespace HowlOut
 {
 	public partial class ExploreEventCategories : ContentView, ViewModelInterface
 	{
-		public ContentView content
+		public async Task<UpperBar> getUpperBar()
 		{
-			get { return this; }
-			set { this.content = value; }
+			return null;
 		}
 		public void reloadView() { }
 		public void viewInFocus(UpperBar bar) { }
@@ -142,9 +141,9 @@ namespace HowlOut
 
 			//eventListView = new EventListView(6);
 			eventList.Children.Add(searchEventList);
-			searchEventList.HeaderLayout.Children.Add(categoryList);
-			searchEventList.HeaderLayout.HeightRequest = categoryList.HeightRequest;
-			searchEventList.HeaderLayout.Padding = new Thickness(0,60,0,0);
+			//searchEventList.HeaderLayout.Children.Add(categoryList);
+			//searchEventList.HeaderLayout.HeightRequest = categoryList.HeightRequest;
+			//searchEventList.HeaderLayout.Padding = new Thickness(0,60,0,0);
 
 
 

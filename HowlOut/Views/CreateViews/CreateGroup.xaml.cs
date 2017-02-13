@@ -8,11 +8,10 @@ namespace HowlOut
 {
 	public partial class CreateGroup : ContentView, ViewModelInterface
 	{
-		public ContentView content
-		{
-			get { return this; }
-			set { this.content = value; }
-		}
+		public Task<UpperBar> getUpperBar() { return null; }
+		public ContentView getContentView() { return this; }
+		public void reloadView() { }
+
 		public ContentView otherViews { get { return OtherViews; } set { } }
 
 		public Group newGroup;
@@ -20,15 +19,6 @@ namespace HowlOut
 		DataManager _dataManager;
 		private bool Launching = false;
 		public bool IsCreate = false;
-
-		public void viewInFocus(UpperBar bar)
-		{
-
-		}
-		public void reloadView() { }
-		public void viewExitFocus() { }
-
-		public ContentView getContentView() { return this; }
 
 		public CreateGroup(Group group, bool isCreate)
 		{
@@ -136,15 +126,15 @@ namespace HowlOut
 
 			if (String.IsNullOrWhiteSpace(groupToCreate.Name))
 			{
-				await App.coreView.displayAlertMessage("Name Missing", "Name is missing", "Ok");
+				await App.rootPage.displayAlertMessage("Name Missing", "Name is missing", "Ok");
 			}
 			else if (String.IsNullOrWhiteSpace(groupToCreate.Description))
 			{
-				await App.coreView.displayAlertMessage("Description Missing", "Description is missing", "Ok");
+				await App.rootPage.displayAlertMessage("Description Missing", "Description is missing", "Ok");
 			}
 			else if (String.IsNullOrWhiteSpace(groupToCreate.ImageSource) && imageStreams == null)
 			{
-				await App.coreView.displayAlertMessage("Banner Missing", "No banner has been selected", "Ok");
+				await App.rootPage.displayAlertMessage("Banner Missing", "No banner has been selected", "Ok");
 			}
 			else {
 				if (imageStreams != null)
@@ -169,7 +159,7 @@ namespace HowlOut
 					App.coreView.updateMainViews(0);
 				}
 				else {
-					await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");
+					await App.rootPage.displayAlertMessage("Error", "Event not created, try again", "Ok");
 				}
 			}
 			Launching = false;
@@ -190,26 +180,26 @@ namespace HowlOut
 				InspectController inspect = new InspectController(groupUpdated);
 				App.coreView.setContentViewWithQueue(inspect, "Group", inspect.getScrollView());
 			} else {
-				await App.coreView.displayAlertMessage ("Error", "Group not updated, try again", "Ok");
+				await App.rootPage.displayAlertMessage ("Error", "Group not updated, try again", "Ok");
 			}
 		}
 		*/
 
 		public async void DeleteGroup(Group groupToDelete)
 		{
-			bool confirmDelete = await App.coreView.displayConfirmMessage("Warning", "You are about to delete this group permanently, would you like to continue", "Yes", "No");
+			bool confirmDelete = await App.rootPage.displayConfirmMessage("Warning", "You are about to delete this group permanently, would you like to continue", "Yes", "No");
 			App.coreView.IsLoading(true);
 			if (confirmDelete)
 			{
 				bool groupDeleted = await _dataManager.GroupApiManager.DeleteGroup(groupToDelete.GroupId);
 				if (groupDeleted)
 				{
-					await App.coreView.displayAlertMessage("Group Deleted", "The group was successfully deleted", "Ok");
+					await App.rootPage.displayAlertMessage("Group Deleted", "The group was successfully deleted", "Ok");
 					await App.coreView.updateMainViews(4);
 					App.coreView.setContentView(4);
 				}
 				else {
-					App.coreView.displayAlertMessage("Group Not Deleted", "The group was not deleted, try again", "Ok");
+					App.rootPage.displayAlertMessage("Group Not Deleted", "The group was not deleted, try again", "Ok");
 				}
 			}
 			App.coreView.IsLoading(false);

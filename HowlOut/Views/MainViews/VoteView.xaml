@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" x:Class="HowlOut.VoteView">
+	<ContentView.Content>
+		<Grid >
+			<ListView x:Name="VoteList"
+			HasUnevenRows="true"
+			InputTransparent="false"
+			SeparatorVisibility="None"
+			CachingStrategy="RecycleElement"
+			BackgroundColor="Transparent">
+				<ListView.Header>
+					<StackLayout HeightRequest="60"/>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+                 	 <DataTemplate>
+                      		<ViewCell>
+	                      		<local:VoteItemTemplate/>
+	                  		</ViewCell>
+                      	</DataTemplate>
+                </ListView.ItemTemplate>
+				<ListView.Footer>
+					<StackLayout x:Name="footerLayout"/>
+				</ListView.Footer>
+            </ListView>
+
+			<ScrollView x:Name="VoteEditScrollView" IsVisible="false">
+				<StackLayout x:Name="VoteEditList" Padding="0,60,0,0"/>
+			</ScrollView>
+
+
+
+			<Button Text="Update" x:Name="updateBtn" HeightRequest="40" WidthRequest="200" VerticalOptions="End" HorizontalOptions="Center" TranslationY="-20" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" IsVisible="false"/>
+
+			<StackLayout x:Name="addNewLayout" Padding="10,0,10,100">
+				<local:IconView x:Name="addNewIcon" Source="ic_add.png" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40"/>
+			</StackLayout>
+			<StackLayout x:Name="optiongrid" IsVisible="false"/>
+         </Grid>
+	</ContentView.Content>
+</ContentView>
+

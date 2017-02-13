@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" BackgroundColor="{DynamicResource HowlOutBackground}"
 		x:Class="HowlOut.ConversationView" xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
@@ -56,7 +56,7 @@
 
 
 					<BoxView Grid.Row="2" BackgroundColor="White" />
-					<Grid Grid.Row="2" VerticalOptions="End" Padding="4,4,4,64" BackgroundColor="{DynamicResource PlaceHolderColor}" x:Name="entryBottom" IsVisible="false" RowSpacing="0"> 
+					<Grid Grid.Row="2" VerticalOptions="End" Padding="4,4,4,4" BackgroundColor="{DynamicResource PlaceHolderColor}" x:Name="entryBottom" IsVisible="false" RowSpacing="0"> 
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
@@ -86,7 +86,7 @@
 			</ScrollView>
 
 
-			<StackLayout BackgroundColor="#70000000" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10" TranslationY="55">
+			<StackLayout BackgroundColor="#90000000" IsVisible="false" x:Name="conversationInfo" Orientation="Horizontal" Padding="5" Spacing="10" TranslationY="55">
 				<controls:CircleImage WidthRequest="30" x:Name="conversationInfoImage" HeightRequest="25" Aspect="AspectFill"/>
 				<StackLayout>
 					<Label x:Name="conversationInfoModelLabel" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="12"/>
@@ -181,7 +181,7 @@
 					<Button Grid.Row="3" Grid.Column="1" BackgroundColor="{DynamicResource HowlOut}" BorderWidth="0" BorderRadius="15" HeightRequest="30" x:Name="editTitleButton" Text="Change Name" TextColor="White"/>
 				</Grid>
 			</Grid>
-			
+			<StackLayout Grid.RowSpan="2" x:Name="optionLayout" IsVisible="false"/>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

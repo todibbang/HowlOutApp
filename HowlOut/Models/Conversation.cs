@@ -127,17 +127,17 @@ namespace HowlOut
 				{
 					if (!string.IsNullOrWhiteSpace(eventGroupName))
 					{
-						return "Event: "+eventGroupName;
+						return ""+eventGroupName;
 					}
-					return "Event: ";
+					return "";
 				}
 				if (ModelType == ConversationModelType.Group)
 				{
 					if (!string.IsNullOrWhiteSpace(eventGroupName))
 					{
-						return "Group: " + eventGroupName;
+						return "" + eventGroupName;
 					}
-					return "Group: ";
+					return "";
 				}
 				return "";
 			}
@@ -172,6 +172,8 @@ namespace HowlOut
 
 		// Tuple<OptionId, double, string, StatusOptions>
 		public List<Tuple<string, double, string, StatusOptions>> DoodleList { get; set; }
+		public List<ToDoItem> ToDoItems { get; set; }
+
 		//public Dictionary<string, List<Tuple<string, double, string, StatusOptions>>> subTypeDictionary { get; set; }
 	}
 

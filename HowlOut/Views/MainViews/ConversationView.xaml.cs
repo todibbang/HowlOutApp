@@ -12,28 +12,26 @@ namespace HowlOut
 	{
 		private DataManager _dataManager = new DataManager();
 		public Conversation conversation;
-		public ListView ConversationList { get { return conversationList; } }
+		//public ListView ConversationList { get { return conversationList; } }
 		string title;
 
 		public List<Comment> comments;
 		private StackLayout wallLayout;
-		List<Profile> profilesAdded;
+		//List<Profile> profilesAdded;
 
-		public ContentView content
-		{
-			get { return this; }
-			set { this.content = value; }
-		}
+		public ContentView content { get { return this; } set { this.content = value; } }
 
 		bool viewInFocusNow = false;
-		bool WeShare = false;
+		/*
 		double totalExpense = 0.0;
 		double totalAmountYouNeedToBePaid = 0.0;
 		double totalAmountYouMustPay = 0.0;
 		int previousCount = 0;
-		private double listHeight;
+		private double listHeight;*/
+		int previousCount = 0;
 
 		public MessageApiManager.CommentType type;
+		public ConversationSubType subType;
 		public string ConversationId;
 
 		public ConversationView(List<Comment> coms, MessageApiManager.CommentType mT, string id, StackLayout layout)
@@ -45,21 +43,15 @@ namespace HowlOut
 				type = mT;
 				ConversationId = id;
 				wallLayout = layout;
-
 				InitializeComponent();
 				commentView.IsVisible = true;
-
 				entryTop.IsVisible = true;
 				commentList.ItemSelected += OnItemSelected;
-
-
-
-
 				UpdateList(true);
 				postCommentButtonTop.Clicked += async (sender, e) => { await PostNewComment(commentEntryTop.Text); };
-				setSize(false);
+				setSize();
 			}
-			catch (Exception exc) { reloadView(); }
+			catch (Exception exc) { reloadView(); System.Diagnostics.Debug.WriteLine(exc.Message); }
 		}
 
 		public ConversationView(Conversation conv)
@@ -69,11 +61,11 @@ namespace HowlOut
 				InitializeComponent();
 				if (conv.SubType == ConversationSubType.ExpenShare)
 				{
-					WeShare = true;
+					subType = ConversationSubType.ExpenShare;
 					conversationList.ItemTemplate = new DataTemplate(() => { return new ViewCell { View = new WeShareMessageTemplate() }; });
 					//conv = testWeShareConversation();
 					newExpenseButton.IsVisible = true;
-					type = MessageApiManager.CommentType.Converzation;
+					//type = MessageApiManager.CommentType.Converzation;
 					newExpenseButton.Clicked += (sender, e) =>
 					{
 						App.coreView.setContentViewWithQueue(new NewExpenseView(conversation, null));
@@ -94,7 +86,7 @@ namespace HowlOut
 				ConversationId = conv.ConversationID;
 
 				UpdateList(true);
-				setSize(true);
+				setSize();
 
 
 
@@ -179,8 +171,103 @@ namespace HowlOut
 			catch (Exception exc){ reloadView(); }
 		}
 
+		public async Task<UpperBar> getUpperBar()
+		{
+			viewInFocusNow = true;
+			autoUpdater();
+			if (conversation == null) return null;
+
+			title = "";
+
+			if (conversation.Profiles != null)
+			{
+				foreach (Profile p in conversation.Profiles)
+				{
+					if (p.ProfileId != App.StoredUserFacebookId)
+					{
+						if (conversation.Profiles.Count > 2)
+						{
+							title += p.Name.Split(' ')[0] + ", ";
+						}
+						else {
+							title += p.Name;
+						}
+
+						if (conversationInfoImage.Source == null && conversation.ModelType == ConversationModelType.Profile)
+						{
+							conversationInfoImage.Source = p.ImageSource;
+						}
+					}
+				}
+
+				if (conversation.Profiles.Count > 2)
+				{
+					title = title.Substring(0, title.Length - 2);
+				}
+			}
+			if (!string.IsNullOrWhiteSpace(conversation.Title))
+			{
+				title = conversation.Title;
+			}
+
+			UpperBar ub = new UpperBar();
+
+			ub.setRightButton("ic_more_vert_white.png").Clicked += async (sender, e) =>
+			{
+				List<Action> actions = new List<Action>();
+				List<string> titles = new List<string>();
+				List<string> images = new List<string>();
+
+				actions.Add(() => { App.coreView.setContentViewWithQueue(new InviteListView(conversation, false)); });
+				titles.Add("Invite");
+				images.Add("ic_add_profiles.png");
+
+				actions.Add(async () =>
+				{
+					editTitleGrid.IsVisible = !editTitleGrid.IsVisible;
+
+				});
+				titles.Add("Change Title");
+				images.Add("ic_title.png");
+
+				actions.Add(async () =>
+				{
+					bool success = await _dataManager.MessageApiManager.leaveConversation(conversation.ConversationID);
+					if (success) { App.coreView.returnToPreviousView(); }
+					else { await App.rootPage.displayAlertMessage("Error", "Error", "Ok"); }
+				});
+				titles.Add("Leave");
+				images.Add("ic_settings.png");
+
+				await App.coreView.DisplayOptions(actions, titles, images, optionLayout);
+			};
+
+			ub.setNavigationlabel(title).Clicked += (sender, e) =>
+			{
+				if (subType == ConversationSubType.ExpenShare)
+				{
+					App.coreView.setContentViewWithQueue(new WeShareOverView(conversation));
+				}
+				else {
+					App.coreView.setContentViewWithQueue(new ListsAndButtons(conversation.Profiles, null, false, false));
+				}
+			};
+
+			if (type == MessageApiManager.CommentType.Converzation)
+			{
+				try
+				{
+					await Task.Delay(2);
+					conversationList.ScrollTo(conversationList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, true);
+				}
+				catch (Exception e) { }
+			}
+			return ub;
+		}
+
 		public async void viewInFocus(UpperBar bar)
 		{
+			/*
 			viewInFocusNow = true;
 			autoUpdater();
 			if (conversation == null) return;
@@ -250,7 +337,7 @@ namespace HowlOut
 
 			bar.setNavigationlabel(title).Clicked += (sender, e) =>
 			{
-				if (WeShare)
+				if (subType == ConversationSubType.ExpenShare)
 				{
 					App.coreView.setContentViewWithQueue(new WeShareOverView(conversation));
 				}
@@ -267,7 +354,7 @@ namespace HowlOut
 					conversationList.ScrollTo(conversationList.ItemsSource.OfType<Comment>().Last(), ScrollToPosition.End, true);
 				}
 				catch (Exception e) { }
-			}
+			}*/
 		}
 		public void reloadView() {
 			if (conversation != null)
@@ -323,24 +410,17 @@ namespace HowlOut
 				{
 					await _dataManager.MessageApiManager.EditConversationTitle(conversation.ConversationID, editTitleEntry.Text);
 					c = await _dataManager.MessageApiManager.GetOneConversation(c.ConversationID);
-					App.coreView.setContentViewReplaceCurrent(new ConversationView(c), 1);
+					App.coreView.setContentViewReplaceCurrent(new ConversationView(c));
 				};
 			}
 			catch (Exception exc) {}
 		}
 
-		private async Task setSize(bool add)
+		async void setSize()
 		{
 			await Task.Delay(10);
-			outerGrid.HeightRequest = App.coreView.Height;// - (62);
-														  //commentList.HeightRequest = outerGrid.HeightRequest - 80;
-														  //conversationList.HeightRequest = outerGrid.HeightRequest - 80;
-														  //commentListLayout.HeightRequest = commentListLayout.Height;
-														  //conversationListLayout.HeightRequest = conversationListLayout.Height;
-
-			//listHeight = commentList.HeightRequest;
-			//listHeight = commentList.HeightRequest;
-			if (add) App.coreView.addConversationViewToActiveList(this);
+			outerGrid.HeightRequest = App.coreView.Height-50;
+			App.coreView.addConversationViewToActiveList(this);
 		}
 
 		public async void pushPostNewComment()
@@ -397,7 +477,7 @@ namespace HowlOut
 						UpdateList(true);
 					}
 					else {
-						await App.coreView.displayAlertMessage("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
+						await App.rootPage.displayAlertMessage("Comment Not Posted", "An error happened and the comment was not posted, try again.", "Ok");
 					}
 				}
 			}
@@ -407,21 +487,18 @@ namespace HowlOut
 			}
 		}
 
-		public async Task<bool> UpdateList(bool update)
+		public async void UpdateList(bool update)
 		{
 			try
 			{
-
-
-
 				if (update)
 				{
-					if (!WeShare)
+					if (subType != ConversationSubType.ExpenShare)
 					{
 						if (type == MessageApiManager.CommentType.Converzation)
 						{
 							conversation = await _dataManager.MessageApiManager.GetOneConversation(ConversationId);
-							if (conversation.Messages.Count > 0 && comments != null && comments.Count == conversation.Messages.Count) return true;
+							if (conversation.Messages.Count > 0 && comments != null && comments.Count == conversation.Messages.Count) return;
 							comments = conversation.Messages;
 						}
 						else {
@@ -432,25 +509,16 @@ namespace HowlOut
 						//conversation = testWeShareConversation();
 
 					}
-
-
-					//
-
-					viewInFocus(App.coreView.topBar);
+					//viewInFocus(App.coreView.topBar);
 				}
 
 				if(conversation != null) comments = conversation.Messages;
+				int count = comments.Count;
 
+				if (count == previousCount) return;
 
-				if (comments == null || comments != null && comments.Count == previousCount) return true;
+				previousCount = count;
 
-				//if (WeShare) weShareCalculator(conversation);
-
-				try
-				{
-					previousCount = comments.Count;
-				}
-				catch (Exception exc) { }
 
 				if (conversation != null)
 				{
@@ -472,13 +540,6 @@ namespace HowlOut
 					commentList.IsRefreshing = false;
 				}
 
-				/*
-				if (WeShare)
-				{
-					weShareCalculator(conversation);
-				} */
-
-
 				await Task.Delay(1000);
 				if (type == MessageApiManager.CommentType.Converzation)
 				{
@@ -493,14 +554,13 @@ namespace HowlOut
 
 			}
 			catch (Exception exc) { reloadView(); }
-			return true;
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			try
 			{
-				if (WeShare)
+				if (subType == ConversationSubType.ExpenShare)
 				{
 					try
 					{
@@ -509,18 +569,6 @@ namespace HowlOut
 						if (selectedCom == null) return;
 
 						App.coreView.setContentViewWithQueue(new NewExpenseView(conversation, selectedCom));
-						/*
-						double othersPart = 0;
-
-						System.Diagnostics.Debug.WriteLine("expense paid by: " + selectedCom.expensePaiedById);
-						foreach (KeyValuePair<string, double> entry in selectedCom.uniqueAmounts)
-						{
-							System.Diagnostics.Debug.WriteLine(entry.Key + "'s part is " + entry.Value);
-							othersPart += entry.Value;
-						}
-						System.Diagnostics.Debug.WriteLine("The rests parts are " + (selectedCom.totalAmount - othersPart) / (conversation.Profiles.Count - selectedCom.uniqueAmounts.Count));
-
-						*/
 						conversationList.SelectedItem = null;
 					}
 					catch (Exception ex) {
@@ -532,12 +580,12 @@ namespace HowlOut
 				conversationList.SelectedItem = null;
 				DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			}
-			catch (Exception exc) {}
+			catch (Exception exc) {System.Diagnostics.Debug.WriteLine("Error found here: " + exc.Message);}
 		}
 
-		private async Task autoUpdater()
+		private async void autoUpdater()
 		{
-			await Task.Delay(100);
+			await Task.Delay(5000);
 			try
 			{
 				UpdateList(false);
@@ -546,14 +594,14 @@ namespace HowlOut
 					autoUpdater();
 				}
 			}
-			catch (Exception exc)
+			catch (Exception exc) 
 			{
-				System.Diagnostics.Debug.WriteLine("Error found here");
+				System.Diagnostics.Debug.WriteLine("Error found here: " + exc.Message); 
 				autoUpdater();
 			}
-			await Task.Delay(5000);
 		}
 
+		/*
 		Conversation testWeShareConversation()
 		{
 			Random rnd = new Random();
@@ -629,88 +677,7 @@ namespace HowlOut
 
 				con.Messages.Add(com);
 			}
-
-
-
-			//weShareCalculator(con);
 			return con;
-		}
-
-		/*
-		private void weShareCalculator(Conversation con){
-
-			System.Diagnostics.Debug.WriteLine("\n\n");
-
-			foreach (Profile pro in con.Profiles)
-			{
-				totalExpense = 0.0;
-				totalAmountYouMustPay = 0.0;
-				totalAmountYouNeedToBePaid = 0.0;
-
-
-
-				foreach (Comment weShareComment in con.Messages)
-				{
-					if (weShareComment.weShareComment)
-					{
-						totalExpense += weShareComment.totalAmount;
-						if (weShareComment.expensePaiedById == pro.ProfileId)
-						{
-							if (weShareComment.uniqueAmounts.Count > 0)
-							{
-								if (weShareComment.uniqueAmounts.ContainsKey(pro.ProfileId))
-								{
-									totalAmountYouNeedToBePaid += weShareComment.totalAmount - weShareComment.uniqueAmounts[pro.ProfileId];
-								}
-								else {
-									double othersPart = 0;
-
-									foreach (KeyValuePair<string, double> entry in weShareComment.uniqueAmounts)
-									{
-										othersPart += entry.Value;
-									}
-
-									totalAmountYouNeedToBePaid += (((weShareComment.totalAmount - othersPart) / (conversation.Profiles.Count - weShareComment.uniqueAmounts.Count)) * ((conversation.Profiles.Count - weShareComment.uniqueAmounts.Count) - 1)) + othersPart;
-								}
-							}
-							else {
-								totalAmountYouNeedToBePaid += (weShareComment.totalAmount / conversation.Profiles.Count) * (conversation.Profiles.Count - 1);
-							}
-						}
-						else {
-							if (weShareComment.uniqueAmounts.Count > 0)
-							{
-								if (weShareComment.uniqueAmounts.ContainsKey(pro.ProfileId))
-								{
-									totalAmountYouMustPay += weShareComment.uniqueAmounts[pro.ProfileId];
-								}
-								else {
-									double othersPart = 0;
-
-									foreach (KeyValuePair<string, double> entry in weShareComment.uniqueAmounts)
-									{
-										othersPart += entry.Value;
-									}
-
-									totalAmountYouMustPay += (weShareComment.totalAmount - othersPart) / (conversation.Profiles.Count - weShareComment.uniqueAmounts.Count);
-								}
-							}
-							else
-							{
-								totalAmountYouMustPay += (weShareComment.totalAmount / conversation.Profiles.Count);
-							}
-						}
-					}
-					//System.Diagnostics.Debug.WriteLine("totalAmountYouMustPay: " + totalAmountYouMustPay);
-					//System.Diagnostics.Debug.WriteLine("totalAmountYouNeedToBePaid: " + totalAmountYouNeedToBePaid);
-				}
-
-				//System.Diagnostics.Debug.WriteLine(pro.Name + ", total expense: " + totalExpense);
-				//System.Diagnostics.Debug.WriteLine("Must pay total: " + totalAmountYouMustPay);
-				//System.Diagnostics.Debug.WriteLine("Must be payed total: " + totalAmountYouNeedToBePaid);
-				System.Diagnostics.Debug.WriteLine(pro.Name + " balance: " + (totalAmountYouNeedToBePaid - totalAmountYouMustPay) + "(" + totalExpense + ")");
-			}
-		}
-*/
+		}*/
 	}
 }

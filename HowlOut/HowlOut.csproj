@@ -143,6 +143,27 @@
     <EmbeddedResource Include="Views\Components\NotificationTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\MenuPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CoreLayout\ContentPageFrame.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\ToDoItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\VoteItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainViews\VoteView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\VoteItemEditTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Components\ToDoItemEditTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -325,6 +346,36 @@
     <Compile Include="Views\Components\NotificationTemplate.xaml.cs">
       <DependentUpon>NotificationTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CoreLayout\TappedPageTest.cs" />
+    <Compile Include="Views\MainViews\RootPage.cs" />
+    <Compile Include="Enums\HomeMenuItem.cs" />
+    <Compile Include="Views\MainViews\MenuPage.xaml.cs">
+      <DependentUpon>MenuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HowlOutNavigationPage.cs" />
+    <Compile Include="Controls\AnimationController.cs" />
+    <Compile Include="Views\CoreLayout\NavigationPageTest.cs" />
+    <Compile Include="Views\CoreLayout\ContentPageFrame.xaml.cs">
+      <DependentUpon>ContentPageFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\ToDoItemTemplate.xaml.cs">
+      <DependentUpon>ToDoItemTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToDoItem.cs" />
+    <Compile Include="Views\Components\VoteItemTemplate.xaml.cs">
+      <DependentUpon>VoteItemTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VoteItem.cs" />
+    <Compile Include="Renderers\CustomLabel.cs" />
+    <Compile Include="Views\MainViews\VoteView.xaml.cs">
+      <DependentUpon>VoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\VoteItemEditTemplate.xaml.cs">
+      <DependentUpon>VoteItemEditTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\ToDoItemEditTemplate.xaml.cs">
+      <DependentUpon>ToDoItemEditTemplate.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -404,6 +455,7 @@
     <Folder Include="Views\CreateViews\" />
     <Folder Include="Views\DesignViews\" />
     <Folder Include="Views\MainViews\" />
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

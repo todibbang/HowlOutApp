@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -27,28 +28,23 @@ namespace HowlOut
 			scrollView.Scrolled += (sender, e) => { if (scrollView.ScrollY < -150) { reloadView(); } };
 		}
 
-		public void viewInFocus(UpperBar bar)
+		public async Task<UpperBar> getUpperBar()
 		{
-			App.coreView.topBar.setNavigationlabel(Title);
-
+			var ub = new UpperBar();
 			if (eve != null)
 			{
-				addEventMenu(eve);
+				addEventMenu(eve, ub);
 			}
 			else if (grp != null)
 			{
-				addGroupMenu(grp);
+				addGroupMenu(grp, ub);
 			}
-			else if (pro != null && pro.ProfileId == App.userProfile.ProfileId)
-			{
-				//App.coreView.topBar.displayNotiLayout();
-			}
-			scrollView.ScrollToAsync(0, scrollView.ScrollY + 1, false);
+			return ub;
 		}
 
 		public void viewExitFocus()
 		{
-			App.coreView.topBar.hideAll();
+			//App.coreView.topBar.hideAll();
 		}
 		public void reloadView()
 		{
@@ -144,9 +140,10 @@ namespace HowlOut
 			}
 			catch (Exception ex)
 			{
-				App.coreView.displayAlertMessage("Error", "Error loading content", "Ok");
+				App.rootPage.displayAlertMessage("Error", "Error loading content", "Ok");
 				App.coreView.returnToPreviousView();
 			}
+			App.coreView.slideInView();
 		}
 
 		public InspectController(Group userGroup)
@@ -168,7 +165,7 @@ namespace HowlOut
 				this.grp = userGroup;
 				userGroup = await _dataManager.GroupApiManager.GetGroup(userGroup.GroupId);
 				this.grp = userGroup;
-				addGroupMenu(userGroup);
+				//addGroupMenu(userGroup);
 
 				infoView.Content = new GroupDesignView(userGroup, 200, GenericDesignView.Design.ShowAll);
 				infoView.Padding = new Thickness(0, 70, 0, 0);
@@ -195,9 +192,10 @@ namespace HowlOut
 			}
 			catch (Exception ex)
 			{
-				App.coreView.displayAlertMessage("Error", "Error loading content", "Ok");
+				App.rootPage.displayAlertMessage("Error", "Error loading content", "Ok");
 				App.coreView.returnToPreviousView();
 			}
+			App.coreView.slideInView();
 		}
 
 		/*
@@ -235,13 +233,14 @@ namespace HowlOut
 			}
 			catch (Exception ex)
 			{
-				App.coreView.displayAlertMessage("Error", "Error loading content", "Ok");
+				App.rootPage.displayAlertMessage("Error", "Error loading content", "Ok");
 				App.coreView.returnToPreviousView();
 			}
 		}*/
 
 		public InspectController(Event eve)
 		{
+			this.Resources = App.resourceDictionary;
 			InitializeComponent();
 			if (eve != null)
 			{
@@ -257,13 +256,15 @@ namespace HowlOut
 			try
 			{
 				this.eve = eve;
-				eve = await _dataManager.EventApiManager.GetEventById(eve.EventId);
+				//eve = await _dataManager.EventApiManager.GetEventById(eve.EventId);
 				this.eve = eve;
-
-				addEventMenu(eve);
-
-
+				await Task.Delay(10);
 				infoView.Content = new InspectEvent(eve, _dataManager.IsEventJoined(eve), scrollView);
+
+				//addEventMenu(eve);
+
+
+
 
 				if (eve.Attendees.Count > 0)
 				{
@@ -280,14 +281,15 @@ namespace HowlOut
 			}
 			catch (Exception ex)
 			{
-				App.coreView.displayAlertMessage("Error", "Error loading content", "Ok");
+				App.rootPage.displayAlertMessage("Error", "Error loading content", "Ok");
 				App.coreView.returnToPreviousView();
 			}
+			//App.coreView.slideInView();
 		}
 
-		async void addEventMenu(Event eve)
+		async void addEventMenu(Event eve, UpperBar ub)
 		{
-			App.coreView.topBar.setRightButton("ic_menu.png").Clicked += async (sender, e) =>
+			ub.setRightButton("ic_more_vert_white.png").Clicked += async (sender, e) =>
 			{
 				List<Action> actions = new List<Action>();
 				List<string> titles = new List<string>();
@@ -351,13 +353,13 @@ namespace HowlOut
 						images.Add("ic_manage.png");
 					}
 				}
-				await App.coreView.DisplayOptions(actions, titles, images);
+				await  App.coreView.DisplayOptions(actions, titles, images, optiongrid);
 			};
 		}
 
-		async void addGroupMenu(Group grp)
+		async void addGroupMenu(Group grp, UpperBar ub)
 		{
-			App.coreView.topBar.setRightButton("ic_menu.png").Clicked += async (sender, e) =>
+			ub.setRightButton("ic_more_vert_white.png").Clicked += async (sender, e) =>
 			{
 				List<Action> actions = new List<Action>();
 				List<string> titles = new List<string>();
@@ -388,7 +390,8 @@ namespace HowlOut
 						images.Add("ic_settings.png");
 					}
 
-					await App.coreView.DisplayOptions(actions, titles, images);
+					//await App.coreView.DisplayOptions(actions, titles, images);
+					await App.coreView.DisplayOptions(actions, titles, images, optiongrid);
 				}
 				else if (grp.Members.Exists(p => p.ProfileId == App.userProfile.ProfileId))
 				{
@@ -396,15 +399,20 @@ namespace HowlOut
 					{
 						bool success = await _dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(grp.GroupId, GroupApiManager.GroupHandlingType.Leave);
 						if (success) { App.coreView.reloadCurrentView(); }
-						else { await App.coreView.displayAlertMessage("Error", "Error", "Ok"); }
+						else { await App.rootPage.displayAlertMessage("Error", "Error", "Ok"); }
 					});
 					titles.Add("Leave");
 					images.Add("ic_settings.png");
 
-					await App.coreView.DisplayOptions(actions, titles, images);
+					//await App.coreView.DisplayOptions(actions, titles, images);
+					await App.coreView.DisplayOptions(actions, titles, images, optiongrid);
 				}
 			};
 		}
+
+
+
+
 
 		void addNewElement(View element, string Title, int amount)
 		{
@@ -482,7 +490,6 @@ namespace HowlOut
 			infoLayout.IsVisible = true;
 			infoLayout.Children.Add(grid);
 		}
-
 		public ScrollView getScrollView()
 		{
 			return null;

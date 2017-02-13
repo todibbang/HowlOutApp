@@ -1,13 +1,13 @@
 ﻿using System;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
 	public interface ViewModelInterface
 	{
-		void viewInFocus(UpperBar bar);
+		Task<UpperBar> getUpperBar();
 		ContentView getContentView();
-		void viewExitFocus();
 		void reloadView();
 	}
 }

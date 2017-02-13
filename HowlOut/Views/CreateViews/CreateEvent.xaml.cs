@@ -13,11 +13,10 @@ namespace HowlOut
 {
 	public partial class CreateEvent : ContentView, ViewModelInterface
 	{
-		public ContentView content
-		{
-			get { return this; }
-			set { this.content = value; }
-		}
+		public Task<UpperBar> getUpperBar() { return null; }
+		public ContentView getContentView() { return this; }
+		public void reloadView() { }
+
 		public ContentView otherViews { get { return OtherViews; } set { } }
 
 		MapsView mapView;
@@ -48,15 +47,6 @@ namespace HowlOut
 				mainGrid.Padding = new Thickness(0, 55, 0, 250);
 			}
 		}
-
-		public void viewInFocus(UpperBar bar)
-		{
-
-		}
-
-		public void viewExitFocus() { }
-		public void reloadView() { }
-		public ContentView getContentView() { return this; }
 
 		private void setCreateView(Event givenEvent, bool isCreate)
 		{
@@ -287,27 +277,27 @@ namespace HowlOut
 		{
 			if (String.IsNullOrWhiteSpace(eventToCreate.Title))
 			{
-				await App.coreView.displayAlertMessage("Title Missing", "Title is missing", "Ok");
+				await App.rootPage.displayAlertMessage("Title Missing", "Title is missing", "Ok");
 			}
 			else if (String.IsNullOrWhiteSpace(eventToCreate.Description))
 			{
-				await App.coreView.displayAlertMessage("Description Missing", "Description is missing", "Ok");
+				await App.rootPage.displayAlertMessage("Description Missing", "Description is missing", "Ok");
 			}
 			else if ((eventToCreate.MaxSize == -1) || !validAttendingAmount)
 			{
-				await App.coreView.displayAlertMessage("Attendendees Needed Missing", "", "Ok");
+				await App.rootPage.displayAlertMessage("Attendendees Needed Missing", "", "Ok");
 			}
 			else if (eventToCreate.EventTypes.Count == 0)
 			{
-				await App.coreView.displayAlertMessage("EventTypes Missing", "No Event Type has been selected", "Ok");
+				await App.rootPage.displayAlertMessage("EventTypes Missing", "No Event Type has been selected", "Ok");
 			}
 			else if (String.IsNullOrWhiteSpace(eventToCreate.AddressName) || eventToCreate.Latitude == 0)
 			{
-				await App.coreView.displayAlertMessage("Address Missing", "No valid address has been selected", "Ok");
+				await App.rootPage.displayAlertMessage("Address Missing", "No valid address has been selected", "Ok");
 			}
 			else if (String.IsNullOrWhiteSpace(eventToCreate.ImageSource) && imageStreams == null)
 			{
-				await App.coreView.displayAlertMessage("Banner Missing", "No banner has been selected", "Ok");
+				await App.rootPage.displayAlertMessage("Banner Missing", "No banner has been selected", "Ok");
 			}
 			else {
 				bool continueCreating = true;
@@ -341,7 +331,7 @@ namespace HowlOut
 
 					if (eventCreated != null)
 					{
-						App.coreView.joinedEvents.UpdateList(true, "");
+						//App.coreView.joinedEvents.UpdateList(true, "");
 						eventCreated.Attendees = new List<Profile>();
 						eventCreated.Followers = new List<Profile>();
 						InspectController inspect = new InspectController(eventCreated);
@@ -353,12 +343,12 @@ namespace HowlOut
 							App.coreView.updateMainViews(0);
 						}
 						else {
-							App.coreView.setContentViewReplaceCurrent(inspect, 1);
+							App.coreView.setContentViewReplaceCurrent(inspect);
 						}
 						App.coreView.updateMainViews(0);
 					}
 					else {
-						await App.coreView.displayAlertMessage("Error", "Event not created, try again", "Ok");
+						await App.rootPage.displayAlertMessage("Error", "Event not created, try again", "Ok");
 					}
 				}
 			}
@@ -368,20 +358,20 @@ namespace HowlOut
 
 		public async void CancelTheEvent()
 		{
-			bool confirmDelete = await App.coreView.displayConfirmMessage("Warning", "You are about to delete this event permanently, would you like to continue", "Yes", "No");
+			bool confirmDelete = await App.rootPage.displayConfirmMessage("Warning", "You are about to delete this event permanently, would you like to continue", "Yes", "No");
 			App.coreView.IsLoading(true);
 			if (confirmDelete)
 			{
 				bool wasEventDeleted = await _dataManager.EventApiManager.DeleteEvent(newEvent.EventId);
 				if (wasEventDeleted)
 				{
-					await App.coreView.displayAlertMessage("Event Deleted", "The event was successfully cancelled", "Ok");
-					App.coreView.joinedEvents.UpdateList(true, "");
+					await App.rootPage.displayAlertMessage("Event Deleted", "The event was successfully cancelled", "Ok");
+					//App.coreView.joinedEvents.UpdateList(true, "");
 					App.coreView.updateMainViews(4);
 					App.coreView.setContentView(1);
 				}
 				else {
-					App.coreView.displayAlertMessage("Event Not Deleted", "The event was not cancelled, try again", "Ok");
+					App.rootPage.displayAlertMessage("Event Not Deleted", "The event was not cancelled, try again", "Ok");
 				}
 			}
 			App.coreView.IsLoading(false);

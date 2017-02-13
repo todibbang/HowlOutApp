@@ -125,12 +125,21 @@ namespace HowlOut
 
 		public void viewInFocus(UpperBar bar)
 		{
-			try
-			{
-				//cv.setCarousel(cv.veryLastCarouselView);
-			}
-			catch (Exception e) { }
+			//var grid = new Grid();
+			//grid.Children.Add()
+
+
+
+
+			bar.showCenterLayout().Children.Add(topGrid);
 		}
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			ub.showCenterLayout().Children.Add(topGrid);
+			return ub;
+		}
+
 		public void reloadView() { }
 		public void viewExitFocus()
 		{

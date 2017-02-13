@@ -1,30 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
 	public partial class CreateView : ContentView, ViewModelInterface
 	{
-		public void reloadView()
-		{
-			this.Content = new CreateView();
-		}
-		public void viewInFocus(UpperBar bar)
-		{
-			if (eventOrGroup == 1)
-			{
-				createLayout.Content = null;
-				createLayout.Content = createEvent;
-			}
-			else if (eventOrGroup == 2)
-			{
-				createLayout.Content = null;
-				createLayout.Content = createGroup;
-			}
-		}
-		public void viewExitFocus() { }
+		public Task<UpperBar> getUpperBar() { return null; }
 		public ContentView getContentView() { return this; }
+		public void reloadView() { }
+
 		public ContentView CreateLayout() { return createLayout; }
 		CreateEvent createEvent = new CreateEvent(new Event(), true);
 		CreateGroup createGroup = new CreateGroup(new Group(), true);

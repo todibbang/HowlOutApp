@@ -41,6 +41,12 @@ namespace HowlOut
 
 		}
 
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			return ub;
+		}
+
 		public void viewExitFocus() { }
 		public void reloadView() { }
 

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using Newtonsoft.Json;
 namespace HowlOut
 {
 	public partial class CoreView : ContentPage
@@ -14,7 +12,7 @@ namespace HowlOut
 		bool hideNotiLayout = false;
 		public ConversationView viewdConversation;
 		ContentView newContentView;
-		public UpperBar topBar;
+		//public UpperBar topBar;
 		public BottomBar btmBar { get { return bottomBar; } }
 		public DataManager _dataManager;
 		public OtherFunctions otherFunctions = new OtherFunctions();
@@ -34,12 +32,15 @@ namespace HowlOut
 		public ViewModelInterface lastCoreViewInterface;
 		public string token = "";
 
+		List<ContentView> extraViews = new List<ContentView>();
+
 		public CoreView()
 		{
 			InitializeComponent();
+			NavigationPage.SetHasNavigationBar(this, false);
 			_dataManager = new DataManager();
-			topBar = new UpperBar();
-			topBarLayout.Children.Add(topBar);
+			//topBar = new UpperBar();
+			//topBarLayout.Children.Add(topBar);
 			notiScroll.Scrolled += (sender, e) =>
 			{
 				System.Diagnostics.Debug.WriteLine(notiScroll.ScrollY);
@@ -63,15 +64,10 @@ namespace HowlOut
 
 		public async void hideTopBar(bool hide)
 		{
-
-
-
 			if (topBarHiddenGlobalCooldown)
 			{
 				return;
 			}
-
-
 			if (hide && App.coreView.TopBarLayout.TranslationY < 0) return; 
 			if (!hide && App.coreView.TopBarLayout.TranslationY  > -1) return;
 			topBarHiddenGlobalCooldown = true;
@@ -87,13 +83,7 @@ namespace HowlOut
 			for (int i = 0; i < 60; i++)
 			{
 				App.coreView.TopBarLayout.TranslationY += 2 * d;
-				//App.coreView.MainGrid.TranslationY += 1 * d;
-				//App.coreView.MainGrid.HeightRequest += -1 * d;
-
-				//App.coreView.extraGrid.TranslationY += 1 * d;
-				//App.coreView.extraGrid.HeightRequest += -1 * d;
 				await Task.Delay(5);
-
 				if (App.coreView.TopBarLayout.TranslationY <= -120)
 				{
 					App.coreView.TopBarLayout.TranslationY = -120;
@@ -153,13 +143,24 @@ namespace HowlOut
 			yourConversatios = new YourConversations(ConversationModelType.Profile, App.StoredUserFacebookId, 1);
 			//exploreEventCategories = new ExploreEventCategories();
 			exploreEvents = new EventListView(0);
-			joinedEvents = new EventListView(2);
+			joinedEvents = new EventListView(0);
 			notifications = new YourNotifications();
 			createView = new CreateView();
-			mainView.Content = joinedEvents;
-			joinedEvents.viewInFocus(topBar);
+			mainView.Content = exploreEvents;
+			lastCoreViewInterface = exploreEvents;
+			//exploreEvents.viewInFocus(topBar);
+
 			IsLoading(false);
 			await _dataManager.update();
+
+
+
+
+
+
+			//mainView.Content = new NavigationPage();
+
+
 		}
 
 		public async Task updateMainViews(int i)
@@ -186,7 +187,7 @@ namespace HowlOut
 				notifications.UpdateNotifications(true);
 			}
 		}
-
+		/*
 		void changeView(ViewModelInterface view)
 		{
 			ContentView oldContentView = newContentView;
@@ -194,10 +195,11 @@ namespace HowlOut
 			mainGrid.Children.Add(newContentView);
 			if (oldContentView != null) mainGrid.Children.Remove(oldContentView);
 			oldContentView = null;
-		}
+		}*/
 
 		public async void setContentView(int type)
 		{
+			/*
 			int timeDif = (int)((DateTime.Now.Ticks - viewLastChanged) / 10000);
 			if (timeDif < 1000)
 			{
@@ -205,10 +207,12 @@ namespace HowlOut
 			}
 			viewLastChanged = DateTime.Now.Ticks;
 			extraGrid.IsVisible = false;
-			extraView.Content = null;
-			topBar.hideAll();
+			//extraView.Content = null;
+			try { while (true) extraGrid.Children.RemoveAt(0); } catch (Exception ex) { }
+			extraViews = new List<ContentView>();
+			//topBar.hideAll();
 			hideTopBar(false);
-			if (contentViews.Count > 0) contentViews[contentViews.Count - 1].viewExitFocus();
+			//if (contentViews.Count > 0) contentViews[contentViews.Count - 1].viewExitFocus();
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			ViewModelInterface view = null;
 			viewdConversation = null;
@@ -237,11 +241,18 @@ namespace HowlOut
 			contentViews.Clear();
 			lastCoreViewInterface = view;
 			mainView.Content = view.getContentView();
-			view.viewInFocus(topBar);
+			//view.viewInFocus(topBar); */
 		}
 
 		public async void setContentViewWithQueue(ViewModelInterface view)
 		{
+			//extraGrid.IsVisible = true;
+
+			App.tappedPageTest.pushView(view);
+			return;
+			//PushAsync(c);
+			/*
+
 			if (contentViews.Count > 0) contentViews[contentViews.Count - 1].viewExitFocus();
 			else {
 				if (lastCoreView == 0) { createView.viewExitFocus(); }
@@ -250,18 +261,36 @@ namespace HowlOut
 				else if (lastCoreView == 3) { yourConversatios.viewExitFocus(); }
 				else if (lastCoreView == 4) { notifications.viewExitFocus(); }
 			}
-			extraGrid.IsVisible = true;
+
 			topBar.hideAll();
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			contentViews.Add(view);
 			topBar.showBackButton(true);
-			extraView.Content = view.getContentView();
-			view.viewInFocus(topBar);
+			//extraView.Content = view.getContentView();
+
+
+			extraViews.Add(view.getContentView());
+			extraGrid.Children.Add(extraViews[extraViews.Count - 1]);
+			//extraViews[extraViews.Count - 1].TranslationX = App.coreView.Width;
+			//extraViews[extraViews.Count - 1].Opacity = 0.0;
+			//AnimationController.SlideInAnimation(extraViews[extraViews.Count - 1]);
+			view.viewInFocus(topBar); */
 		}
 
-		public async void setContentViewReplaceCurrent(ViewModelInterface view, int amount)
+		public async void slideInView()
 		{
-			extraGrid.IsVisible = true;
+			//AnimationController.SlideInAnimation(extraViews[extraViews.Count - 1]);
+		}
+
+		public async void setContentViewReplaceCurrent(ViewModelInterface view)
+		{
+			App.tappedPageTest.popView();
+			App.tappedPageTest.pushView(view); 
+			return;
+
+
+			//extraGrid.IsVisible = true;
+			/*
 			topBar.hideAll();
 			if (contentViews.Count > 0) contentViews[contentViews.Count - 1].viewExitFocus();
 			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
@@ -283,8 +312,14 @@ namespace HowlOut
 			}
 			contentViews.Add(view);
 			if (contentViews.Count > 1) topBar.showBackButton(true);
-			extraView.Content = view.getContentView();
-			view.viewInFocus(topBar);
+			//extraView.Content = view.getContentView();
+
+
+			extraGrid.Children.Remove(extraViews[extraViews.Count - 1]);
+			extraViews.Remove(extraViews[extraViews.Count - 1]);
+			extraViews.Add(view.getContentView());
+
+			view.viewInFocus(topBar);*/
 		}
 
 		public void addConversationViewToActiveList(ConversationView convView)
@@ -307,7 +342,7 @@ namespace HowlOut
 			IsLoading(false);
 		}
 
-		public void returnToPreviousView()
+		public async void returnToPreviousView()
 		{
 			try
 			{
@@ -335,16 +370,6 @@ namespace HowlOut
 						specialView = true;
 					}
 				}
-				/*
-				else if (contentViews[contentViews.Count - 1] is CreateView)
-				{
-					var cv = (contentViews[contentViews.Count - 1]) as CreateView;
-					bool cvReturned = cv.returnCreateView();
-					if (cvReturned)
-					{
-						specialView = true;
-					}
-				} */
 				else if (contentViews[contentViews.Count - 1] is WeShareOverView)
 				{
 					var expenShareView = contentViews[contentViews.Count - 1] as WeShareOverView;
@@ -354,9 +379,6 @@ namespace HowlOut
 						specialView = true;
 					}
 				}
-
-
-
 				if (!specialView)
 				{
 					int count = contentViews.Count;
@@ -364,20 +386,35 @@ namespace HowlOut
 					{
 						try
 						{
-							contentViews[contentViews.Count - 1].viewExitFocus();
+							//contentViews[contentViews.Count - 1].viewExitFocus();
+
+							await AnimationController.SlideOutAnimation(extraViews[extraViews.Count - 1]);
+
+							extraGrid.Children.RemoveAt(extraViews.Count - 1);
+							extraViews.RemoveAt(extraViews.Count - 1);
+
+							contentViews.RemoveAt(contentViews.Count - 1);
+							//ViewModelInterface oldView = contentViews[contentViews.Count - 1];
+
 							if (count == 1)
 							{
 								extraGrid.IsVisible = false;
-								extraView.Content = null;
+								//extraView.Content = null;
+								extraViews = new List<ContentView>();
+								try { while (true) extraGrid.Children.RemoveAt(0); } catch (Exception ex) {}
+								/*
+
 								topBar.hideAll();
 								contentViews = new List<ViewModelInterface>();
 								DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
-								lastCoreViewInterface.viewInFocus(topBar);
+								lastCoreViewInterface.viewInFocus(topBar);*/
 							}
-							else {
-								contentViews.RemoveAt(contentViews.Count - 1);
-								ViewModelInterface oldView = contentViews[contentViews.Count - 1];
+							else 
+							{
 
+
+
+								/*
 								if (oldView is FilterSearch)
 								{
 									oldView.reloadView();
@@ -387,7 +424,7 @@ namespace HowlOut
 								{
 									App.coreView.setContentViewWithQueue(oldView);
 									contentViews.RemoveAt(contentViews.Count - 1);
-								}
+								}*/
 							}
 						}
 						catch (Exception e) { }
@@ -401,17 +438,17 @@ namespace HowlOut
 		{
 			loading.IsVisible = show;
 		}
-
+		/*
 		protected override bool OnBackButtonPressed()
 		{
 			returnToPreviousView();
 			return true;
-		}
-
+		}*/
+		/*
 		public async Task<Profile> GetLoggedInProfile()
 		{
 			return await _dataManager.ProfileApiManager.GetLoggedInProfile();
-		}
+		}*/
 
 		public async Task GoToSelectedProfile(string id)
 		{
@@ -449,7 +486,7 @@ namespace HowlOut
 			IsLoading(false);
 		}
 
-		public async Task displayAlertMessage(string title, string message, string buttonText)
+		public async Task displayAlertMessage(string title, string message, string buttonText, StackLayout layout)
 		{
 			optionOne.IsVisible = false;
 			optionTwo.IsVisible = false;
@@ -458,10 +495,10 @@ namespace HowlOut
 			WarningTitle.Text = title;
 			WarningDescription.Text = message;
 			optionOK.Text = buttonText;
-			await DisplayAlert();
+			await DisplayAlert(layout);
 		}
 
-		public async Task<bool> displayConfirmMessage(string title, string message, string confirm, string decline)
+		public async Task<bool> displayConfirmMessage(string title, string message, string confirm, string decline, StackLayout layout)
 		{
 			optionOne.IsVisible = true;
 			optionTwo.IsVisible = true;
@@ -471,15 +508,16 @@ namespace HowlOut
 			WarningDescription.Text = message;
 			optionOne.Text = decline;
 			optionTwo.Text = confirm;
-			var answer = await DisplayAlert();
+			var answer = await DisplayAlert(layout);
 			return answer;
 		}
 
-		async Task<bool> DisplayAlert()
+		async Task<bool> DisplayAlert(StackLayout layout)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			bool answer = false;
 			WarningLayout.IsVisible = true;
+			layout.Children.Add(layout);
 			closeWarning.Clicked += (sender, e) =>
 			{
 				answer = false;
@@ -509,6 +547,7 @@ namespace HowlOut
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			bool answer = false;
+			App.tappedPageTest.pushView(ShareLayout);
 			ShareLayout.IsVisible = true;
 			inviteBtn = new Button() { WidthRequest = 60, BorderRadius = 30, BorderWidth = 2, BorderColor = App.HowlOut };
 			shareGrid.Children.Add(inviteBtn, 1, 0);
@@ -529,11 +568,11 @@ namespace HowlOut
 			CalenderBtn.Clicked += async (sender, e) =>
 			{
 				ShareLayout.IsVisible = false;
-				bool success = await App.coreView.displayConfirmMessage("Add Event To Calendar", "Would you like to add this event to your calendar ?", "yes", "no");
+				bool success = await App.rootPage.displayConfirmMessage("Add Event To Calendar", "Would you like to add this event to your calendar ?", "yes", "no");
 				if (success)
 				{
 					success = await DependencyService.Get<SocialController>().addEventToCalendar(eve);
-					if (!success) await App.coreView.displayAlertMessage("Error", "An error occured and event was not added to calendar", "ok");
+					if (!success) await App.rootPage.displayAlertMessage("Error", "An error occured and event was not added to calendar", "ok");
 				}
 			};
 			MailBtn.Clicked += (sender, e) =>
@@ -555,10 +594,12 @@ namespace HowlOut
 			return answer;
 		}
 
-		public async Task<bool> DisplayOptions(List<Action> actions, List<string> titles, List<string> imageSources)
+		public async Task<bool> DisplayOptions(List<Action> actions, List<string> titles, List<string> imageSources, StackLayout layout)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			bool answer = false;
+			layout.IsVisible = true;
+			layout.Children.Add(optionLayout);
 			optionLayout.IsVisible = true;
 			optionLayoutList.TranslationX = 250;
 			optionLayoutList.TranslateTo(0, 0, 250, null);
@@ -592,54 +633,11 @@ namespace HowlOut
 			await tcs.Task;
 			await optionLayoutList.TranslateTo(250, 0, 250, null);
 			optionLayout.IsVisible = false;
+			layout.IsVisible = false;
 			optionLayoutList.Children.Clear();
 			return answer;
 		}
 
-		public void setHowlsNoti(int i)
-		{
-			if (i > 0)
-			{
-				bottomBar.homeNoti.IsVisible = true;
-				bottomBar.homeNoti.Text = i + "";
-
-				notiButton.IsVisible = true;
-				notiButton.Text = i + "";
-			}
-			else if (i < 0)
-			{
-				bottomBar.homeNoti.IsVisible = true;
-				bottomBar.homeNoti.Text = int.Parse(bottomBar.homeNoti.Text) + 1 + "";
-
-				notiButton.IsVisible = true;
-				notiButton.Text = int.Parse(bottomBar.homeNoti.Text) + 1 + "";
-			}
-			else {
-				bottomBar.homeNoti.IsVisible = false;
-				bottomBar.homeNoti.Text = 0 + "";
-
-				notiButton.IsVisible = false;
-				notiButton.Text = 0 + "";
-			}
-		}
-
-		public void setConversationsNoti(int i)
-		{
-			if (i > 0)
-			{
-				bottomBar.conversationNoti.IsVisible = true;
-				bottomBar.conversationNoti.Text = i + "";
-			}
-			else if (i < 0)
-			{
-				bottomBar.conversationNoti.IsVisible = true;
-				bottomBar.conversationNoti.Text = int.Parse(bottomBar.conversationNoti.Text) + 1 + "";
-			}
-			else {
-				bottomBar.conversationNoti.IsVisible = false;
-				bottomBar.conversationNoti.Text = 0 + "";
-			}
-		}
 
 		protected override void OnSizeAllocated(double width, double height)
 		{

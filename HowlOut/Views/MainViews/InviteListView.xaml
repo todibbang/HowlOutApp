@@ -3,25 +3,25 @@
 		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions" Padding="0,0,0,0" 
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid BackgroundColor="{DynamicResource HowlOutBackground}" Padding="0,65,0,72">
+		<Grid BackgroundColor="{DynamicResource HowlOutBackground}" Padding="0,65,0,0">
 
              <Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="20"/>
 				<RowDefinition Height="1*"/>
 				<RowDefinition Height="20"/>
 				<RowDefinition Height="3*"/>
-				<RowDefinition Height="50"/>
 			</Grid.RowDefinitions>
-
+			<!--
 			<StackLayout IsVisible="false" x:Name="titleOptionLayout" Padding="10,0,10,0" Orientation="Horizontal">
 				<Label Text="Title:" WidthRequest="100" VerticalOptions="Center"/>
-				<local:CustomEntry Placeholder="Title..." HorizontalOptions="FillAndExpand" Text="" x:Name="titleOption"/>
-			</StackLayout>
 
-			<StackLayout Grid.Row="1" IsVisible="false" x:Name="toolBoxOptionsLayout" Padding="10,0,10,0" Orientation="Horizontal">
-				<Label Text="Creating:" WidthRequest="100" VerticalOptions="Center"/>
+			</StackLayout> -->
+
+			<local:CustomEntry Placeholder="Title..." HorizontalOptions="FillAndExpand" Text="" x:Name="titleOption" BackgroundColor="White"/>
+
+			<StackLayout Grid.Row="0" IsVisible="false" x:Name="toolBoxOptionsLayout" Padding="10,0,10,0" Orientation="Horizontal">
+				<Label Text="Creating:" WidthRequest="70" VerticalOptions="Center"/>
 				<local:CustomPicker Title="Conversation" HasBorder="true" TextColor="{DynamicResource NormalTextColor}" VerticalOptions="CenterAndExpand" x:Name="toolBoxOptions" HorizontalOptions="FillAndExpand">
 					<local:CustomPicker.Items>
 			            <x:String>Conversation</x:String> 
@@ -32,8 +32,8 @@
 				</local:CustomPicker>
 			</StackLayout>
 			
-			<Label Text="People Added" Grid.Row="2" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
-			<ListView x:Name="addedToConversationList" Grid.Row="3"
+			<Label Text="People Added" Grid.Row="1" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
+			<ListView x:Name="addedToConversationList" Grid.Row="2"
 			HasUnevenRows="true"
 			InputTransparent="false"
 			CachingStrategy="RecycleElement"
@@ -62,8 +62,8 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-			<Label Text="Friends" Grid.Row="4" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
-			<ListView x:Name="profilesToBeAdded" Grid.Row="5"
+			<Label Text="Friends" Grid.Row="3" TextColor="{DynamicResource NormalTextColor}" HorizontalOptions="Center"/>
+			<ListView x:Name="profilesToBeAdded" Grid.Row="4"
 			HasUnevenRows="true"
 			InputTransparent="false"
 			CachingStrategy="RecycleElement"
@@ -92,9 +92,9 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <StackLayout Grid.Row="6" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20">
+            <StackLayout Grid.Row="4" x:Name="searchSpecific" Orientation="Horizontal" VerticalOptions ="EndAndExpand" HorizontalOptions="CenterAndExpand" Spacing="20" IsVisible="false">
 				<Button x:Name="cancelBtn" Text="Cancel" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
-				<Button x:Name="addBtn" Text="Invite" HorizontalOptions="CenterAndExpand" WidthRequest="100" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
+				<Button x:Name="addBtn" Text="Invite" HorizontalOptions="End" WidthRequest="70" HeightRequest="30" BackgroundColor="Transparent" TextColor="White" FontAttributes="Bold" FontSize="14" BorderColor="White" BorderWidth="1"></Button>
 				<!-- <local:FacebookSendButton WidthRequest="100" BackgroundColor="Blue"/> -->
 			</StackLayout>
 			

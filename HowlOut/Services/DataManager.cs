@@ -127,10 +127,10 @@ namespace HowlOut
 			if (success) {
 				App.userProfile = await ProfileApiManager.GetLoggedInProfile ();
 				await loadUpdatedProfile(profile);
-				App.coreView.setContentViewReplaceCurrent(new InspectController(profile), 1);
-				App.coreView.updateMainViews(4);
+				App.coreView.setContentViewReplaceCurrent(new InspectController(profile));
+				//App.coreView.updateMainViews(4);
 			} else {
-				await App.coreView.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
+				await App.rootPage.displayAlertMessage ("Error", "Something happened and the friend request was not sent, try again.", "Ok");
 			}
 			return success;
 		}
@@ -140,7 +140,7 @@ namespace HowlOut
 			bool success = await EventApiManager.InviteProfilesToEvent(eve.EventId, profiles);
 			if (!success)
 			{
-				await App.coreView.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
+				await App.rootPage.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
 				return false;
 			}
 			else {
@@ -158,11 +158,11 @@ namespace HowlOut
 				if (attendOrUnattend)
 				{
 					action = "You are about to join an event, continue?";
-					Continue = await App.coreView.displayConfirmMessage("Join", action, "Yes", "No");
+					Continue = await App.rootPage.displayConfirmMessage("Join", action, "Yes", "No");
 				}
 				else {
 					action = "You are about to leave an event, continue?";
-					Continue = await App.coreView.displayConfirmMessage("Leave", action, "Yes", "No");
+					Continue = await App.rootPage.displayConfirmMessage("Leave", action, "Yes", "No");
 				}
 			}
 			else {
@@ -175,15 +175,15 @@ namespace HowlOut
 				bool success = await EventApiManager.AttendOrTrackEvent(id, attendOrUnattend, joinOrTrack);
 				if (!success)
 				{
-					await App.coreView.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
+					await App.rootPage.displayAlertMessage("Error", "An error happened and one or more profiles was not invited", "Ok");
 					return false;
 				}
 				else {
 					
 					if (!joinOrTrack)
 					{
-						if (attendOrUnattend) App.coreView.displayAlertMessage("Followed", "Event followed", "OK");
-						else App.coreView.displayAlertMessage("Unfollowed", "Event unfollowed", "OK");
+						if (attendOrUnattend) App.rootPage.displayAlertMessage("Followed", "Event followed", "OK");
+						else App.rootPage.displayAlertMessage("Unfollowed", "Event unfollowed", "OK");
 					}
 
 					App.coreView.reloadCurrentView();
@@ -194,7 +194,7 @@ namespace HowlOut
 					return true;
 				}
 			}
-			App.coreView.GetLoggedInProfile();
+			ProfileApiManager.GetLoggedInProfile();
 			return Continue;
 		}
 
@@ -205,7 +205,7 @@ namespace HowlOut
 			bool success = await GroupApiManager.InviteDeclineToGroup(group.GroupId, true, profiles);
 			if (!success)
 			{
-				await App.coreView.displayAlertMessage("Error", "An error happened", "Ok");
+				await App.rootPage.displayAlertMessage("Error", "An error happened", "Ok");
 				return false;
 			}
 			else {

@@ -57,7 +57,7 @@ namespace HowlOut
 					App.coreView.GoToSelectedConversation(modelId);
 				}
 				else {
-					App.coreView.setConversationsNoti(-1);
+					setConversationsNoti(-1);
 				}
 			}
 
@@ -165,7 +165,7 @@ namespace HowlOut
 				}
 			}
 			await App.coreView.notifications.UpdateNotifications(false);
-			if (modelType == NotificationModelType.Event) { App.coreView.joinedEvents.UpdateList(false, ""); }
+			if (modelType == NotificationModelType.Event) { /*App.coreView.joinedEvents.UpdateList(false, "");*/ }
 			else if (modelType == NotificationModelType.ProfileConversation)
 			{
 				await App.coreView.yourConversatios.UpdateConversations(false);
@@ -212,6 +212,55 @@ namespace HowlOut
 				{
 					Plugin.LocalNotifications.CrossLocalNotifications.Current.Show("Event: " + eve.Title, eve.Title + " is starting in 1 day!", (int.Parse(eve.EventId) * 2) + 1, eve.StartDate.ToLocalTime().AddDays(-1));
 				}
+			}
+		}
+
+
+		public void setHowlsNoti(int i)
+		{
+			var bottomBar = App.coreView.btmBar;
+			var notiButton = App.coreView.notiButton;
+			if (i > 0)
+			{
+				bottomBar.homeNoti.IsVisible = true;
+				bottomBar.homeNoti.Text = i + "";
+
+				notiButton.IsVisible = true;
+				notiButton.Text = i + "";
+			}
+			else if (i < 0)
+			{
+				bottomBar.homeNoti.IsVisible = true;
+				bottomBar.homeNoti.Text = int.Parse(bottomBar.homeNoti.Text) + 1 + "";
+
+				notiButton.IsVisible = true;
+				notiButton.Text = int.Parse(bottomBar.homeNoti.Text) + 1 + "";
+			}
+			else {
+				bottomBar.homeNoti.IsVisible = false;
+				bottomBar.homeNoti.Text = 0 + "";
+
+				notiButton.IsVisible = false;
+				notiButton.Text = 0 + "";
+			}
+		}
+
+		public void setConversationsNoti(int i)
+		{
+			var bottomBar = App.coreView.btmBar;
+			if (i > 0)
+			{
+				bottomBar.conversationNoti.IsVisible = true;
+				bottomBar.conversationNoti.Text = i + "";
+			}
+			else if (i < 0)
+			{
+				bottomBar.conversationNoti.IsVisible = true;
+				bottomBar.conversationNoti.Text = int.Parse(bottomBar.conversationNoti.Text) + 1 + "";
+			}
+			else {
+				bottomBar.conversationNoti.IsVisible = false;
+				bottomBar.conversationNoti.Text = 0 + "";
 			}
 		}
 	}

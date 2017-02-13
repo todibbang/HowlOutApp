@@ -75,7 +75,7 @@
 				</StackLayout>
 			</ScrollView>
 
-			<StackLayout Padding="20,0,20,100" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+			<StackLayout Padding="20,0,20,20" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
 				<Button Text="Create Group" x:Name="launchButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 				<Button Text="Disband Group" x:Name="cancelButton" HorizontalOptions="CenterAndExpand" WidthRequest="190" BorderRadius="22" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" FontAttributes="Bold" FontSize="20"></Button>
 			</StackLayout>

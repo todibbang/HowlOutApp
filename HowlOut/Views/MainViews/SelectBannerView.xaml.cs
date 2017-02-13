@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -113,6 +114,12 @@ namespace HowlOut
 		public void viewInFocus(UpperBar bar)
 		{
 
+		}
+
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			return ub;
 		}
 
 		public void reloadView() { }

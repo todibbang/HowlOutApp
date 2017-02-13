@@ -21,7 +21,7 @@
 			</Grid>
 
 			<Grid Grid.Row="0" Grid.RowSpan="4" x:Name="extraGrid" IsVisible="false">
-				<ContentView x:Name="extraView" BackgroundColor="{DynamicResource HowlOutBackground}" />
+				<!-- <ContentView x:Name="extraView" BackgroundColor="{DynamicResource HowlOutBackground}" /> -->
 			</Grid>
 
 			 <StackLayout Grid.Row="3" Padding="0,0,0,0" BackgroundColor="#cc000000">
@@ -35,7 +35,7 @@
 			<ActivityIndicator x:Name="loading" Grid.Row="0" Grid.RowSpan="4" BackgroundColor="#cc000000" Color="White" IsRunning="true" IsVisible="true"/>
 
 
-			<Grid Grid.Row="0" Grid.RowSpan="4"  x:Name="optionLayout" IsVisible="false">
+			<Grid Grid.Row="0" Grid.RowSpan="4"  x:Name="optionLayout" IsVisible="false" HeightRequest="2000">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="200"/>
@@ -46,7 +46,7 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<Button Grid.RowSpan="3" Grid.ColumnSpan="2" BackgroundColor="#70000000" x:Name="closeOptions"/>
+				<Button Grid.RowSpan="2" Grid.ColumnSpan="2" BackgroundColor="#70000000" x:Name="closeOptions"/>
 
 				<StackLayout Grid.Column="1" Grid.Row="1" x:Name="optionLayoutList" BackgroundColor="White" Padding="10,0,0,0" Spacing="0" VerticalOptions="FillAndExpand"/>
 			</Grid>

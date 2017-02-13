@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" x:Class="HowlOut.VoteItemEditTemplate">
+	<ContentView.Content>
+		<Grid x:Name="thisGrid" Padding="10,0,10,0" HeightRequest="80">
+			<local:CustomEditor Grid.ColumnSpan="7" Text="{Binding VoteDescription}" FontSize="Small" VerticalOptions="FillAndExpand" BackgroundColor="White"/>
+			
+			<local:IconView Grid.Column="7" Source="ic_remove.png" Foreground="{DynamicResource HowlOutRed}" HeightRequest="20" WidthRequest="20" x:Name="removeIcon"/>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -13,6 +14,13 @@ namespace HowlOut
 		{
 			bar.setNavigationlabel("Expense");
 		}
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			ub.setNavigationlabel("Expense");
+			return ub;
+		}
+
 		public void viewExitFocus() { }
 		public ContentView getContentView() { return this; }
 

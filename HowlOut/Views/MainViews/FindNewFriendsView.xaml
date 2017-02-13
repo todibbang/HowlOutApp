@@ -4,14 +4,14 @@
 	<ContentView.Content>
 		<Grid RowSpacing="0" ColumnSpacing="0" Padding="0,55,0,0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="40"/>
+				<RowDefinition Height="0"/>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
 				<!-- <RowDefinition Height="40"/>
 				<RowDefinition Height="40"/> -->
 			</Grid.RowDefinitions>
 
-			<Grid BackgroundColor="#90000000" Padding="20,2,20,6" HorizontalOptions="FillAndExpand">
+			<Grid Padding="0,2,0,6" HorizontalOptions="FillAndExpand" x:Name="topGrid">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
@@ -25,9 +25,9 @@
 			
 
 			
-			<ContentView Grid.Row="1" Grid.RowSpan="2" x:Name="carouselView" Padding="0,-20,0,55"/>
+			<ContentView Grid.Row="2" x:Name="carouselView" Padding="0,0,0,55"/>
 
-			<SearchBar Grid.Row="1" x:Name="searchBar" HeightRequest="40" BackgroundColor="#70000000" IsVisible="true" Placeholder="Find new friends" CancelButtonColor="{DynamicResource HowlOut}"/>
+			<SearchBar Grid.Row="1" x:Name="searchBar" HeightRequest="40" BackgroundColor="#90000000" IsVisible="true" Placeholder="Find new friends" CancelButtonColor="{DynamicResource HowlOut}"/>
 
 
 			

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" x:Class="HowlOut.ToDoItemEditTemplate">
+	<ContentView.Content>
+		<Grid x:Name="thisGrid" Padding="10,0,20,0" HeightRequest="120">
+			<local:CustomEditor Grid.RowSpan="2" Grid.ColumnSpan="7" Text="{Binding OptionDescription}" FontSize="Small" VerticalOptions="FillAndExpand" BackgroundColor="White" Placeholder="Task description here..."/>
+			<local:IconView Grid.RowSpan="2" Grid.Column="7" Source="ic_remove.png" Foreground="{DynamicResource HowlOutRed}" HeightRequest="20" WidthRequest="20" x:Name="removeIcon"/>
+
+			<Label Grid.Row="2" Grid.ColumnSpan="6" Text="People needed for task" />
+			<Picker Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="2" Title="1" x:Name="profilesNeededPicker">
+				<Picker.Items>
+		            <x:String>1</x:String> 
+					<x:String>2</x:String>
+					<x:String>3</x:String>
+					<x:String>4</x:String>
+					<x:String>5</x:String>
+					<x:String>6</x:String>
+					<x:String>7</x:String>
+					<x:String>8</x:String>
+					<x:String>9</x:String>
+					<x:String>10</x:String>
+		        </Picker.Items>
+			</Picker>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

@@ -11,6 +11,12 @@ namespace HowlOut
 		public void viewInFocus(UpperBar bar) {
 			bar.setNavigationlabel("Expense");
 		}
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			ub.setNavigationlabel("Expense");
+			return ub;
+		}
 		public void viewExitFocus() { }
 		public ContentView getContentView() { return this; }
 

@@ -18,9 +18,10 @@ namespace HowlOut
 
 			backButton.Clicked += async (sender, e) =>
 			{
-				await backBtn.ScaleTo(0.7, 50, Easing.Linear);
-				await backBtn.ScaleTo(1, 50, Easing.Linear);
-				App.coreView.returnToPreviousView();
+				//await backBtn.ScaleTo(0.7, 50, Easing.Linear);
+				//await backBtn.ScaleTo(1, 50, Easing.Linear);
+				//App.coreView.returnToPreviousView();
+				App.tappedPageTest.popView();
 			};
 
 
@@ -32,6 +33,11 @@ namespace HowlOut
 			searchBarDelete.Clicked += (sender, e) =>
 			{
 				searchBar.Text = "";
+			};
+
+			leftButton.Clicked += (sender, e) =>
+			{
+				App.rootPage.OpenAsync();
 			};
 
 			lateSetup();
@@ -84,25 +90,27 @@ namespace HowlOut
 					scrollView.ScrollToAsync(scrollView.X, 0, true);
 				}
 			};
-
+			hideAll();
 		}
 
 		async void lateSetup()
 		{
 			await Task.Delay(100);
-			notiBadg.Children.Add(App.coreView.notiButton);
-			hideAll();
+			//notiBadg.Children.Add(App.coreView.notiButton);
+			//hideAll();
 		}
 
 		public void hideAll()
 		{
-			thisGrid.IsVisible = false;
+			//thisGrid.IsVisible = false;
 			showBackButton(false);
 			scrollView = null;
-			App.coreView.TopBarLayout.IsVisible = false;
+			//App.coreView.TopBarLayout.IsVisible = false;
 			rightImg.IsVisible = false;
 			rightButton.IsVisible = false;
-
+			leftImg.IsVisible = false;
+			leftButton.IsVisible = false;
+			centerLayout.IsVisible = false;
 			notiLayout.IsVisible = false;
 
 			searchBarLayout.IsVisible = false;
@@ -172,11 +180,28 @@ namespace HowlOut
 			App.coreView.TopBarLayout.IsVisible = true;
 			thisGrid.Children.Remove(rightButton);
 
-			rightButton = new Button();
+			rightButton = new Button() { WidthRequest=50 };
 			thisGrid.Children.Add(rightButton, 2, 0);
 
 			rightImg.Source = imageSource;
 			return rightButton;
+		}
+
+		public void showLeftButton()
+		{
+			App.coreView.TopBarLayout.IsVisible = true;
+			thisGrid.IsVisible = true;
+			leftImg.IsVisible = true;
+			leftButton.IsVisible = true;
+		}
+
+		public StackLayout showCenterLayout()
+		{
+			App.coreView.TopBarLayout.IsVisible = true;
+			thisGrid.IsVisible = true;
+			centerLayout = new StackLayout() { VerticalOptions= LayoutOptions.EndAndExpand, Padding = new Thickness(0,-10,0,4) };
+			thisGrid.Children.Add(centerLayout, 1, 0);
+			return centerLayout;
 		}
 
 		public void showBackButton(bool active)
@@ -185,6 +210,7 @@ namespace HowlOut
 			backBtn.IsVisible = active;
 			backButton.IsVisible = active;
 			thisGrid.IsVisible = active;
+
 		}
 
 		public Button setNavigationlabel(string label)

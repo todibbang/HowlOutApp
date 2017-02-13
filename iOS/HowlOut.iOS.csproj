@@ -29,7 +29,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>2d8b9d26-1223-472a-accc-c13a005877cc</CodesignProvision>
+    <CodesignProvision>7202a40d-9cd2-462a-b932-009bb0e12ada</CodesignProvision>
     <CodesignEntitlements>Info.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -243,6 +243,7 @@
     <Compile Include="Renderers\UserNotificationCenterDelegate.cs" />
     <Compile Include="Renderers\CustomMapRenderer.cs" />
     <Compile Include="Renderers\CustomMKAnnotationView.cs" />
+    <Compile Include="Renderers\CustomLabelRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\.DS_Store" />
@@ -342,6 +343,22 @@
     <BundleResource Include="Resources\ic_expense_share.png" />
     <BundleResource Include="Resources\ic_to_do.png" />
     <BundleResource Include="Resources\ic_explore_events.png" />
+    <BundleResource Include="Resources\ic_person_test.png" />
+    <BundleResource Include="Resources\ic_howlout.png" />
+    <BundleResource Include="Resources\ic_add_circle_white_2x.png" />
+    <BundleResource Include="Resources\ic_add_circle_white_3x.png" />
+    <BundleResource Include="Resources\ic_add_circle_white.png" />
+    <BundleResource Include="Resources\ic_more_vert_white%402x.png" />
+    <BundleResource Include="Resources\ic_more_vert_white%403x.png" />
+    <BundleResource Include="Resources\ic_message_white_2x.png" />
+    <BundleResource Include="Resources\ic_message_white_3x.png" />
+    <BundleResource Include="Resources\ic_message_white.png" />
+    <BundleResource Include="Resources\ic_public_white_2x.png" />
+    <BundleResource Include="Resources\ic_public_white_3x.png" />
+    <BundleResource Include="Resources\ic_public_white.png" />
+    <BundleResource Include="Resources\ic_done_white.png" />
+    <BundleResource Include="Resources\transparent.png" />
+    <BundleResource Include="Resources\ic_remove.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookios">

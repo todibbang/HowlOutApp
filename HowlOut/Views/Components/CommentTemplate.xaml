@@ -4,10 +4,7 @@
 			 xmlns:local="clr-namespace:HowlOut;assembly=HowlOut"
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	<ContentView.Content>
-
-
-
-		<StackLayout Spacing="0" Padding="0" >
+ 		<StackLayout Spacing="0" Padding="0" >
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="5"/>

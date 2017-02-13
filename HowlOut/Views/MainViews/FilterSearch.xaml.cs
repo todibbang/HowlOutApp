@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 
@@ -74,6 +74,12 @@ namespace HowlOut
 		public void viewInFocus(UpperBar bar)
 		{
 			bar.setNavigationlabel("Search Preferences");
+		}
+
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			return ub;
 		}
 
 		public void reloadView()

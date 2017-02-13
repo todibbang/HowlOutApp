@@ -12,7 +12,7 @@
 			<StackLayout Grid.Row="0" Grid.RowSpan="4" x:Name="mapLayout"> </StackLayout>
 
 			<StackLayout Grid.Row="1" x:Name="searchLayout" HeightRequest="40" Padding="0" >
-				<SearchBar x:Name="searchBar" HeightRequest="40" BackgroundColor="#70000000" CancelButtonColor="{DynamicResource HowlOut}"/>
+				<SearchBar x:Name="searchBar" HeightRequest="40" BackgroundColor="#90000000" CancelButtonColor="{DynamicResource HowlOut}"/>
 			</StackLayout>
 
 			<ListView x:Name="searchList" HeightRequest="0" Grid.Row="2">
@@ -23,7 +23,7 @@
 			    </ListView.ItemTemplate>
 			</ListView>
 				
-			<StackLayout Grid.Row="3" x:Name="selectLayout" HeightRequest="50" Padding="5" TranslationY="-70"></StackLayout>
+			<StackLayout Grid.Row="3" x:Name="selectLayout" HeightRequest="50" Padding="5" TranslationY="-20"></StackLayout>
 		</Grid>
 	</ContentView.Content>
 </ContentView>

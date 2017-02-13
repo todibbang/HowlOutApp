@@ -99,9 +99,16 @@ namespace HowlOut
 			searchList.ItemSelected += OnItemSelected;
 		}
 
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			if (create) ub.setNavigationlabel("Select location for event");
+			return ub;
+		}
+
 		public void viewInFocus(UpperBar bar)
 		{
-			if (create) App.coreView.topBar.setNavigationlabel("Select location for event");
+			//if (create) App.coreView.topBar.setNavigationlabel("Select location for event");
 		}
 
 		public void viewExitFocus() { }
@@ -142,7 +149,7 @@ namespace HowlOut
 
 					//App.coreView.exploreEventCategories.update();
 					App.coreView.exploreEvents.UpdateList(true, "");
-					App.coreView.joinedEvents.UpdateList(true, "");
+					//App.coreView.joinedEvents.UpdateList(true, "");
 				};
 			}
 			else {

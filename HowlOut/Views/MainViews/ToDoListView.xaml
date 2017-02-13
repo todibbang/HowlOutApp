@@ -3,7 +3,41 @@
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
 		<Grid>
-			<ScrollView Orientation="Both">
+			<ListView x:Name="ToDoList"
+			HasUnevenRows="true"
+			InputTransparent="false"
+			SeparatorVisibility="None"
+			CachingStrategy="RecycleElement"
+			BackgroundColor="Transparent"
+			IsPullToRefreshEnabled="true">
+				<ListView.Header>
+					<StackLayout HeightRequest="60"/>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+                 	 <DataTemplate>
+                      		<ViewCell>
+	                      		<local:ToDoItemTemplate/>
+	                  		</ViewCell>
+                      	</DataTemplate>
+                </ListView.ItemTemplate>	
+           		<ListView.Footer>
+					<StackLayout x:Name="footerLayout"/>
+				</ListView.Footer>
+            </ListView>
+
+			<ScrollView x:Name="ToDoEditScrollView" IsVisible="false">
+				<StackLayout x:Name="ToDoEditList" Padding="0,60,0,0"/>
+			</ScrollView>
+
+			<Button Text="Update" x:Name="updateBtn" HeightRequest="40" WidthRequest="200" VerticalOptions="End" HorizontalOptions="Center" TranslationY="-20" BackgroundColor="{DynamicResource HowlOut}" TextColor="White" IsVisible="false"/>
+
+			<StackLayout x:Name="addNewLayout" Padding="10,0,10,100">
+				<local:IconView x:Name="addNewIcon" Source="ic_add.png" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40"/>
+			</StackLayout>
+			<StackLayout x:Name="optiongrid" IsVisible="false"/>
+
+			
+			<ScrollView Orientation="Both" IsVisible="false">
 				<Grid Padding="0,60,0,60" x:Name="firstGrid">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="0"/>
@@ -24,10 +58,10 @@
 					
 				</Grid>
 			</ScrollView>
-
+			<!--
 			<StackLayout VerticalOptions="End" Padding="30,5,30,75" x:Name="addNewLayout">
-				<!--<Button BackgroundColor="{DynamicResource HowlOut}" Text="Update" TextColor="White" x:Name="addNewLayout"/> -->
-			</StackLayout>
+				<Button BackgroundColor="{DynamicResource HowlOut}" Text="Update" TextColor="White" x:Name="addNewLayout"/> 
+			</StackLayout>  -->
 			
 		</Grid>
 	</ContentView.Content>

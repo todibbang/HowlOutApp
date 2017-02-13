@@ -43,7 +43,9 @@ namespace HowlOut
 			get
 			{
 				if (
+					NotificationType == NotificationType.InvitedToEvent ||
 					NotificationType == NotificationType.InvitedToEventAsOwner ||
+					NotificationType == NotificationType.InvitedToGroup ||
 					NotificationType == NotificationType.InvitedToGroupAsOwner ||
 					NotificationType == NotificationType.RequestedToFriend)
 					return true;

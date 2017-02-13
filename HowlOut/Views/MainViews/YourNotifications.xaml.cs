@@ -25,54 +25,31 @@ namespace HowlOut
 		{
 			InitializeComponent();
 			_dataManager = new DataManager();
-
-			//ProfileFooter = new ContentView() {Padding = new Thickness(0,(App.coreView.Height)*-1,0,0) };
-			//ProfileFooter.Content = new InspectController(App.userProfile);
-			//updateList.Footer = ProfileFooter;
-
 			UpdateNotifications(true);
-
 			updateList.ItemSelected += OnListItemSelected;
 			updateList.Refreshing += async (sender, e) => { await UpdateNotifications(true); };
 
 
 		}
 
-		public void viewInFocus(UpperBar bar)
+		public void viewInFocus(UpperBar bar) { /*App.coreView.topBar.setNavigationlabel("Notifications");*/ }
+		public async Task<UpperBar> getUpperBar()
 		{
-			App.coreView.topBar.setNavigationlabel("Notifications");
-
-			//bar.setNavigationLabel("Notifications", null);
-
-			/*
-			bar.setRightButton("ic_share.png").Clicked += async (sender, e) =>
-			{
-				await App.coreView._dataManager.AttendTrackEvent(eve, false, true);
-			};
-
-			bar.showNewConversationButton(true, App.coreView.profileConversatios); */
+			var ub = new UpperBar();
+			ub.setNavigationlabel("Notifications");
+			return ub;
 		}
-
 		public void reloadView() { }
 		public void viewExitFocus() { }
-
 		public ContentView getContentView() { return this; }
-
-
-		async Task UpdateLists()
-		{
-			await UpdateNotifications(true);
-		} 
 
 		public async Task UpdateNotifications(bool update)
 		{
 			nothingToLoad.IsVisible = false;
-			System.Diagnostics.Debug.WriteLine("Noti - update");
 			//TODO add correct servercall
 			if (update)
 			{
 				notiList = await _dataManager.MessageApiManager.GetNotifications();
-				//App.coreView.updateMainViews(4);
 			}
 			if (notiList == null || notiList.Count == 0)
 			{
@@ -82,7 +59,6 @@ namespace HowlOut
 			}
 			unseenNotifications.Clear();
 
-			//notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
 			notiList = notiList.OrderByDescending(c => c.SendTime).ToList();
 
 			int n = 0;
@@ -119,8 +95,7 @@ namespace HowlOut
 			{
 				notiList.Remove(c);
 			}
-			//notiList.RemoveAll(noti => noti.ModelType == NotificationModelType.ProfileConversation);
-			App.coreView.setHowlsNoti(n);
+			App.notificationController.setHowlsNoti(n);
 
 			ObservableCollection<GroupedNotifications> groupedNotifications = new ObservableCollection<GroupedNotifications>();
 			if (notiList.Count > 0)
@@ -139,17 +114,12 @@ namespace HowlOut
 					monthGroup.Add(notiList[d]);
 					if (d == notiList.Count - 1)
 					{
-						//monthGroup.Add(new Notification() { Footer = true });
 						groupedNotifications.Add(monthGroup);
 					}
 				}
 			}
 			updateList.ItemsSource = groupedNotifications;
 			updateList.IsRefreshing = false;
-
-
-			//updateList.ScrollTo(groupedNotifications[groupedNotifications.Count - 1][groupedNotifications[groupedNotifications.Count - 1].Count-1], groupedNotifications[groupedNotifications.Count-1], ScrollToPosition.End, true);
-			//updateList.ScrollTo(updateList.Footer, ScrollToPosition.Start, true);
 		}
 
 		public async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)

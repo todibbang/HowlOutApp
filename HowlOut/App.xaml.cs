@@ -15,6 +15,7 @@ namespace HowlOut
 {
 	public partial class App : Application
 	{
+		public static RootPage rootPage;
 		public static CoreView coreView;
 		public static NotificationController notificationController = new NotificationController();
 		public static Profile userProfile;
@@ -22,6 +23,10 @@ namespace HowlOut
 		public static bool setPositionManually = false;
 		public static bool alreadyAskedToSetPositionManually = false;
 		DataManager _dataManager;
+
+		//public static ResourceDictionary resourceDictionary { get { return Application.; } }
+
+		public static ResourceDictionary resourceDictionary;
 
 		public static Color HowlOut = Color.FromHex("#ff4bc6b4");
 		public static Color HowlOutFade = Color.FromHex("#ffa9e4db");
@@ -34,6 +39,8 @@ namespace HowlOut
 		public static Action<string> PostSuccessFacebookAction { get; set; }
 
 		public static string serverUri = "https://api.howlout.net/";
+
+		public static TappedPageTest tappedPageTest;
 
 		public interface ISaveAndLoad
 		{
@@ -53,6 +60,8 @@ namespace HowlOut
 		public App()
 		{
 			InitializeComponent();
+
+			resourceDictionary = Resources;
 
 
 			//Eventsfired from the LoginPage to trigger actions here
@@ -230,10 +239,19 @@ namespace HowlOut
 		{
 			MainPage = coreView;
 			userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile();
+			updateRootPage();
+			MainPage = rootPage;
 			coreView.startCoreView();
 
 			_dataManager.UtilityManager.updateLastKnownPosition();
+
+
+
+			//MainPage = tappedPageTest;
 			//coreView.setContentView (new EventView(), "Event");
+			//NavigationPageTest navPage = new NavigationPageTest();
+			//navPage.ToolbarItems.Add(new ToolbarItem("Hey", "ic_me.png", null, ToolbarItemOrder.Default, 0));
+			//MainPage = navPage;    
 
 		}
 
@@ -263,6 +281,15 @@ namespace HowlOut
 		protected override void OnResume()
 		{
 			// Handle when your app resumes
+		}
+		public static void updateRootPage()
+		{
+			tappedPageTest = new TappedPageTest();
+			rootPage = new RootPage(tappedPageTest);
+		}
+		public void SetNewMainPage(Page newMainPage)
+		{
+			MainPage = newMainPage;
 		}
 	}
 }

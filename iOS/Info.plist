@@ -120,5 +120,10 @@
 	<string>HowlOut</string>
 	<key>CFBundleDisplayName</key>
 	<string>HowlOut</string>
+	<key>App Transport Security Settings</key>
+	<dict>
+		<key> Allow Arbitrary Loads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

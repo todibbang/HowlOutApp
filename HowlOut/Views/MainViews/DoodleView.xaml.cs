@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -13,6 +14,12 @@ namespace HowlOut
 		public void viewInFocus(UpperBar bar)
 		{
 			bar.setNavigationlabel("Doodle");
+		}
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			ub.setNavigationlabel("Doodle");
+			return ub;
 		}
 		public void viewExitFocus() { }
 		public ContentView getContentView() { return this; }
@@ -93,6 +100,7 @@ namespace HowlOut
 				conversation.subTypeDictionary["Options"].Remove(tu);
 				headerEntries.Remove(he);
 				Update();
+				reloadView();
 			};
 
 

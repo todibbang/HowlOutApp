@@ -8,7 +8,7 @@
 			<Button HorizontalOptions="FillAndExpand" BackgroundColor="{DynamicResource Shadow}" BorderRadius="8"/>
 			<Grid RowSpacing="0" BackgroundColor="Transparent" Padding="1">
 				<Grid.RowDefinitions >
-					<RowDefinition Height="100"/>
+					<RowDefinition Height="60"/>
 					<RowDefinition Height="30"/>
 					<RowDefinition Height="54"/>
 				</Grid.RowDefinitions>

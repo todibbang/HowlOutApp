@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -18,14 +19,14 @@ namespace HowlOut
 			if (create)
 			{
 				toolBoxOptionsLayout.IsVisible = true;
-				titleOptionLayout.IsVisible = true;
+				//titleOptionLayout.IsVisible = true;
 
 				addBtn.Text = "Create";
 				addBtn.Clicked += async (sender, e) =>
 				{
 					profilesAdded.Add(App.userProfile);
 					App.coreView.IsLoading(true);
-					App.coreView.returnToPreviousView();
+					//App.coreView.returnToPreviousView();
 
 					if (toolBoxOptions.SelectedIndex == 1)
 					{
@@ -103,7 +104,7 @@ namespace HowlOut
 						conv.subTypeDictionary["ToDoList"].Add( Tuple.Create("", "0", "", StatusOptions.NotStarted));
 						conv.subTypeDictionary["ToDoListInfo"].Add(Tuple.Create("1", "0", "", StatusOptions.NotStarted));
 
-						App.coreView.setContentViewWithQueue(new ToDoListView(conv));
+						App.coreView.setContentViewWithQueue(new ToDoListView(conv, false));
 					}
 					else 
 					{
@@ -140,6 +141,19 @@ namespace HowlOut
 			bar.setNavigationlabel("Invite To Event");
 			bar.setNavigationlabel("Add People To Conversation");
 			bar.setNavigationlabel("Create New Conversation");
+		}
+
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+
+			var sl = ub.showCenterLayout();
+			sl.Orientation = StackOrientation.Horizontal;
+			//sl.Children.Add(new IconView() { Source="ic_title.png", Foreground = Color.White, WidthRequest = 30, HeightRequest = 30 });
+			sl.Children.Add(titleOption);
+			sl.Children.Add(addBtn);
+
+			return ub;
 		}
 
 		public void viewExitFocus() { }
@@ -229,7 +243,7 @@ namespace HowlOut
 						App.coreView.returnToPreviousView();
 					}
 					else {
-						App.coreView.displayAlertMessage("Error", "Error inviting.", "Ok");
+						App.rootPage.displayAlertMessage("Error", "Error inviting.", "Ok");
 					}
 				}
 			};
@@ -304,7 +318,7 @@ namespace HowlOut
 						App.coreView.returnToPreviousView();
 					}
 					else {
-						App.coreView.displayAlertMessage("Error", "Error inviting.", "Ok");
+						App.rootPage.displayAlertMessage("Error", "Error inviting.", "Ok");
 					}
 				}
 			};

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -10,6 +11,12 @@ namespace HowlOut
 		public void reloadView() { }
 		public void viewInFocus(UpperBar bar) {
 			bar.setNavigationlabel("Here & Now");
+		}
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			ub.setNavigationlabel("Here & Now");
+			return ub;
 		}
 		public void viewExitFocus() { }
 		public ContentView getContentView() { return this; }

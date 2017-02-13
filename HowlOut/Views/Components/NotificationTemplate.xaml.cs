@@ -10,13 +10,13 @@ namespace HowlOut
 		public NotificationTemplate()
 		{
 			InitializeComponent();
-			/*
+
 
 			TapGestureRecognizer tgr = new TapGestureRecognizer();
 			tgr.Tapped += async (sender, e) =>
 			{
 				Notification noti = (Notification)this.BindingContext;
-				System.Diagnostics.Debug.WriteLine("Accept");
+				System.Diagnostics.Debug.WriteLine(noti.Header + ", " + noti.NotificationType);
 				if (noti.NotificationType == NotificationType.InvitedToEvent)
 				{
 					await App.coreView._dataManager.AttendTrackEvent(noti.ModelId, true, true);
@@ -45,9 +45,17 @@ namespace HowlOut
 			{
 				Notification noti = (Notification)this.BindingContext;
 				System.Diagnostics.Debug.WriteLine("Decline");
+				if (noti.NotificationType == NotificationType.InvitedToEvent)
+				{
+					await App.coreView._dataManager.AttendTrackEvent(noti.ModelId, false, true);
+				}
 				if (noti.NotificationType == NotificationType.InvitedToEventAsOwner)
 				{
 					await App.coreView._dataManager.EventApiManager.AcceptDeclineLeaveEventAsOwner(noti.ModelId, OwnerHandlingType.Decline);
+				}
+				if (noti.NotificationType == NotificationType.InvitedToGroup)
+				{
+					await App.coreView._dataManager.GroupApiManager.RequestAcceptDeclineLeaveGroup(noti.ModelId, GroupApiManager.GroupHandlingType.Decline);
 				}
 				if (noti.NotificationType == NotificationType.InvitedToGroupAsOwner)
 				{
@@ -61,7 +69,7 @@ namespace HowlOut
 			DeclineImg.GestureRecognizers.Add(tgr);
 
 
-		*/
+		
 
 
 

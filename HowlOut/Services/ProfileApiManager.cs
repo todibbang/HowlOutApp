@@ -58,7 +58,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)
@@ -82,7 +82,7 @@ namespace HowlOut
 				var response = await httpClient.PostAsync(new Uri(App.serverUri + uri), new StringContent(content, Encoding.UTF8, "application/json"));
 				if (response.IsSuccessStatusCode) { return true; 
 				}
-				else { await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				else { await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)
@@ -130,7 +130,7 @@ namespace HowlOut
 				}
 				else
 				{
-					//await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					//await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)
@@ -150,7 +150,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex) 
@@ -181,7 +181,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex)

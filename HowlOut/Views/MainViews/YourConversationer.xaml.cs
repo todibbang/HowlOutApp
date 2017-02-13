@@ -42,7 +42,7 @@ namespace HowlOut
 				updateList.Refreshing += async (sender, e) => { await UpdateConversations(true); };
 				if (conversationListType == 1)
 				{
-					CreateButton(type, id);
+					//CreateButton(type, id);
 				}
 				createNewConversation.IsVisible = true;
 
@@ -54,27 +54,34 @@ namespace HowlOut
 			catch (Exception ex) { }
 		}
 
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			CreateButton(modelType, modelId, ub);
+			return ub;
+		}
+
 		public void viewInFocus(UpperBar bar)
 		{
-			CreateButton(modelType, modelId);
+			CreateButton(modelType, modelId, bar);
 		}
 		public void reloadView() { }
 		public void viewExitFocus() { }
 
 		public ContentView getContentView() { return this; }
 
-		async Task CreateButton(ConversationModelType type, string id)
+		async Task CreateButton(ConversationModelType type, string id, UpperBar ub)
 		{
 			try
 			{
+				listHeaderHeight.HeightRequest = 50;
 				if (type != ConversationModelType.Profile)
 				{
-					listHeaderHeight.HeightRequest = 50;
 					//conversationInfo.IsVisible = true;
 					if (type == ConversationModelType.Event)
 					{
 						Event eve = await _dataManager.EventApiManager.GetEventById(id);
-						App.coreView.topBar.setNavigationlabel("Conversations: " + eve.Title);
+						ub.setNavigationlabel("Conversations: " + eve.Title);
 						//conversationInfoImage.Source = eve.ImageSource;
 						//conversationInfoModelLabel.Text = eve.Title;
 					}
@@ -83,8 +90,11 @@ namespace HowlOut
 						Group grp = await _dataManager.GroupApiManager.GetGroup(id);
 						//conversationInfoImage.Source = grp.ImageSource;
 						//conversationInfoModelLabel.Text = grp.Name;
-						App.coreView.topBar.setNavigationlabel("Conversations: " + grp.Name);
+						ub.setNavigationlabel("Conversations: " + grp.Name);
 					}
+				}
+				else {
+					ub.setNavigationlabel("My Conversations");
 				}
 			}
 			catch (Exception ex) { }
@@ -137,6 +147,19 @@ namespace HowlOut
 						SubType = ConversationSubType.Doodle,
 						subTypeDictionary = dick,
 					});
+
+					conList.Add(new Conversation()
+					{
+						ModelType = ConversationModelType.Profile,
+						ConversationID = "12344568",
+						Messages = new List<Comment>(),
+						LastMessage = null,
+						ModelId = "234567",
+						Profiles = new List<Profile>() { App.userProfile },
+						Title = "ToDoList Test",
+						SubType = ConversationSubType.ToDoList,
+						subTypeDictionary = dick,
+					});
 				}
 				if (conList == null)
 				{
@@ -169,7 +192,7 @@ namespace HowlOut
 						n++;
 					}
 				}
-				App.coreView.setConversationsNoti(n);
+				App.notificationController.setConversationsNoti(n);
 
 				ObservableCollection<GroupedConversations> groupedConversations = new ObservableCollection<GroupedConversations>();
 				if (conList.Count > 0)
@@ -217,7 +240,13 @@ namespace HowlOut
 				{
 					if (selectedConversation.SubType != null && selectedConversation.SubType == ConversationSubType.Doodle)
 					{
-						App.coreView.setContentViewWithQueue(new DoodleView(selectedConversation));
+						//App.coreView.setContentViewWithQueue(new DoodleView(selectedConversation));
+						App.coreView.setContentViewWithQueue(new VoteView(null, false));
+					}
+					else if (selectedConversation.SubType != null && selectedConversation.SubType == ConversationSubType.ToDoList)
+					{
+						//App.coreView.setContentViewWithQueue(new DoodleView(selectedConversation));
+						App.coreView.setContentViewWithQueue(new ToDoListView(selectedConversation, false));
 					}
 					else {
 						App.coreView.setContentViewWithQueue(new ConversationView(selectedConversation));
@@ -226,7 +255,7 @@ namespace HowlOut
 				updateList.SelectedItem = null;
 				DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			}
-			catch (Exception ex) { }
+			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.Message); }
 		}
 		public ScrollView getScrollView() { return null; }
 	}

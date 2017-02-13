@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace HowlOut
 {
@@ -8,38 +9,107 @@ namespace HowlOut
 	{
 		public void reloadView()
 		{
-			this.Content = new ToDoListView(conversation);
+			this.Content = new ToDoListView(conversation, Edit);
 		}
-		public void viewInFocus(UpperBar bar)
+		public async Task<UpperBar> getUpperBar()
 		{
-			bar.setNavigationlabel("Expense");
+			var ub = new UpperBar();
+			ub.setNavigationlabel("Doodle");
+			return ub;
 		}
-		public void viewExitFocus() { }
 		public ContentView getContentView() { return this; }
 
-
+		//public List<ToDoItem> ToDoItems;
+		bool Edit;
 		Conversation conversation;
+		public List<Profile> profiles;
 
-		public ToDoListView(Conversation conv)
+		public ToDoListView(Conversation conv, bool edit)
 		{
 			InitializeComponent();
+			Edit = edit;
+			conversation = conv;
+			profiles = conv.Profiles;
+
+			var tap = new TapGestureRecognizer();
+			tap.Tapped += (sender, e) =>
+			{
+				conversation.ToDoItems.Add(new ToDoItem() { ProfilesNeeded = 1 });
+				Edit = true;
+				reloadView();
+				//App.coreView.setContentViewReplaceCurrent(new VoteView(VoteItems, true));
+			};
+			addNewIcon.GestureRecognizers.Add(tap);
+
+			if (conversation.ToDoItems == null)
+			{
+				conversation.ToDoItems = new List<ToDoItem>();
+				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed nr 1.", ProfilesNeeded = 1, ToDoListView = this });
+				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed Test mulighed nr 2.", ProfilesNeeded = 2, ToDoListView = this, Profiles = new List<Profile> { App.userProfile } });
+				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed Test mulighed Test mulighed Test mulighed Test mulighed nr 3.", ProfilesNeeded = 3, ToDoListView = this });
+			}
+			//ToDoList.ItemsSource = conversation.ToDoItems;
+
+
+			if (edit)
+			{
+				ToDoEditScrollView.IsVisible = true;
+				foreach (ToDoItem td in conversation.ToDoItems)
+				{
+					var editVoteItem = new ToDoItemEditTemplate() { BindingContext = td };
+					ToDoEditList.Children.Add(editVoteItem);
+					editVoteItem.deleteTapped.Tapped += (sender, e) =>
+					{
+						conversation.ToDoItems.Remove(td);
+						reloadView();
+						//App.coreView.setContentViewReplaceCurrent(new ToDoListView(conv, true));
+					};
+				}
+				ToDoEditList.Children.Add(addNewLayout);
+
+				updateBtn.IsVisible = true;
+				updateBtn.Clicked += (sender, e) =>
+				{
+					Edit = false;
+					reloadView();
+					//App.coreView.setContentViewReplaceCurrent(new ToDoListView(conv, false));
+				};
+				scrollToBottom();
+			}
+			else {
+
+				ToDoList.ItemsSource = conversation.ToDoItems;
+				footerLayout.Children.Add(addNewLayout);
+			}
+
+			/*
+
+
+
+
 			conversation = conv;
 
 			var enties = new List<CustomEntry>();
 			var profilePicker = new List<CustomPicker>();
-			var statusPicker = new List<CustomPicker>();
+			//var statusPicker = new List<CustomPicker>();
+			var statusButtons = new List<Tuple<StatusOptions, Button>>();
 
 			for (int i = 0; i < conv.subTypeDictionary["ToDoList"].Count; i++)
 			{
 				var t = i;
 
-				var newItem = new StackLayout() { Orientation = StackOrientation.Horizontal, Padding = new Thickness(0, 10, 0, 10) };
+				var newGrid = new Grid() {Padding = new Thickness(0, 10, 0, 10) };
+				newGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+				newGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+				newGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-				enties.Add(new CustomEntry() { WidthRequest = 200, Text = conversation.subTypeDictionary["ToDoList"][t].Item3 });
-				newItem.Children.Add(enties[i]);
+				var leftStack = new StackLayout() { Padding = new Thickness(0, 0, 0, 0), HorizontalOptions = LayoutOptions.FillAndExpand};
+				enties.Add(new CustomEntry() { Text = conversation.subTypeDictionary["ToDoList"][t].Item3, HorizontalOptions = LayoutOptions.FillAndExpand });
+				leftStack.Children.Add(enties[i]);
 
-				profilePicker.Add(new CustomPicker() { Title = "None", WidthRequest=200 });
-				newItem.Children.Add(profilePicker[i]);
+				profilePicker.Add(new CustomPicker() { Title = "None", HorizontalOptions = LayoutOptions.FillAndExpand});
+				leftStack.Children.Add(profilePicker[i]);
+				newGrid.Children.Add(leftStack,0,0);
 				profilePicker[t].Items.Add("None");
 				foreach (Profile p in conversation.Profiles)
 				{
@@ -53,27 +123,48 @@ namespace HowlOut
 				}
 				catch (Exception exc) { }
 
-				statusPicker.Add(new CustomPicker() { Title = "Awaiting", WidthRequest=150 });
-				newItem.Children.Add(statusPicker[i]);
-				for (int en = 4; en < 7; en++)
+
+				Button btn = new Button() { WidthRequest = 40 };
+				if (conversation.subTypeDictionary["ToDoList"][t].Item4 == StatusOptions.NotStarted) { btn.BackgroundColor = Color.Red; };
+				if (conversation.subTypeDictionary["ToDoList"][t].Item4 == StatusOptions.InProgress) { btn.BackgroundColor = Color.Yellow; };
+				if (conversation.subTypeDictionary["ToDoList"][t].Item4 == StatusOptions.Completed) { btn.BackgroundColor = Color.Green; };
+
+				statusButtons.Add(Tuple.Create(conversation.subTypeDictionary["ToDoList"][t].Item4, btn));
+				newGrid.Children.Add(statusButtons[i].Item2,1,0);
+
+				var tub = statusButtons[i];
+				tub.Item2.Clicked += (sender, e) =>
 				{
-					statusPicker[t].Items.Add(((StatusOptions)en).ToString());
-				}
-				try
-				{
-					statusPicker[t].SelectedIndex = Array.IndexOf(Enum.GetValues(typeof(StatusOptions)), conversation.subTypeDictionary["ToDoList"][t].Item4) - 4;
-					statusPicker[t].Title = conversation.subTypeDictionary["ToDoList"][t].Item4.ToString();
-				}
-				catch (Exception exc) { }
+					var Tuple_4 = conversation.subTypeDictionary["ToDoList"][t];
+					var newStatus = StatusOptions.Completed;
+
+					if (Tuple_4.Item4 == StatusOptions.NotStarted) 
+					{
+						newStatus = StatusOptions.InProgress;
+						btn.BackgroundColor = Color.Yellow; 
+					};
+					if (Tuple_4.Item4 == StatusOptions.InProgress)
+					{
+						newStatus = StatusOptions.Completed;
+						btn.BackgroundColor = Color.Green;
+					};
+					if (Tuple_4.Item4 == StatusOptions.Completed)
+					{
+						newStatus = StatusOptions.NotStarted;
+						btn.BackgroundColor = Color.Red;
+					};
+
+					conversation.subTypeDictionary["ToDoList"][t] = Tuple.Create(Tuple_4.Item1, Tuple_4.Item2, Tuple_4.Item3, newStatus);
+				};
 
 
 
 				var delBtn = new Button() { HorizontalOptions = LayoutOptions.EndAndExpand, WidthRequest = 30, HeightRequest = 30, BackgroundColor = Color.Red, Text = "X", TextColor = Color.White, BorderRadius = 15 };
-				newItem.Children.Add(delBtn);
-				specialSettingsGrid.Children.Add(newItem);
+				newGrid.Children.Add(delBtn, 2,0);
+				specialSettingsGrid.Children.Add(newGrid);
 				delBtn.Clicked += (sender, e) =>
 				{
-					updateDic(enties, profilePicker, statusPicker);
+					updateDic(enties, profilePicker, statusButtons);
 					conversation.subTypeDictionary["ToDoList"].Remove(conversation.subTypeDictionary["ToDoList"][t]);
 					reloadView();
 				};
@@ -85,7 +176,7 @@ namespace HowlOut
 			addNewLayout.Children.Add(addNewBtn);
 			addNewBtn.Clicked += (sender, e) =>
 			{
-				updateDic(enties, profilePicker, statusPicker);
+				updateDic(enties, profilePicker, statusButtons);
 
 
 				conversation.subTypeDictionary["ToDoListInfo"][0] =
@@ -96,9 +187,17 @@ namespace HowlOut
 				);
 				reloadView();
 			};
+			*/
 
 		}
-		void updateDic(List<CustomEntry> enties, List<CustomPicker> profilePicker, List<CustomPicker> statusPicker)
+
+		async void scrollToBottom()
+		{
+			await Task.Delay(100);
+			ToDoEditScrollView.ScrollToAsync(addNewLayout, ScrollToPosition.MakeVisible, true);
+		}
+		/* 
+		void updateDic(List<CustomEntry> enties, List<CustomPicker> profilePicker, List<Tuple<StatusOptions, Button>> statusButtons)
 		{
 			for (int i = 0; i < conversation.subTypeDictionary["ToDoList"].Count; i++)
 			{
@@ -110,8 +209,8 @@ namespace HowlOut
 
 
 				var tdlist = conversation.subTypeDictionary["ToDoList"][i];
-				conversation.subTypeDictionary["ToDoList"][i] = Tuple.Create(id, tdlist.Item2, enties[i].Text, (StatusOptions)(statusPicker[i].SelectedIndex + 4));
+				conversation.subTypeDictionary["ToDoList"][i] = Tuple.Create(id, tdlist.Item2, enties[i].Text, statusButtons[i].Item1);
 			}
-		}
+		}*/
 	}
 }

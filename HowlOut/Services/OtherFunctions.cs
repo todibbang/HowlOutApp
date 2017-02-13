@@ -180,7 +180,7 @@ namespace HowlOut
 				SelectEventSenderLayout.Children.Add(uGrid);
 				youBtn.Clicked += async (sender, e) =>
 				{
-					bool success = await App.coreView.displayConfirmMessage("Continue ?", "You have selected yourself to be the owner of this event. Continue creating the event ?", "Confirm", "Cancel");
+					bool success = await App.rootPage.displayConfirmMessage("Continue ?", "You have selected yourself to be the owner of this event. Continue creating the event ?", "Confirm", "Cancel");
 					if (success) tcs.TrySetResult(true);
 				};
 				StackLayout labLayout = new StackLayout();
@@ -210,7 +210,7 @@ namespace HowlOut
 				};
 				testEvent += async (sender, e) =>
 				{
-					bool success = await App.coreView.displayConfirmMessage("Continue ?", "Continue creating the event with the selected group as owner ?", "Confirm", "Cancel");
+					bool success = await App.rootPage.displayConfirmMessage("Continue ?", "Continue creating the event with the selected group as owner ?", "Confirm", "Cancel");
 					if (success) tcs.TrySetResult(true);
 					else {
 						eve.GroupOwner = null;

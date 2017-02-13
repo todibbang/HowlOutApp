@@ -12,6 +12,11 @@ namespace HowlOut
 		}
 		Conversation conversation;
 		public void viewInFocus(UpperBar bar) { }
+		public async Task<UpperBar> getUpperBar()
+		{
+			var ub = new UpperBar();
+			return ub;
+		}
 		public void viewExitFocus() { }
 		public ContentView getContentView() { return this; }
 		double totalExpense = 0.0;
@@ -264,13 +269,13 @@ namespace HowlOut
 				bool cont = false;
 				if (profilesBalances[App.userProfile.ProfileId] < 0.0)
 				{
-					cont = await App.coreView.displayConfirmMessage("Confirm", "Would you like to continue to MobilePay to send " + p.Name + " " + double.Parse(payEntrys[p.ProfileId].Text), "Yes", "No");
+					cont = await App.rootPage.displayConfirmMessage("Confirm", "Would you like to continue to MobilePay to send " + p.Name + " " + double.Parse(payEntrys[p.ProfileId].Text), "Yes", "No");
 					var str = "mobilepay://send?amount=" + double.Parse(payEntrys[p.ProfileId].Text) + "&phone=88888888";
 					if (cont) Device.OpenUri(new Uri(String.Format(str.Replace(",", "."))));
 				}
 				else if (profilesBalances[App.userProfile.ProfileId] > 0.0)
 				{
-					cont = await App.coreView.displayConfirmMessage("Confirm", "Would you like to continue to MobilePay to request " + double.Parse(payEntrys[p.ProfileId].Text) + " from " + p.Name, "Yes", "No");
+					cont = await App.rootPage.displayConfirmMessage("Confirm", "Would you like to continue to MobilePay to request " + double.Parse(payEntrys[p.ProfileId].Text) + " from " + p.Name, "Yes", "No");
 					var str = "mobilepay://request?amount=" + double.Parse(payEntrys[p.ProfileId].Text) + "&phone=88888888";
 					if (cont) Device.OpenUri(new Uri(String.Format(str.Replace(",", "."))));
 				}

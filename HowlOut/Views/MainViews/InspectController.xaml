@@ -5,8 +5,8 @@
 			 xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
 		xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView" Padding="0,0,0,0">	
 	<ContentView.Content>
-
-		<ScrollView Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="scrollView">
+		<Grid>
+			<ScrollView Orientation="Vertical" VerticalOptions="FillAndExpand" x:Name="scrollView">
 
 				<Grid RowSpacing="0" Padding="0,0,0,120"> 
 					<Grid.RowDefinitions>
@@ -32,5 +32,7 @@
 
 				</Grid>
 			</ScrollView>
+			<StackLayout x:Name="optiongrid" IsVisible="false" VerticalOptions="FillAndExpand"/>
+		</Grid>
 	</ContentView.Content>
 </ContentView>

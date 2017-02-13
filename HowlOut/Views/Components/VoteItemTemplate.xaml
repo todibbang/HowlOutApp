@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" x:Class="HowlOut.VoteItemTemplate">
+	<ContentView.Content>
+		<Grid HeightRequest="70" Padding="10,4,10,4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="40"/>
+			</Grid.ColumnDefinitions>
+			<Button BorderWidth="1" Grid.ColumnSpan="2" BorderColor="{DynamicResource HowlOut}" x:Name="thisGrid" BackgroundColor="{Binding BackgroundColor}"/>
+			<StackLayout Padding="5,0,0,0">
+				<local:CustomLabel Text="{Binding VoteDescription}" FontSize="Large" VerticalOptions="Center" HeightRequest="60" VerticalTextAlignment="Center"/>
+			</StackLayout>
+
+			<local:CustomLabel Text="{Binding OptionVoteCount}" Grid.Column="1" VerticalOptions="Center"/>
+			<local:IconView Source="transparent.png" HeightRequest="60" WidthRequest="2000" x:Name="clicked"/>
+		</Grid>
+	</ContentView.Content>
+</ContentView>

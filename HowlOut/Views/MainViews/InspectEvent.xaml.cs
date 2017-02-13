@@ -253,7 +253,7 @@ namespace HowlOut
 					sl.Children.Add(new IconView() { Source = "ic_to_do.png", Foreground = App.HowlOut, HeightRequest = 30, WidthRequest = 30, HorizontalOptions = LayoutOptions.Start });
 					btn.Clicked += (sender, e) =>
 					{
-						App.coreView.setContentViewWithQueue(new ToDoListView(con));
+						App.coreView.setContentViewWithQueue(new ToDoListView(con, false));
 					};
 				}
 				else if (con.SubType == ConversationSubType.ExpenShare)

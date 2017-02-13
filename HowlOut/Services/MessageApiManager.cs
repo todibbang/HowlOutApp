@@ -31,7 +31,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 
 			}
@@ -61,7 +61,7 @@ namespace HowlOut
 			}
 			catch (Exception ex)
 			{
-				await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+				await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 			}
 			return null;
 		}
@@ -118,7 +118,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
@@ -137,7 +137,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
@@ -158,7 +158,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
@@ -182,7 +182,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }
@@ -201,7 +201,7 @@ namespace HowlOut
 				}
 				else
 				{
-					await App.coreView.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
+					await App.rootPage.displayAlertMessage("Connection Error", "Trouble Connecting To Server", "OK");
 				}
 			}
 			catch (Exception ex) { System.Diagnostics.Debug.WriteLine(@"				ERROR {0}", ex.Message); }

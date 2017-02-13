@@ -54,7 +54,7 @@ namespace HowlOut
 				{
 					App.alreadyAskedToSetPositionManually = true;
 
-					bool setManually = await App.coreView.displayConfirmMessage("Location Error", "Error getting location, would you like to set it manually so that you can explore events near you? \nYou can change your location permissions in your phones settings ", "OK", "Not Now");
+					bool setManually = await App.rootPage.displayConfirmMessage("Location Error", "Error getting location, would you like to set it manually so that you can explore events near you? \nYou can change your location permissions in your phones settings ", "OK", "Not Now");
 					if (setManually)
 					{
 						App.coreView.setContentViewWithQueue(new MapsView(App.lastKnownPosition, true));
