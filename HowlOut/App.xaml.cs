@@ -74,6 +74,8 @@ namespace HowlOut
 			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("userFacebookId");
 			StoredApiKey = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("StoredApiKey");
 
+			//Plugin.LocalNotifications.CrossLocalNotifications.Current.Show("LOOOL","Heyyy", 1, DateTime.Now.AddSeconds(10));
+
 			try
 			{
 				setPositionManually = bool.Parse(DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("storeManually"));

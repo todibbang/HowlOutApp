@@ -160,6 +160,28 @@ namespace HowlOut
 			
 		}
 
+		public bool ShowSpecialTypeIcon
+		{
+			get
+			{
+				if (SubType == ConversationSubType.None) return false;
+				return true;
+			}
+		}
+
+			
+
+		public String ConversationIcon
+		{
+			get
+			{
+				if (SubType == ConversationSubType.ExpenShare) return "ic_expense_share.png";
+				if (SubType == ConversationSubType.Vote) return "ic_vote.png";
+				if (SubType == ConversationSubType.ToDoList) return "ic_to_do.png";
+				return "";
+			}
+		}
+
 		public ConversationSubType SubType { get; set; }
 
 		// ExpenShare: Dictionary<senderId, List<Tuple<ReceiverId, amount, MoneySentDescription, status>>> subTypeDictionary { get; set; }
@@ -193,7 +215,7 @@ namespace HowlOut
 	{
 		None,
 		ExpenShare,
-		Doodle,
+		Vote,
 		ToDoList
 	}
 }

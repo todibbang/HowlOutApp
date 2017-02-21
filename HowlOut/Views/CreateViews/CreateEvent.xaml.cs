@@ -337,15 +337,17 @@ namespace HowlOut
 						InspectController inspect = new InspectController(eventCreated);
 						if (isCreate)
 						{
-							App.coreView.updateMainViews(4);
-							App.coreView.setContentView(1);
+							//App.coreView.updateMainViews(4);
+							//App.coreView.setContentView(1);
+							//App.coreView.setContentViewWithQueue(inspect);
+							//App.coreView.updateMainViews(0);
 							App.coreView.setContentViewWithQueue(inspect);
-							App.coreView.updateMainViews(0);
 						}
 						else {
+							//App.coreView.setContentViewReplaceCurrent(inspect);
 							App.coreView.setContentViewReplaceCurrent(inspect);
 						}
-						App.coreView.updateMainViews(0);
+						//App.coreView.updateMainViews(0);
 					}
 					else {
 						await App.rootPage.displayAlertMessage("Error", "Event not created, try again", "Ok");

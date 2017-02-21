@@ -44,12 +44,13 @@ namespace HowlOut
 				{
 					//CreateButton(type, id);
 				}
+				/*
 				createNewConversation.IsVisible = true;
 
 				createNewConversation.Clicked += (sender, e) =>
 				{
 					App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = modelId, ModelType = modelType }, true));
-				};
+				};*/
 			}
 			catch (Exception ex) { }
 		}
@@ -98,12 +99,19 @@ namespace HowlOut
 				}
 			}
 			catch (Exception ex) { }
+
+			ub.setRightButton("ic_add.png").Clicked += (sender, e) =>
+			{
+				App.coreView.setContentViewWithQueue(new InviteListView(new Conversation() { ModelId = modelId, ModelType = modelType }, true));
+			};
+			ub.setPadding();
 		}
 
 		public async Task UpdateConversations(bool update)
 		{
 			try
 			{
+				closeAsync();
 				nothingToLoad.IsVisible = false;
 				if (update) { 
 					conList = await _dataManager.MessageApiManager.GetConversations(modelId, modelType); 
@@ -144,7 +152,7 @@ namespace HowlOut
 						ModelId = "234567",
 						Profiles = pTest,
 						Title = "Doodle Test",
-						SubType = ConversationSubType.Doodle,
+						SubType = ConversationSubType.Vote,
 						subTypeDictionary = dick,
 					});
 
@@ -220,6 +228,13 @@ namespace HowlOut
 			}
 		}
 
+		async void closeAsync()
+		{
+			await Task.Delay(2000);
+			if (updateList.IsRefreshing) updateList.IsRefreshing = false;
+			if (updateList.ItemsSource == null) UpdateConversations(true);
+		}
+
 		public async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			try
@@ -238,7 +253,7 @@ namespace HowlOut
 				}
 				finally
 				{
-					if (selectedConversation.SubType != null && selectedConversation.SubType == ConversationSubType.Doodle)
+					if (selectedConversation.SubType != null && selectedConversation.SubType == ConversationSubType.Vote)
 					{
 						//App.coreView.setContentViewWithQueue(new DoodleView(selectedConversation));
 						App.coreView.setContentViewWithQueue(new VoteView(null, false));

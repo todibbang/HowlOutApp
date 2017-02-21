@@ -2,11 +2,11 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HowlOut.UpperBar"
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut">
 	<ContentView.Content>
-		<Grid BackgroundColor="#90000000" RowSpacing="0" ColumnSpacing="0" x:Name="thisGrid" IsVisible="true" Padding="0,10,0,0">
+		<Grid BackgroundColor="#90000000" RowSpacing="0" ColumnSpacing="0" x:Name="thisGrid" IsVisible="true" Padding="2,10,2,0">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="40"/>
+				<ColumnDefinition Width="auto" x:Name="leftWidth"/>
 				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="40"/>
+				<ColumnDefinition Width="auto" x:Name="rightWidth"/>
 			</Grid.ColumnDefinitions>
 
 			<Grid.RowDefinitions>

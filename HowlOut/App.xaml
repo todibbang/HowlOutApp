@@ -7,7 +7,7 @@
 			<!---Glossy Styles-->
 
 
-
+			<Color x:Key="HowlOutBlack">#90000000</Color>
 			<Color x:Key="HowlOut">#ff4bc6b4</Color>
 			<Color x:Key="HowlOutFade">#ffa9e4db</Color>
 			<Color x:Key="HowlOutBackground">#fff2f2f2</Color>

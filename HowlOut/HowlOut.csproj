@@ -376,6 +376,7 @@
     <Compile Include="Views\Components\ToDoItemEditTemplate.xaml.cs">
       <DependentUpon>ToDoItemEditTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Renderers\CustomTabbed.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

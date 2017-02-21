@@ -51,7 +51,7 @@ namespace HowlOut
 				postCommentButtonTop.Clicked += async (sender, e) => { await PostNewComment(commentEntryTop.Text); };
 				setSize();
 			}
-			catch (Exception exc) { reloadView(); System.Diagnostics.Debug.WriteLine(exc.Message); }
+			catch (Exception exc) { /*reloadView();*/ System.Diagnostics.Debug.WriteLine(exc.Message); }
 		}
 
 		public ConversationView(Conversation conv)
@@ -168,7 +168,7 @@ namespace HowlOut
 				};
 				albumPictureButton.GestureRecognizers.Add(albumImage);
 			}
-			catch (Exception exc){ reloadView(); }
+			catch (Exception exc){ /*reloadView();*/ }
 		}
 
 		public async Task<UpperBar> getUpperBar()
@@ -553,7 +553,7 @@ namespace HowlOut
 				}
 
 			}
-			catch (Exception exc) { reloadView(); }
+			catch (Exception exc) { /*reloadView();*/ }
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

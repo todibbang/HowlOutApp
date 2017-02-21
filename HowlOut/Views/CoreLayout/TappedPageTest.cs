@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace HowlOut
 {
-	public class TappedPageTest : TabbedPage
+	public class TappedPageTest : CustomTabbed
 	{
 		public TappedPageTest()
 		{
@@ -22,22 +22,28 @@ namespace HowlOut
 
 
 
-
-			var page1 = new NavigationPageTest(0) { Title = "Create", Icon = "ic_add_circle_white.png"};
+			var page1 = new NavigationPageTest(2) { Title = "Home", Icon = "ic_howlout.png" };
+			var page3 = new NavigationPageTest(0) { Title = "Create", Icon = "ic_add_circle_white.png"};
 			//var page2 = new NavigationPageTest(1) { Title = "null"};
-			var page3 = new NavigationPageTest(2) { Title = "Home", Icon = "ic_howlout.png"};
+
 			var page4 = new NavigationPageTest(3) { Title = "Communication", Icon = "ic_message_white"};
 			var page5 = new NavigationPageTest(4) { Title = "Notifications", Icon = "ic_public_white"};
 			this.Children.Add(page1);
 			//this.Children.Add(page2);
-			this.Children.Add(page3);
+
 			this.Children.Add(page4);
 			this.Children.Add(page5);
+			this.Children.Add(page3);
 
-
+			//CurrentPage = page3;
 
 			BarBackgroundColor = Color.FromHex("#cc000000");
 			BarTextColor = App.HowlOut;
+
+
+			System.Diagnostics.Debug.WriteLine("Length: " + this.SelectedItem);
+
+
 		}
 
 		public void pushView(ViewModelInterface cv)
@@ -51,6 +57,12 @@ namespace HowlOut
 		{
 			var navPage = CurrentPage as NavigationPageTest;
 			navPage.pushView(ve);
+		}
+
+		public void reloadView()
+		{
+			var navPage = CurrentPage as NavigationPageTest;
+			navPage.reloadView();
 		}
 
 		public void popView()

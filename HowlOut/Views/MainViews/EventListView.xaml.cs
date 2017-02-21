@@ -131,7 +131,7 @@ namespace HowlOut
 			if (currentView == 0)
 			{
 				headerGrid.IsVisible = true;
-				groupsList = new ListsAndButtons(null, null, false, false);
+				groupsList = new ListsAndButtons(null, null, true, false);
 				manageGroupsLayout.Children.Add(groupsList);
 				searchBarTextChanged = new EventHandler<TextChangedEventArgs>(async (sender, e) =>
 				{
@@ -225,6 +225,7 @@ namespace HowlOut
 		{
 			try
 			{
+				closeAsync();
 				nothingToLoad.IsVisible = false;
 				currentView = listToUpdate;
 				if (update)
@@ -234,7 +235,7 @@ namespace HowlOut
 
 				if (listToUpdate == 4 || listToUpdate == 5)
 				{
-					HeightRequest = evelist.Count * 160;
+					HeightRequest = evelist.Count * 180;
 					HeightRequest += 60;
 					footer.HeightRequest = 0;
 				}
@@ -290,6 +291,13 @@ namespace HowlOut
 				searchEventList.IsRefreshing = false;
 			}
 			catch (Exception e) { System.Diagnostics.Debug.WriteLine(e.Message); }
+		}
+
+		async void closeAsync()
+		{
+			await Task.Delay(2000);
+			if (searchEventList.IsRefreshing) searchEventList.IsRefreshing = false;
+			if (searchEventList.ItemsSource == null) UpdateList(true, searchString);
 		}
 
 		public async Task<List<Event>> loadEvents(int listToUpdate, string searchText)

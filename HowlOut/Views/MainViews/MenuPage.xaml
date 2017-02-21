@@ -6,7 +6,7 @@
 		xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions">
 	 <ContentPage.Content>
 
-  		<Grid BackgroundColor="#90000000">
+  		<Grid BackgroundColor="#90000000" RowSpacing="0">
   			<Grid.ColumnDefinitions>
         		<ColumnDefinition Width="300"/>
 				<ColumnDefinition Width="200"/>
@@ -18,7 +18,7 @@
 				<RowDefinition Height="*"/>
       		</Grid.RowDefinitions>
   	
-			<Grid Grid.Row="0" Padding="20,20,20,20" RowSpacing="0" ColumnSpacing="20" >
+			<Grid Grid.Row="0" Padding="20,30,20,10" RowSpacing="0" ColumnSpacing="20" >
 	          <Grid.ColumnDefinitions>
 	            <ColumnDefinition Width="60" />
 	            <ColumnDefinition Width="*" />
@@ -29,7 +29,8 @@
 	          </Grid.RowDefinitions>
 
 	          <controls:CircleImage Grid.RowSpan="2" x:Name="menuImage"/>
-	          <Label TextColor="White" Grid.Column="1" Text="You" FontSize="15" x:Name="YouLabel" VerticalOptions="CenterAndExpand"/>
+	          <Label TextColor="White" Grid.RowSpan="2" Grid.Column="1" Text="You" FontSize="15" x:Name="YouLabel" VerticalOptions="CenterAndExpand"/>
+			  <Button x:Name="myProfileBtn" Grid.RowSpan="2" Grid.ColumnSpan="2" />
 	       </Grid>
 
 
@@ -56,7 +57,7 @@
 		    </ListView>
 
     	
-			<SearchBar Grid.Row="2" BackgroundColor="Transparent"/>
+			<SearchBar Grid.Row="2" BackgroundColor="Transparent" Placeholder="Search friends" x:Name="searchBar" CancelButtonColor="White"/>
 			<ListView
 		    	Grid.Row="3" 
 		           CachingStrategy="RecycleElement"

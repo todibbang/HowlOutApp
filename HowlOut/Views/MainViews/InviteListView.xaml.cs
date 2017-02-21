@@ -11,8 +11,11 @@ namespace HowlOut
 		List<Profile> profilesThatCanBeAdded = App.userProfile.Friends;
 		DataManager _dataManager = new DataManager();
 
+		bool create;
+
 		public InviteListView(Conversation conversation, bool create)
 		{
+			this.create = create;
 			InitializeComponent();
 			App.coreView.IsLoading(true);
 			conversationSetup(conversation);
@@ -86,7 +89,7 @@ namespace HowlOut
 							ModelId = "234567",
 							Profiles = profilesAdded,
 							Title = "Doodle Test",
-							SubType = ConversationSubType.Doodle,
+							SubType = ConversationSubType.Vote,
 							subTypeDictionary = dick,
 						};
 
@@ -122,11 +125,15 @@ namespace HowlOut
 				addBtn.Clicked += async (sender, e) =>
 				{
 					App.coreView.IsLoading(true);
-					App.coreView.returnToPreviousView();
+
 					Conversation newConv = await _dataManager.MessageApiManager.AddProfilesToConversation(conversation.ConversationID, profilesAdded);
 					if (newConv != null)
 					{
-						App.coreView.setContentViewWithQueue(new ConversationView(newConv));
+						App.coreView.returnToPreviousView();
+						//App.coreView.setContentViewWithQueue(new ConversationView(newConv));
+					}
+					else {
+						App.rootPage.displayAlertMessage("Error", "Error inviting profiles.", "OK");
 					}
 					App.coreView.IsLoading(false);
 				};
@@ -134,6 +141,7 @@ namespace HowlOut
 
 		}
 		public void reloadView() { }
+		/*
 		public void viewInFocus(UpperBar bar)
 		{
 			bar.setNavigationlabel("Invite To Organization");
@@ -141,7 +149,7 @@ namespace HowlOut
 			bar.setNavigationlabel("Invite To Event");
 			bar.setNavigationlabel("Add People To Conversation");
 			bar.setNavigationlabel("Create New Conversation");
-		}
+		}*/
 
 		public async Task<UpperBar> getUpperBar()
 		{
@@ -150,7 +158,12 @@ namespace HowlOut
 			var sl = ub.showCenterLayout();
 			sl.Orientation = StackOrientation.Horizontal;
 			//sl.Children.Add(new IconView() { Source="ic_title.png", Foreground = Color.White, WidthRequest = 30, HeightRequest = 30 });
-			sl.Children.Add(titleOption);
+
+			if (create)
+			{
+				titleOption.IsVisible = true;
+				sl.Children.Add(titleOption);
+			}
 			sl.Children.Add(addBtn);
 
 			return ub;

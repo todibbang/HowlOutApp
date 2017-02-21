@@ -12,7 +12,7 @@ namespace HowlOut
 		private DataManager _dataManager;
 		List<Notification> notiList = new List<Notification>();
 		public List<Notification> unseenNotifications = new List<Notification>();
-
+		bool showAll;
 		//ContentView ProfileFooter;
 
 		public ContentView content
@@ -21,8 +21,9 @@ namespace HowlOut
 			set { this.content = value; }
 		}
 
-		public YourNotifications()
+		public YourNotifications(bool showAll)
 		{
+			this.showAll = showAll;
 			InitializeComponent();
 			_dataManager = new DataManager();
 			UpdateNotifications(true);
@@ -36,7 +37,23 @@ namespace HowlOut
 		public async Task<UpperBar> getUpperBar()
 		{
 			var ub = new UpperBar();
-			ub.setNavigationlabel("Notifications");
+			//ub.setNavigationlabel("Notifications");
+
+			if (!showAll)
+			{
+				var btn = ub.setNavigationlabel("  View Unseen Notifications  ");
+				btn.BorderWidth = 1;
+				btn.WidthRequest = 150;
+				btn.Clicked += (sender, e) =>
+				{
+					App.coreView.setContentViewWithQueue(new YourNotifications(true));
+				};
+			}
+			else {
+				ub.setNavigationlabel("  Unseen Notifications  ");
+			}
+			ub.setPadding();
+
 			return ub;
 		}
 		public void reloadView() { }
@@ -51,7 +68,7 @@ namespace HowlOut
 			{
 				notiList = await _dataManager.MessageApiManager.GetNotifications();
 			}
-			if (notiList == null || notiList.Count == 0)
+ 			if (notiList == null || notiList.Count == 0)
 			{
 				nothingToLoad.IsVisible = true;
 				updateList.IsRefreshing = false;
@@ -96,6 +113,19 @@ namespace HowlOut
 				notiList.Remove(c);
 			}
 			App.notificationController.setHowlsNoti(n);
+
+			if (!showAll)
+			{
+				notiList = unseenNotifications;
+			}
+
+			if (notiList == null || notiList.Count == 0)
+			{
+				updateList.ItemsSource = null;
+				nothingToLoad.IsVisible = true;
+				updateList.IsRefreshing = false;
+				return;
+			}
 
 			ObservableCollection<GroupedNotifications> groupedNotifications = new ObservableCollection<GroupedNotifications>();
 			if (notiList.Count > 0)

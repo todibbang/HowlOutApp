@@ -36,6 +36,8 @@ namespace HowlOut.iOS
 			global::Xamarin.Forms.Forms.Init();
 
 
+			UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(MINIMUM_BACKGROUND_FETCH_INTERVAL);
+
 			if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
 			{
 				UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
@@ -71,11 +73,11 @@ namespace HowlOut.iOS
 			Settings.AppID = appId;
 			Settings.DisplayName = appName;
 
-
-
 			//CarouselViewRenderer.Init();
 			ImageCircleRenderer.Init();
 			LoadApplication(new App());
+
+			updateNotiBadge();
 
 			return base.FinishedLaunching(app, options);
 			//return ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
@@ -84,18 +86,34 @@ namespace HowlOut.iOS
 		public override void OnActivated(UIApplication application)
 		{
 			Console.WriteLine("OnActivated called, App is active.");
+			updateNotiBadge();
 			setNotiCheck(false);
 		}
 		public override void DidEnterBackground(UIApplication application)
 		{
 			Console.WriteLine("App entering background state.");
 			setNotiCheck(true);
+			backgroundUpdate();
+		}
+
+		private async void backgroundUpdate()
+		{
+			await System.Threading.Tasks.Task.Delay(4000);
+			Console.WriteLine("alive");
+			backgroundUpdate();
 		}
 
 		private async void setNotiCheck(bool check)
 		{
 			await System.Threading.Tasks.Task.Delay(4000);
 			notiCheck = check;
+		}
+
+		private const double MINIMUM_BACKGROUND_FETCH_INTERVAL = 900;
+
+		private void SetMinimumBackgroundFetchInterval()
+		{
+			UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(MINIMUM_BACKGROUND_FETCH_INTERVAL);
 		}
 
 
@@ -109,6 +127,7 @@ namespace HowlOut.iOS
 
 		public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
 		{
+			UIApplication.SharedApplication.ApplicationIconBadgeNumber++;
 			ProcessNotification(userInfo, notiCheck);
 
 
@@ -200,6 +219,29 @@ namespace HowlOut.iOS
 
 			// reset our badge
 			UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0; */
+		}
+
+
+
+		public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+		{
+			UIApplication.SharedApplication.ApplicationIconBadgeNumber++;
+		}
+		//public override rec
+
+
+
+		public async void updateNotiBadge()
+		{
+			try
+			{
+				if(!notiCheck)UIApplication.SharedApplication.ApplicationIconBadgeNumber = App.notificationController.unseenNotifications + App.notificationController.unseenCommunications;
+
+
+				await System.Threading.Tasks.Task.Delay(1000);
+			}
+			catch (Exception exc) {}
+			updateNotiBadge();
 		}
 	}
 }

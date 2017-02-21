@@ -75,12 +75,17 @@ namespace HowlOut
 			}
 			else {
 				newRowValue = 4;
-				height = 75;
+				height = 65;
 			}
 			float rowHeight = height * 1.4f;
 			int column = 0;
 			int row = 0;
 			int count = 0;
+
+			if (!preview)
+			{
+				scrollView.Padding = new Thickness(0,60,0,0);
+			}
 
 			if (!preview && !buttons)
 			{

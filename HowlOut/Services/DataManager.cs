@@ -186,11 +186,9 @@ namespace HowlOut
 						else App.rootPage.displayAlertMessage("Unfollowed", "Event unfollowed", "OK");
 					}
 
-					App.coreView.reloadCurrentView();
+					await ProfileApiManager.GetLoggedInProfile();
 
-					App.coreView.updateMainViews(1);
-					App.coreView.updateMainViews(2);
-					App.coreView.updateMainViews(4);
+					App.tappedPageTest.reloadView();
 					return true;
 				}
 			}

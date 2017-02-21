@@ -41,6 +41,12 @@ namespace HowlOut
 
 				ListViewMenu.SelectedItem = null;
 			};
+
+			myProfileBtn.Clicked += (sender, e) =>
+			{
+				App.tappedPageTest.pushView(new InspectController(App.userProfile));
+				this.root.CloseAsync();
+			};
 			/*
 			MyCampButton.Clicked += (sender, e) =>
 			{
@@ -50,6 +56,24 @@ namespace HowlOut
 					App.rootPage.NavigateAsync(Models.MenuType.Home, false);
 				}
 			};*/
+
+			searchBar.TextChanged += async (sender, e) =>
+			{
+				if (String.IsNullOrWhiteSpace(searchBar.Text))
+				{
+					
+					FriendsList.ItemsSource = App.userProfile.Friends;
+					//organizations.createList(null, null, App.userProfile.Organizations, null, null, null, false, true);
+				}
+				else {
+
+					var profileSearchResult = await App.coreView._dataManager.ProfileApiManager.GetProfilesFromName(searchBar.Text);
+					FriendsList.ItemsSource = profileSearchResult;
+					//updateAutoCompleteOrganizationsList(searchBar.Text);
+				}
+			};
+
+			FriendsList.ItemSelected += ProfileClicked;
 		}
 
 		public void updateMenuPage()
@@ -150,5 +174,18 @@ namespace HowlOut
 
 			ListViewMenu.ItemsSource = newMenuItems;*/
 		}
+
+
+
+		public void ProfileClicked(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (FriendsList.SelectedItem == null) { return; }
+			var selectedProfile = FriendsList.SelectedItem as Profile;
+			App.tappedPageTest.pushView(new InspectController(selectedProfile));
+			FriendsList.SelectedItem = null;
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
+			root.CloseAsync();
+		}
+
 	}
 }

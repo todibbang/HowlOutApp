@@ -9,7 +9,7 @@
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 
-			<ScrollView>
+			<ScrollView x:Name="scrollView">
 				<Grid  x:Name="thisGrid" VerticalOptions="Fill"/>
 			</ScrollView>
 

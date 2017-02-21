@@ -21,6 +21,69 @@ namespace HowlOut
 		{
 			await Task.Delay(100);
 			var thisItem = (ToDoItem)this.BindingContext;
+
+			try
+			{
+				if (thisItem.Profiles.Exists(p => p.ProfileId == App.userProfile.ProfileId))
+				{
+					backgroundBtn.BackgroundColor = App.HowlOutFade;
+
+					if (thisItem.Completed[thisItem.Profiles.IndexOf(thisItem.Profiles.Find(p => p.ProfileId == App.userProfile.ProfileId))]) statusIcon.Foreground = App.HowlOut;
+				}
+			}
+			catch (Exception exc) {} 
+
+
+
+			var taps = new TapGestureRecognizer();
+			taps.Tapped += (sender, e) =>
+			{
+				if (thisItem.Profiles != null && thisItem.Profiles.Exists(p => p.ProfileId == App.userProfile.ProfileId))
+				{
+					if (statusIcon.Foreground == Color.FromHex("#10000000"))
+					{
+						statusIcon.Foreground = App.HowlOut;
+						thisItem.Completed[thisItem.Profiles.IndexOf(thisItem.Profiles.Find(p => p.ProfileId == App.userProfile.ProfileId))] = true;
+					}
+					else {
+						statusIcon.Foreground = Color.FromHex("#10000000");
+						thisItem.Completed[thisItem.Profiles.IndexOf(thisItem.Profiles.Find(p => p.ProfileId == App.userProfile.ProfileId))] = false;
+					}
+
+					completedLabel.Text = thisItem.NumberCompleted;
+				}
+			};
+			completedBtn.GestureRecognizers.Add(taps);
+
+			taps = new TapGestureRecognizer();
+			taps.Tapped += (sender, e) =>
+			{
+				if (backgroundBtn.BackgroundColor == Color.White)
+				{
+					backgroundBtn.BackgroundColor = App.HowlOutFade;
+					thisItem.Profiles.Add(App.userProfile);
+					thisItem.Completed.Add(false);
+				}
+				else {
+					backgroundBtn.BackgroundColor = Color.White;
+					thisItem.Completed.RemoveAt(thisItem.Profiles.IndexOf(thisItem.Profiles.Find(p => p.ProfileId == App.userProfile.ProfileId)));
+					thisItem.Profiles.Remove(thisItem.Profiles.Find(p => p.ProfileId == App.userProfile.ProfileId));
+					statusIcon.Foreground = Color.FromHex("#10000000");
+				}
+				completedLabel.Text = thisItem.NumberCompleted;
+				assignedLabel.Text = thisItem.AssignedAndNeeded;
+			};
+			joinBtn.GestureRecognizers.Add(taps);
+
+			taps = new TapGestureRecognizer();
+			taps.Tapped += (sender, e) =>
+			{
+				App.tappedPageTest.pushView(new ListsAndButtons(thisItem.Profiles, null, false, false ));
+			};
+			viewProfilesBtn.GestureRecognizers.Add(taps);
+
+
+
 			System.Diagnostics.Debug.WriteLine(thisItem.OptionDescription);
 
 
@@ -57,7 +120,7 @@ namespace HowlOut
 				statusButton.GestureRecognizers.Add(tap);
 
 				sl.Children.Add(statusButton);
-				pickerLayout.Children.Add(sl);
+				//pickerLayout.Children.Add(sl);
 			}
 		}
 	}

@@ -39,6 +39,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -125,5 +126,14 @@
 		<key> Allow Arbitrary Loads</key>
 		<true/>
 	</dict>
+	<key>Application Does Not Run in Background</key>
+	<true/>
+	<key>Required Background Modes</key>
+	<array>
+		<string>remote-notifications</string>
+		<string>fetch</string>
+	</array>
+	<key>UIApplicationExitsOnSuspend</key>
+	<true/>
 </dict>
 </plist>

@@ -26,6 +26,8 @@ namespace HowlOut
 		{
 			get
 			{
+				if (Seen) return false;
+
 				if (
 					NotificationType == NotificationType.InvitedToEvent ||
 					NotificationType == NotificationType.InvitedToEventAsOwner ||

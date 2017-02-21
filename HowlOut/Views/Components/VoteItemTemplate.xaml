@@ -7,7 +7,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="40"/>
 			</Grid.ColumnDefinitions>
-			<Button BorderWidth="1" Grid.ColumnSpan="2" BorderColor="{DynamicResource HowlOut}" x:Name="thisGrid" BackgroundColor="{Binding BackgroundColor}"/>
+			<Button BorderWidth="0.5" Grid.ColumnSpan="2" BorderColor="Gray" x:Name="thisGrid" BackgroundColor="{Binding BackgroundColor}"/>
 			<StackLayout Padding="5,0,0,0">
 				<local:CustomLabel Text="{Binding VoteDescription}" FontSize="Large" VerticalOptions="Center" HeightRequest="60" VerticalTextAlignment="Center"/>
 			</StackLayout>

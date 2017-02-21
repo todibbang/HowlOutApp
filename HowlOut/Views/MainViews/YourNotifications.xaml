@@ -11,7 +11,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<Label Text="No Notifications to load" x:Name="nothingToLoad" IsVisible="false" HorizontalOptions="Center" VerticalOptions="Center"/>
+			<Label Text="No Unseen Notifications" x:Name="nothingToLoad" IsVisible="false" HorizontalOptions="Center" VerticalOptions="Center"/>
 			<Grid Grid.Row="0" Padding="0,0,0,0">
 				<ListView x:Name="updateList" Grid.Row="0" IsVisible="true"
 				HasUnevenRows="true"

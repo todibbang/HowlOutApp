@@ -6,6 +6,10 @@ namespace HowlOut
 {
 	public class NotificationController
 	{
+
+		public int unseenNotifications = 0;
+		public int unseenCommunications = 0;
+
 		public NotificationController()
 		{
 		}
@@ -218,6 +222,24 @@ namespace HowlOut
 
 		public void setHowlsNoti(int i)
 		{
+			if (i > 0)
+			{
+				unseenNotifications = i;
+			}
+			else if (i < 0)
+			{
+				unseenNotifications++;
+			}
+			else {
+				unseenNotifications = 0;
+			}
+
+			/*
+
+
+
+
+
 			var bottomBar = App.coreView.btmBar;
 			var notiButton = App.coreView.notiButton;
 			if (i > 0)
@@ -242,11 +264,30 @@ namespace HowlOut
 
 				notiButton.IsVisible = false;
 				notiButton.Text = 0 + "";
-			}
+			} */
 		}
 
 		public void setConversationsNoti(int i)
 		{
+			if (i > 0)
+			{
+				unseenCommunications = i;
+			}
+			else if (i < 0)
+			{
+				unseenCommunications++;
+			}
+			else {
+				unseenCommunications = 0;
+			}
+
+
+
+
+			/*
+
+
+
 			var bottomBar = App.coreView.btmBar;
 			if (i > 0)
 			{
@@ -261,7 +302,7 @@ namespace HowlOut
 			else {
 				bottomBar.conversationNoti.IsVisible = false;
 				bottomBar.conversationNoti.Text = 0 + "";
-			}
+			} */
 		}
 	}
 }

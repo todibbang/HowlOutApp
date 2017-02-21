@@ -39,6 +39,8 @@ namespace HowlOut
 			{
 				addGroupMenu(grp, ub);
 			}
+			ub.setNavigationlabel(Title);
+			ub.setPadding();
 			return ub;
 		}
 
@@ -256,7 +258,7 @@ namespace HowlOut
 			try
 			{
 				this.eve = eve;
-				//eve = await _dataManager.EventApiManager.GetEventById(eve.EventId);
+				eve = await _dataManager.EventApiManager.GetEventById(eve.EventId);
 				this.eve = eve;
 				await Task.Delay(10);
 				infoView.Content = new InspectEvent(eve, _dataManager.IsEventJoined(eve), scrollView);
@@ -476,7 +478,7 @@ namespace HowlOut
 			grid.Children.Add(new Line(), 0, 0);
 			StackLayout sl = new StackLayout() { Orientation = StackOrientation.Horizontal };
 			sl.Children.Add(new Label() { Text = "  " + Title + "   ", VerticalTextAlignment = TextAlignment.Center, TranslationY = 5, HorizontalOptions = LayoutOptions.StartAndExpand });
-			Button b = new Button() { TextColor = App.HowlOut, Text = "View conversations  ", HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.EndAndExpand };
+			Button b = new Button() { TextColor = App.HowlOut, Text = "View Tools  ", HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.EndAndExpand };
 
 			b.Clicked += (sender, e) =>
 			{

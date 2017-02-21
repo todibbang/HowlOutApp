@@ -2,9 +2,43 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 		xmlns:local="clr-namespace:HowlOut;assembly=HowlOut" x:Class="HowlOut.ToDoItemTemplate">
 	<ContentView.Content>
+		<!--
 		<StackLayout HeightRequest="{Binding HeightRequest}" x:Name="layout" Padding="10,0,10,0">
 			<local:CustomLabel Text="{Binding OptionDescription}" FontSize="Large"/>
 			<StackLayout x:Name="pickerLayout" Grid.Row="1"/>
-		</StackLayout>
+		</StackLayout> -->
+		<Grid Padding="2">
+			<Button BackgroundColor="White" BorderRadius="0" BorderWidth="0.5" BorderColor="Gray" x:Name="backgroundBtn"/>
+			<Grid HeightRequest="60" ColumnSpacing="2" Padding="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="40"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="30"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="0"/>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Column="1" Grid.Row="1" BackgroundColor="White" HeightRequest="40" WidthRequest="40" BorderWidth="0.5" BorderColor="Gray"/>
+				</Grid>
+				<StackLayout Spacing="0">
+					<local:IconView Source="ic_done_white" Foreground="#10000000" HeightRequest="40" WidthRequest="40" x:Name="statusIcon"/>
+					<local:CustomLabel Text="{Binding NumberCompleted}" FontSize="10" HorizontalOptions="Center" VerticalOptions="End" x:Name="completedLabel"/>
+				</StackLayout>
+				<local:CustomLabel Grid.Column="1" Text="{Binding OptionDescription}" FontSize="Medium" VerticalOptions="Center"/>
+				<local:CustomLabel Grid.Column="2" Text="{Binding AssignedAndNeeded}" FontSize="Small" VerticalOptions="Center" x:Name="assignedLabel"/>
+				<local:IconView WidthRequest="10000" Grid.Column="1"  HeightRequest="60" Source="ic_transparent.png" x:Name="joinBtn"/>
+				<local:IconView WidthRequest="50" HeightRequest="60" Source="ic_transparent.png" x:Name="completedBtn"/>
+				<local:IconView WidthRequest="50"  Grid.Column="2" HeightRequest="60" Source="ic_transparent.png" x:Name="viewProfilesBtn"/>
+			</Grid>
+		</Grid>
 	</ContentView.Content>
 </ContentView>

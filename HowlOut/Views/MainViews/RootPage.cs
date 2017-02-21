@@ -46,11 +46,13 @@ namespace HowlOut
 
 		public async Task CloseAsync()
 		{
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			IsPresented = false;
 		}
 
 		public async Task OpenAsync()
 		{
+			DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();
 			IsPresented = true;
 		}
 

@@ -211,7 +211,7 @@ namespace HowlOut
 					ModelId = "234567",
 					Profiles = pTest,
 					Title = "Doodle Test",
-					SubType = ConversationSubType.Doodle,
+					SubType = ConversationSubType.Vote,
 					subTypeDictionary = dick,
 				};
 				conList.Add(conv);
@@ -229,6 +229,8 @@ namespace HowlOut
 
 			/* TEST END */
 
+			communicationToolsLable.Text = "  Communication Tools (" + conList.Count + ")";
+
 			if (conList.Count > 1) conList = conList.OrderByDescending(c => c.LastUpdated).ToList();
 
 
@@ -240,7 +242,7 @@ namespace HowlOut
 				var con = conList[i];
 				grid.Children.Add(sl);
 				grid.Children.Add(btn);
-				if (con.SubType == ConversationSubType.Doodle)
+				if (con.SubType == ConversationSubType.Vote)
 				{
 					sl.Children.Add(new IconView() { Source = "ic_vote.png", Foreground = App.HowlOut, HeightRequest=30, WidthRequest=30, HorizontalOptions = LayoutOptions.Start });
 					btn.Clicked += (sender, e) =>

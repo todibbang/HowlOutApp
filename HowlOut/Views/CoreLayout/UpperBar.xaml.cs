@@ -124,48 +124,11 @@ namespace HowlOut
 			//setNavigationLabel("", null);
 		}
 
-		/*
-		public void showNewConversationButton(bool show, YourConversations yc)
+		internal void setPadding()
 		{
-			newConversationBtn.IsVisible = show;
-			CVList = yc;
+			leftWidth.Width = 50;
+			rightWidth.Width = 50;
 		}
-
-		public void showShareBtn(bool show, Event eve)
-		{
-			shareEventBtn.IsVisible = show;
-			if (show)
-			{
-				TapGestureRecognizer tgr = new TapGestureRecognizer();
-				tgr.Tapped += async (sender, e) =>
-				{
-					//App.coreView.DisplayShare(eve);
-
-					App.coreView._dataManager.AttendTrackEvent(eve, false, true);
-				};
-				shareEventBtn.GestureRecognizers.Add(tgr);
-			}
-			else {
-				for (int i = shareEventBtn.GestureRecognizers.Count - 1; i > -1; i--)
-				{
-					shareEventBtn.GestureRecognizers.RemoveAt(i);
-				}
-			}
-		}
-		*/
-
-		/*
-		public void showAddPeopleToConversationButton(bool show, ConversationView cv)
-		{
-			addPeopleToCvBtn.IsVisible = show;
-			leaveCvBtn.IsVisible = false;
-			this.CV = cv;
-		}
-
-		public void showFilterSearchButton(bool show)
-		{
-			filterSearchBtn.IsVisible = show;
-		} */
 
 		public void displayNotiLayout()
 		{

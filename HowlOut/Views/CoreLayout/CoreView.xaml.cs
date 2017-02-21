@@ -144,7 +144,7 @@ namespace HowlOut
 			//exploreEventCategories = new ExploreEventCategories();
 			exploreEvents = new EventListView(0);
 			joinedEvents = new EventListView(0);
-			notifications = new YourNotifications();
+			notifications = new YourNotifications(false);
 			createView = new CreateView();
 			mainView.Content = exploreEvents;
 			lastCoreViewInterface = exploreEvents;
@@ -344,6 +344,9 @@ namespace HowlOut
 
 		public async void returnToPreviousView()
 		{
+			App.tappedPageTest.popView();
+			return;
+
 			try
 			{
 				DependencyService.Get<ForceCloseKeyboard>().CloseKeyboard();

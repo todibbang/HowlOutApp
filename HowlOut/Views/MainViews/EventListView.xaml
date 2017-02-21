@@ -36,7 +36,7 @@
 									<RowDefinition Height="1"/>
 									<RowDefinition Height="30"/>
 									<RowDefinition Height="1"/>
-									<RowDefinition Height="168"/>
+									<RowDefinition Height="160"/>
 								</Grid.RowDefinitions>
 
 								<StackLayout Grid.Row="0" Grid.RowSpan="3" BackgroundColor="White"/>
@@ -56,7 +56,7 @@
 									<RowDefinition Height="1"/>
 									<RowDefinition Height="30"/>
 									<RowDefinition Height="1"/>
-									<RowDefinition Height="108"/>
+									<RowDefinition Height="90"/>
 								</Grid.RowDefinitions>
 
 								<StackLayout Grid.RowSpan="3" BackgroundColor="White"/>
@@ -64,7 +64,7 @@
 								<Button Grid.Row="1" Text="  My Groups" FontAttributes="Bold" HeightRequest="30" HorizontalOptions="StartAndExpand" TextColor="{DynamicResource NormalTextColor}" x:Name="groupsLabel"/>
 								<local:Line Grid.Row="2" />
 
-								<StackLayout Grid.Row="3" x:Name="manageGroupsLayout" Padding="10,0,10,0" BackgroundColor="{DynamicResource HowlOutBackground}"/>
+								<StackLayout Grid.Row="3" x:Name="manageGroupsLayout" Padding="10,-3,10,-3" BackgroundColor="{DynamicResource HowlOutBackground}"/>
 							</Grid>
 
 							
@@ -89,7 +89,7 @@
                     </ListView.ItemTemplate>
                     <ListView.GroupHeaderTemplate>
                     	<DataTemplate>
-	                      <ViewCell Height="20">
+	                      <ViewCell Height="14">
 		                        <StackLayout Padding="0,0,0,4" BackgroundColor="{DynamicResource HowlOutBackground}" VerticalOptions="EndAndExpand" HeightRequest="20">
 					    			<Label TextColor="{DynamicResource NormalTextColor}" FontSize="12" Text="{Binding Date}" VerticalTextAlignment="End" VerticalOptions="EndAndExpand" HorizontalOptions="Fill" TranslationX="10"/>
 					    		</StackLayout>

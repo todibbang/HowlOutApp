@@ -15,6 +15,7 @@ namespace HowlOut
 		{
 			var ub = new UpperBar();
 			ub.setNavigationlabel("Doodle");
+			ub.setPadding();
 			return ub;
 		}
 		public ContentView getContentView() { return this; }
@@ -44,9 +45,9 @@ namespace HowlOut
 			if (conversation.ToDoItems == null)
 			{
 				conversation.ToDoItems = new List<ToDoItem>();
-				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed nr 1.", ProfilesNeeded = 1, ToDoListView = this });
-				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed Test mulighed nr 2.", ProfilesNeeded = 2, ToDoListView = this, Profiles = new List<Profile> { App.userProfile } });
-				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed Test mulighed Test mulighed Test mulighed Test mulighed nr 3.", ProfilesNeeded = 3, ToDoListView = this });
+				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed nr 1.", ProfilesNeeded = 1, ToDoListView = this, Profiles = new List<Profile>(), Completed = new List<bool>() });
+				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed Test mulighed nr 2.", ProfilesNeeded = 2, ToDoListView = this, Profiles = new List<Profile> { App.userProfile }, Completed = new List<bool> { false } });
+				conversation.ToDoItems.Add(new ToDoItem() { OptionDescription = "Test mulighed Test mulighed Test mulighed Test mulighed Test mulighed nr 3.", ProfilesNeeded = 3, ToDoListView = this, Profiles = new List<Profile>(), Completed = new List<bool>() });
 			}
 			//ToDoList.ItemsSource = conversation.ToDoItems;
 
