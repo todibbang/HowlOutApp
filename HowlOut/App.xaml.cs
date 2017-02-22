@@ -69,23 +69,34 @@ namespace HowlOut
 			LoginPage.LoginCancelled += LoginPage_LoginCancelled;
 			LoginPage.HowlOutLoginAttempted += SetHowlOutLogin;
 
-			//This loads a user token if existent, or else it will load "null" 
-			StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
-			StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("userFacebookId");
-			StoredApiKey = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("StoredApiKey");
+			//This loads a user token if existent, or else it will load "null"
+            
+            // TODO FACE BOOK LOGIN AND SAVE TOKEN 
+			//StoredToken = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("token");
+			//StoredUserFacebookId = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("userFacebookId");
+			//StoredApiKey = DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("StoredApiKey");
+		    StoredToken = "EAAJQNaDSB60BAPLBdMZC5fr3MiFrC1oRH9QNjh1ixBQzZAEQkaQ6Q6L984v81TcFZBX8RcpzKg4RbxUj3BBClk0v4Efe6glkeCZCZAxJHgOvlTOZCF2oYE0oGU4nk3GoP6cHzCsZAJltwsTfSZCDZAKLNkBMJZBcatcD2yKxBQHqeesfSowjoA38gxnuGI6ZAXwT65V7pA115Ivx6WGI5OJZA2Ugr9vzequbD0EZA0Gw5lO6WMgZDZD";
+            StoredUserFacebookId = "191571161232364";
+		    StoredApiKey = "8JnyjTHGGj9YvOXCgq81CXbZ/R7vHotRLobe/uxtoVc=191571161232364";
+
 
 			//Plugin.LocalNotifications.CrossLocalNotifications.Current.Show("LOOOL","Heyyy", 1, DateTime.Now.AddSeconds(10));
 
 			try
 			{
-				setPositionManually = bool.Parse(DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("storeManually"));
+			    setPositionManually = true;//bool.Parse(DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("storeManually"));
 				if (setPositionManually)
 				{
+                    /*
 					lastKnownPosition = new Position(
 						double.Parse(DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("lat")),
 						double.Parse(DependencyService.Get<HowlOut.App.ISaveAndLoad>().LoadText("lon"))
-					);
-				}
+					);*/
+                    lastKnownPosition = new Position(
+                        56.1541528854747,
+                        10.2130563043561
+                    );
+                }
 			}
 			catch (Exception exc) {}
 
@@ -239,7 +250,7 @@ namespace HowlOut
 
 		public async Task startProgram()
 		{
-			MainPage = coreView;
+		    MainPage = new ContentPage();//coreView;
 			userProfile = await _dataManager.ProfileApiManager.GetLoggedInProfile();
 			updateRootPage();
 			MainPage = rootPage;
